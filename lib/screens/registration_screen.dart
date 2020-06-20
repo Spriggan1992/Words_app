@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/components/reusable_button.dart';
 import 'package:words_app/constants.dart';
-import 'package:words_app/screens/registration_screen.dart';
+import 'package:words_app/components/reusable_button.dart';
 
-class FirstScreen extends StatelessWidget {
-  static String id = 'first_screen';
+class Registration extends StatelessWidget {
+  static String id = 'registration';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: kLoginBackground,
+        decoration: kRegistrationBackground,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 60.0),
           child: Column(
@@ -38,21 +37,9 @@ class FirstScreen extends StatelessWidget {
               ),
               SizedBox(height: 20.0),
               ReusableButton(
-                titleText: 'Login',
-                color1: Colors.purple,
-                color2: Colors.blue,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              ReusableButton(
-                titleText: 'Registration',
-                color1: Colors.blue,
-                color2: Colors.pink[300],
-                onPress: () {
-                  Navigator.pushNamed(context, Registration.id);
-                },
-              ),
+                  titleText: 'Registration',
+                  color1: Colors.blue,
+                  color2: Colors.pink[300]),
             ],
           ),
         ),
