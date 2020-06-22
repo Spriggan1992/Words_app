@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:words_app/components/box_collection.dart';
 import 'package:words_app/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:words_app/screens/create_box_collection_screen.dart';
+import 'package:words_app/modals/box_collection_data.dart';
 
 const bool a = true;
 
@@ -15,10 +15,7 @@ class ListCollection extends StatefulWidget {
 }
 
 class _ListCollectionState extends State<ListCollection> {
-  List<Widget> boxCollectionData = [
-    BoxCollection(textTitle: 'Words dsadsa'),
-    BoxCollection(textTitle: 'Second words dsadsadas'),
-  ];
+  List boxCollectionData = [CollectionData(collectionNameTitle: 'WWWW')];
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +25,8 @@ class _ListCollectionState extends State<ListCollection> {
             context: context,
             builder: (context) => CreateBoxCollections((textTitleCollection) {
                   setState(() {
-                    boxCollectionData.add(BoxCollection(
-                      textTitle: textTitleCollection,
-                    ));
+                    boxCollectionData.add(CollectionData(
+                        collectionNameTitle: textTitleCollection));
                     Navigator.pop(context);
                   });
                 }));
@@ -82,7 +78,14 @@ class _ListCollectionState extends State<ListCollection> {
             slivers: <Widget>[
               SliverGrid(
                 delegate: SliverChildBuilderDelegate((context, index) {
-                  return boxCollectionData[index];
+                  return BoxCollection(
+                    textTitle: boxCollectionData[index].collectionNameTitle,
+                    deleteColection: () {
+                      setState(() {
+                        boxCollectionData.remove(boxCollectionData[index]);
+                      });
+                    },
+                  );
                 }, childCount: boxCollectionData.length),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -98,42 +101,9 @@ class _ListCollectionState extends State<ListCollection> {
   }
 }
 
+// boxCollectionData[index];
 //
 
-//     return Scaffold(
-//       body: SafeArea(
-//         child: Container(
-//           decoration: kListCollectionBackground,
-//           child: GridView(
-//             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//               crossAxisCount: 2,
-//               mainAxisSpacing: 10,
-//               crossAxisSpacing: 10,
-//             ),
-//             padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
-//             children: <Widget>[
-//               Center(
-//                 child: FloatingActionButton(
-//                   onPressed: null,
-//                   backgroundColor: Color(0xFF6beded),
-//                   child: Icon(Icons.add, color: Colors.grey),
-//                 ),
-//               )
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-//
-
-//  delegate: SliverChildBuilderDelegate((context, index) {
-//                   return boxCollectionData[index];
-//                 }, childCount: boxCollectionData.length),
-//                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//                   crossAxisCount: 2,
-//                   mainAxisSpacing: 10,
-//                   crossAxisSpacing: 10,
-//                 ),
+// List<Widget> boxCollectionData = [
+//     BoxCollection(textTitle: 'Words dsadsa'),
+//     BoxCollection(textTitle: 'Second words dsadsadas'),
