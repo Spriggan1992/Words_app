@@ -37,7 +37,7 @@ class Registration extends StatelessWidget {
               ),
               SizedBox(height: 20.0),
               ReusableButton(
-                  titleText: 'Registration',
+                  titleText: 'Confirm',
                   color1: Colors.blue,
                   color2: Colors.pink[300]),
             ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Background for Login Screen
 const kLoginBackground = BoxDecoration(
   gradient: LinearGradient(
     begin: Alignment.topLeft,
@@ -13,6 +14,7 @@ const kLoginBackground = BoxDecoration(
   ),
 );
 
+// Background for Registration Screen
 const kRegistrationBackground = BoxDecoration(
   gradient: LinearGradient(
     begin: Alignment.topLeft,
@@ -25,15 +27,18 @@ const kRegistrationBackground = BoxDecoration(
   ),
 );
 
-const kBoxCollectionBackground = BoxDecoration(
+// Background for ListCollection
+const kListCollectionBackground = BoxDecoration(
   gradient: LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      Color(0xFFf1f5a9),
-      Color(0xFF96de78),
-      Color(0xFF78dec1),
-      Color(0xFF6bdced),
+      Colors.white,
+      Color(0xFFade4ff),
+      // Color(0xFFf1f5a9),
+      // Color(0xFF96de78),
+      // Color(0xFF78dec1),
+      // Color(0xFF6bdced),
     ],
   ),
 );
