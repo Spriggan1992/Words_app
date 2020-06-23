@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:words_app/constants.dart';
 import 'package:words_app/components/reusable_button.dart';
 
-class Registration extends StatelessWidget {
+class RegistrationScreen extends StatelessWidget {
   static String id = 'registration';
 
   @override

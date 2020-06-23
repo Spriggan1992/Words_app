@@ -49,3 +49,9 @@ const kInputTextLogPass = InputDecoration(
     fontSize: 40.0,
   ),
 );
+
+// color: Color(0xFF207178);
+// color: Color(0xFF174c4f);
+// color: Color(0xFFff9666);
+// color: Color(0xFFffe184);
+// color: Color(0xFFf5e9be);

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/screens/first_screen.dart';
+import 'package:words_app/screens/login_screen.dart';
 import 'package:words_app/screens/registration_screen.dart';
 import 'package:words_app/screens/listCollection.dart';
+import 'package:words_app/screens/welcom_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,9 +13,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: ListCollection.id,
+        initialRoute: WelcomScreen.id,
         routes: {
-          FirstScreen.id: (context) => FirstScreen(),
+          WelcomScreen.id: (context) => WelcomScreen(),
+          LoginScreen.id: (context) => LoginScreen(),
           Registration.id: (context) => Registration(),
           ListCollection.id: (context) => ListCollection(),
         });

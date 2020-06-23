@@ -4,6 +4,8 @@ import 'package:words_app/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/screens/create_box_collection_screen.dart';
 import 'package:words_app/modals/box_collection_data.dart';
+import 'package:words_app/screens/registration_screen.dart';
+import 'package:words_app/screens/login_screen.dart';
 
 const bool a = true;
 
@@ -15,7 +17,9 @@ class ListCollection extends StatefulWidget {
 }
 
 class _ListCollectionState extends State<ListCollection> {
-  List boxCollectionData = [CollectionData(collectionNameTitle: 'WWWW')];
+  List<CollectionData> boxCollectionData = [
+    CollectionData(collectionNameTitle: "Hellow World")
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +61,16 @@ class _ListCollectionState extends State<ListCollection> {
                               TextStyle(fontSize: 30.0, color: Colors.white)),
                     ),
                     FlatButton(
-                      onPressed: null,
-                      child: Text('Treining',
+                      onPressed: () =>
+                          Navigator.pushNamed(context, LoginScreen.id),
+                      child: Text('Loging',
+                          style:
+                              TextStyle(fontSize: 30.0, color: Colors.white)),
+                    ),
+                    FlatButton(
+                      onPressed: () =>
+                          Navigator.pushNamed(context, RegistrationScreen.id),
+                      child: Text('Registration',
                           style:
                               TextStyle(fontSize: 30.0, color: Colors.white)),
                     )
@@ -100,10 +112,3 @@ class _ListCollectionState extends State<ListCollection> {
     );
   }
 }
-
-// boxCollectionData[index];
-//
-
-// List<Widget> boxCollectionData = [
-//     BoxCollection(textTitle: 'Words dsadsa'),
-//     BoxCollection(textTitle: 'Second words dsadsadas'),

@@ -3,7 +3,7 @@ import 'package:words_app/components/reusable_button.dart';
 import 'package:words_app/constants.dart';
 import 'package:words_app/screens/registration_screen.dart';
 
-class FirstScreen extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
   static String id = 'first_screen';
 
   @override
