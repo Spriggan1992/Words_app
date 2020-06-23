@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        title: 'Word App',
         debugShowCheckedModeBanner: false,
         initialRoute: WelcomScreen.id,
         routes: {
