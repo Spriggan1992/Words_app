@@ -23,7 +23,7 @@ class TextFieldLogPass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Colors.red),
       onChanged: onChanged,
       focusNode: focusNode,
       onTap: onTap,
