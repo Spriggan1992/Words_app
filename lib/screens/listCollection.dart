@@ -40,7 +40,7 @@ class _ListCollectionState extends State<ListCollection> {
       bottomNavigationBar: BottomAppBar(
         child: Container(
           height: 120.0,
-          color: Color(0xFF262d31),
+          color: Color(0xFF498ba6),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

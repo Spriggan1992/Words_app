@@ -41,7 +41,7 @@ class _BoxCollectionState extends State<BoxCollection> {
                     topLeft: Radius.circular(10.0),
                     topRight: Radius.circular(10.0),
                   ),
-                  color: Color(0xFF262d31),
+                  color: Color(0xFF498ba6),
                 ),
                 child: FittedBox(
                   child: Padding(

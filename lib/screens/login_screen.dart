@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/components/reusable_login_registration_buttons.dart';
 import 'package:words_app/components/text_field_log_pass.dart';
+import 'package:words_app/screens/listCollection.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'first_screen';
@@ -49,6 +50,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   textLabel: 'Email',
                   isChecked: checkEmail,
+                  color1: Colors.white,
+                  color2: Colors.black,
+                  borderColor: Colors.white,
                 ),
               ),
               Flexible(
@@ -76,15 +80,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   textLabel: 'Password',
                   isChecked: checkPassword,
+                  color1: Colors.white,
+                  color2: Colors.black,
+                  borderColor: Colors.white,
                 ),
               ),
               SizedBox(height: 80.0),
               Flexible(
                 child: ReusableLogingRegestrationButtons(
-                    titleText: 'Loggin',
-                    titleColor: Color(0xFF498ba6),
-                    backgroundColor: Color(0xFFf0f3f8),
-                    onPressed: null),
+                  titleText: 'Login',
+                  titleColor: Color(0xFF498ba6),
+                  backgroundColor: Color(0xFFf0f3f8),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, ListCollection.id),
+                ),
               )
             ],
           ),
