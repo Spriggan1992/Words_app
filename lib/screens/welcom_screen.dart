@@ -5,7 +5,7 @@ import 'package:words_app/components/reusable_login_registration_buttons.dart';
 import 'package:words_app/constants.dart';
 
 class WelcomScreen extends StatelessWidget {
-  static String id = 'welcom_screen';
+  static String id = 'welcome_screen';
 
   @override
   Widget build(BuildContext context) {
