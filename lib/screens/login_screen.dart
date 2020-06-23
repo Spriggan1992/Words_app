@@ -1,58 +1,91 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/components/reusable_button.dart';
-import 'package:words_app/constants.dart';
-import 'package:words_app/screens/registration_screen.dart';
+import 'package:words_app/components/reusable_login_registration_buttons.dart';
+import 'package:words_app/components/text_field_log_pass.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static String id = 'first_screen';
 
   @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  FocusNode myFocusNodeEmail = FocusNode();
+  FocusNode myFocusNodePassword = FocusNode();
+  String emailValue;
+  String passwordValue;
+  bool checkEmail = false;
+  bool checkPassword = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: kLoginBackground,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 60.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return Container(
+      color: Color(0xFF498ba6),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 200.0),
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.transparent,
+          body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Flexible(
-                child: TextField(
-                  style: TextStyle(
-                    fontSize: 25.0,
-                  ),
-                  decoration: kInputTextLogPass.copyWith(hintText: 'Email'),
+                child: TextFieldLogPass(
+                  onChanged: (value) {
+                    setState(() {
+                      emailValue = value;
+                      if (emailValue.length > 0) {
+                        checkEmail = true;
+                      } else {
+                        checkEmail = false;
+                      }
+                    });
+                  },
+                  focusNode: myFocusNodeEmail,
+                  onTap: () {
+                    setState(() {
+                      myFocusNodeEmail.requestFocus();
+                    });
+                  },
+                  textLabel: 'Email',
+                  isChecked: checkEmail,
                 ),
-              ),
-              SizedBox(
-                height: 40.0,
               ),
               Flexible(
-                child: TextField(
-                  style: TextStyle(
-                    fontSize: 25.0,
-                  ),
-                  decoration: kInputTextLogPass.copyWith(hintText: 'Password'),
+                child: SizedBox(
+                  height: 20.0,
                 ),
               ),
-              SizedBox(height: 20.0),
-              ReusableButton(
-                titleText: 'Login',
-                color1: Colors.purple,
-                color2: Colors.blue,
+              Flexible(
+                child: TextFieldLogPass(
+                  onChanged: (value) {
+                    setState(() {
+                      passwordValue = value;
+                      if (passwordValue.length > 0) {
+                        checkPassword = true;
+                      } else {
+                        checkPassword = false;
+                      }
+                    });
+                  },
+                  focusNode: myFocusNodePassword,
+                  onTap: () {
+                    setState(() {
+                      myFocusNodePassword.requestFocus();
+                    });
+                  },
+                  textLabel: 'Password',
+                  isChecked: checkPassword,
+                ),
               ),
-              SizedBox(
-                height: 20.0,
-              ),
-              ReusableButton(
-                titleText: 'Registration',
-                color1: Colors.blue,
-                color2: Colors.pink[300],
-                onPress: () {
-                  Navigator.pushNamed(context, Registration.id);
-                },
-              ),
+              SizedBox(height: 80.0),
+              Flexible(
+                child: ReusableLogingRegestrationButtons(
+                    titleText: 'Loggin',
+                    titleColor: Color(0xFF498ba6),
+                    backgroundColor: Color(0xFFf0f3f8),
+                    onPressed: null),
+              )
             ],
           ),
         ),

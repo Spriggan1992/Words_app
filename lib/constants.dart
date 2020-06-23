@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 
 // Background for Login Screen
+
+const kBackgroundColor = BoxDecoration(
+  gradient: LinearGradient(
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+    stops: [0.5, 0.5],
+    colors: [Color(0xFF498ba6), Color(0xFFf0f3f8)],
+  ),
+);
+
 const kLoginBackground = BoxDecoration(
   gradient: LinearGradient(
     begin: Alignment.topLeft,
