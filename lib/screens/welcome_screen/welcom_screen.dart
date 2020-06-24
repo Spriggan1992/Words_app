@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/screens/login_screen.dart';
-import 'package:words_app/screens/registration_screen.dart';
-import 'package:words_app/components/reusable_login_registration_buttons.dart';
+import 'package:words_app/screens/loging_screen/login_screen.dart';
+import 'package:words_app/screens/registration_screen/registration_screen.dart';
+import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/constants.dart';
 
 class WelcomScreen extends StatelessWidget {

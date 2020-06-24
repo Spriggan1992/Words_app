@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:words_app/components/box_collection.dart';
 import 'package:words_app/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
-import 'package:words_app/screens/create_box_collection_screen.dart';
+import 'package:words_app/screens/create_box_collection_screen/create_box_collection_screen.dart';
 import 'package:words_app/modals/box_collection_data.dart';
-import 'package:words_app/screens/registration_screen.dart';
-import 'package:words_app/screens/login_screen.dart';
+import 'package:words_app/screens/registration_screen/registration_screen.dart';
+import 'package:words_app/screens/loging_screen/login_screen.dart';
 
 class ListCollection extends StatefulWidget {
   static String id = 'ListCollection';

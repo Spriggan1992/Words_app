@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/screens/login_screen.dart';
-import 'package:words_app/screens/registration_screen.dart';
-import 'package:words_app/screens/listCollection.dart';
-import 'package:words_app/screens/welcom_screen.dart';
+import 'package:words_app/screens/loging_screen/login_screen.dart';
+import 'package:words_app/screens/registration_screen/registration_screen.dart';
+import 'package:words_app/screens/list_collection_screen/listCollection.dart';
+import 'package:words_app/screens/welcome_screen/welcom_screen.dart';
 
 void main() {
   runApp(MyApp());
