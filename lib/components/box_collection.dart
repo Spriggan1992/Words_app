@@ -47,32 +47,31 @@ class _BoxCollectionState extends State<BoxCollection> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              widget.isChecked
-                  ? Container(
-                      alignment: Alignment.center,
-                      height: 40.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10.0),
-                          topRight: Radius.circular(10.0),
-                        ),
-                        color: Color(0xFF498ba6),
-                      ),
-                      child: FittedBox(
+              Container(
+                alignment: Alignment.center,
+                height: 40.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0),
+                  ),
+                  color: Color(0xFF498ba6),
+                ),
+                child: widget.isChecked
+                    ? FittedBox(
                         child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              widget.textTitle,
-                              style: TextStyle(
-                                  fontSize: 25.0, color: Colors.white),
-                            )),
-                      ),
-                    )
-                  : Container(
-                      child: TextField(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            widget.textTitle,
+                            style:
+                                TextStyle(fontSize: 25.0, color: Colors.white),
+                          ),
+                        ),
+                      )
+                    : TextField(
                         decoration: InputDecoration(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 20)),
+                            contentPadding: EdgeInsets.only(
+                                top: 0, left: 20.0, bottom: 8.0, right: 20.0)),
                         cursorColor: Colors.white,
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -85,18 +84,37 @@ class _BoxCollectionState extends State<BoxCollection> {
                           text: widget.textTitle,
                         ),
                       ),
-                      height: 40.0,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF498ba6),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10.0),
-                          topRight: Radius.circular(10.0),
-                        ),
-                      ),
-                    )
+              )
             ],
           )),
     );
   }
 }
+
+// Container(
+//                       child: TextField(
+//                         decoration: InputDecoration(
+//                             contentPadding:
+//                                 EdgeInsets.symmetric(horizontal: 20)),
+//                         cursorColor: Colors.white,
+//                         textAlign: TextAlign.center,
+//                         style: TextStyle(
+//                           color: Colors.white,
+//                           fontSize: 25.0,
+//                         ),
+//                         autofocus: true,
+//                         onSubmitted: widget.onSubmite,
+//                         controller: TextEditingController(
+//                           text: widget.textTitle,
+//                         ),
+//                       ),
+//                       height: 40.0,
+//                       alignment: Alignment.center,
+//                       decoration: BoxDecoration(
+//                         color: Color(0xFF498ba6),
+//                         borderRadius: BorderRadius.only(
+//                           topLeft: Radius.circular(10.0),
+//                           topRight: Radius.circular(10.0),
+//                         ),
+//                       ),
+//                     )
