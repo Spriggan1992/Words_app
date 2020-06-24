@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/components/text_field_log_pass.dart';
 import 'package:words_app/screens/list_collection_screen/listCollection.dart';
+import 'package:words_app/constnts/constants.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'first_screen';
@@ -89,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Flexible(
                 child: ReusableLogingRegestrationButtons(
                   titleText: 'Login',
-                  titleColor: Color(0xFF498ba6),
+                  titleColor: kMainColorBlue,
                   backgroundColor: Color(0xFFf0f3f8),
                   onPressed: () =>
                       Navigator.pushNamed(context, ListCollection.id),

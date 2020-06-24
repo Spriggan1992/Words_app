@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/components/box_collection.dart';
-import 'package:words_app/constants.dart';
+import 'package:words_app/constnts/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/screens/create_box_collection_screen/create_box_collection_screen.dart';
 import 'package:words_app/modals/box_collection_data.dart';
@@ -38,7 +38,7 @@ class _ListCollectionState extends State<ListCollection> {
       bottomNavigationBar: BottomAppBar(
         child: Container(
           height: 120.0,
-          color: Color(0xFF498ba6),
+          color: kMainColorBlue,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
