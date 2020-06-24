@@ -7,8 +7,6 @@ import 'package:words_app/modals/box_collection_data.dart';
 import 'package:words_app/screens/registration_screen.dart';
 import 'package:words_app/screens/login_screen.dart';
 
-const bool a = true;
-
 class ListCollection extends StatefulWidget {
   static String id = 'ListCollection';
 
@@ -18,7 +16,7 @@ class ListCollection extends StatefulWidget {
 
 class _ListCollectionState extends State<ListCollection> {
   List<CollectionData> boxCollectionData = [
-    CollectionData(collectionNameTitle: "Hellow World")
+    // CollectionData(collectionNameTitle: "Hellow World")
   ];
 
   @override
@@ -91,13 +89,24 @@ class _ListCollectionState extends State<ListCollection> {
               SliverGrid(
                 delegate: SliverChildBuilderDelegate((context, index) {
                   return BoxCollection(
-                    textTitle: boxCollectionData[index].collectionNameTitle,
-                    deleteColection: () {
-                      setState(() {
-                        boxCollectionData.remove(boxCollectionData[index]);
+                      textTitle: boxCollectionData[index].collectionNameTitle,
+                      isChecked: boxCollectionData[index].isChecked,
+                      deleteColection: () {
+                        setState(() {
+                          boxCollectionData.remove(boxCollectionData[index]);
+                        });
+                      },
+                      onTap: () {
+                        setState(() {
+                          boxCollectionData[index].toggleIsChecked();
+                        });
+                      },
+                      onSubmite: (value) {
+                        setState(() {
+                          boxCollectionData[index].changeCollectionName(value);
+                          boxCollectionData[index].toggleIsChecked();
+                        });
                       });
-                    },
-                  );
                 }, childCount: boxCollectionData.length),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,

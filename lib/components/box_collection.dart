@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
 
 class BoxCollection extends StatefulWidget {
-  BoxCollection({this.textTitle, this.deleteColection});
+  BoxCollection({
+    this.textTitle,
+    this.deleteColection,
+    this.onTap,
+    this.isChecked,
+    this.onSubmite,
+    this.onChanged,
+  });
 
   final String textTitle;
   final Function deleteColection;
+  final Function onTap;
+  final bool isChecked;
+  final Function onSubmite;
+  final Function onChanged;
 
   @override
   _BoxCollectionState createState() => _BoxCollectionState();
 }
 
 class _BoxCollectionState extends State<BoxCollection> {
+  TextEditingController editingController;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: widget.onTap,
       onLongPress: widget.deleteColection,
       child: Container(
           width: 10.0,
@@ -33,26 +47,54 @@ class _BoxCollectionState extends State<BoxCollection> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Container(
-                alignment: Alignment.center,
-                height: 40.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    topRight: Radius.circular(10.0),
-                  ),
-                  color: Color(0xFF498ba6),
-                ),
-                child: FittedBox(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      widget.textTitle,
-                      style: TextStyle(fontSize: 25.0, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
+              widget.isChecked
+                  ? Container(
+                      alignment: Alignment.center,
+                      height: 40.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.0),
+                          topRight: Radius.circular(10.0),
+                        ),
+                        color: Color(0xFF498ba6),
+                      ),
+                      child: FittedBox(
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              widget.textTitle,
+                              style: TextStyle(
+                                  fontSize: 25.0, color: Colors.white),
+                            )),
+                      ),
+                    )
+                  : Container(
+                      child: TextField(
+                        decoration: InputDecoration(
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 20)),
+                        cursorColor: Colors.white,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25.0,
+                        ),
+                        autofocus: true,
+                        onSubmitted: widget.onSubmite,
+                        controller: TextEditingController(
+                          text: widget.textTitle,
+                        ),
+                      ),
+                      height: 40.0,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF498ba6),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.0),
+                          topRight: Radius.circular(10.0),
+                        ),
+                      ),
+                    )
             ],
           )),
     );

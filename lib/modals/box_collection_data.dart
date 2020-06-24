@@ -1,5 +1,14 @@
 class CollectionData {
-  CollectionData({this.collectionNameTitle});
+  CollectionData({this.collectionNameTitle, isChecked});
 
-  final String collectionNameTitle;
+  String collectionNameTitle;
+  bool isChecked = true;
+
+  void toggleIsChecked() {
+    isChecked = !isChecked;
+  }
+
+  void changeCollectionName(String newName) {
+    collectionNameTitle = newName;
+  }
 }
