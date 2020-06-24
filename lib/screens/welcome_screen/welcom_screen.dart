@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:words_app/screens/loging_screen/login_screen.dart';
 import 'package:words_app/screens/registration_screen/registration_screen.dart';
 import 'package:words_app/components/reusable_main_button.dart';
-import 'package:words_app/constants.dart';
+import 'package:words_app/constnts/constants.dart';
 
 class WelcomScreen extends StatelessWidget {
   static String id = 'welcome_screen';
