@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 class ReusableLogingRegestrationButtons extends StatelessWidget {
   const ReusableLogingRegestrationButtons(
-      {this.titleText, this.titleColor, this.backgroundColor, this.onPressed});
+      {@required this.titleText,
+      @required this.titleColor,
+      @required this.backgroundColor,
+      @required this.onPressed});
 
   final String titleText;
   final Color titleColor;

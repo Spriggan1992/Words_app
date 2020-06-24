@@ -90,31 +90,3 @@ class _BoxCollectionState extends State<BoxCollection> {
     );
   }
 }
-
-// Container(
-//                       child: TextField(
-//                         decoration: InputDecoration(
-//                             contentPadding:
-//                                 EdgeInsets.symmetric(horizontal: 20)),
-//                         cursorColor: Colors.white,
-//                         textAlign: TextAlign.center,
-//                         style: TextStyle(
-//                           color: Colors.white,
-//                           fontSize: 25.0,
-//                         ),
-//                         autofocus: true,
-//                         onSubmitted: widget.onSubmite,
-//                         controller: TextEditingController(
-//                           text: widget.textTitle,
-//                         ),
-//                       ),
-//                       height: 40.0,
-//                       alignment: Alignment.center,
-//                       decoration: BoxDecoration(
-//                         color: Color(0xFF498ba6),
-//                         borderRadius: BorderRadius.only(
-//                           topLeft: Radius.circular(10.0),
-//                           topRight: Radius.circular(10.0),
-//                         ),
-//                       ),
-//                     )
