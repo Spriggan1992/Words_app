@@ -3,7 +3,7 @@ import 'package:words_app/screens/loging_screen/login_screen.dart';
 import 'package:words_app/screens/registration_screen/registration_screen.dart';
 import 'package:words_app/screens/list_collection_screen/listCollection.dart';
 import 'package:words_app/screens/welcome_screen/welcom_screen.dart';
-import 'screens/collections_manager/collections_manager.dart';
+import 'screens/manager_collection/manager_collection.dart';
 
 void main() {
   runApp(MyApp());
