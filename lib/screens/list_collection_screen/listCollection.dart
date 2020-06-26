@@ -83,7 +83,7 @@ class _ListCollectionState extends State<ListCollection> {
       body: SafeArea(
         child: Container(
           decoration: kListCollectionBackground,
-          padding: EdgeInsets.all(20.0),
+          padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 40.0),
           child: CustomScrollView(
             slivers: <Widget>[
               SliverGrid(
@@ -109,9 +109,10 @@ class _ListCollectionState extends State<ListCollection> {
                       });
                 }, childCount: boxCollectionData.length),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 2.5,
                   crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 20,
+                  crossAxisSpacing: 15,
                 ),
               ),
             ],
