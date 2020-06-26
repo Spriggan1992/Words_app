@@ -3,10 +3,12 @@ import 'package:words_app/screens/loging_screen/login_screen.dart';
 import 'package:words_app/screens/registration_screen/registration_screen.dart';
 import 'package:words_app/screens/list_collection_screen/listCollection.dart';
 import 'package:words_app/screens/welcome_screen/welcom_screen.dart';
+import 'package:hive/hive.dart';
 
-void main() {
-  runApp(MyApp());
-}
+// void main() {
+//   Hive.init();
+//   runApp(MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   @override
