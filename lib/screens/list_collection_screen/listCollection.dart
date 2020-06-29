@@ -16,8 +16,27 @@ class ListCollection extends StatefulWidget {
 
 class _ListCollectionState extends State<ListCollection> {
   List<CollectionData> boxCollectionData = [
-    // CollectionData(collectionNameTitle: "Hellow World")
+    CollectionData(collectionNameTitle: "Hellow World")
   ];
+
+  void showPopupMenu() async {
+    await showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(100, 100, 100, 100),
+      items: [
+        PopupMenuItem(
+          child: Text("View"),
+        ),
+        PopupMenuItem(
+          child: Text("Edit"),
+        ),
+        PopupMenuItem(
+          child: Text("Delete"),
+        ),
+      ],
+      elevation: 8.0,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +56,7 @@ class _ListCollectionState extends State<ListCollection> {
       //Footer
       bottomNavigationBar: BottomAppBar(
         child: Container(
-          height: 120.0,
+          height: 60.0,
           color: kMainColorBlue,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,21 +109,34 @@ class _ListCollectionState extends State<ListCollection> {
                 delegate: SliverChildBuilderDelegate((context, index) {
                   return BoxCollection(
                       textTitle: boxCollectionData[index].collectionNameTitle,
-                      isChecked: boxCollectionData[index].isChecked,
-                      deleteColection: () {
+                      isCheckedTextEdit: boxCollectionData[index].checkTextEdit,
+                      isCheckedOptionsMenu:
+                          boxCollectionData[index].checkDropMenu,
+                      chooseOptions: () {
+                        setState(() {
+                          boxCollectionData[index].toggleCheckDropMenu();
+                        });
+                      },
+                      editText: () {
+                        setState(() {
+                          boxCollectionData[index].toggleCheckTextEdit();
+                          boxCollectionData[index].toggleCheckDropMenu();
+                        });
+                      },
+                      deleteCollection: () {
                         setState(() {
                           boxCollectionData.remove(boxCollectionData[index]);
                         });
                       },
                       onTap: () {
-                        setState(() {
-                          boxCollectionData[index].toggleIsChecked();
-                        });
+                        // setState(() {
+                        //   boxCollectionData[index].toggleCheckTextEdit();
+                        // });
                       },
                       onSubmite: (value) {
                         setState(() {
                           boxCollectionData[index].changeCollectionName(value);
-                          boxCollectionData[index].toggleIsChecked();
+                          boxCollectionData[index].toggleCheckTextEdit();
                         });
                       });
                 }, childCount: boxCollectionData.length),
@@ -122,3 +154,113 @@ class _ListCollectionState extends State<ListCollection> {
     );
   }
 }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       floatingActionButton: ReusableFloatActionButton(onPressed: () {
+//         showModalBottomSheet(
+//             context: context,
+//             builder: (context) => CreateBoxCollections((textTitleCollection) {
+//                   setState(() {
+//                     boxCollectionData.add(CollectionData(
+//                         collectionNameTitle: textTitleCollection));
+//                     Navigator.pop(context);
+//                   });
+//                 }));
+//       }),
+
+//       //Footer
+//       bottomNavigationBar: BottomAppBar(
+//         child: Container(
+//           height: 60.0,
+//           color: kMainColorBlue,
+//           child: Row(
+//             crossAxisAlignment: CrossAxisAlignment.center,
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: <Widget>[
+//               Container(
+//                 color: Colors.grey[800].withOpacity(0.1),
+//                 alignment: Alignment.center,
+//                 height: 50.0,
+//                 width: 200.0,
+//                 child: ListView(
+//                   itemExtent: 200,
+//                   scrollDirection: Axis.horizontal,
+//                   children: <Widget>[
+//                     FlatButton(
+//                       onPressed: null,
+//                       child: Text('Treining',
+//                           style:
+//                               TextStyle(fontSize: 30.0, color: Colors.white)),
+//                     ),
+//                     FlatButton(
+//                       onPressed: () =>
+//                           Navigator.pushNamed(context, LoginScreen.id),
+//                       child: Text('Loging',
+//                           style:
+//                               TextStyle(fontSize: 30.0, color: Colors.white)),
+//                     ),
+//                     FlatButton(
+//                       onPressed: () =>
+//                           Navigator.pushNamed(context, RegistrationScreen.id),
+//                       child: Text('Registration',
+//                           style:
+//                               TextStyle(fontSize: 30.0, color: Colors.white)),
+//                     )
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+//       body: SafeArea(
+//         child: Container(
+//           decoration: kListCollectionBackground,
+//           padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 40.0),
+//           child: CustomScrollView(
+//             slivers: <Widget>[
+//               SliverGrid(
+//                 delegate: SliverChildBuilderDelegate((context, index) {
+//                   return BoxCollection(
+//                       textTitle: boxCollectionData[index].collectionNameTitle,
+//                       isChecked: boxCollectionData[index].isChecked,
+//                       deleteColection: () {
+//                         setState(() {
+//                           boxCollectionData.remove(boxCollectionData[index]);
+//                         });
+//                       },
+//                       onTap: () {
+//                         setState(() {
+//                           boxCollectionData[index].toggleIsChecked();
+//                         });
+//                       },
+//                       onSubmite: (value) {
+//                         setState(() {
+//                           boxCollectionData[index].changeCollectionName(value);
+//                           boxCollectionData[index].toggleIsChecked();
+//                         });
+//                       });
+//                 }, childCount: boxCollectionData.length),
+//                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//                   childAspectRatio: 2.5,
+//                   crossAxisCount: 2,
+//                   mainAxisSpacing: 20,
+//                   crossAxisSpacing: 15,
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+//  deleteColection: () {
+//                         setState(() {
+//                           boxCollectionData.remove(boxCollectionData[index]);
+//                         });
+//                       },

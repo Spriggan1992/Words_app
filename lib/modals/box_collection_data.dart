@@ -2,13 +2,22 @@ class CollectionData {
   CollectionData({this.collectionNameTitle, isChecked});
 
   String collectionNameTitle;
-  bool isChecked = true;
+  bool checkTextEdit = true;
+  bool checkDropMenu = false;
 
-  void toggleIsChecked() {
-    isChecked = !isChecked;
+  void toggleCheckTextEdit() {
+    checkTextEdit = !checkTextEdit;
+  }
+
+  void toggleCheckDropMenu() {
+    checkDropMenu = !checkDropMenu;
   }
 
   void changeCollectionName(String newName) {
     collectionNameTitle = newName;
   }
+
+  // void dropMenu (){
+  //   return
+  // }
 }
