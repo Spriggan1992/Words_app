@@ -63,13 +63,11 @@ class _ListCollectionState extends State<ListCollection> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                color: Colors.grey[800].withOpacity(0.1),
+                // color: Colors.grey[800].withOpacity(0.1),
                 alignment: Alignment.center,
                 height: 50.0,
                 width: 200.0,
-                child: ListView(
-                  itemExtent: 200,
-                  scrollDirection: Axis.horizontal,
+                child: PageView(
                   children: <Widget>[
                     FlatButton(
                       onPressed: null,
