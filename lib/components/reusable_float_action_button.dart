@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:words_app/constnts/constants.dart';
 
 class ReusableFloatActionButton extends StatelessWidget {
   ReusableFloatActionButton({this.onPressed});
@@ -8,10 +9,10 @@ class ReusableFloatActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: onPressed,
-      backgroundColor: Colors.white,
+      backgroundColor: kMainColorBlue,
       child: Icon(
         Icons.add,
-        color: Color(0xFF262d31),
+        color: Colors.white,
       ),
     );
   }
