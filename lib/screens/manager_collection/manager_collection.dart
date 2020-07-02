@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:words_app/constnts/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
@@ -80,106 +81,111 @@ class CollectionManager extends StatelessWidget {
         child: ListView.builder(
           itemCount: temporaryData.length,
           itemBuilder: (context, index) {
-            final item = temporaryData[index];
-            return Dismissible(
-              direction: DismissDirection.endToStart,
-              // confirmDismiss: (bool confirm) {},
-              onDismissed: (direction) {},
-              background: Container(
-                color: Color(0xFFF8b6b6),
-              ),
-              key: Key(item),
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 20.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            color: Color(0xFF878686),
-                            blurRadius: 3.0,
-                            spreadRadius: 1.0,
-                            offset: Offset(1, 0.5))
-                      ],
-                      color: Colors.white,
-                      // color: Colors.grey[200],
-                      // border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Container(
-                                  width: 90.0,
-                                  child: FittedBox(
-                                    child: Text('Words',
-                                        style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: Color(0xFFF8b6b6))),
-                                  ),
-                                ),
-                                isCheckedSecondWord
-                                    ? Container(child: Text('Second Word'))
-                                    : Container(),
-                                Container(
-                                  child: FittedBox(
-                                      alignment: Alignment.center,
-                                      child: Text('50%',
-                                          style: TextStyle(
-                                              fontSize: 3.0,
-                                              color: Colors.red
-                                                  .withOpacity(0.5)))),
-                                  width: 30,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(50)),
-                                      gradient: LinearGradient(
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                        stops: [0.5, 0.5],
-                                        colors: [
-                                          Colors.green,
-                                          Color(0xFFf0f3f8)
-                                        ],
-                                      )),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                child: Text('Translation',
-                                    style: TextStyle(
-                                        fontSize: 15.0,
-                                        color: Color(0xFFc9c97e))),
-                              ),
-                              Checkbox(
-                                visualDensity:
-                                    VisualDensity(horizontal: -4, vertical: -4),
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                value: false,
-                                onChanged: null,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  )),
+            // final item = temporaryData[index];
+            return AnimatedSwitcher(
+              duration: Duration(milliseconds: 1000),
+              child: WordCard(isCheckedSecondWord: isCheckedSecondWord),
             );
           },
         ),
       ),
+    );
+  }
+}
+
+class WordCard extends StatelessWidget {
+  const WordCard(
+      {this.isCheckedSecondWord,
+      this.isCheckedFaceOrOption,
+      this.toggleFaceAndMenu});
+
+  final bool isCheckedSecondWord;
+  final bool isCheckedFaceOrOption;
+  final Function toggleFaceAndMenu;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: toggleFaceAndMenu,
+      child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Color(0xFF878686),
+                    blurRadius: 3.0,
+                    spreadRadius: 1.0,
+                    offset: Offset(1, 0.5))
+              ],
+              color: Colors.white,
+              // color: Colors.grey[200],
+              // border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          width: 90.0,
+                          child: FittedBox(
+                            child: Text('Words',
+                                style: TextStyle(
+                                    fontSize: 20.0, color: Color(0xFFF8b6b6))),
+                          ),
+                        ),
+                        isCheckedSecondWord
+                            ? Container(child: Text('Second Word'))
+                            : Container(),
+                        Container(
+                          child: FittedBox(
+                              alignment: Alignment.center,
+                              child: Text('50%',
+                                  style: TextStyle(
+                                      fontSize: 3.0,
+                                      color: Colors.red.withOpacity(0.5)))),
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50)),
+                              gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                stops: [0.5, 0.5],
+                                colors: [Colors.green, Color(0xFFf0f3f8)],
+                              )),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text('Translation',
+                            style: TextStyle(
+                                fontSize: 15.0, color: Color(0xFFc9c97e))),
+                      ),
+                      Checkbox(
+                        visualDensity:
+                            VisualDensity(horizontal: -4, vertical: -4),
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        value: false,
+                        onChanged: null,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          )),
     );
   }
 }
