@@ -9,18 +9,13 @@ import 'package:words_app/screens/loging_screen/login_screen.dart';
 import 'package:words_app/models/provier_data.dart';
 import 'package:provider/provider.dart';
 
-class ListCollection extends StatefulWidget {
+class ListCollection extends StatelessWidget {
   static String id = 'ListCollection';
 
-  @override
-  _ListCollectionState createState() => _ListCollectionState();
-}
-
-class _ListCollectionState extends State<ListCollection> {
-  @override
   Widget build(BuildContext context) {
     return Consumer<ProviderData>(builder: (context, providerData, child) {
       return Scaffold(
+        backgroundColor: Color(0xFFade4ff),
         floatingActionButton: ReusableFloatActionButton(onPressed: () {
           showModalBottomSheet(
             context: context,
@@ -30,6 +25,10 @@ class _ListCollectionState extends State<ListCollection> {
 
         //Footer
         bottomNavigationBar: BottomAppBar(
+          // color: Color(0xFFade4ff),
+
+          shape: CircularNotchedRectangle(),
+          clipBehavior: Clip.antiAlias,
           child: Container(
             height: 60.0,
             color: kMainColorBlue,
@@ -100,10 +99,8 @@ class _ListCollectionState extends State<ListCollection> {
                           providerData.deleteCollection(
                               providerData.boxCollectionData[index]);
                         },
-                        onTap: () {
-                          // setState(() {
-                          //   boxCollectionData[index].toggleCheckTextEdit();
-                          // });
+                        goToManagerCollections: () {
+                          Navigator.pushNamed(context, CollectionManager.id);
                         },
                         onSubmite: (value) {
                           providerData.handleSubmitText(

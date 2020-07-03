@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
 
 enum DropItemItems { changeName, delete, changeColor }
 
@@ -6,7 +7,7 @@ class BoxCollection extends StatefulWidget {
   BoxCollection(
       {this.textTitle,
       this.chooseOptions,
-      this.onTap,
+      this.goToManagerCollections,
       this.isCheckedTextEdit,
       this.isCheckedOptionsMenu,
       this.onSubmite,
@@ -16,7 +17,7 @@ class BoxCollection extends StatefulWidget {
 
   final String textTitle;
   final Function chooseOptions;
-  final Function onTap;
+  final Function goToManagerCollections;
   final bool isCheckedTextEdit;
   final bool isCheckedOptionsMenu;
   final Function onSubmite;
@@ -70,7 +71,7 @@ class _BoxCollectionState extends State<BoxCollection>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        // onTap: widget.onTap,
+        onTap: widget.goToManagerCollections,
         onLongPress: widget.chooseOptions,
 
 // Here is check if Show Collection or OptionsMenu
