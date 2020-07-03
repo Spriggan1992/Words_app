@@ -4,6 +4,7 @@ import 'package:words_app/screens/registration_screen/registration_screen.dart';
 import 'package:words_app/screens/list_collection_screen/listCollection.dart';
 import 'package:words_app/screens/welcome_screen/welcom_screen.dart';
 import 'screens/manager_collection/manager_collection.dart';
+import 'package:words_app/screens/card_creater/card_creater.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
           RegistrationScreen.id: (context) => RegistrationScreen(),
           ListCollection.id: (context) => ListCollection(),
           CollectionManager.id: (context) => CollectionManager(),
+          CardCreater.id: (context) => CardCreater(),
         });
   }
 }

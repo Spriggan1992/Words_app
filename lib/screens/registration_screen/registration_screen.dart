@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/components/text_field_log_pass.dart';
+import 'package:words_app/screens/card_creater/card_creater.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static String id = 'registration';
@@ -87,10 +88,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               SizedBox(height: 80.0),
               Flexible(
                 child: ReusableLogingRegestrationButtons(
-                    titleText: 'Registration',
-                    titleColor: Color(0xFFf0f3f8),
-                    backgroundColor: Color(0xFF498ba6),
-                    onPressed: null),
+                  titleText: 'Registration',
+                  titleColor: Color(0xFFf0f3f8),
+                  backgroundColor: Color(0xFF498ba6),
+                  onPressed: () => Navigator.pushNamed(context, CardCreater.id),
+                ),
               )
             ],
           ),
