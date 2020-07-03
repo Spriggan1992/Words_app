@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/constnts/constants.dart';
 import 'package:words_app/components/reusable_main_button.dart';
+import 'package:words_app/models/provier_data.dart';
+import 'package:provider/provider.dart';
 
-class CreateBoxCollections extends StatefulWidget {
-  CreateBoxCollections(this.addCollectionCallBack);
-  final Function addCollectionCallBack;
-
-  @override
-  _CreateBoxCollectionsState createState() => _CreateBoxCollectionsState();
-}
-
-String textTitleCollection;
-
-class _CreateBoxCollectionsState extends State<CreateBoxCollections> {
+class CreateBoxCollections extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomPadding: true,
-      body: Container(
+    String textTitleCollection;
+    return Consumer<ProviderData>(builder: (context, providerData, child) {
+      return Scaffold(
+        resizeToAvoidBottomPadding: true,
+        body: Container(
           color: Colors.white,
           child: Padding(
             padding:
@@ -59,16 +53,17 @@ class _CreateBoxCollectionsState extends State<CreateBoxCollections> {
                       titleText: 'Add',
                       titleColor: Colors.white,
                       onPressed: () {
-                        setState(() {
-                          widget.addCollectionCallBack(textTitleCollection);
-                        });
+                        providerData.addNewCollection(textTitleCollection);
+                        Navigator.pop(context);
                       },
                     ),
                   ),
                 )
               ],
             ),
-          )),
-    );
+          ),
+        ),
+      );
+    });
   }
 }

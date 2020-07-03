@@ -3,14 +3,14 @@ class CollectionData {
 
   String collectionNameTitle;
   bool checkTextEdit = true;
-  bool checkDropMenu = false;
+  bool checkMenu = false;
 
   void toggleCheckTextEdit() {
     checkTextEdit = !checkTextEdit;
   }
 
-  void toggleCheckDropMenu() {
-    checkDropMenu = !checkDropMenu;
+  void toggleCheckMenu() {
+    checkMenu = !checkMenu;
   }
 
   void changeCollectionName(String newName) {
