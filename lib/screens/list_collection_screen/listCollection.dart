@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:words_app/components/box_collection.dart';
 import 'package:words_app/constnts/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
+import 'package:words_app/screens/manager_collection/manager_collection.dart';
 import 'package:words_app/screens/create_box_collection_screen/create_box_collection_screen.dart';
 import 'package:words_app/modals/box_collection_data.dart';
 import 'package:words_app/screens/registration_screen/registration_screen.dart';
@@ -70,7 +71,8 @@ class _ListCollectionState extends State<ListCollection> {
                 child: PageView(
                   children: <Widget>[
                     FlatButton(
-                      onPressed: null,
+                      onPressed: () =>
+                          Navigator.pushNamed(context, CollectionManager.id),
                       child: Text('Treining',
                           style:
                               TextStyle(fontSize: 30.0, color: Colors.white)),
