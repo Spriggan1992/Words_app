@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/components/box_collection.dart';
+import 'components/box_collection.dart';
+// import 'package:words_app/components/box_collection.dart';
 import 'package:words_app/constnts/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/screens/manager_collection/manager_collection.dart';
@@ -17,7 +18,9 @@ class ListCollection extends StatefulWidget {
 
 class _ListCollectionState extends State<ListCollection> {
   List<CollectionData> boxCollectionData = [
-    CollectionData(collectionNameTitle: "Hellow World")
+    CollectionData(collectionNameTitle: "Hellow World"),
+    CollectionData(collectionNameTitle: "DDDD"),
+    CollectionData(collectionNameTitle: "dfsfsd")
   ];
 
   void showPopupMenu() async {
