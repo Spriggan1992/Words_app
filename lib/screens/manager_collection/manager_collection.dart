@@ -2,111 +2,168 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:words_app/constnts/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
+import 'package:words_app/models/words_data.dart';
+import 'package:words_app/models/provier_data.dart';
+import 'package:provider/provider.dart';
 
-class CollectionManager extends StatelessWidget {
+class ManagerCollection extends StatefulWidget {
   static String id = 'collection_manager_screen';
 
   @override
+  _ManagerCollectionState createState() => _ManagerCollectionState();
+}
+
+class _ManagerCollectionState extends State<ManagerCollection> {
+  @override
   Widget build(BuildContext context) {
     bool isCheckedSecondWord = true;
-    List<String> temporaryData = [
-      'First',
-      'second',
-      'Third',
-      '212',
-      '231321',
-      'dsadsa',
-      '22222',
-      'dsadsa',
-      'fdsfds'
-    ];
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: kMainColorBlue,
-        automaticallyImplyLeading: false,
-        title: Text('Collection Name'),
-      ),
-      floatingActionButton: ReusableFloatActionButton(),
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        clipBehavior: Clip.antiAlias,
-        child: Container(
-          height: 60.0,
-          color: kMainColorBlue,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                color: Colors.grey[800].withOpacity(0.1),
-                alignment: Alignment.center,
-                height: 50.0,
-                width: 200.0,
-                child: ListView(
-                  itemExtent: 200,
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    FlatButton(
-                      onPressed: null,
-                      // Navigator.pushNamed(context, CollectionManager.id),
-                      child: Text('Treining',
-                          style:
-                              TextStyle(fontSize: 30.0, color: Colors.white)),
-                    ),
-                    FlatButton(
-                      onPressed: null,
-                      // Navigator.pushNamed(context, LoginScreen.id),
-                      child: Text('Loging',
-                          style:
-                              TextStyle(fontSize: 30.0, color: Colors.white)),
-                    ),
-                    FlatButton(
-                      onPressed: null,
-                      // Navigator.pushNamed(context, RegistrationScreen.id),
-                      child: Text('Registration',
-                          style:
-                              TextStyle(fontSize: 30.0, color: Colors.white)),
-                    )
-                  ],
+
+    return Consumer<ProviderData>(builder: (context, providerData, child) {
+      return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: kMainColorBlue,
+          automaticallyImplyLeading: false,
+          title: Text('Collection Name'),
+        ),
+        floatingActionButton: ReusableFloatActionButton(),
+        bottomNavigationBar: BottomAppBar(
+          shape: CircularNotchedRectangle(),
+          clipBehavior: Clip.antiAlias,
+          child: Container(
+            height: 60.0,
+            color: kMainColorBlue,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  color: Colors.grey[800].withOpacity(0.1),
+                  alignment: Alignment.center,
+                  height: 50.0,
+                  width: 200.0,
+                  child: ListView(
+                    itemExtent: 200,
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: null,
+                        // Navigator.pushNamed(context, CollectionManager.id),
+                        child: Text('Treining',
+                            style:
+                                TextStyle(fontSize: 30.0, color: Colors.white)),
+                      ),
+                      FlatButton(
+                        onPressed: null,
+                        // Navigator.pushNamed(context, LoginScreen.id),
+                        child: Text('Loging',
+                            style:
+                                TextStyle(fontSize: 30.0, color: Colors.white)),
+                      ),
+                      FlatButton(
+                        onPressed: null,
+                        // Navigator.pushNamed(context, RegistrationScreen.id),
+                        child: Text('Registration',
+                            style:
+                                TextStyle(fontSize: 30.0, color: Colors.white)),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      body: Container(
-        padding: EdgeInsets.only(top: 20.0),
-        child: ListView.builder(
-          itemCount: temporaryData.length,
-          itemBuilder: (context, index) {
-            // final item = temporaryData[index];
-            return AnimatedSwitcher(
-              duration: Duration(milliseconds: 1000),
-              child: WordCard(isCheckedSecondWord: isCheckedSecondWord),
-            );
-          },
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        body: Container(
+          padding: EdgeInsets.only(top: 20.0),
+          child: ListView.builder(
+            itemCount: providerData.wordsData.length,
+            itemBuilder: (context, index) {
+              final item = providerData.wordsData[index].mainWordTitle;
+              final secondWordId =
+                  providerData.wordsData[index].secondWordTitle;
+
+              // final item = temporaryData[index];
+              return Dismissible(
+                background: Container(
+                  alignment: Alignment.centerRight,
+                  color: Color(0xFFF8b6b6),
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 20),
+                    child: Icon(Icons.delete),
+                  ),
+                ),
+                key: Key(item),
+                direction: DismissDirection.endToStart,
+                child: WordCard(
+                  //Main word
+
+                  titleMainWords: providerData.wordsData[index].mainWordTitle,
+                  isCheckedTitleMainWords:
+                      providerData.wordsData[index].checkMainWordTitle,
+                  submitMainWord: (value) {
+                    providerData.handleSubmitTextWords(
+                        value, providerData.wordsData[index]);
+                  },
+                  toggleMainWord: () {
+                    providerData
+                        .editWordMainText(providerData.wordsData[index]);
+                  },
+
+                  //Second word
+                  isCheckedSecondWord: isCheckedSecondWord,
+                  secondWordTitle:
+                      providerData.wordsData[index].secondWordTitle,
+                ),
+              );
+            },
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
-class WordCard extends StatelessWidget {
-  const WordCard(
-      {this.isCheckedSecondWord,
-      this.isCheckedFaceOrOption,
-      this.toggleFaceAndMenu});
+class WordCard extends StatefulWidget {
+  const WordCard({
+    this.isCheckedSecondWord,
+    this.toggleMainWord,
+    this.titleMainWords,
+    this.submitMainWord,
+    this.isCheckedTitleMainWords,
+    this.secondWordTitle,
+  });
 
   final bool isCheckedSecondWord;
-  final bool isCheckedFaceOrOption;
-  final Function toggleFaceAndMenu;
+  final String titleMainWords;
+  final bool isCheckedTitleMainWords;
+  final Function submitMainWord;
+  final Function toggleMainWord;
+  //secondWordTitle
+  final String secondWordTitle;
+  @override
+  _WordCardState createState() => _WordCardState();
+}
+
+class _WordCardState extends State<WordCard> {
+  var myController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    myController = TextEditingController(text: widget.titleMainWords);
+  }
+
+  @override
+  void dispose() {
+    myController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: toggleFaceAndMenu,
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
           child: Container(
@@ -119,8 +176,6 @@ class WordCard extends StatelessWidget {
                     offset: Offset(1, 0.5))
               ],
               color: Colors.white,
-              // color: Colors.grey[200],
-              // border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             child: Padding(
@@ -132,16 +187,45 @@ class WordCard extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Container(
-                          width: 90.0,
-                          child: FittedBox(
-                            child: Text('Words',
-                                style: TextStyle(
-                                    fontSize: 20.0, color: Color(0xFFF8b6b6))),
-                          ),
+                        GestureDetector(
+                          onTap: widget.toggleMainWord,
+                          child: !widget.isCheckedTitleMainWords
+                              ? SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: TextField(
+                                    autofocus: true,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                    ),
+                                    // enableSuggestions: true,
+                                    onSubmitted: widget.submitMainWord,
+                                    controller: TextEditingController(
+                                        text: widget.titleMainWords),
+                                    style: TextStyle(
+                                      fontSize: 25.0,
+                                      color: Color(0xFFF8b6b6),
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(
+                                  height: 30,
+                                  width: 100,
+                                  child: FittedBox(
+                                    alignment: Alignment.centerLeft,
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      widget.titleMainWords,
+                                      style: TextStyle(
+                                        fontSize: 25.0,
+                                        color: Color(0xFFF8b6b6),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                         ),
-                        isCheckedSecondWord
-                            ? Container(child: Text('Second Word'))
+                        widget.isCheckedSecondWord
+                            ? Container(child: Text(widget.secondWordTitle))
                             : Container(),
                         Container(
                           child: FittedBox(

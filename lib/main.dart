@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             LoginScreen.id: (context) => LoginScreen(),
             RegistrationScreen.id: (context) => RegistrationScreen(),
             ListCollection.id: (context) => ListCollection(),
-            CollectionManager.id: (context) => CollectionManager(),
+            ManagerCollection.id: (context) => ManagerCollection(),
             CardCreater.id: (context) => CardCreater(),
           }),
     );

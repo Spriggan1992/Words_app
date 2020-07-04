@@ -25,8 +25,6 @@ class ListCollection extends StatelessWidget {
 
         //Footer
         bottomNavigationBar: BottomAppBar(
-          // color: Color(0xFFade4ff),
-
           shape: CircularNotchedRectangle(),
           clipBehavior: Clip.antiAlias,
           child: Container(
@@ -45,7 +43,7 @@ class ListCollection extends StatelessWidget {
                     children: <Widget>[
                       FlatButton(
                         onPressed: () =>
-                            Navigator.pushNamed(context, CollectionManager.id),
+                            Navigator.pushNamed(context, ManagerCollection.id),
                         child: Text('Treining',
                             style:
                                 TextStyle(fontSize: 30.0, color: Colors.white)),
@@ -100,10 +98,10 @@ class ListCollection extends StatelessWidget {
                               providerData.boxCollectionData[index]);
                         },
                         goToManagerCollections: () {
-                          Navigator.pushNamed(context, CollectionManager.id);
+                          Navigator.pushNamed(context, ManagerCollection.id);
                         },
                         onSubmite: (value) {
-                          providerData.handleSubmitText(
+                          providerData.handleSubmitTextCollections(
                               value, providerData.boxCollectionData[index]);
                         });
                   }, childCount: providerData.boxCollectionData.length),

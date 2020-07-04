@@ -31,7 +31,6 @@ class BoxCollection extends StatefulWidget {
 
 class _BoxCollectionState extends State<BoxCollection>
     with TickerProviderStateMixin {
-  TextEditingController editingController;
   AnimationController controller;
   Animation<Offset> offsetAnimation;
   Animation colorAnimation;

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/models/box_collection_data.dart';
+import 'package:words_app/models/words_data.dart';
 import 'dart:collection';
 
 class ProviderData extends ChangeNotifier {
+  //listCollections
   List<CollectionData> _boxCollectionData = [
     CollectionData(collectionNameTitle: "Hellow World"),
     CollectionData(collectionNameTitle: "DDDD"),
@@ -35,9 +37,28 @@ class ProviderData extends ChangeNotifier {
     notifyListeners();
   }
 
-  void handleSubmitText(dynamic value, CollectionData collection) {
+  void handleSubmitTextCollections(dynamic value, CollectionData collection) {
     collection.changeCollectionName(value);
     collection.toggleCheckTextEdit();
+    notifyListeners();
+  }
+
+  // ManagerCollection
+  List<WordsData> wordsData = [
+    WordsData(mainWordTitle: 'Words1'),
+    WordsData(mainWordTitle: 'Words2'),
+    WordsData(mainWordTitle: 'Words3')
+  ];
+
+  void editWordMainText(WordsData words) {
+    words.toggleWordsCheckTextEdit();
+
+    notifyListeners();
+  }
+
+  void handleSubmitTextWords(dynamic value, WordsData words) {
+    words.changeWordsTitleName(value);
+    words.toggleWordsCheckTextEdit();
     notifyListeners();
   }
 }

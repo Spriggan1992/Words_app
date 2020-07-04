@@ -1,5 +1,5 @@
 class CollectionData {
-  CollectionData({this.collectionNameTitle, isChecked});
+  CollectionData({this.collectionNameTitle, checkTextEdit});
 
   String collectionNameTitle;
   bool checkTextEdit = true;
@@ -16,8 +16,4 @@ class CollectionData {
   void changeCollectionName(String newName) {
     collectionNameTitle = newName;
   }
-
-  // void dropMenu (){
-  //   return
-  // }
 }
