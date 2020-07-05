@@ -212,6 +212,7 @@ class _WordCardState extends State<WordCard> {
                               ? ReusableTextFieldContainer(
                                   height: 50,
                                   width: 100,
+                                  title: widget.titleMainWords,
                                   handleSubmit: widget.submitMainWord,
                                   fontSize: 25.0,
                                   color: Color(0xFFF8b6b6),
