@@ -6,6 +6,7 @@ import 'package:words_app/models/provier_data.dart';
 import 'package:provider/provider.dart';
 import 'components/reusable_text_container.dart';
 import 'components/reusable_text_field_container.dart';
+import 'package:words_app/screens/card_creater/card_creater.dart';
 
 class ManagerCollection extends StatefulWidget {
   static String id = 'collection_manager_screen';
@@ -27,7 +28,8 @@ class _ManagerCollectionState extends State<ManagerCollection> {
           automaticallyImplyLeading: false,
           title: Text('Collection Name'),
         ),
-        floatingActionButton: ReusableFloatActionButton(),
+        floatingActionButton: ReusableFloatActionButton(
+            onPressed: () => Navigator.pushNamed(context, CardCreater.id)),
         bottomNavigationBar: BottomAppBar(
           shape: CircularNotchedRectangle(),
           clipBehavior: Clip.antiAlias,
