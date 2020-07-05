@@ -2,9 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:words_app/constnts/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
-import 'package:words_app/models/words_data.dart';
 import 'package:words_app/models/provier_data.dart';
 import 'package:provider/provider.dart';
+import 'components/reusable_text_container.dart';
+import 'components/reusable_text_field_container.dart';
 
 class ManagerCollection extends StatefulWidget {
   static String id = 'collection_manager_screen';
@@ -16,7 +17,7 @@ class ManagerCollection extends StatefulWidget {
 class _ManagerCollectionState extends State<ManagerCollection> {
   @override
   Widget build(BuildContext context) {
-    bool isCheckedSecondWord = true;
+    // bool isCheckedSecondWord = true;
 
     return Consumer<ProviderData>(builder: (context, providerData, child) {
       return Scaffold(
@@ -34,55 +35,44 @@ class _ManagerCollectionState extends State<ManagerCollection> {
             height: 60.0,
             color: kMainColorBlue,
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
-                  color: Colors.grey[800].withOpacity(0.1),
-                  alignment: Alignment.center,
-                  height: 50.0,
-                  width: 200.0,
-                  child: ListView(
-                    itemExtent: 200,
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      FlatButton(
-                        onPressed: null,
-                        // Navigator.pushNamed(context, CollectionManager.id),
-                        child: Text('Treining',
-                            style:
-                                TextStyle(fontSize: 30.0, color: Colors.white)),
+                    width: 90,
+                    height: 55,
+                    padding: EdgeInsets.only(bottom: 20),
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.keyboard_arrow_left,
+                        size: 40,
+                        color: Colors.white,
                       ),
-                      FlatButton(
-                        onPressed: null,
-                        // Navigator.pushNamed(context, LoginScreen.id),
-                        child: Text('Loging',
-                            style:
-                                TextStyle(fontSize: 30.0, color: Colors.white)),
+                      onPressed: () => Navigator.pop(context),
+                    )),
+                Container(
+                    padding: EdgeInsets.only(right: 30, bottom: 30),
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.fitness_center,
+                        size: 40,
+                        color: Colors.white,
                       ),
-                      FlatButton(
-                        onPressed: null,
-                        // Navigator.pushNamed(context, RegistrationScreen.id),
-                        child: Text('Registration',
-                            style:
-                                TextStyle(fontSize: 30.0, color: Colors.white)),
-                      )
-                    ],
-                  ),
-                ),
+                      onPressed: null,
+                    )),
               ],
             ),
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Container(
           padding: EdgeInsets.only(top: 20.0),
           child: ListView.builder(
             itemCount: providerData.wordsData.length,
             itemBuilder: (context, index) {
               final item = providerData.wordsData[index].mainWordTitle;
-              final secondWordId =
-                  providerData.wordsData[index].secondWordTitle;
 
               // final item = temporaryData[index];
               return Dismissible(
@@ -97,25 +87,53 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                 key: Key(item),
                 direction: DismissDirection.endToStart,
                 child: WordCard(
-                  //Main word
+                    //Main word
 
-                  titleMainWords: providerData.wordsData[index].mainWordTitle,
-                  isCheckedTitleMainWords:
-                      providerData.wordsData[index].checkMainWordTitle,
-                  submitMainWord: (value) {
-                    providerData.handleSubmitTextWords(
-                        value, providerData.wordsData[index]);
-                  },
-                  toggleMainWord: () {
-                    providerData
-                        .editWordMainText(providerData.wordsData[index]);
-                  },
+                    titleMainWords: providerData.wordsData[index].mainWordTitle,
+                    isCheckedTitleMainWords:
+                        providerData.wordsData[index].checkMainWordTitle,
+                    toggleMainWord: () {
+                      providerData.togglingMainWord(
+                        providerData.wordsData[index],
+                      );
+                    },
+                    submitMainWord: (value) {
+                      providerData.handleSubmitMainWords(
+                        value,
+                        providerData.wordsData[index],
+                      );
+                    },
 
-                  //Second word
-                  isCheckedSecondWord: isCheckedSecondWord,
-                  secondWordTitle:
-                      providerData.wordsData[index].secondWordTitle,
-                ),
+                    //Second word
+                    isCheckedSecondWord:
+                        providerData.wordsData[index].checkSecondWordTitle,
+                    secondWordTitle:
+                        providerData.wordsData[index].secondWordTitle,
+                    handleSubmitSecondWord: (value) {
+                      providerData.handleSubmitSecondWords(
+                        value,
+                        providerData.wordsData[index],
+                      );
+                    },
+                    toggleSecondWords: () {
+                      providerData.togglingSecondWord(
+                        providerData.wordsData[index],
+                      );
+                    },
+
+                    //translation
+                    translationTitle:
+                        providerData.wordsData[index].translationTitle,
+                    isCheckedTranslation:
+                        providerData.wordsData[index].checkTranslationTitle,
+                    toggleTranslation: () {
+                      providerData
+                          .togglingTranslation(providerData.wordsData[index]);
+                    },
+                    handleSubmitTranslation: (value) {
+                      providerData.handleSubmitTranslation(
+                          value, providerData.wordsData[index]);
+                    }),
               );
             },
           ),
@@ -133,34 +151,35 @@ class WordCard extends StatefulWidget {
     this.submitMainWord,
     this.isCheckedTitleMainWords,
     this.secondWordTitle,
+    this.handleSubmitSecondWord,
+    this.toggleSecondWords,
+    this.translationTitle,
+    this.isCheckedTranslation,
+    this.toggleTranslation,
+    this.handleSubmitTranslation,
   });
 
-  final bool isCheckedSecondWord;
   final String titleMainWords;
   final bool isCheckedTitleMainWords;
   final Function submitMainWord;
   final Function toggleMainWord;
+
   //secondWordTitle
   final String secondWordTitle;
+  final bool isCheckedSecondWord;
+  final Function handleSubmitSecondWord;
+  final Function toggleSecondWords;
+
+  //translation
+  final String translationTitle;
+  final bool isCheckedTranslation;
+  final Function toggleTranslation;
+  final Function handleSubmitTranslation;
   @override
   _WordCardState createState() => _WordCardState();
 }
 
 class _WordCardState extends State<WordCard> {
-  var myController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    myController = TextEditingController(text: widget.titleMainWords);
-  }
-
-  @override
-  void dispose() {
-    myController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -190,43 +209,33 @@ class _WordCardState extends State<WordCard> {
                         GestureDetector(
                           onTap: widget.toggleMainWord,
                           child: !widget.isCheckedTitleMainWords
-                              ? SizedBox(
+                              ? ReusableTextFieldContainer(
                                   height: 50,
                                   width: 100,
-                                  child: TextField(
-                                    autofocus: true,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                    ),
-                                    // enableSuggestions: true,
-                                    onSubmitted: widget.submitMainWord,
-                                    controller: TextEditingController(
-                                        text: widget.titleMainWords),
-                                    style: TextStyle(
-                                      fontSize: 25.0,
-                                      color: Color(0xFFF8b6b6),
-                                    ),
-                                  ),
+                                  handleSubmit: widget.submitMainWord,
+                                  fontSize: 25.0,
+                                  color: Color(0xFFF8b6b6),
                                 )
-                              : SizedBox(
+                              : ReusableTextContainer(
                                   height: 30,
                                   width: 100,
-                                  child: FittedBox(
-                                    alignment: Alignment.centerLeft,
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      widget.titleMainWords,
-                                      style: TextStyle(
-                                        fontSize: 25.0,
-                                        color: Color(0xFFF8b6b6),
-                                      ),
-                                    ),
-                                  ),
+                                  title: widget.titleMainWords,
+                                  fontSize: 25.0,
+                                  color: Color(0xFFF8b6b6),
                                 ),
                         ),
-                        widget.isCheckedSecondWord
-                            ? Container(child: Text(widget.secondWordTitle))
-                            : Container(),
+                        GestureDetector(
+                          onTap: widget.toggleSecondWords,
+                          child: widget.isCheckedSecondWord
+                              ? Container(
+                                  child: Text(widget.secondWordTitle),
+                                )
+                              : ReusableTextFieldContainer(
+                                  title: widget.secondWordTitle,
+                                  handleSubmit: widget.handleSubmitSecondWord,
+                                  width: 100,
+                                ),
+                        ),
                         Container(
                           child: FittedBox(
                               alignment: Alignment.center,
@@ -252,10 +261,24 @@ class _WordCardState extends State<WordCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        child: Text('Translation',
-                            style: TextStyle(
-                                fontSize: 15.0, color: Color(0xFFc9c97e))),
+                      GestureDetector(
+                        child: GestureDetector(
+                            onTap: widget.toggleTranslation,
+                            child: widget.isCheckedTranslation
+                                ? ReusableTextContainer(
+                                    height: 25,
+                                    width: 230,
+                                    title: widget.translationTitle,
+                                    fontSize: 15.0,
+                                    color: Color(0xFFc9c97e),
+                                  )
+                                : ReusableTextFieldContainer(
+                                    title: widget.translationTitle,
+                                    fontSize: 15.0,
+                                    color: Color(0xFFc9c97e),
+                                    width: 220,
+                                    handleSubmit:
+                                        widget.handleSubmitTranslation)),
                       ),
                       Checkbox(
                         visualDensity:
@@ -273,109 +296,3 @@ class _WordCardState extends State<WordCard> {
     );
   }
 }
-
-// class CollectionManager extends StatelessWidget {
-//   static String id = 'collection_manager_screen';
-//   @override
-//   Widget build(BuildContext context) {
-//     List<String> temporaryData = [
-//       'First',
-//       'second',
-//       'Third',
-//       '212',
-//       '231321',
-//       'dsadsa',
-//       '22222',
-//       'dsadsa',
-//       'fdsfds'
-//     ];
-//     return Scaffold(
-//       appBar: AppBar(
-//         centerTitle: true,
-//         backgroundColor: kMainColorBlue,
-//         automaticallyImplyLeading: false,
-//         title: Text('Collection Name'),
-//       ),
-//       floatingActionButton: ReusableFloatActionButton(),
-//       bottomNavigationBar: BottomAppBar(
-//         child: Container(
-//           height: 60.0,
-//           color: kMainColorBlue,
-//           child: Row(
-//             crossAxisAlignment: CrossAxisAlignment.center,
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: <Widget>[
-//               Container(
-//                 color: Colors.grey[800].withOpacity(0.1),
-//                 alignment: Alignment.center,
-//                 height: 50.0,
-//                 width: 200.0,
-//                 child: ListView(
-//                   itemExtent: 200,
-//                   scrollDirection: Axis.horizontal,
-//                   children: <Widget>[
-//                     FlatButton(
-//                       onPressed: null,
-//                       // Navigator.pushNamed(context, CollectionManager.id),
-//                       child: Text('Treining',
-//                           style:
-//                               TextStyle(fontSize: 30.0, color: Colors.white)),
-//                     ),
-//                     FlatButton(
-//                       onPressed: null,
-//                       // Navigator.pushNamed(context, LoginScreen.id),
-//                       child: Text('Loging',
-//                           style:
-//                               TextStyle(fontSize: 30.0, color: Colors.white)),
-//                     ),
-//                     FlatButton(
-//                       onPressed: null,
-//                       // Navigator.pushNamed(context, RegistrationScreen.id),
-//                       child: Text('Registration',
-//                           style:
-//                               TextStyle(fontSize: 30.0, color: Colors.white)),
-//                     )
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-//       body: Container(
-//         padding: EdgeInsets.only(top: 30.0),
-//         child: ListView.builder(
-//           itemCount: temporaryData.length,
-//           itemBuilder: (context, index) {
-//             return Padding(
-//               padding:
-//                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
-//               child: Container(
-//                 decoration: BoxDecoration(
-//                   color: Colors.grey[200],
-//                   // border: Border.all(color: Colors.grey),
-//                   borderRadius: BorderRadius.all(Radius.circular(10)),
-//                 ),
-//                 child: ListTile(
-//                   // isThreeLine: true,
-//                   leading: Text('Second Word'),
-//                   subtitle: Text('Somthingd dsadsadsadas fdsffffffffff'),
-//                   // title: Text('dsadsa'),
-
-//                   title: Text(
-//                     (temporaryData[index]),
-//                   ),
-//                   trailing: Checkbox(
-//                     value: false,
-//                     onChanged: null,
-//                   ),
-//                 ),
-//               ),
-//             );
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }

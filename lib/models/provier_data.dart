@@ -45,20 +45,58 @@ class ProviderData extends ChangeNotifier {
 
   // ManagerCollection
   List<WordsData> wordsData = [
-    WordsData(mainWordTitle: 'Words1'),
-    WordsData(mainWordTitle: 'Words2'),
-    WordsData(mainWordTitle: 'Words3')
+    WordsData(
+        mainWordTitle: 'Words1',
+        secondWordTitle: '1Second Word',
+        translationTitle: '1Translation'),
+    WordsData(
+        mainWordTitle: 'Words2',
+        secondWordTitle: '2Second Word',
+        translationTitle: '1Translation'),
+    WordsData(
+        mainWordTitle: 'Words3',
+        secondWordTitle: '3Second Word',
+        translationTitle: '1Translation')
   ];
 
-  void editWordMainText(WordsData words) {
-    words.toggleWordsCheckTextEdit();
-
+  void togglingMainWord(WordsData words) {
+    words.toggleMainWords();
     notifyListeners();
   }
 
-  void handleSubmitTextWords(dynamic value, WordsData words) {
-    words.changeWordsTitleName(value);
-    words.toggleWordsCheckTextEdit();
+  void handleSubmitMainWords(value, WordsData words) {
+    words.changeMainWordTitle(value);
+    words.toggleMainWords();
+    notifyListeners();
+  }
+
+  void togglingSecondWord(WordsData words) {
+    words.toggleSecondWords();
+    notifyListeners();
+  }
+
+  void handleSubmitSecondWords(dynamic value, WordsData words) {
+    words.changeSecondWordTitle(value);
+    words.toggleSecondWords();
+    notifyListeners();
+  }
+
+  void togglingTranslation(WordsData words) {
+    words.toggleTranslations();
+    notifyListeners();
+  }
+
+  void handleSubmitTranslation(dynamic value, WordsData words) {
+    words.changeTranslationTitle(value);
+    words.toggleTranslations();
     notifyListeners();
   }
 }
+
+// void submitText(dynamic value, WordsData words, bool id) {
+
+//     words.changeSecondWordTitle(value);
+//     words.toggleMainWords(id);
+//     print(id);
+//     notifyListeners();
+//   }

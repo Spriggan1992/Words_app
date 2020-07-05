@@ -1,9 +1,11 @@
 class WordsData {
-  WordsData(
-      {this.mainWordTitle,
-      this.secondWordTitle,
-      this.translationTitle,
-      checkWordsTextEdit});
+  WordsData({
+    this.mainWordTitle,
+    this.secondWordTitle,
+    this.translationTitle,
+    checkMainWordTitle,
+    checkSecondWordTitle,
+  });
 
   String mainWordTitle;
   String secondWordTitle;
@@ -12,8 +14,16 @@ class WordsData {
   bool checkSecondWordTitle = true;
   bool checkTranslationTitle = true;
 
-  void toggleWordsCheckTextEdit() {
+  void toggleMainWords() {
     checkMainWordTitle = !checkMainWordTitle;
+  }
+
+  void toggleSecondWords() {
+    checkSecondWordTitle = !checkSecondWordTitle;
+  }
+
+  void toggleTranslations() {
+    checkTranslationTitle = !checkTranslationTitle;
   }
 
   void changeMainWordTitle(String newName) {
