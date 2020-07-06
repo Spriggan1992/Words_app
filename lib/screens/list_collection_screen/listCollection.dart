@@ -4,8 +4,6 @@ import 'package:words_app/constnts/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/screens/manager_collection/manager_collection.dart';
 import 'package:words_app/screens/create_box_collection_screen/create_box_collection_screen.dart';
-import 'package:words_app/screens/registration_screen/registration_screen.dart';
-import 'package:words_app/screens/loging_screen/login_screen.dart';
 import 'package:words_app/models/provier_data.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +13,12 @@ class ListCollection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ProviderData>(builder: (context, providerData, child) {
       return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: kMainColorBlue,
+          automaticallyImplyLeading: false,
+          title: Text('Collections'),
+        ),
         backgroundColor: Color(0xFFade4ff),
         floatingActionButton: ReusableFloatActionButton(onPressed: () {
           showModalBottomSheet(
@@ -39,37 +43,12 @@ class ListCollection extends StatelessWidget {
                   alignment: Alignment.center,
                   height: 50.0,
                   width: 200.0,
-                  child: PageView(
-                    children: <Widget>[
-                      FlatButton(
-                        onPressed: () =>
-                            Navigator.pushNamed(context, ManagerCollection.id),
-                        child: Text('Treining',
-                            style:
-                                TextStyle(fontSize: 30.0, color: Colors.white)),
-                      ),
-                      FlatButton(
-                        onPressed: () =>
-                            Navigator.pushNamed(context, LoginScreen.id),
-                        child: Text('Loging',
-                            style:
-                                TextStyle(fontSize: 30.0, color: Colors.white)),
-                      ),
-                      FlatButton(
-                        onPressed: () =>
-                            Navigator.pushNamed(context, RegistrationScreen.id),
-                        child: Text('Registration',
-                            style:
-                                TextStyle(fontSize: 30.0, color: Colors.white)),
-                      )
-                    ],
-                  ),
                 ),
               ],
             ),
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: SafeArea(
           child: Container(
             decoration: kListCollectionBackground,
