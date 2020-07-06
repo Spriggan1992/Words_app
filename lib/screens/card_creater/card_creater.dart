@@ -17,7 +17,6 @@ class CardCreater extends StatelessWidget {
           height: 60.0,
           color: kMainColorBlue,
           child: Row(
-            // crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
@@ -71,11 +70,14 @@ class CardCreater extends StatelessWidget {
                     ),
                   ),
                   // SizedBox(height: 80.0),
-                  ReusableLogingRegestrationButtons(
-                      titleText: 'Add',
-                      onPressed: null,
-                      titleColor: kMainColorBlue,
-                      backgroundColor: Colors.white),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 17),
+                    child: ReusableLogingRegestrationButtons(
+                        titleText: 'Add',
+                        onPressed: null,
+                        titleColor: kMainColorBlue,
+                        backgroundColor: Colors.white),
+                  ),
                 ],
               )),
         ),

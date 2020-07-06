@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'components/reusable_text_container.dart';
 import 'components/reusable_text_field_container.dart';
 import 'package:words_app/screens/card_creater/card_creater.dart';
+import 'package:words_app/screens/training_screen/training_screen.dart';
 
 class ManagerCollection extends StatefulWidget {
   static String id = 'collection_manager_screen';
@@ -43,26 +44,26 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                 Container(
                     width: 90,
                     height: 55,
-                    padding: EdgeInsets.only(bottom: 20),
                     alignment: Alignment.center,
                     child: IconButton(
+                      iconSize: 40,
                       icon: Icon(
                         Icons.keyboard_arrow_left,
-                        size: 40,
                         color: Colors.white,
                       ),
                       onPressed: () => Navigator.pop(context),
                     )),
                 Container(
-                    padding: EdgeInsets.only(right: 30, bottom: 30),
+                    padding: EdgeInsets.only(right: 20),
                     alignment: Alignment.center,
                     child: IconButton(
+                      iconSize: 40,
                       icon: Icon(
                         Icons.fitness_center,
-                        size: 40,
                         color: Colors.white,
                       ),
-                      onPressed: null,
+                      onPressed: () =>
+                          Navigator.pushNamed(context, Training.id),
                     )),
               ],
             ),
