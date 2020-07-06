@@ -19,7 +19,7 @@ class ListCollection extends StatelessWidget {
           automaticallyImplyLeading: false,
           title: Text('Collections'),
         ),
-        backgroundColor: Color(0xFFade4ff),
+        backgroundColor: Colors.white,
         floatingActionButton: ReusableFloatActionButton(onPressed: () {
           showModalBottomSheet(
             context: context,
@@ -51,7 +51,8 @@ class ListCollection extends StatelessWidget {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: SafeArea(
           child: Container(
-            decoration: kListCollectionBackground,
+            color: Colors.white,
+            // decoration: kListCollectionBackground,
             padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 40.0),
             child: CustomScrollView(
               slivers: <Widget>[
