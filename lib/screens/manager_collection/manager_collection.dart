@@ -1,8 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/constnts/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
-import 'package:words_app/models/provier_data.dart';
+import 'package:words_app/models/provider_data.dart';
 import 'package:provider/provider.dart';
 import 'components/reusable_text_container.dart';
 import 'components/reusable_text_field_container.dart';
@@ -22,123 +23,133 @@ class _ManagerCollectionState extends State<ManagerCollection> {
     // bool isCheckedSecondWord = true;
 
     return Consumer<ProviderData>(builder: (context, providerData, child) {
-      return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: kMainColorBlue,
-          automaticallyImplyLeading: false,
-          title: Text('Collection Name'),
-        ),
-        floatingActionButton: ReusableFloatActionButton(
-            onPressed: () => Navigator.pushNamed(context, CardCreater.id)),
-        bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          clipBehavior: Clip.antiAlias,
-          child: Container(
-            height: 60.0,
-            color: kMainColorBlue,
-            child: Row(
-              // crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                    width: 90,
-                    height: 55,
-                    alignment: Alignment.center,
-                    child: IconButton(
-                      iconSize: 40,
-                      icon: Icon(
-                        Icons.keyboard_arrow_left,
-                        color: Colors.white,
-                      ),
-                      onPressed: () => Navigator.pop(context),
-                    )),
-                Container(
-                    padding: EdgeInsets.only(right: 20),
-                    alignment: Alignment.center,
-                    child: IconButton(
-                      iconSize: 40,
-                      icon: Icon(
-                        Icons.fitness_center,
-                        color: Colors.white,
-                      ),
-                      onPressed: () =>
-                          Navigator.pushNamed(context, Training.id),
-                    )),
-              ],
+      return SafeArea(
+        // Exclude top from SafeArea
+        top: false,
+        child: Scaffold(
+          appBar: BaseAppBar(
+            title: Text('Collection Name'),
+            appBar: AppBar(),
+          ),
+//        appBar: AppBar(
+//          centerTitle: true,
+//          backgroundColor: kMainColorBlue,
+//          automaticallyImplyLeading: false,
+//          title: Text('Collection Name'),
+//        ),
+          floatingActionButton: ReusableFloatActionButton(
+              onPressed: () => Navigator.pushNamed(context, CardCreater.id)),
+          bottomNavigationBar: BottomAppBar(
+            shape: CircularNotchedRectangle(),
+            clipBehavior: Clip.antiAlias,
+            child: Container(
+              height: 60.0,
+              color: kMainColorBlue,
+              child: Row(
+                // crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                      width: 90,
+                      height: 55,
+                      alignment: Alignment.center,
+                      child: IconButton(
+                        iconSize: 40,
+                        icon: Icon(
+                          Icons.keyboard_arrow_left,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                      )),
+                  Container(
+                      padding: EdgeInsets.only(right: 20),
+                      alignment: Alignment.center,
+                      child: IconButton(
+                        iconSize: 40,
+                        icon: Icon(
+                          Icons.fitness_center,
+                          color: Colors.white,
+                        ),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, Training.id),
+                      )),
+                ],
+              ),
             ),
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: Container(
-          padding: EdgeInsets.only(top: 20.0),
-          child: ListView.builder(
-            itemCount: providerData.wordsData.length,
-            itemBuilder: (context, index) {
-              final item = providerData.wordsData[index].mainWordTitle;
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          body: Container(
+            padding: EdgeInsets.only(top: 20.0),
+            child: ListView.builder(
+              itemCount: providerData.wordsData.length,
+              itemBuilder: (context, index) {
+                final item = providerData.wordsData[index].mainWordTitle;
 
-              // final item = temporaryData[index];
-              return Dismissible(
-                background: Container(
-                  alignment: Alignment.centerRight,
-                  color: Color(0xFFF8b6b6),
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(Icons.delete),
+                // final item = temporaryData[index];
+                return Dismissible(
+                  background: Container(
+                    alignment: Alignment.centerRight,
+                    color: Color(0xFFF8b6b6),
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 20),
+                      child: Icon(Icons.delete),
+                    ),
                   ),
-                ),
-                key: Key(item),
-                direction: DismissDirection.endToStart,
-                child: WordCard(
-                    //Main word
+                  key: Key(item),
+                  direction: DismissDirection.endToStart,
+                  child: WordCard(
+                      //Main word
 
-                    titleMainWords: providerData.wordsData[index].mainWordTitle,
-                    isCheckedTitleMainWords:
-                        providerData.wordsData[index].checkMainWordTitle,
-                    toggleMainWord: () {
-                      providerData.togglingMainWord(
-                        providerData.wordsData[index],
-                      );
-                    },
-                    submitMainWord: (value) {
-                      providerData.handleSubmitMainWords(
-                        value,
-                        providerData.wordsData[index],
-                      );
-                    },
+                      titleMainWords:
+                          providerData.wordsData[index].mainWordTitle,
+                      isCheckedTitleMainWords:
+                          providerData.wordsData[index].checkMainWordTitle,
+                      toggleMainWord: () {
+                        providerData.togglingMainWord(
+                          providerData.wordsData[index],
+                        );
+                      },
+                      submitMainWord: (value) {
+                        providerData.handleSubmitMainWords(
+                          value,
+                          providerData.wordsData[index],
+                        );
+                      },
 
-                    //Second word
-                    isCheckedSecondWord:
-                        providerData.wordsData[index].checkSecondWordTitle,
-                    secondWordTitle:
-                        providerData.wordsData[index].secondWordTitle,
-                    handleSubmitSecondWord: (value) {
-                      providerData.handleSubmitSecondWords(
-                        value,
-                        providerData.wordsData[index],
-                      );
-                    },
-                    toggleSecondWords: () {
-                      providerData.togglingSecondWord(
-                        providerData.wordsData[index],
-                      );
-                    },
+                      //Second word
+                      isCheckedSecondWord:
+                          providerData.wordsData[index].checkSecondWordTitle,
+                      secondWordTitle:
+                          providerData.wordsData[index].secondWordTitle,
+                      handleSubmitSecondWord: (value) {
+                        providerData.handleSubmitSecondWords(
+                          value,
+                          providerData.wordsData[index],
+                        );
+                      },
+                      toggleSecondWords: () {
+                        providerData.togglingSecondWord(
+                          providerData.wordsData[index],
+                        );
+                      },
 
-                    //translation
-                    translationTitle:
-                        providerData.wordsData[index].translationTitle,
-                    isCheckedTranslation:
-                        providerData.wordsData[index].checkTranslationTitle,
-                    toggleTranslation: () {
-                      providerData
-                          .togglingTranslation(providerData.wordsData[index]);
-                    },
-                    handleSubmitTranslation: (value) {
-                      providerData.handleSubmitTranslation(
-                          value, providerData.wordsData[index]);
-                    }),
-              );
-            },
+                      //translation
+                      translationTitle:
+                          providerData.wordsData[index].translationTitle,
+                      isCheckedTranslation:
+                          providerData.wordsData[index].checkTranslationTitle,
+                      toggleTranslation: () {
+                        providerData
+                            .togglingTranslation(providerData.wordsData[index]);
+                      },
+                      handleSubmitTranslation: (value) {
+                        providerData.handleSubmitTranslation(
+                            value, providerData.wordsData[index]);
+                      }),
+                );
+              },
+            ),
           ),
         ),
       );
