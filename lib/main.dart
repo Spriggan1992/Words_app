@@ -9,10 +9,12 @@ import 'package:words_app/screens/card_creater/card_creater.dart';
 import 'package:words_app/models/provier_data.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
 import 'package:words_app/screens/result_screen/result_screen.dart';
+// import 'package:hive/hive.dart';
 
-void main() {
-  runApp(MyApp());
-}
+// void main() {
+//   Hive.init();
+//   runApp(MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   @override

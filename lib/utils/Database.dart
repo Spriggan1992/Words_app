@@ -17,11 +17,26 @@
 
 //     initDB() async{
 //       return await openDatabase(
+
 //         join(await getDatabasesPath(), 'youtube_demo.db'),
 //         onCreate: (db, version) async {
 
 //         }
 //       )
+
+//         join(await getDatabasesPath(), 'Words.db'),
+//         onCreate: (db, version) async {
+//           await db.execute(
+//             '''
+//           CREATE TABLE users(
+//             username TEXT PRIMARY KEY, password TEXT
+//           )
+//         '''
+//           );
+//         },
+//         version: 1
+//       );
+
 //     }
 //   }
 // }
