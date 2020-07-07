@@ -11,11 +11,6 @@ import 'package:words_app/screens/training_screen/training_screen.dart';
 import 'package:words_app/screens/result_screen/result_screen.dart';
 // import 'package:hive/hive.dart';
 
-// void main() {
-//   Hive.init();
-//   runApp(MyApp());
-// }
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
