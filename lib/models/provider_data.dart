@@ -6,9 +6,9 @@ import 'dart:collection';
 class ProviderData extends ChangeNotifier {
   //listCollections
   List<CollectionData> _boxCollectionData = [
-    CollectionData(collectionNameTitle: "Hellow World"),
-    CollectionData(collectionNameTitle: "DDDD"),
-    CollectionData(collectionNameTitle: "dfsfsd")
+    CollectionData(collectionNameTitle: "nouns"),
+    CollectionData(collectionNameTitle: "verbs"),
+    CollectionData(collectionNameTitle: "adjectives")
   ];
 
   UnmodifiableListView<CollectionData> get boxCollectionData {

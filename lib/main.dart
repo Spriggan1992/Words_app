@@ -6,14 +6,13 @@ import 'package:words_app/screens/list_collection_screen/listCollection.dart';
 import 'package:words_app/screens/welcome_screen/welcom_screen.dart';
 import 'screens/manager_collection/manager_collection.dart';
 import 'package:words_app/screens/card_creater/card_creater.dart';
-import 'package:words_app/models/provier_data.dart';
+import 'package:words_app/models/provider_data.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
 import 'package:words_app/screens/result_screen/result_screen.dart';
 
 // import 'package:hive/hive.dart';
-void main() {
-  runApp(MyApp());
-}
+
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
@@ -21,19 +20,20 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => ProviderData(),
       child: MaterialApp(
-          title: 'Word App',
-          debugShowCheckedModeBanner: false,
-          initialRoute: WelcomScreen.id,
-          routes: {
-            WelcomScreen.id: (context) => WelcomScreen(),
-            LoginScreen.id: (context) => LoginScreen(),
-            RegistrationScreen.id: (context) => RegistrationScreen(),
-            ListCollection.id: (context) => ListCollection(),
-            ManagerCollection.id: (context) => ManagerCollection(),
-            CardCreater.id: (context) => CardCreater(),
-            Training.id: (context) => Training(),
-            Result.id: (context) => Result(),
-          }),
+        title: 'Word App',
+        debugShowCheckedModeBanner: false,
+        initialRoute: WelcomScreen.id,
+        routes: {
+          WelcomScreen.id: (context) => WelcomScreen(),
+          LoginScreen.id: (context) => LoginScreen(),
+          RegistrationScreen.id: (context) => RegistrationScreen(),
+          ListCollection.id: (context) => ListCollection(),
+          ManagerCollection.id: (context) => ManagerCollection(),
+          CardCreater.id: (context) => CardCreater(),
+          Training.id: (context) => Training(),
+          Result.id: (context) => Result(),
+        },
+      ),
     );
   }
 }
