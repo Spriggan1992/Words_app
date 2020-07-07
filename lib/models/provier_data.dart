@@ -26,20 +26,20 @@ class ProviderData extends ChangeNotifier {
     notifyListeners();
   }
 
-  void chooseOptions(CollectionData collection) {
-    collection.toggleCheckMenu();
+  void chooseBetweenFrontBackContainers(CollectionData collection) {
+    collection.toggleCheckFrontBack();
     notifyListeners();
   }
 
   void editText(CollectionData collection) {
-    collection.toggleCheckTextEdit();
-    collection.toggleCheckMenu();
+    collection.toggleCheckTextEditing();
+    collection.toggleCheckFrontBack();
     notifyListeners();
   }
 
   void handleSubmitTextCollections(dynamic value, CollectionData collection) {
     collection.changeCollectionName(value);
-    collection.toggleCheckTextEdit();
+    collection.toggleCheckTextEditing();
     notifyListeners();
   }
 

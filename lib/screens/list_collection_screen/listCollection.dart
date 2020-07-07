@@ -27,7 +27,7 @@ class ListCollection extends StatelessWidget {
           );
         }),
 
-        //Footer
+        //Footer AppBar
         bottomNavigationBar: BottomAppBar(
           shape: CircularNotchedRectangle(),
           clipBehavior: Clip.antiAlias,
@@ -59,31 +59,52 @@ class ListCollection extends StatelessWidget {
                 SliverGrid(
                   delegate: SliverChildBuilderDelegate((context, index) {
                     return BoxCollection(
-                        textTitle: providerData
-                            .boxCollectionData[index].collectionNameTitle,
-                        isCheckedTextEdit:
-                            providerData.boxCollectionData[index].checkTextEdit,
-                        isCheckedOptionsMenu:
-                            providerData.boxCollectionData[index].checkMenu,
-                        chooseOptions: () {
-                          providerData.chooseOptions(
-                              providerData.boxCollectionData[index]);
-                        },
-                        editText: () {
-                          providerData
-                              .editText(providerData.boxCollectionData[index]);
-                        },
-                        deleteCollection: () {
-                          providerData.deleteCollection(
-                              providerData.boxCollectionData[index]);
-                        },
-                        goToManagerCollections: () {
-                          Navigator.pushNamed(context, ManagerCollection.id);
-                        },
-                        onSubmite: (value) {
-                          providerData.handleSubmitTextCollections(
-                              value, providerData.boxCollectionData[index]);
-                        });
+                      // Name of Collectons. Pass STRING collectionNameTitle from box_collection_data
+                      collectionTitleName: providerData
+                          .boxCollectionData[index].collectionNameTitle,
+
+                      /* Pass conditional  bool checkTextEditing from box_collection_data for check if 
+                        checkTextEditing = true {show Text field} if false {show Text('collectionTitleName')}
+                        */
+                      isCheckedTextEditing: providerData
+                          .boxCollectionData[index].checkTextEditing,
+
+                      /* Pass conditional checkFrontBack containers. Check if bool checkFrontBack = true 
+                        {show Front container}, if false{show Back container} 
+                        */
+                      isCheckedFrontBackContainers:
+                          providerData.boxCollectionData[index].checkFrontBack,
+
+                      // Just toggle bool checkFrontBack，thereby switching between Front and Backcontainers
+                      chooseFrontBackContainers: () {
+                        providerData.chooseBetweenFrontBackContainers(
+                            providerData.boxCollectionData[index]);
+                      },
+
+                      /* Here we just toggle isCheckedTextEditing and check if isCheckedTextEditing = true 
+                      {show Text Field} if false {show Text(collectionTitleName)}
+                      */
+                      editingText: () {
+                        providerData
+                            .editText(providerData.boxCollectionData[index]);
+                      },
+
+                      /* Takes value from TextField, when we submitted value it change collectionTitleName */
+                      onSubmite: (value) {
+                        providerData.handleSubmitTextCollections(
+                            value, providerData.boxCollectionData[index]);
+                      },
+
+                      // Remove collection from data
+                      deleteCollection: () {
+                        providerData.deleteCollection(
+                            providerData.boxCollectionData[index]);
+                      },
+
+                      goToManagerCollections: () {
+                        Navigator.pushNamed(context, ManagerCollection.id);
+                      },
+                    );
                   }, childCount: providerData.boxCollectionData.length),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: 2.5,

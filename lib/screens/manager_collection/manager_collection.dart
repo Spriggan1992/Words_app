@@ -19,8 +19,6 @@ class ManagerCollection extends StatefulWidget {
 class _ManagerCollectionState extends State<ManagerCollection> {
   @override
   Widget build(BuildContext context) {
-    // bool isCheckedSecondWord = true;
-
     return Consumer<ProviderData>(builder: (context, providerData, child) {
       return Scaffold(
         appBar: AppBar(
@@ -76,8 +74,6 @@ class _ManagerCollectionState extends State<ManagerCollection> {
             itemCount: providerData.wordsData.length,
             itemBuilder: (context, index) {
               final item = providerData.wordsData[index].mainWordTitle;
-
-              // final item = temporaryData[index];
               return Dismissible(
                 background: Container(
                   alignment: Alignment.centerRight,
@@ -90,16 +86,25 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                 key: Key(item),
                 direction: DismissDirection.endToStart,
                 child: WordCard(
-                    //Main word
 
+                    //Main word
+                    // Main Title Words  . Pass STRING titleMainWords from words_data.
                     titleMainWords: providerData.wordsData[index].mainWordTitle,
+
+                    /* Pass conditional  bool checkMainWordTitle from words_data for check if 
+                    checkMainWordTitle = true {show Text field} if false {show Text('mainWordTitle')}
+                    */
                     isCheckedTitleMainWords:
                         providerData.wordsData[index].checkMainWordTitle,
+
+                    // Just toggle bool checkMainWordTitle，thereby switching between TextField and Text(titleMainWords)
                     toggleMainWord: () {
                       providerData.togglingMainWord(
                         providerData.wordsData[index],
                       );
                     },
+
+                    /* Takes value from TextField, when we submitted value it change mainWordTitle */
                     submitMainWord: (value) {
                       providerData.handleSubmitMainWords(
                         value,
@@ -108,10 +113,10 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                     },
 
                     //Second word
-                    isCheckedSecondWord:
-                        providerData.wordsData[index].checkSecondWordTitle,
                     secondWordTitle:
                         providerData.wordsData[index].secondWordTitle,
+                    isCheckedSecondWord:
+                        providerData.wordsData[index].checkSecondWordTitle,
                     handleSubmitSecondWord: (value) {
                       providerData.handleSubmitSecondWords(
                         value,

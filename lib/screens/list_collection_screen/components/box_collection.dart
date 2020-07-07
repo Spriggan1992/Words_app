@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-
-enum DropItemItems { changeName, delete, changeColor }
 
 class BoxCollection extends StatefulWidget {
   BoxCollection(
-      {this.textTitle,
-      this.chooseOptions,
+      {this.collectionTitleName,
+      this.chooseFrontBackContainers,
       this.goToManagerCollections,
-      this.isCheckedTextEdit,
-      this.isCheckedOptionsMenu,
+      this.isCheckedTextEditing,
+      this.isCheckedFrontBackContainers,
       this.onSubmite,
       this.onChanged,
-      this.editText,
+      this.editingText,
       this.deleteCollection});
 
-  final String textTitle;
-  final Function chooseOptions;
+  final String collectionTitleName;
+  final Function chooseFrontBackContainers;
   final Function goToManagerCollections;
-  final bool isCheckedTextEdit;
-  final bool isCheckedOptionsMenu;
+  final bool isCheckedTextEditing;
+  final bool isCheckedFrontBackContainers;
   final Function onSubmite;
   final Function onChanged;
-  final Function editText;
+  final Function editingText;
   final Function deleteCollection;
 
   @override
@@ -70,10 +67,9 @@ class _BoxCollectionState extends State<BoxCollection>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: widget.goToManagerCollections,
-        onLongPress: widget.chooseOptions,
-
-// Here is check if Show Collection or OptionsMenu
+        onTap: widget.goToManagerCollections, // Go to managerCollection
+        onLongPress:
+            widget.chooseFrontBackContainers, // ChooseFrontBackContainers
         child: AnimatedSwitcher(
           duration: Duration(milliseconds: 500),
           transitionBuilder: (widget, animation) {
@@ -84,15 +80,16 @@ class _BoxCollectionState extends State<BoxCollection>
                 ).animate(animation),
                 child: widget);
           },
-          child: !widget.isCheckedOptionsMenu
-              ? Collection(widget: widget)
-              : CollectionMenu(widget: widget),
+          child: !widget
+                  .isCheckedFrontBackContainers // Check if isCheckedFrontBackContainers true or false
+              ? CollectionFront(widget: widget)
+              : CollectionBack(widget: widget),
         ));
   }
 }
 
-class Collection extends StatelessWidget {
-  const Collection({
+class CollectionFront extends StatelessWidget {
+  const CollectionFront({
     Key key,
     @required this.widget,
   }) : super(key: key);
@@ -114,7 +111,7 @@ class Collection extends StatelessWidget {
                 offset: Offset(1, 3))
           ],
           borderRadius: BorderRadius.circular(10.0),
-          color: widget.isCheckedOptionsMenu ? Color(0xFFF8B6b6) : Colors.white,
+          color: Colors.white, // Color Front container
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -140,32 +137,29 @@ class Collection extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-//Show Text.
-                    widget.isCheckedTextEdit
+                    widget.isCheckedTextEditing // Check if isCheckedTextEditing true or false
+                        // Text with collectionTitleName
                         ? Expanded(
                             child: FittedBox(
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                     top: 1, right: 1, bottom: 1, left: 1),
                                 child: Text(
-                                  widget.textTitle,
+                                  widget.collectionTitleName,
                                   style: TextStyle(
                                       fontSize: 25.0, color: Colors.black),
                                 ),
                               ),
                             ),
                           )
-//Show Text field(Chacnge collections name)
+                        // TextField Container
                         : Expanded(
                             child: Container(
                               width: 60,
                               child: TextField(
                                 decoration: InputDecoration(
                                     contentPadding: EdgeInsets.only(
-                                        // top: 10,
-                                        left: 5.0,
-                                        bottom: 10.0,
-                                        right: 5.0)),
+                                        left: 5.0, bottom: 10.0, right: 5.0)),
                                 cursorColor: Colors.black,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
@@ -175,12 +169,12 @@ class Collection extends StatelessWidget {
                                 autofocus: true,
                                 onSubmitted: widget.onSubmite,
                                 controller: TextEditingController(
-                                  text: widget.textTitle,
+                                  text: widget.collectionTitleName,
                                 ),
                               ),
                             ),
                           ),
-// Indicator amount of words in collection
+                    // Indicator amount of words in collection
                     Padding(
                       padding: EdgeInsets.only(left: 5),
                       child: Container(
@@ -202,7 +196,6 @@ class Collection extends StatelessWidget {
                   ],
                 ),
               ),
-              //OptionsMenu
             )
           ],
         ),
@@ -211,8 +204,8 @@ class Collection extends StatelessWidget {
   }
 }
 
-class CollectionMenu extends StatelessWidget {
-  const CollectionMenu({
+class CollectionBack extends StatelessWidget {
+  const CollectionBack({
     Key key,
     @required this.widget,
   }) : super(key: key);
@@ -233,14 +226,13 @@ class CollectionMenu extends StatelessWidget {
               offset: Offset(1, 3))
         ],
         borderRadius: BorderRadius.circular(10.0),
-        color:
-            widget.isCheckedOptionsMenu ? Color(0xFFF8B6b6) : Colors.grey[200],
+        color: Color(0xFFF8B6b6), // Color Back container
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           GestureDetector(
-            onTap: widget.editText,
+            onTap: widget.editingText, //Editing text
             child: Container(
               child: Icon(Icons.edit),
             ),

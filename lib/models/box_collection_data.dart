@@ -2,15 +2,15 @@ class CollectionData {
   CollectionData({this.collectionNameTitle, checkTextEdit});
 
   String collectionNameTitle;
-  bool checkTextEdit = true;
-  bool checkMenu = false;
+  bool checkTextEditing = true;
+  bool checkFrontBack = false;
 
-  void toggleCheckTextEdit() {
-    checkTextEdit = !checkTextEdit;
+  void toggleCheckTextEditing() {
+    checkTextEditing = !checkTextEditing;
   }
 
-  void toggleCheckMenu() {
-    checkMenu = !checkMenu;
+  void toggleCheckFrontBack() {
+    checkFrontBack = !checkFrontBack;
   }
 
   void changeCollectionName(String newName) {
