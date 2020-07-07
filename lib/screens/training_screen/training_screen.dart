@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/constnts/constants.dart';
+import 'package:words_app/screens/result_screen/result_screen.dart';
 
 class Training extends StatelessWidget {
   static String id = 'training_screen';
@@ -22,7 +23,6 @@ class Training extends StatelessWidget {
             height: 60.0,
             color: kMainColorBlue,
             child: Row(
-              // crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
@@ -85,17 +85,6 @@ class Training extends StatelessWidget {
                     TextHolder(title: 'Main word', showAnswer: alwaysTrue),
                     TextHolder(title: 'Second word', showAnswer: showAnswer),
                     TextHolder(title: 'Translation', showAnswer: showAnswer),
-
-                    // Container(
-                    //   width: 20,
-                    //   height: 20,
-                    //   decoration: BoxDecoration(
-                    //     image: DecorationImage(
-                    //       image: AssetImage('images/icon.png'),
-                    //       fit: BoxFit.cover,
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -112,7 +101,11 @@ class Training extends StatelessWidget {
                     color: Colors.black,
                     iconSize: 50),
                 ReusableIconButton(
-                    icon: Icons.done, color: Colors.green[400], iconSize: 50),
+                  icon: Icons.done,
+                  color: Colors.green[400],
+                  iconSize: 50,
+                  onPressed: () => Navigator.pushNamed(context, Result.id),
+                ),
               ],
             )
           ],
@@ -143,10 +136,12 @@ class TextHolder extends StatelessWidget {
 }
 
 class ReusableIconButton extends StatelessWidget {
-  const ReusableIconButton({this.icon, this.color, this.iconSize});
+  const ReusableIconButton(
+      {this.icon, this.color, this.iconSize, this.onPressed});
   final IconData icon;
   final Color color;
   final double iconSize;
+  final Function onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +152,7 @@ class ReusableIconButton extends StatelessWidget {
         icon,
         color: color,
       ),
-      onPressed: null,
+      onPressed: onPressed,
     );
   }
 }

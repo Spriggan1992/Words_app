@@ -72,11 +72,13 @@ class CardCreater extends StatelessWidget {
                   // SizedBox(height: 80.0),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 17),
-                    child: ReusableLogingRegestrationButtons(
-                        titleText: 'Add',
-                        onPressed: null,
-                        titleColor: kMainColorBlue,
-                        backgroundColor: Colors.white),
+                    child: ReusableMainButton(
+                      titleText: 'Add',
+                      onPressed: null,
+                      titleColor: kMainColorBlue,
+                      backgroundColor: Colors.white,
+                      fontSize: 25,
+                    ),
                   ),
                 ],
               )),

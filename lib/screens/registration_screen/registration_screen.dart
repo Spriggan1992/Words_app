@@ -87,10 +87,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               SizedBox(height: 80.0),
               Flexible(
-                child: ReusableLogingRegestrationButtons(
+                child: ReusableMainButton(
                   titleText: 'Registration',
                   titleColor: Color(0xFFf0f3f8),
                   backgroundColor: Color(0xFF498ba6),
+                  fontSize: 25,
                   onPressed: () => Navigator.pushNamed(context, CardCreater.id),
                 ),
               )

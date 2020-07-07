@@ -88,10 +88,11 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 80.0),
               Flexible(
-                child: ReusableLogingRegestrationButtons(
+                child: ReusableMainButton(
                   titleText: 'Login',
                   titleColor: kMainColorBlue,
                   backgroundColor: Color(0xFFf0f3f8),
+                  fontSize: 25,
                   onPressed: () =>
                       Navigator.pushNamed(context, ListCollection.id),
                 ),

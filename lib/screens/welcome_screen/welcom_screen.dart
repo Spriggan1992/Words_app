@@ -18,19 +18,21 @@ class WelcomScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              ReusableLogingRegestrationButtons(
+              ReusableMainButton(
                 titleText: 'Login',
                 titleColor: Color(0xFFf0f3f8),
                 backgroundColor: Color(0xFF498ba6),
+                fontSize: 25,
                 onPressed: () {
                   Navigator.pushNamed(context, LoginScreen.id);
                 },
               ),
               SizedBox(height: 50),
-              ReusableLogingRegestrationButtons(
+              ReusableMainButton(
                 titleText: 'Registration',
                 titleColor: Color(0xFF498ba6),
                 backgroundColor: Color(0xFFf0f3f8),
+                fontSize: 25,
                 onPressed: () {
                   Navigator.pushNamed(context, RegistrationScreen.id);
                 },
@@ -42,6 +44,5 @@ class WelcomScreen extends StatelessWidget {
     );
   }
 }
-
 
 // dsadsa

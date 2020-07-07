@@ -8,6 +8,7 @@ import 'screens/manager_collection/manager_collection.dart';
 import 'package:words_app/screens/card_creater/card_creater.dart';
 import 'package:words_app/models/provier_data.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
+import 'package:words_app/screens/result_screen/result_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
             ManagerCollection.id: (context) => ManagerCollection(),
             CardCreater.id: (context) => CardCreater(),
             Training.id: (context) => Training(),
+            Result.id: (context) => Result(),
           }),
     );
   }

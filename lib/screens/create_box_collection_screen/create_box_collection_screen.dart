@@ -48,7 +48,7 @@ class CreateBoxCollections extends StatelessWidget {
                 Flexible(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 20.0),
-                    child: ReusableLogingRegestrationButtons(
+                    child: ReusableMainButton(
                       backgroundColor: kMainColorBlue,
                       titleText: 'Add',
                       titleColor: Colors.white,

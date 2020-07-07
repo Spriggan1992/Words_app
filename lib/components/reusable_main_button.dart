@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-class ReusableLogingRegestrationButtons extends StatelessWidget {
-  const ReusableLogingRegestrationButtons(
+class ReusableMainButton extends StatelessWidget {
+  const ReusableMainButton(
       {@required this.titleText,
       @required this.titleColor,
       @required this.backgroundColor,
-      @required this.onPressed});
+      @required this.onPressed,
+      this.fontSize});
 
   final String titleText;
   final Color titleColor;
   final Color backgroundColor;
   final Function onPressed;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class ReusableLogingRegestrationButtons extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           titleText,
-          style: TextStyle(color: titleColor, fontSize: 30.0),
+          style: TextStyle(color: titleColor, fontSize: fontSize),
         ),
       ),
     );
