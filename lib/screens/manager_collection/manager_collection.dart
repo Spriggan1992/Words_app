@@ -106,19 +106,37 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15.0)),
                                 child: Container(
-                                  height: 400.0,
-                                  width: 360.0,
+                                  height: 500.0,
+                                  width: 380.0,
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 30, vertical: 30),
+                                      horizontal: 30,
+                                    ),
                                     child: Column(
                                       children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 30),
+                                          child: Container(
+                                            height: 150,
+                                            width: 150,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage(
+                                                      'images/summer.jpg'),
+                                                  fit: BoxFit.cover),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                        ),
+                                        // SizedBox(height: 15.0),
                                         DialogTextHolderContainer(
                                             textTitleName: 'Summer',
-                                            fontSize: 25),
+                                            fontSize: 20),
                                         SizedBox(height: 15.0),
                                         DialogTextHolderContainer(
-                                            textTitleName: '夏天', fontSize: 25),
+                                            textTitleName: '夏天', fontSize: 20),
                                         SizedBox(height: 15.0),
                                         DialogTextHolderContainer(
                                             textTitleName: 'Лето',
@@ -199,6 +217,8 @@ class DialogTextHolderContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 40,
+      // width: 200,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.grey[200],
@@ -284,12 +304,16 @@ class _WordCardState extends State<WordCard> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Checkbox(
-                        visualDensity:
-                            VisualDensity(horizontal: -4, vertical: -4),
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        value: false,
-                        onChanged: null,
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Checkbox(
+                          visualDensity:
+                              VisualDensity(horizontal: -4, vertical: -4),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          value: false,
+                          onChanged: null,
+                        ),
                       ),
                       GestureDetector(
                         onTap: widget.toggleMainWord,
