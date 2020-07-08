@@ -97,8 +97,42 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                   key: Key(item),
                   direction: DismissDirection.endToStart,
                   child: WordCard(
+                      // Here when we prees on word card, a diolog windo pops up
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0)),
+                                child: Container(
+                                  height: 400.0,
+                                  width: 360.0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 30, vertical: 30),
+                                    child: Column(
+                                      children: <Widget>[
+                                        DialogTextHolderContainer(
+                                            textTitleName: 'Summer'),
+                                        SizedBox(height: 15.0),
+                                        DialogTextHolderContainer(
+                                            textTitleName: '夏天'),
+                                        SizedBox(height: 15.0),
+                                        DialogTextHolderContainer(
+                                            textTitleName: 'Лето'),
+                                        SizedBox(height: 20.0),
+                                        DialogTextHolderContainer(
+                                            textTitleName:
+                                                'Example: It was an amazing summer'),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
+                      },
                       //Main word
-
                       titleMainWords:
                           providerData.wordsData[index].mainWordTitle,
                       isCheckedTitleMainWords:
@@ -155,6 +189,33 @@ class _ManagerCollectionState extends State<ManagerCollection> {
   }
 }
 
+class DialogTextHolderContainer extends StatelessWidget {
+  DialogTextHolderContainer({this.textTitleName});
+  final String textTitleName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.grey[200],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              child: Text(textTitleName, style: TextStyle(fontSize: 25)),
+            ),
+            IconButton(icon: Icon(Icons.edit), onPressed: null),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class WordCard extends StatefulWidget {
   const WordCard({
     this.isCheckedSecondWord,
@@ -169,14 +230,17 @@ class WordCard extends StatefulWidget {
     this.isCheckedTranslation,
     this.toggleTranslation,
     this.handleSubmitTranslation,
+    this.onTap,
   });
 
+  final Function onTap;
+  //MainWord
   final String titleMainWords;
   final bool isCheckedTitleMainWords;
   final Function submitMainWord;
   final Function toggleMainWord;
 
-  //secondWordTitle
+  //secondWord
   final String secondWordTitle;
   final bool isCheckedSecondWord;
   final Function handleSubmitSecondWord;
@@ -195,6 +259,7 @@ class _WordCardState extends State<WordCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: widget.onTap,
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
           child: Container(
