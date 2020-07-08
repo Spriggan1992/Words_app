@@ -46,17 +46,17 @@ class ProviderData extends ChangeNotifier {
   // ManagerCollection
   List<WordsData> wordsData = [
     WordsData(
-        mainWordTitle: 'Words1',
-        secondWordTitle: '1Second Word',
-        translationTitle: '1Translation'),
+        mainWordTitle: 'Summer',
+        secondWordTitle: '夏天',
+        translationTitle: 'Лето'),
     WordsData(
-        mainWordTitle: 'Words2',
-        secondWordTitle: '2Second Word',
-        translationTitle: '1Translation'),
+        mainWordTitle: 'Winter',
+        secondWordTitle: '冬天',
+        translationTitle: 'Зима'),
     WordsData(
-        mainWordTitle: 'Words3',
-        secondWordTitle: '3Second Word',
-        translationTitle: '1Translation')
+        mainWordTitle: 'Spring',
+        secondWordTitle: '春天',
+        translationTitle: 'Весна')
   ];
 
   void togglingMainWord(WordsData words) {

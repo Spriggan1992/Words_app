@@ -114,13 +114,15 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                                     child: Column(
                                       children: <Widget>[
                                         DialogTextHolderContainer(
-                                            textTitleName: 'Summer'),
+                                            textTitleName: 'Summer',
+                                            fontSize: 25),
                                         SizedBox(height: 15.0),
                                         DialogTextHolderContainer(
-                                            textTitleName: '夏天'),
+                                            textTitleName: '夏天', fontSize: 25),
                                         SizedBox(height: 15.0),
                                         DialogTextHolderContainer(
-                                            textTitleName: 'Лето'),
+                                            textTitleName: 'Лето',
+                                            fontSize: 18.0),
                                         SizedBox(height: 20.0),
                                         DialogTextHolderContainer(
                                             textTitleName:
@@ -190,8 +192,9 @@ class _ManagerCollectionState extends State<ManagerCollection> {
 }
 
 class DialogTextHolderContainer extends StatelessWidget {
-  DialogTextHolderContainer({this.textTitleName});
+  DialogTextHolderContainer({this.textTitleName, this.fontSize});
   final String textTitleName;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +209,7 @@ class DialogTextHolderContainer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
-              child: Text(textTitleName, style: TextStyle(fontSize: 25)),
+              child: Text(textTitleName, style: TextStyle(fontSize: fontSize)),
             ),
             IconButton(icon: Icon(Icons.edit), onPressed: null),
           ],
@@ -276,88 +279,11 @@ class _WordCardState extends State<WordCard> {
             ),
             child: Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Column(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: widget.toggleMainWord,
-                          child: !widget.isCheckedTitleMainWords
-                              ? ReusableTextFieldContainer(
-                                  height: 50,
-                                  width: 100,
-                                  title: widget.titleMainWords,
-                                  handleSubmit: widget.submitMainWord,
-                                  fontSize: 25.0,
-                                  color: Color(0xFFF8b6b6),
-                                )
-                              : ReusableTextContainer(
-                                  height: 30,
-                                  width: 100,
-                                  title: widget.titleMainWords,
-                                  fontSize: 25.0,
-                                  color: Color(0xFFF8b6b6),
-                                ),
-                        ),
-                        GestureDetector(
-                          onTap: widget.toggleSecondWords,
-                          child: widget.isCheckedSecondWord
-                              ? Container(
-                                  child: Text(widget.secondWordTitle),
-                                )
-                              : ReusableTextFieldContainer(
-                                  title: widget.secondWordTitle,
-                                  handleSubmit: widget.handleSubmitSecondWord,
-                                  width: 100,
-                                ),
-                        ),
-                        Container(
-                          child: FittedBox(
-                              alignment: Alignment.center,
-                              child: Text('50%',
-                                  style: TextStyle(
-                                      fontSize: 3.0,
-                                      color: Colors.red.withOpacity(0.5)))),
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                                stops: [0.5, 0.5],
-                                colors: [Colors.green, Color(0xFFf0f3f8)],
-                              )),
-                        ),
-                      ],
-                    ),
-                  ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      GestureDetector(
-                        child: GestureDetector(
-                            onTap: widget.toggleTranslation,
-                            child: widget.isCheckedTranslation
-                                ? ReusableTextContainer(
-                                    height: 25,
-                                    width: 230,
-                                    title: widget.translationTitle,
-                                    fontSize: 15.0,
-                                    color: Color(0xFFc9c97e),
-                                  )
-                                : ReusableTextFieldContainer(
-                                    title: widget.translationTitle,
-                                    fontSize: 15.0,
-                                    color: Color(0xFFc9c97e),
-                                    width: 220,
-                                    handleSubmit:
-                                        widget.handleSubmitTranslation)),
-                      ),
                       Checkbox(
                         visualDensity:
                             VisualDensity(horizontal: -4, vertical: -4),
@@ -365,8 +291,40 @@ class _WordCardState extends State<WordCard> {
                         value: false,
                         onChanged: null,
                       ),
+                      GestureDetector(
+                        onTap: widget.toggleMainWord,
+                        child: !widget.isCheckedTitleMainWords
+                            ? ReusableTextFieldContainer(
+                                height: 50,
+                                width: 100,
+                                title: widget.titleMainWords,
+                                handleSubmit: widget.submitMainWord,
+                                fontSize: 25.0,
+                                color: Color(0xFFF8b6b6),
+                              )
+                            : ReusableTextContainer(
+                                height: 30,
+                                width: 100,
+                                title: widget.titleMainWords,
+                                fontSize: 25.0,
+                                color: Color(0xFFF8b6b6),
+                              ),
+                      ),
                     ],
                   ),
+                  GestureDetector(
+                    onTap: widget.toggleSecondWords,
+                    child: widget.isCheckedSecondWord
+                        ? Container(
+                            child: Text(widget.secondWordTitle),
+                          )
+                        : ReusableTextFieldContainer(
+                            title: widget.secondWordTitle,
+                            handleSubmit: widget.handleSubmitSecondWord,
+                            width: 100,
+                          ),
+                  ),
+                  IconButton(icon: Icon(Icons.photo), onPressed: null),
                 ],
               ),
             ),
@@ -374,3 +332,162 @@ class _WordCardState extends State<WordCard> {
     );
   }
 }
+
+// class WordCard extends StatefulWidget {
+//   const WordCard({
+//     this.isCheckedSecondWord,
+//     this.toggleMainWord,
+//     this.titleMainWords,
+//     this.submitMainWord,
+//     this.isCheckedTitleMainWords,
+//     this.secondWordTitle,
+//     this.handleSubmitSecondWord,
+//     this.toggleSecondWords,
+//     this.translationTitle,
+//     this.isCheckedTranslation,
+//     this.toggleTranslation,
+//     this.handleSubmitTranslation,
+//     this.onTap,
+//   });
+
+//   final Function onTap;
+//   //MainWord
+//   final String titleMainWords;
+//   final bool isCheckedTitleMainWords;
+//   final Function submitMainWord;
+//   final Function toggleMainWord;
+
+//   //secondWord
+//   final String secondWordTitle;
+//   final bool isCheckedSecondWord;
+//   final Function handleSubmitSecondWord;
+//   final Function toggleSecondWords;
+
+//   //translation
+//   final String translationTitle;
+//   final bool isCheckedTranslation;
+//   final Function toggleTranslation;
+//   final Function handleSubmitTranslation;
+//   @override
+//   _WordCardState createState() => _WordCardState();
+// }
+
+// class _WordCardState extends State<WordCard> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: widget.onTap,
+//       child: Padding(
+//           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+//           child: Container(
+//             decoration: BoxDecoration(
+//               boxShadow: [
+//                 BoxShadow(
+//                     color: Color(0xFF878686),
+//                     blurRadius: 3.0,
+//                     spreadRadius: 1.0,
+//                     offset: Offset(1, 0.5))
+//               ],
+//               color: Colors.white,
+//               borderRadius: BorderRadius.all(Radius.circular(10)),
+//             ),
+//             child: Padding(
+//               padding: const EdgeInsets.all(20.0),
+//               child: Column(
+//                 children: <Widget>[
+//                   Padding(
+//                     padding: const EdgeInsets.only(bottom: 15),
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       children: <Widget>[
+//                         GestureDetector(
+//                           onTap: widget.toggleMainWord,
+//                           child: !widget.isCheckedTitleMainWords
+//                               ? ReusableTextFieldContainer(
+//                                   height: 50,
+//                                   width: 100,
+//                                   title: widget.titleMainWords,
+//                                   handleSubmit: widget.submitMainWord,
+//                                   fontSize: 25.0,
+//                                   color: Color(0xFFF8b6b6),
+//                                 )
+//                               : ReusableTextContainer(
+//                                   height: 30,
+//                                   width: 100,
+//                                   title: widget.titleMainWords,
+//                                   fontSize: 25.0,
+//                                   color: Color(0xFFF8b6b6),
+//                                 ),
+//                         ),
+//                         GestureDetector(
+//                           onTap: widget.toggleSecondWords,
+//                           child: widget.isCheckedSecondWord
+//                               ? Container(
+//                                   child: Text(widget.secondWordTitle),
+//                                 )
+//                               : ReusableTextFieldContainer(
+//                                   title: widget.secondWordTitle,
+//                                   handleSubmit: widget.handleSubmitSecondWord,
+//                                   width: 100,
+//                                 ),
+//                         ),
+//                         Container(
+//                           child: FittedBox(
+//                               alignment: Alignment.center,
+//                               child: Text('50%',
+//                                   style: TextStyle(
+//                                       fontSize: 3.0,
+//                                       color: Colors.red.withOpacity(0.5)))),
+//                           width: 30,
+//                           height: 30,
+//                           decoration: BoxDecoration(
+//                               borderRadius:
+//                                   BorderRadius.all(Radius.circular(50)),
+//                               gradient: LinearGradient(
+//                                 begin: Alignment.bottomCenter,
+//                                 end: Alignment.topCenter,
+//                                 stops: [0.5, 0.5],
+//                                 colors: [Colors.green, Color(0xFFf0f3f8)],
+//                               )),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                   Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                     children: <Widget>[
+//                       GestureDetector(
+//                         child: GestureDetector(
+//                             onTap: widget.toggleTranslation,
+//                             child: widget.isCheckedTranslation
+//                                 ? ReusableTextContainer(
+//                                     height: 25,
+//                                     width: 230,
+//                                     title: widget.translationTitle,
+//                                     fontSize: 15.0,
+//                                     color: Color(0xFFc9c97e),
+//                                   )
+//                                 : ReusableTextFieldContainer(
+//                                     title: widget.translationTitle,
+//                                     fontSize: 15.0,
+//                                     color: Color(0xFFc9c97e),
+//                                     width: 220,
+//                                     handleSubmit:
+//                                         widget.handleSubmitTranslation)),
+//                       ),
+//           Checkbox(
+//             visualDensity:
+//                 VisualDensity(horizontal: -4, vertical: -4),
+//             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+//             value: false,
+//             onChanged: null,
+//           ),
+//         ],
+//       ),
+//     ],
+//   ),
+// ),
+//           )),
+//     );
+//   }
+// }
