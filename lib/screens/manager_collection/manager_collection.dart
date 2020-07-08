@@ -97,63 +97,34 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                   key: Key(item),
                   direction: DismissDirection.endToStart,
                   child: WordCard(
-                      // Here when we prees on word card, a diolog windo pops up
+                      // Here when we prees on word card, a diolog window pops up
                       onTap: () {
+                        /* when we prees on WordCard, we pass an id of this WordCard to provider_data,
+                          in provider_data Function choosePictureInProvider takes that id and send it to words_data throught 
+                          Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
+                        */
+                        providerData.wordsData[index].choosePictureInProvider(
+                            providerData.wordsData[index].id);
                         showDialog(
-                            context: context,
-                            builder: (context) {
-                              return Dialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0)),
-                                child: Container(
-                                  height: 500.0,
-                                  width: 380.0,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 30,
-                                    ),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 30),
-                                          child: Container(
-                                            height: 150,
-                                            width: 150,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'images/summer.jpg'),
-                                                  fit: BoxFit.cover),
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                          ),
-                                        ),
-                                        // SizedBox(height: 15.0),
-                                        DialogTextHolderContainer(
-                                            textTitleName: 'Summer',
-                                            fontSize: 20),
-                                        SizedBox(height: 15.0),
-                                        DialogTextHolderContainer(
-                                            textTitleName: '夏天', fontSize: 20),
-                                        SizedBox(height: 15.0),
-                                        DialogTextHolderContainer(
-                                            textTitleName: 'Лето',
-                                            fontSize: 18.0),
-                                        SizedBox(height: 20.0),
-                                        DialogTextHolderContainer(
-                                            textTitleName:
-                                                'Example: It was an amazing summer'),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            });
+                          context: context,
+                          builder: (context) {
+                            return DialogWindow(
+                              // Titles Name
+                              mainWordTitle:
+                                  providerData.wordsData[index].mainWordTitle,
+                              secondWordTitle:
+                                  providerData.wordsData[index].secondWordTitle,
+                              translationTitle: providerData
+                                  .wordsData[index].translationTitle,
+                              // WordsPicture
+                              wordPicture:
+                                  providerData.wordsData[index].wordCardPicture,
+                            );
+                          },
+                        );
                       },
                       //Main word
-                      titleMainWords:
+                      mainWordTitle:
                           providerData.wordsData[index].mainWordTitle,
                       isCheckedTitleMainWords:
                           providerData.wordsData[index].checkMainWordTitle,
@@ -209,6 +180,62 @@ class _ManagerCollectionState extends State<ManagerCollection> {
   }
 }
 
+class DialogWindow extends StatelessWidget {
+  const DialogWindow(
+      {this.mainWordTitle,
+      this.secondWordTitle,
+      this.translationTitle,
+      this.wordPicture});
+  final String mainWordTitle;
+  final String secondWordTitle;
+  final String translationTitle;
+  final String wordPicture;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+      child: Container(
+        height: 500.0,
+        width: 380.0,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 30,
+          ),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                child: Container(
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(wordPicture), fit: BoxFit.cover),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              // SizedBox(height: 15.0),
+              DialogTextHolderContainer(
+                  textTitleName: mainWordTitle, fontSize: 20),
+              SizedBox(height: 15.0),
+              DialogTextHolderContainer(
+                  textTitleName: secondWordTitle, fontSize: 20),
+              SizedBox(height: 15.0),
+              DialogTextHolderContainer(
+                  textTitleName: translationTitle, fontSize: 18.0),
+              SizedBox(height: 20.0),
+              DialogTextHolderContainer(
+                  textTitleName: 'Example: It was an amazing summer'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class DialogTextHolderContainer extends StatelessWidget {
   DialogTextHolderContainer({this.textTitleName, this.fontSize});
   final String textTitleName;
@@ -243,7 +270,7 @@ class WordCard extends StatefulWidget {
   const WordCard({
     this.isCheckedSecondWord,
     this.toggleMainWord,
-    this.titleMainWords,
+    this.mainWordTitle,
     this.submitMainWord,
     this.isCheckedTitleMainWords,
     this.secondWordTitle,
@@ -258,7 +285,7 @@ class WordCard extends StatefulWidget {
 
   final Function onTap;
   //MainWord
-  final String titleMainWords;
+  final String mainWordTitle;
   final bool isCheckedTitleMainWords;
   final Function submitMainWord;
   final Function toggleMainWord;
@@ -321,7 +348,7 @@ class _WordCardState extends State<WordCard> {
                             ? ReusableTextFieldContainer(
                                 height: 50,
                                 width: 100,
-                                title: widget.titleMainWords,
+                                title: widget.mainWordTitle,
                                 handleSubmit: widget.submitMainWord,
                                 fontSize: 25.0,
                                 color: Color(0xFFF8b6b6),
@@ -329,7 +356,7 @@ class _WordCardState extends State<WordCard> {
                             : ReusableTextContainer(
                                 height: 30,
                                 width: 100,
-                                title: widget.titleMainWords,
+                                title: widget.mainWordTitle,
                                 fontSize: 25.0,
                                 color: Color(0xFFF8b6b6),
                               ),

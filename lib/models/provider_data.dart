@@ -46,25 +46,36 @@ class ProviderData extends ChangeNotifier {
   // ManagerCollection
   List<WordsData> wordsData = [
     WordsData(
+        id: 1,
         mainWordTitle: 'Summer',
         secondWordTitle: '夏天',
-        translationTitle: 'Лето'),
+        translationTitle: 'Лето',
+        mainWordTitlePicture: 'images/Summer.jpg'),
     WordsData(
+        id: 2,
         mainWordTitle: 'Winter',
         secondWordTitle: '冬天',
-        translationTitle: 'Зима'),
+        translationTitle: 'Зима',
+        secondWordTitlePicture: 'images/Winter.jpeg'),
     WordsData(
+        id: 3,
         mainWordTitle: 'Spring',
         secondWordTitle: '春天',
-        translationTitle: 'Весна')
+        translationTitle: 'Весна',
+        translationTitlePicture: 'images/Spring.jpeg')
   ];
+
+  void choosePictureInProvider(WordsData words, int id) {
+    words.choosePictureInProvider(id);
+    notifyListeners();
+  }
 
   void togglingMainWord(WordsData words) {
     words.toggleMainWords();
     notifyListeners();
   }
 
-  void handleSubmitMainWords(value, WordsData words) {
+  void handleSubmitMainWords(dynamic value, WordsData words) {
     words.changeMainWordTitle(value);
     words.toggleMainWords();
     notifyListeners();
