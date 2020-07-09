@@ -1,13 +1,14 @@
 class WordsData {
-  WordsData(
-      {this.mainWordTitle,
-      this.secondWordTitle,
-      this.translationTitle,
-      this.mainWordTitlePicture,
-      this.secondWordTitlePicture,
-      this.translationTitlePicture,
-      this.id,
-      this.wordCardPicture});
+  WordsData({
+    this.mainWordTitle,
+    this.secondWordTitle,
+    this.translationTitle,
+    this.mainWordTitlePicture,
+    this.secondWordTitlePicture,
+    this.translationTitlePicture,
+    this.id,
+    this.wordCardPicture,
+  });
 
   int id;
   String wordCardPicture;
@@ -17,6 +18,7 @@ class WordsData {
   bool checkMainWordTitle = true;
   bool checkSecondWordTitle = true;
   bool checkTranslationTitle = true;
+  bool checkExampleTitle = true;
   String mainWordTitlePicture;
   String secondWordTitlePicture;
   String translationTitlePicture;

@@ -5,8 +5,6 @@ import 'package:words_app/constnts/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/models/provider_data.dart';
 import 'package:provider/provider.dart';
-import 'components/reusable_text_container.dart';
-import 'components/reusable_text_field_container.dart';
 import 'package:words_app/screens/card_creater/card_creater.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
 
@@ -84,7 +82,6 @@ class _ManagerCollectionState extends State<ManagerCollection> {
               itemBuilder: (context, index) {
                 final item = providerData.wordsData[index].mainWordTitle;
 
-                // final item = temporaryData[index];
                 return Dismissible(
                   background: Container(
                     alignment: Alignment.centerRight,
@@ -97,79 +94,108 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                   key: Key(item),
                   direction: DismissDirection.endToStart,
                   child: WordCard(
-                      // Here when we prees on word card, a diolog window pops up
-                      onTap: () {
-                        /* when we prees on WordCard, we pass an id of this WordCard to provider_data,
+                    // Here when we prees on word card, a diolog window pops up
+                    onTap: () {
+                      /* when we prees on WordCard, we pass an id of this WordCard to provider_data,
                           in provider_data Function choosePictureInProvider takes that id and send it to words_data throught 
                           Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
                         */
-                        providerData.wordsData[index].choosePictureInProvider(
-                            providerData.wordsData[index].id);
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return DialogWindow(
-                              // Titles Name
-                              mainWordTitle:
-                                  providerData.wordsData[index].mainWordTitle,
-                              secondWordTitle:
-                                  providerData.wordsData[index].secondWordTitle,
-                              translationTitle: providerData
-                                  .wordsData[index].translationTitle,
-                              // WordsPicture
-                              wordPicture:
-                                  providerData.wordsData[index].wordCardPicture,
-                            );
-                          },
-                        );
-                      },
-                      //Main word
-                      mainWordTitle:
-                          providerData.wordsData[index].mainWordTitle,
-                      isCheckedTitleMainWords:
-                          providerData.wordsData[index].checkMainWordTitle,
-                      toggleMainWord: () {
-                        providerData.togglingMainWord(
-                          providerData.wordsData[index],
-                        );
-                      },
-                      submitMainWord: (value) {
-                        providerData.handleSubmitMainWords(
-                          value,
-                          providerData.wordsData[index],
-                        );
-                      },
+                      providerData.wordsData[index].choosePictureInProvider(
+                          providerData.wordsData[index].id);
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0)),
+                            content:
+                                StatefulBuilder(builder: (context, setState) {
+                              return DialogWindow(
+                                // MainWord
+                                mainWordTitle:
+                                    providerData.wordsData[index].mainWordTitle,
+                                isCheckedTitleMainWords: providerData
+                                    .wordsData[index].checkMainWordTitle,
+                                toggleMainWord: () {
+                                  setState(() {
+                                    print(providerData
+                                        .wordsData[index].checkMainWordTitle);
+                                    providerData.togglingMainWord(
+                                      providerData.wordsData[index],
+                                    );
+                                  });
+                                },
+                                submitMainWord: (value) {
+                                  setState(() {
+                                    providerData.handleSubmitMainWords(
+                                      value,
+                                      providerData.wordsData[index],
+                                    );
+                                  });
+                                },
 
-                      //Second word
-                      isCheckedSecondWord:
-                          providerData.wordsData[index].checkSecondWordTitle,
-                      secondWordTitle:
-                          providerData.wordsData[index].secondWordTitle,
-                      handleSubmitSecondWord: (value) {
-                        providerData.handleSubmitSecondWords(
-                          value,
-                          providerData.wordsData[index],
-                        );
-                      },
-                      toggleSecondWords: () {
-                        providerData.togglingSecondWord(
-                          providerData.wordsData[index],
-                        );
-                      },
+                                // SecondWord
+                                secondWordTitle: providerData
+                                    .wordsData[index].secondWordTitle,
+                                isCheckedSecondWord: providerData
+                                    .wordsData[index].checkSecondWordTitle,
+                                toggleSecondWord: () {
+                                  setState(() {
+                                    providerData.togglingSecondWord(
+                                      providerData.wordsData[index],
+                                    );
+                                  });
+                                },
+                                submitSecondWord: (value) {
+                                  providerData.handleSubmitSecondWords(
+                                    value,
+                                    providerData.wordsData[index],
+                                  );
+                                },
 
-                      //translation
-                      translationTitle:
-                          providerData.wordsData[index].translationTitle,
-                      isCheckedTranslation:
-                          providerData.wordsData[index].checkTranslationTitle,
-                      toggleTranslation: () {
-                        providerData
-                            .togglingTranslation(providerData.wordsData[index]);
-                      },
-                      handleSubmitTranslation: (value) {
-                        providerData.handleSubmitTranslation(
-                            value, providerData.wordsData[index]);
-                      }),
+                                // Translation Word
+                                translationTitle: providerData
+                                    .wordsData[index].translationTitle,
+                                isCheckedTranslation: providerData
+                                    .wordsData[index].checkTranslationTitle,
+                                toggleTranslation: () {
+                                  setState(() {
+                                    providerData.togglingTranslation(
+                                        providerData.wordsData[index]);
+                                  });
+                                },
+                                submitTranslation: (value) {
+                                  setState(() {
+                                    providerData.handleSubmitTranslation(
+                                        value, providerData.wordsData[index]);
+                                  });
+                                },
+
+                                // Example
+                                isCheckExampleTitle: providerData
+                                    .wordsData[index].checkExampleTitle,
+
+                                // WordsPicture
+                                wordPicture: providerData
+                                    .wordsData[index].wordCardPicture,
+                              );
+                            }),
+                          );
+                        },
+                      );
+                    },
+                    //Main word
+                    mainWordTitle: providerData.wordsData[index].mainWordTitle,
+
+                    //Second word
+
+                    secondWordTitle:
+                        providerData.wordsData[index].secondWordTitle,
+
+                    // Translation
+                    translationTitle:
+                        providerData.wordsData[index].translationTitle,
+                  ),
                 );
               },
             ),
@@ -181,70 +207,118 @@ class _ManagerCollectionState extends State<ManagerCollection> {
 }
 
 class DialogWindow extends StatelessWidget {
-  const DialogWindow(
-      {this.mainWordTitle,
-      this.secondWordTitle,
-      this.translationTitle,
-      this.wordPicture});
+  const DialogWindow({
+    this.mainWordTitle,
+    this.secondWordTitle,
+    this.translationTitle,
+    this.wordPicture,
+    this.isCheckedTitleMainWords,
+    this.isCheckedSecondWord,
+    this.isCheckedTranslation,
+    this.isCheckExampleTitle,
+    this.toggleMainWord,
+    this.submitMainWord,
+    this.submitSecondWord,
+    this.toggleSecondWord,
+    this.toggleTranslation,
+    this.submitTranslation,
+  });
+  // MainWord
   final String mainWordTitle;
+  final bool isCheckedTitleMainWords;
+  final Function toggleMainWord;
+  final Function submitMainWord;
+  // SecondWord
   final String secondWordTitle;
+  final bool isCheckedSecondWord;
+  final Function submitSecondWord;
+  final Function toggleSecondWord;
+  // Translation
   final String translationTitle;
+  final bool isCheckedTranslation;
+  final Function toggleTranslation;
+  final Function submitTranslation;
+
+  final bool isCheckExampleTitle;
   final String wordPicture;
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      child: Container(
-        height: 500.0,
-        width: 380.0,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 30,
-          ),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30),
-                child: Container(
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(wordPicture), fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+    return Container(
+      height: 450.0,
+      width: 380.0,
+      child: Column(
+        children: <Widget>[
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Container(
+                height: 150,
+                width: 150,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(wordPicture), fit: BoxFit.cover),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              // SizedBox(height: 15.0),
-              DialogTextHolderContainer(
-                  textTitleName: mainWordTitle, fontSize: 20),
-              SizedBox(height: 15.0),
-              DialogTextHolderContainer(
-                  textTitleName: secondWordTitle, fontSize: 20),
-              SizedBox(height: 15.0),
-              DialogTextHolderContainer(
-                  textTitleName: translationTitle, fontSize: 18.0),
-              SizedBox(height: 20.0),
-              DialogTextHolderContainer(
-                  textTitleName: 'Example: It was an amazing summer'),
-            ],
+            ),
           ),
-        ),
+          DialogTextHolderContainer(
+            textTitleName: mainWordTitle,
+            fontSize: 20,
+            isCheckedTitlNameWords: isCheckedTitleMainWords,
+            onPressedEditWordButton: toggleMainWord,
+            editingSubmit: submitMainWord,
+          ),
+          SizedBox(height: 10.0),
+          DialogTextHolderContainer(
+            textTitleName: secondWordTitle,
+            fontSize: 20,
+            isCheckedTitlNameWords: isCheckedSecondWord,
+            onPressedEditWordButton: toggleSecondWord,
+            editingSubmit: submitSecondWord,
+          ),
+          SizedBox(height: 10.0),
+          DialogTextHolderContainer(
+            textTitleName: translationTitle,
+            fontSize: 18.0,
+            isCheckedTitlNameWords: isCheckedTranslation,
+            onPressedEditWordButton: toggleTranslation,
+            editingSubmit: submitTranslation,
+          ),
+          SizedBox(height: 15.0),
+          DialogTextHolderContainer(
+            textTitleName: 'Example: It was an amazing summer',
+            height: 80,
+            isCheckedTitlNameWords: isCheckExampleTitle,
+          ),
+        ],
       ),
     );
   }
 }
 
 class DialogTextHolderContainer extends StatelessWidget {
-  DialogTextHolderContainer({this.textTitleName, this.fontSize});
+  DialogTextHolderContainer({
+    this.textTitleName,
+    this.fontSize,
+    this.isCheckedTitlNameWords,
+    this.height = 45,
+    this.onPressedEditWordButton,
+    this.editingSubmit,
+  });
   final String textTitleName;
   final double fontSize;
+  final bool isCheckedTitlNameWords;
+  final double height;
+  final Function onPressedEditWordButton;
+  final Function editingSubmit;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      key: UniqueKey(),
+      height: height,
       // width: 200,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -256,9 +330,29 @@ class DialogTextHolderContainer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
-              child: Text(textTitleName, style: TextStyle(fontSize: fontSize)),
+              child: !isCheckedTitlNameWords
+                  ? TextField(
+                      autofocus: true,
+                      textAlign: TextAlign.start,
+                      controller: TextEditingController(text: textTitleName),
+                      style: TextStyle(fontSize: fontSize),
+                      decoration: InputDecoration(border: InputBorder.none),
+                      onSubmitted: editingSubmit,
+                    )
+                  : SizedBox(
+                      width: 200,
+                      child: FittedBox(
+                        alignment: Alignment.centerLeft,
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          textTitleName,
+                          style: TextStyle(fontSize: fontSize),
+                        ),
+                      ),
+                    ),
             ),
-            IconButton(icon: Icon(Icons.edit), onPressed: null),
+            IconButton(
+                icon: Icon(Icons.edit), onPressed: onPressedEditWordButton),
           ],
         ),
       ),
@@ -268,39 +362,17 @@ class DialogTextHolderContainer extends StatelessWidget {
 
 class WordCard extends StatefulWidget {
   const WordCard({
-    this.isCheckedSecondWord,
-    this.toggleMainWord,
     this.mainWordTitle,
-    this.submitMainWord,
-    this.isCheckedTitleMainWords,
     this.secondWordTitle,
-    this.handleSubmitSecondWord,
-    this.toggleSecondWords,
     this.translationTitle,
-    this.isCheckedTranslation,
-    this.toggleTranslation,
-    this.handleSubmitTranslation,
     this.onTap,
   });
 
   final Function onTap;
-  //MainWord
   final String mainWordTitle;
-  final bool isCheckedTitleMainWords;
-  final Function submitMainWord;
-  final Function toggleMainWord;
-
-  //secondWord
   final String secondWordTitle;
-  final bool isCheckedSecondWord;
-  final Function handleSubmitSecondWord;
-  final Function toggleSecondWords;
-
-  //translation
   final String translationTitle;
-  final bool isCheckedTranslation;
-  final Function toggleTranslation;
-  final Function handleSubmitTranslation;
+
   @override
   _WordCardState createState() => _WordCardState();
 }
@@ -342,39 +414,26 @@ class _WordCardState extends State<WordCard> {
                           onChanged: null,
                         ),
                       ),
-                      GestureDetector(
-                        onTap: widget.toggleMainWord,
-                        child: !widget.isCheckedTitleMainWords
-                            ? ReusableTextFieldContainer(
-                                height: 50,
-                                width: 100,
-                                title: widget.mainWordTitle,
-                                handleSubmit: widget.submitMainWord,
-                                fontSize: 25.0,
-                                color: Color(0xFFF8b6b6),
-                              )
-                            : ReusableTextContainer(
-                                height: 30,
-                                width: 100,
-                                title: widget.mainWordTitle,
-                                fontSize: 25.0,
-                                color: Color(0xFFF8b6b6),
-                              ),
+                      //Main word container
+                      Container(
+                        height: 30,
+                        width: 100,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(widget.mainWordTitle,
+                              style: TextStyle(
+                                  fontSize: 25.0, color: Color(0xFFF8b6b6))),
+                        ),
                       ),
                     ],
                   ),
-                  GestureDetector(
-                    onTap: widget.toggleSecondWords,
-                    child: widget.isCheckedSecondWord
-                        ? Container(
-                            child: Text(widget.secondWordTitle),
-                          )
-                        : ReusableTextFieldContainer(
-                            title: widget.secondWordTitle,
-                            handleSubmit: widget.handleSubmitSecondWord,
-                            width: 100,
-                          ),
+                  // Translation word container
+                  Expanded(
+                    child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(widget.translationTitle)),
                   ),
+                  // Picture
                   IconButton(icon: Icon(Icons.photo), onPressed: null),
                 ],
               ),
@@ -384,11 +443,97 @@ class _WordCardState extends State<WordCard> {
   }
 }
 
+// class DialogWindow extends StatelessWidget {
+//   const DialogWindow(
+//       {this.mainWordTitle,
+//       this.secondWordTitle,
+//       this.translationTitle,
+//       this.wordPicture});
+//   final String mainWordTitle;
+//   final String secondWordTitle;
+//   final String translationTitle;
+//   final String wordPicture;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Dialog(
+//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+//       child: Container(
+//         height: 500.0,
+//         width: 380.0,
+//         child: Padding(
+//           padding: const EdgeInsets.symmetric(
+//             horizontal: 30,
+//           ),
+//           child: Column(
+//             children: <Widget>[
+//               Padding(
+//                 padding: const EdgeInsets.symmetric(vertical: 30),
+//                 child: Container(
+//                   height: 150,
+//                   width: 150,
+//                   decoration: BoxDecoration(
+//                     image: DecorationImage(
+//                         image: AssetImage(wordPicture), fit: BoxFit.cover),
+//                     borderRadius: BorderRadius.circular(10),
+//                   ),
+//                 ),
+//               ),
+//               // SizedBox(height: 15.0),
+//               DialogTextHolderContainer(
+//                   textTitleName: mainWordTitle, fontSize: 20),
+//               SizedBox(height: 15.0),
+//               DialogTextHolderContainer(
+//                   textTitleName: secondWordTitle, fontSize: 20),
+//               SizedBox(height: 15.0),
+//               DialogTextHolderContainer(
+//                   textTitleName: translationTitle, fontSize: 18.0),
+//               SizedBox(height: 20.0),
+//               DialogTextHolderContainer(
+//                   textTitleName: 'Example: It was an amazing summer'),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class DialogTextHolderContainer extends StatelessWidget {
+//   DialogTextHolderContainer({this.textTitleName, this.fontSize});
+//   final String textTitleName;
+//   final double fontSize;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: 40,
+//       // width: 200,
+//       decoration: BoxDecoration(
+//         borderRadius: BorderRadius.circular(10),
+//         color: Colors.grey[200],
+//       ),
+//       child: Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 10),
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: <Widget>[
+//             Expanded(
+//               child: Text(textTitleName, style: TextStyle(fontSize: fontSize)),
+//             ),
+//             IconButton(icon: Icon(Icons.edit), onPressed: null),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 // class WordCard extends StatefulWidget {
 //   const WordCard({
 //     this.isCheckedSecondWord,
 //     this.toggleMainWord,
-//     this.titleMainWords,
+//     this.mainWordTitle,
 //     this.submitMainWord,
 //     this.isCheckedTitleMainWords,
 //     this.secondWordTitle,
@@ -403,7 +548,7 @@ class _WordCardState extends State<WordCard> {
 
 //   final Function onTap;
 //   //MainWord
-//   final String titleMainWords;
+//   final String mainWordTitle;
 //   final bool isCheckedTitleMainWords;
 //   final Function submitMainWord;
 //   final Function toggleMainWord;
@@ -444,100 +589,59 @@ class _WordCardState extends State<WordCard> {
 //             ),
 //             child: Padding(
 //               padding: const EdgeInsets.all(20.0),
-//               child: Column(
+//               child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                 children: <Widget>[
-//                   Padding(
-//                     padding: const EdgeInsets.only(bottom: 15),
-//                     child: Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                       children: <Widget>[
-//                         GestureDetector(
-//                           onTap: widget.toggleMainWord,
-//                           child: !widget.isCheckedTitleMainWords
-//                               ? ReusableTextFieldContainer(
-//                                   height: 50,
-//                                   width: 100,
-//                                   title: widget.titleMainWords,
-//                                   handleSubmit: widget.submitMainWord,
-//                                   fontSize: 25.0,
-//                                   color: Color(0xFFF8b6b6),
-//                                 )
-//                               : ReusableTextContainer(
-//                                   height: 30,
-//                                   width: 100,
-//                                   title: widget.titleMainWords,
-//                                   fontSize: 25.0,
-//                                   color: Color(0xFFF8b6b6),
-//                                 ),
-//                         ),
-//                         GestureDetector(
-//                           onTap: widget.toggleSecondWords,
-//                           child: widget.isCheckedSecondWord
-//                               ? Container(
-//                                   child: Text(widget.secondWordTitle),
-//                                 )
-//                               : ReusableTextFieldContainer(
-//                                   title: widget.secondWordTitle,
-//                                   handleSubmit: widget.handleSubmitSecondWord,
-//                                   width: 100,
-//                                 ),
-//                         ),
-//                         Container(
-//                           child: FittedBox(
-//                               alignment: Alignment.center,
-//                               child: Text('50%',
-//                                   style: TextStyle(
-//                                       fontSize: 3.0,
-//                                       color: Colors.red.withOpacity(0.5)))),
-//                           width: 30,
-//                           height: 30,
-//                           decoration: BoxDecoration(
-//                               borderRadius:
-//                                   BorderRadius.all(Radius.circular(50)),
-//                               gradient: LinearGradient(
-//                                 begin: Alignment.bottomCenter,
-//                                 end: Alignment.topCenter,
-//                                 stops: [0.5, 0.5],
-//                                 colors: [Colors.green, Color(0xFFf0f3f8)],
-//                               )),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
 //                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                     children: <Widget>[
-//                       GestureDetector(
-//                         child: GestureDetector(
-//                             onTap: widget.toggleTranslation,
-//                             child: widget.isCheckedTranslation
-//                                 ? ReusableTextContainer(
-//                                     height: 25,
-//                                     width: 230,
-//                                     title: widget.translationTitle,
-//                                     fontSize: 15.0,
-//                                     color: Color(0xFFc9c97e),
-//                                   )
-//                                 : ReusableTextFieldContainer(
-//                                     title: widget.translationTitle,
-//                                     fontSize: 15.0,
-//                                     color: Color(0xFFc9c97e),
-//                                     width: 220,
-//                                     handleSubmit:
-//                                         widget.handleSubmitTranslation)),
+//                       Padding(
+//                         padding: const EdgeInsets.only(right: 10),
+//                         child: Checkbox(
+//                           visualDensity:
+//                               VisualDensity(horizontal: -4, vertical: -4),
+//                           materialTapTargetSize:
+//                               MaterialTapTargetSize.shrinkWrap,
+//                           value: false,
+//                           onChanged: null,
+//                         ),
 //                       ),
-//           Checkbox(
-//             visualDensity:
-//                 VisualDensity(horizontal: -4, vertical: -4),
-//             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-//             value: false,
-//             onChanged: null,
-//           ),
-//         ],
-//       ),
-//     ],
-//   ),
-// ),
+//                       GestureDetector(
+//                         onTap: widget.toggleMainWord,
+//                         child: !widget.isCheckedTitleMainWords
+//                             ? ReusableTextFieldContainer(
+//                                 height: 50,
+//                                 width: 100,
+//                                 title: widget.mainWordTitle,
+//                                 handleSubmit: widget.submitMainWord,
+//                                 fontSize: 25.0,
+//                                 color: Color(0xFFF8b6b6),
+//                               )
+//                             : ReusableTextContainer(
+//                                 height: 30,
+//                                 width: 100,
+//                                 title: widget.mainWordTitle,
+//                                 fontSize: 25.0,
+//                                 color: Color(0xFFF8b6b6),
+//                               ),
+//                       ),
+//                     ],
+//                   ),
+//                   GestureDetector(
+//                     onTap: widget.toggleSecondWords,
+//                     child: widget.isCheckedSecondWord
+//                         ? Container(
+//                             child: Text(widget.secondWordTitle),
+//                           )
+//                         : ReusableTextFieldContainer(
+//                             title: widget.secondWordTitle,
+//                             handleSubmit: widget.handleSubmitSecondWord,
+//                             width: 100,
+//                           ),
+//                   ),
+//                   IconButton(icon: Icon(Icons.photo), onPressed: null),
+//                 ],
+//               ),
+//             ),
 //           )),
 //     );
 //   }
