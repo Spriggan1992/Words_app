@@ -19,6 +19,7 @@ class WordsData {
   bool checkSecondWordTitle = true;
   bool checkTranslationTitle = true;
   bool checkExampleTitle = true;
+  bool checkShwoPicture = true;
   String mainWordTitlePicture;
   String secondWordTitlePicture;
   String translationTitlePicture;
@@ -45,6 +46,10 @@ class WordsData {
 
   void toggleTranslations() {
     checkTranslationTitle = !checkTranslationTitle;
+  }
+
+  void toggleShowPicture() {
+    checkShwoPicture = !checkShwoPicture;
   }
 
   void changeMainWordTitle(String newName) {

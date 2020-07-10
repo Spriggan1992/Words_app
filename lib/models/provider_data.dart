@@ -102,6 +102,11 @@ class ProviderData extends ChangeNotifier {
     words.toggleTranslations();
     notifyListeners();
   }
+
+  void togglingShowPicture(WordsData words) {
+    words.toggleShowPicture();
+    notifyListeners();
+  }
 }
 
 // void submitText(dynamic value, WordsData words, bool id) {
