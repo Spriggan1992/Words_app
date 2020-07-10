@@ -62,8 +62,21 @@ class ProviderData extends ChangeNotifier {
         mainWordTitle: 'Spring',
         secondWordTitle: '春天',
         translationTitle: 'Весна',
-        translationTitlePicture: 'images/Spring.jpeg')
+        translationTitlePicture: 'images/Spring.jpeg'),
   ];
+  //CardCreater
+  void addNewWordCard(String main, String second, String translation, int newId,
+      String picture) {
+    final wordCard = WordsData(
+        mainWordTitle: main,
+        secondWordTitle: second,
+        translationTitle: translation,
+        id: newId,
+        translationTitlePicture: picture);
+
+    wordsData.add(wordCard);
+    notifyListeners();
+  }
 
   void choosePictureInProvider(WordsData words, int id) {
     words.choosePictureInProvider(id);

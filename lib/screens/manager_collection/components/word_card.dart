@@ -70,8 +70,9 @@ class WordCard extends StatelessWidget {
                   ),
                   // Translation word container
                   Expanded(
-                    child: FittedBox(
-                        fit: BoxFit.scaleDown, child: Text(translationTitle)),
+                    child: Container(
+                      child: Text(translationTitle),
+                    ),
                   ),
                   // Picture
                   GestureDetector(
