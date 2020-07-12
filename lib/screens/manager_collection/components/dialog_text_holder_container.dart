@@ -4,16 +4,16 @@ class DialogTextHolderContainer extends StatelessWidget {
   DialogTextHolderContainer({
     this.textTitleName,
     this.fontSize,
-    this.isCheckedTitlNameWords,
+    this.isCheckedTitleName,
     this.height = 45,
-    this.onPressedEditWordButton,
+    this.onPressedEditButton,
     this.editingSubmit,
   });
   final String textTitleName;
   final double fontSize;
-  final bool isCheckedTitlNameWords;
+  final bool isCheckedTitleName;
   final double height;
-  final Function onPressedEditWordButton;
+  final Function onPressedEditButton;
   final Function editingSubmit;
 
   @override
@@ -32,7 +32,7 @@ class DialogTextHolderContainer extends StatelessWidget {
           children: <Widget>[
             Expanded(
               // Editing title name. Show text field, or just a title name
-              child: !isCheckedTitlNameWords
+              child: !isCheckedTitleName
                   ? TextFormField(
                       autofocus: true,
                       textAlign: TextAlign.start,
@@ -55,8 +55,7 @@ class DialogTextHolderContainer extends StatelessWidget {
                       ),
                     ),
             ),
-            IconButton(
-                icon: Icon(Icons.edit), onPressed: onPressedEditWordButton),
+            IconButton(icon: Icon(Icons.edit), onPressed: onPressedEditButton),
           ],
         ),
       ),

@@ -1,43 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/models/box_collection_data.dart';
+import 'package:words_app/models/collections_data.dart';
 import 'package:words_app/models/words_data.dart';
 import 'dart:collection';
 
 class ProviderData extends ChangeNotifier {
   //listCollections
-  List<CollectionData> _boxCollectionData = [
-    CollectionData(collectionNameTitle: "nouns"),
-    CollectionData(collectionNameTitle: "verbs"),
-    CollectionData(collectionNameTitle: "adjectives")
+  List<Collection> _wordsCollectionData = [
+    Collection(title: "nouns"),
+    Collection(title: "verbs"),
+    Collection(title: "adjectives")
   ];
 
-  UnmodifiableListView<CollectionData> get boxCollectionData {
-    return UnmodifiableListView(_boxCollectionData);
+  UnmodifiableListView<Collection> get boxCollectionData {
+    return UnmodifiableListView(_wordsCollectionData);
   }
 
   void addNewCollection(String newCollection) {
-    final collection = CollectionData(collectionNameTitle: newCollection);
-    _boxCollectionData.add(collection);
+    final collection = Collection(title: newCollection);
+    _wordsCollectionData.add(collection);
     notifyListeners();
   }
 
-  void deleteCollection(CollectionData collection) {
-    _boxCollectionData.remove(collection);
+  void deleteCollection(Collection collection) {
+    _wordsCollectionData.remove(collection);
     notifyListeners();
   }
 
-  void chooseBetweenFrontBackContainers(CollectionData collection) {
+  void switchFrontBack(Collection collection) {
     collection.toggleCheckFrontBack();
     notifyListeners();
   }
 
-  void editText(CollectionData collection) {
+  void editText(Collection collection) {
     collection.toggleCheckTextEditing();
     collection.toggleCheckFrontBack();
     notifyListeners();
   }
 
-  void handleSubmitTextCollections(dynamic value, CollectionData collection) {
+  void handleSubmitEditTitle(dynamic value, Collection collection) {
     collection.changeCollectionName(value);
     collection.toggleCheckTextEditing();
     notifyListeners();
@@ -47,30 +47,30 @@ class ProviderData extends ChangeNotifier {
   List<WordsData> wordsData = [
     WordsData(
         id: 1,
-        mainWordTitle: 'Summer',
-        secondWordTitle: '夏天',
-        translationTitle: 'Лето',
+        word1: 'Summer',
+        word2: '夏天',
+        translation: 'Лето',
         mainWordTitlePicture: 'images/Summer.jpg'),
     WordsData(
         id: 2,
-        mainWordTitle: 'Winter',
-        secondWordTitle: '冬天',
-        translationTitle: 'Зима',
+        word1: 'Winter',
+        word2: '冬天',
+        translation: 'Зима',
         secondWordTitlePicture: 'images/Winter.jpeg'),
     WordsData(
         id: 3,
-        mainWordTitle: 'Spring',
-        secondWordTitle: '春天',
-        translationTitle: 'Весна',
+        word1: 'Spring',
+        word2: '春天',
+        translation: 'Весна',
         translationTitlePicture: 'images/Spring.jpeg'),
   ];
   //CardCreater
   void addNewWordCard(String main, String second, String translation, int newId,
       String picture) {
     final wordCard = WordsData(
-        mainWordTitle: main,
-        secondWordTitle: second,
-        translationTitle: translation,
+        word1: main,
+        word2: second,
+        translation: translation,
         id: newId,
         translationTitlePicture: picture);
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/components/base_appbar.dart';
-import 'package:words_app/constnts/constants.dart';
+import 'package:words_app/constants/constants.dart';
 import 'package:words_app/screens/result_screen/result_screen.dart';
 
 class Training extends StatelessWidget {

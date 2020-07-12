@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/components/base_appbar.dart';
-import 'components/box_collection.dart';
-import 'package:words_app/constnts/constants.dart';
+import 'components/words_collection.dart';
+import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
-import 'package:words_app/screens/manager_collection/manager_collection.dart';
+import 'package:words_app/screens/manager_collection/collection_manager.dart';
 import 'package:words_app/screens/create_box_collection_screen/create_box_collection_screen.dart';
 import 'package:words_app/models/provider_data.dart';
 import 'package:provider/provider.dart';
 
-class ListCollection extends StatelessWidget {
+class WordsCollectionsList extends StatelessWidget {
   static String id = 'ListCollection';
 
   Widget build(BuildContext context) {
@@ -63,51 +63,49 @@ class ListCollection extends StatelessWidget {
                 slivers: <Widget>[
                   SliverGrid(
                     delegate: SliverChildBuilderDelegate((context, index) {
-                      return BoxCollection(
-                        // Name of Collectons. Pass STRING collectionNameTitle from box_collection_data
-                        collectionTitleName: providerData
-                            .boxCollectionData[index].collectionNameTitle,
+                      var wordsCollectionData =
+                          providerData.boxCollectionData[index];
+                      return WordsCollection(
+                        // Name of Collections. Pass STRING collectionNameTitle from box_collection_data
+                        collectionTitleName: wordsCollectionData.title,
 
-                        /* Pass conditional  bool checkTextEditing from box_collection_data for check if 
+                        /* Pass conditional  bool checkTextEditing from box_collection_data for check if
                         checkTextEditing = true {show Text field} if false {show Text('collectionTitleName')}
                         */
-                        isCheckedTextEditing: providerData
-                            .boxCollectionData[index].checkTextEditing,
+                        isCheckedTextEditing:
+                            wordsCollectionData.checkTextEditing,
 
-                        /* Pass conditional checkFrontBack containers. Check if bool checkFrontBack = true 
-                        {show Front container}, if false{show Back container} 
+                        /* Pass conditional checkFrontBack containers. Check if bool checkFrontBack = true
+                        {show Front container}, if false{show Back container}
                         */
-                        isCheckedFrontBackContainers: providerData
-                            .boxCollectionData[index].checkFrontBack,
+                        isCheckedFrontBackContainers:
+                            wordsCollectionData.checkFrontBack,
 
                         // Just toggle bool checkFrontBack，thereby switching between Front and Backcontainers
                         chooseFrontBackContainers: () {
-                          providerData.chooseBetweenFrontBackContainers(
-                              providerData.boxCollectionData[index]);
+                          providerData.switchFrontBack(wordsCollectionData);
                         },
 
-                        /* Here we just toggle isCheckedTextEditing and check if isCheckedTextEditing = true 
+                        /* Here we just toggle isCheckedTextEditing and check if isCheckedTextEditing = true
                       {show Text Field} if false {show Text(collectionTitleName)}
                       */
                         editingText: () {
-                          providerData
-                              .editText(providerData.boxCollectionData[index]);
+                          providerData.editText(wordsCollectionData);
                         },
 
                         /* Takes value from TextField, when we submitted value it change collectionTitleName */
-                        onSubmite: (value) {
-                          providerData.handleSubmitTextCollections(
-                              value, providerData.boxCollectionData[index]);
+                        onSubmit: (value) {
+                          providerData.handleSubmitEditTitle(
+                              value, wordsCollectionData);
                         },
 
                         // Remove collection from data
                         deleteCollection: () {
-                          providerData.deleteCollection(
-                              providerData.boxCollectionData[index]);
+                          providerData.deleteCollection(wordsCollectionData);
                         },
 
                         goToManagerCollections: () {
-                          Navigator.pushNamed(context, ManagerCollection.id);
+                          Navigator.pushNamed(context, CollectionManager.id);
                         },
                       );
                     }, childCount: providerData.boxCollectionData.length),

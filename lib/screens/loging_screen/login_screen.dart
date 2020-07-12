@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/components/text_field_log_pass.dart';
-import 'package:words_app/screens/list_collection_screen/listCollection.dart';
-import 'package:words_app/constnts/constants.dart';
+import 'package:words_app/screens/list_collection_screen/words_collections_list_screen.dart';
+import 'package:words_app/constants/constants.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'first_screen';
@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   backgroundColor: Color(0xFFf0f3f8),
                   fontSize: 25,
                   onPressed: () =>
-                      Navigator.pushNamed(context, ListCollection.id),
+                      Navigator.pushNamed(context, WordsCollectionsList.id),
                 ),
               )
             ],

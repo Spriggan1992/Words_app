@@ -18,13 +18,13 @@ class DialogWindow extends StatelessWidget {
     this.toggleTranslation,
     this.submitTranslation,
   });
-  // MainWord
+  // Word1
   final String mainWordTitle;
   final bool isCheckedTitleMainWords;
   final Function toggleMainWord;
   final Function submitMainWord;
 
-  // SecondWord
+  // Word2
   final String secondWordTitle;
   final bool isCheckedSecondWord;
   final Function submitSecondWord;
@@ -64,8 +64,8 @@ class DialogWindow extends StatelessWidget {
           DialogTextHolderContainer(
             textTitleName: mainWordTitle,
             fontSize: 20,
-            isCheckedTitlNameWords: isCheckedTitleMainWords,
-            onPressedEditWordButton: toggleMainWord,
+            isCheckedTitleName: isCheckedTitleMainWords,
+            onPressedEditButton: toggleMainWord,
             editingSubmit: submitMainWord,
           ),
           SizedBox(height: 10.0),
@@ -74,8 +74,8 @@ class DialogWindow extends StatelessWidget {
           DialogTextHolderContainer(
             textTitleName: secondWordTitle,
             fontSize: 20,
-            isCheckedTitlNameWords: isCheckedSecondWord,
-            onPressedEditWordButton: toggleSecondWord,
+            isCheckedTitleName: isCheckedSecondWord,
+            onPressedEditButton: toggleSecondWord,
             editingSubmit: submitSecondWord,
           ),
           SizedBox(height: 10.0),
@@ -84,8 +84,8 @@ class DialogWindow extends StatelessWidget {
           DialogTextHolderContainer(
             textTitleName: translationTitle,
             fontSize: 18.0,
-            isCheckedTitlNameWords: isCheckedTranslation,
-            onPressedEditWordButton: toggleTranslation,
+            isCheckedTitleName: isCheckedTranslation,
+            onPressedEditButton: toggleTranslation,
             editingSubmit: submitTranslation,
           ),
           SizedBox(height: 15.0),
@@ -106,7 +106,7 @@ class DialogWindow extends StatelessWidget {
                   ),
                   DialogTextHolderContainer(
                     textTitleName: 'It was an amazing summer',
-                    isCheckedTitlNameWords: isCheckExampleTitle,
+                    isCheckedTitleName: isCheckExampleTitle,
                   )
                 ],
               ))

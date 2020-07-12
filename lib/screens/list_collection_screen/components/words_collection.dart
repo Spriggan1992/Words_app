@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class BoxCollection extends StatefulWidget {
-  BoxCollection(
+class WordsCollection extends StatefulWidget {
+  WordsCollection(
       {this.collectionTitleName,
       this.chooseFrontBackContainers,
       this.goToManagerCollections,
       this.isCheckedTextEditing,
       this.isCheckedFrontBackContainers,
-      this.onSubmite,
+      this.onSubmit,
       this.onChanged,
       this.editingText,
       this.deleteCollection});
@@ -17,16 +17,16 @@ class BoxCollection extends StatefulWidget {
   final Function goToManagerCollections;
   final bool isCheckedTextEditing;
   final bool isCheckedFrontBackContainers;
-  final Function onSubmite;
+  final Function onSubmit;
   final Function onChanged;
   final Function editingText;
   final Function deleteCollection;
 
   @override
-  _BoxCollectionState createState() => _BoxCollectionState();
+  _WordsCollectionState createState() => _WordsCollectionState();
 }
 
-class _BoxCollectionState extends State<BoxCollection>
+class _WordsCollectionState extends State<WordsCollection>
     with TickerProviderStateMixin {
   AnimationController controller;
   Animation<Offset> offsetAnimation;
@@ -94,7 +94,7 @@ class CollectionFront extends StatelessWidget {
     @required this.widget,
   }) : super(key: key);
 
-  final BoxCollection widget;
+  final WordsCollection widget;
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +167,7 @@ class CollectionFront extends StatelessWidget {
                                   fontSize: 20.0,
                                 ),
                                 autofocus: true,
-                                onSubmitted: widget.onSubmite,
+                                onSubmitted: widget.onSubmit,
                                 controller: TextEditingController(
                                   text: widget.collectionTitleName,
                                 ),
@@ -210,7 +210,7 @@ class CollectionBack extends StatelessWidget {
     @required this.widget,
   }) : super(key: key);
 
-  final BoxCollection widget;
+  final WordsCollection widget;
 
   @override
   Widget build(BuildContext context) {

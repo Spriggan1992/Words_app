@@ -1,7 +1,7 @@
-class CollectionData {
-  CollectionData({this.collectionNameTitle, checkTextEdit});
+class Collection {
+  Collection({this.title, checkTextEdit});
 
-  String collectionNameTitle;
+  String title;
   bool checkTextEditing = true;
   bool checkFrontBack = false;
 
@@ -14,6 +14,6 @@ class CollectionData {
   }
 
   void changeCollectionName(String newName) {
-    collectionNameTitle = newName;
+    title = newName;
   }
 }

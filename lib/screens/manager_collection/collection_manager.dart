@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/components/base_appbar.dart';
-import 'package:words_app/constnts/constants.dart';
+import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/models/provider_data.dart';
 import 'package:provider/provider.dart';
@@ -9,14 +9,14 @@ import 'package:words_app/screens/training_screen/training_screen.dart';
 import 'components/word_card.dart';
 import 'package:words_app/screens/manager_collection/components/dialog_window.dart';
 
-class ManagerCollection extends StatefulWidget {
+class CollectionManager extends StatefulWidget {
   static String id = 'collection_manager_screen';
 
   @override
-  _ManagerCollectionState createState() => _ManagerCollectionState();
+  _CollectionManagerState createState() => _CollectionManagerState();
 }
 
-class _ManagerCollectionState extends State<ManagerCollection> {
+class _CollectionManagerState extends State<CollectionManager> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ProviderData>(builder: (context, providerData, child) {
@@ -81,7 +81,7 @@ class _ManagerCollectionState extends State<ManagerCollection> {
             child: ListView.builder(
               itemCount: providerData.wordsData.length,
               itemBuilder: (context, index) {
-                final item = providerData.wordsData[index].mainWordTitle;
+                final item = providerData.wordsData[index].word1;
 
                 return Dismissible(
                   background: Container(
@@ -115,7 +115,7 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                                 // MainWord
                                 // Pass wain word title in DialogWindow
                                 mainWordTitle:
-                                    providerData.wordsData[index].mainWordTitle,
+                                    providerData.wordsData[index].word1,
                                 // Pass bool in DialogWindow, for editing title name
                                 isCheckedTitleMainWords: providerData
                                     .wordsData[index].checkMainWordTitle,
@@ -142,8 +142,8 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                                 },
 
                                 // SecondWord
-                                secondWordTitle: providerData
-                                    .wordsData[index].secondWordTitle,
+                                secondWordTitle:
+                                    providerData.wordsData[index].word2,
                                 isCheckedSecondWord: providerData
                                     .wordsData[index].checkSecondWordTitle,
                                 toggleSecondWord: () {
@@ -161,8 +161,8 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                                 },
 
                                 // Translation Word
-                                translationTitle: providerData
-                                    .wordsData[index].translationTitle,
+                                translationTitle:
+                                    providerData.wordsData[index].translation,
                                 isCheckedTranslation: providerData
                                     .wordsData[index].checkTranslationTitle,
                                 toggleTranslation: () {
@@ -192,20 +192,18 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                       );
                     },
                     //Main word
-                    mainWordTitle: providerData.wordsData[index].mainWordTitle,
+                    mainWordTitle: providerData.wordsData[index].word1,
 
                     //Second word
 
-                    secondWordTitle:
-                        providerData.wordsData[index].secondWordTitle,
+                    secondWordTitle: providerData.wordsData[index].word2,
 
                     // Translation
-                    translationTitle:
-                        providerData.wordsData[index].translationTitle,
+                    translationTitle: providerData.wordsData[index].translation,
 
                     // WordPicture
                     wordPicture: providerData.wordsData[index].wordCardPicture,
-                    showPicture: providerData.wordsData[index].checkShwoPicture,
+                    showPicture: providerData.wordsData[index].checkShowPicture,
 
                     /* When we press IconBotton is DialogTextHolderContainer, we pass an id of this WordCard to provider_data,
                           in provider_data Function choosePictureInProvider takes that id and send it to words_data throught 

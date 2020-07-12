@@ -1,8 +1,8 @@
 class WordsData {
   WordsData({
-    this.mainWordTitle,
-    this.secondWordTitle,
-    this.translationTitle,
+    this.word1,
+    this.word2,
+    this.translation,
     this.mainWordTitlePicture,
     this.secondWordTitlePicture,
     this.translationTitlePicture,
@@ -12,14 +12,14 @@ class WordsData {
 
   int id;
   String wordCardPicture;
-  String mainWordTitle;
-  String secondWordTitle;
-  String translationTitle;
+  String word1;
+  String word2;
+  String translation;
   bool checkMainWordTitle = true;
   bool checkSecondWordTitle = true;
   bool checkTranslationTitle = true;
   bool checkExampleTitle = true;
-  bool checkShwoPicture = true;
+  bool checkShowPicture = true;
   String mainWordTitlePicture;
   String secondWordTitlePicture;
   String translationTitlePicture;
@@ -49,18 +49,18 @@ class WordsData {
   }
 
   void toggleShowPicture() {
-    checkShwoPicture = !checkShwoPicture;
+    checkShowPicture = !checkShowPicture;
   }
 
   void changeMainWordTitle(String newName) {
-    mainWordTitle = newName;
+    word1 = newName;
   }
 
   void changeSecondWordTitle(String newName) {
-    secondWordTitle = newName;
+    word2 = newName;
   }
 
   void changeTranslationTitle(String newName) {
-    translationTitle = newName;
+    translation = newName;
   }
 }
