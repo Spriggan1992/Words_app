@@ -101,8 +101,8 @@ class _CollectionManagerState extends State<CollectionManager> {
                           in provider_data Function choosePictureInProvider takes that id and send it to words_data throught 
                           Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
                        */
-                      providerData.wordsData[index].choosePictureInProvider(
-                          providerData.wordsData[index].id);
+                      providerData.wordsData[index]
+                          .selectImages(providerData.wordsData[index].id);
                       showDialog(
                         context: context,
                         builder: (context) {
@@ -183,8 +183,8 @@ class _CollectionManagerState extends State<CollectionManager> {
                                     .wordsData[index].checkExampleTitle,
 
                                 // WordsPicture
-                                wordPicture: providerData
-                                    .wordsData[index].wordCardPicture,
+                                wordPicture:
+                                    providerData.wordsData[index].image,
                               );
                             }),
                           );
@@ -202,7 +202,7 @@ class _CollectionManagerState extends State<CollectionManager> {
                     translationTitle: providerData.wordsData[index].translation,
 
                     // WordPicture
-                    wordPicture: providerData.wordsData[index].wordCardPicture,
+                    wordPicture: providerData.wordsData[index].image,
                     showPicture: providerData.wordsData[index].checkShowPicture,
 
                     /* When we press IconBotton is DialogTextHolderContainer, we pass an id of this WordCard to provider_data,
@@ -210,8 +210,8 @@ class _CollectionManagerState extends State<CollectionManager> {
                           Function choosePicture, in that Function check wich id match to WordCard and stored image 
                           in wordCardPicture.*/
                     showOrHidePicture: () {
-                      providerData.wordsData[index].choosePictureInProvider(
-                          providerData.wordsData[index].id);
+                      providerData.wordsData[index]
+                          .selectImages(providerData.wordsData[index].id);
 
                       providerData
                           .togglingShowPicture(providerData.wordsData[index]);

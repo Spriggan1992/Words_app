@@ -46,42 +46,45 @@ class ProviderData extends ChangeNotifier {
   // ManagerCollection
   List<WordsData> wordsData = [
     WordsData(
-        id: 1,
-        word1: 'Summer',
-        word2: '夏天',
-        translation: 'Лето',
-        mainWordTitlePicture: 'images/Summer.jpg'),
+      id: 1,
+      word1: 'Summer',
+      word2: '夏天',
+      translation: 'Лето',
+      image: null,
+    ),
     WordsData(
-        id: 2,
-        word1: 'Winter',
-        word2: '冬天',
-        translation: 'Зима',
-        secondWordTitlePicture: 'images/Winter.jpeg'),
+      id: 2,
+      word1: 'Winter',
+      word2: '冬天',
+      translation: 'Зима',
+      image: null,
+    ),
     WordsData(
-        id: 3,
-        word1: 'Spring',
-        word2: '春天',
-        translation: 'Весна',
-        translationTitlePicture: 'images/Spring.jpeg'),
+      id: 3,
+      word1: 'Spring',
+      word2: '春天',
+      translation: 'Весна',
+      image: null,
+    ),
   ];
   //CardCreater
-  void addNewWordCard(String main, String second, String translation, int newId,
-      String picture) {
+  void addNewWordCard(
+      String main, String second, String translation, int newId, String image) {
     final wordCard = WordsData(
         word1: main,
         word2: second,
         translation: translation,
         id: newId,
-        translationTitlePicture: picture);
+        image: image);
 
     wordsData.add(wordCard);
     notifyListeners();
   }
 
-  void choosePictureInProvider(WordsData words, int id) {
-    words.choosePictureInProvider(id);
-    notifyListeners();
-  }
+  // void chooseInProvider(WordsData words, int id) {
+  //   words.choosePictureInProvider(id);
+  //   notifyListeners();
+  // }
 
   void togglingMainWord(WordsData words) {
     words.toggleMainWords();

@@ -3,15 +3,12 @@ class WordsData {
     this.word1,
     this.word2,
     this.translation,
-    this.mainWordTitlePicture,
-    this.secondWordTitlePicture,
-    this.translationTitlePicture,
     this.id,
-    this.wordCardPicture,
+    this.image,
   });
 
   int id;
-  String wordCardPicture;
+  String image;
   String word1;
   String word2;
   String translation;
@@ -20,20 +17,9 @@ class WordsData {
   bool checkTranslationTitle = true;
   bool checkExampleTitle = true;
   bool checkShowPicture = true;
-  String mainWordTitlePicture;
-  String secondWordTitlePicture;
-  String translationTitlePicture;
 
-  void choosePictureInProvider(int id) {
-    if (id == 1) {
-      wordCardPicture = mainWordTitlePicture;
-    }
-    if (id == 2) {
-      wordCardPicture = secondWordTitlePicture;
-    }
-    if (id == 3) {
-      wordCardPicture = translationTitlePicture;
-    }
+  void selectImages(int id) {
+    image = 'images/$id.jpeg';
   }
 
   void toggleMainWords() {
