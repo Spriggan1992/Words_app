@@ -2,15 +2,15 @@ class Collection {
   Collection({this.title, checkTextEdit});
 
   String title;
-  bool checkTextEditing = true;
-  bool checkFrontBack = false;
+  bool isEditing = true;
+  bool isFront = true;
 
   void toggleCheckTextEditing() {
-    checkTextEditing = !checkTextEditing;
+    isEditing = !isEditing;
   }
 
   void toggleCheckFrontBack() {
-    checkFrontBack = !checkFrontBack;
+    isFront = !isFront;
   }
 
   void changeCollectionName(String newName) {

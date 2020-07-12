@@ -9,7 +9,7 @@ import 'package:words_app/models/provider_data.dart';
 import 'package:provider/provider.dart';
 
 class WordsCollectionsList extends StatelessWidget {
-  static String id = 'ListCollection';
+  static String id = 'list_collection';
 
   Widget build(BuildContext context) {
     return Consumer<ProviderData>(builder: (context, providerData, child) {
@@ -18,7 +18,7 @@ class WordsCollectionsList extends StatelessWidget {
         top: false,
         child: Scaffold(
           appBar: BaseAppBar(
-            title: Text('appBar title'),
+            title: Text('WordsCollectionList'),
             appBar: AppBar(),
           ),
           backgroundColor: Colors.white,
@@ -64,7 +64,7 @@ class WordsCollectionsList extends StatelessWidget {
                   SliverGrid(
                     delegate: SliverChildBuilderDelegate((context, index) {
                       var wordsCollectionData =
-                          providerData.boxCollectionData[index];
+                          providerData.wordsCollectionData[index];
                       return WordsCollection(
                         // Name of Collections. Pass STRING collectionNameTitle from box_collection_data
                         collectionTitleName: wordsCollectionData.title,
@@ -72,14 +72,12 @@ class WordsCollectionsList extends StatelessWidget {
                         /* Pass conditional  bool checkTextEditing from box_collection_data for check if
                         checkTextEditing = true {show Text field} if false {show Text('collectionTitleName')}
                         */
-                        isCheckedTextEditing:
-                            wordsCollectionData.checkTextEditing,
+                        isCheckedTextEditing: wordsCollectionData.isEditing,
 
                         /* Pass conditional checkFrontBack containers. Check if bool checkFrontBack = true
                         {show Front container}, if false{show Back container}
                         */
-                        isCheckedFrontBackContainers:
-                            wordsCollectionData.checkFrontBack,
+                        isFront: wordsCollectionData.isFront,
 
                         // Just toggle bool checkFrontBack，thereby switching between Front and Backcontainers
                         chooseFrontBackContainers: () {
@@ -108,7 +106,7 @@ class WordsCollectionsList extends StatelessWidget {
                           Navigator.pushNamed(context, CollectionManager.id);
                         },
                       );
-                    }, childCount: providerData.boxCollectionData.length),
+                    }, childCount: providerData.wordsCollectionData.length),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: 2.5,
                       crossAxisCount: 2,

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:words_app/models/provider_data.dart';
 
 class CardCreater extends StatelessWidget {
-  static String id = 'card_creater';
+  static String id = 'card_creator';
 
   @override
   Widget build(BuildContext context) {

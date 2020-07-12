@@ -11,7 +11,7 @@ class ProviderData extends ChangeNotifier {
     Collection(title: "adjectives")
   ];
 
-  UnmodifiableListView<Collection> get boxCollectionData {
+  UnmodifiableListView<Collection> get wordsCollectionData {
     return UnmodifiableListView(_wordsCollectionData);
   }
 
@@ -86,41 +86,41 @@ class ProviderData extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void togglingMainWord(WordsData words) {
-    words.toggleMainWords();
+  void toggleWord1(WordsData words) {
+    words.toggleWord1();
     notifyListeners();
   }
 
-  void handleSubmitMainWords(dynamic value, WordsData words) {
-    words.changeMainWordTitle(value);
-    words.toggleMainWords();
+  void handleSubmitWord1(dynamic value, WordsData words) {
+    words.changeWord1Title(value);
+    words.toggleWord1();
     notifyListeners();
   }
 
-  void togglingSecondWord(WordsData words) {
-    words.toggleSecondWords();
+  void toggleWord2(WordsData words) {
+    words.toggleWord2();
     notifyListeners();
   }
 
-  void handleSubmitSecondWords(dynamic value, WordsData words) {
-    words.changeSecondWordTitle(value);
-    words.toggleSecondWords();
+  void handleSubmitWord2(dynamic value, WordsData words) {
+    words.changeWord2Title(value);
+    words.toggleWord2();
     notifyListeners();
   }
 
-  void togglingTranslation(WordsData words) {
-    words.toggleTranslations();
+  void toggleTranslation(WordsData words) {
+    words.toggleTranslation();
     notifyListeners();
   }
 
   void handleSubmitTranslation(dynamic value, WordsData words) {
     words.changeTranslationTitle(value);
-    words.toggleTranslations();
+    words.toggleTranslation();
     notifyListeners();
   }
 
-  void togglingShowPicture(WordsData words) {
-    words.toggleShowPicture();
+  void toggleShowImg(WordsData words) {
+    words.toggleShowImg();
     notifyListeners();
   }
 }

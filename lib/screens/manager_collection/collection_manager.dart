@@ -118,12 +118,12 @@ class _CollectionManagerState extends State<CollectionManager> {
                                     providerData.wordsData[index].word1,
                                 // Pass bool in DialogWindow, for editing title name
                                 isCheckedTitleMainWords: providerData
-                                    .wordsData[index].checkMainWordTitle,
+                                    .wordsData[index].isEditingWord1,
                                 /* Toogle checkMainWordTitle(from words_data), if true {show just a text}, 
                                    if false {show Text field for editing title name} */
                                 toggleMainWord: () {
                                   setState(() {
-                                    providerData.togglingMainWord(
+                                    providerData.toggleWord1(
                                       providerData.wordsData[index],
                                     );
                                   });
@@ -134,7 +134,7 @@ class _CollectionManagerState extends State<CollectionManager> {
                                     in words_data and store this value in mainWordTitle. */
                                 submitMainWord: (value) {
                                   setState(() {
-                                    providerData.handleSubmitMainWords(
+                                    providerData.handleSubmitWord1(
                                       value,
                                       providerData.wordsData[index],
                                     );
@@ -145,16 +145,16 @@ class _CollectionManagerState extends State<CollectionManager> {
                                 secondWordTitle:
                                     providerData.wordsData[index].word2,
                                 isCheckedSecondWord: providerData
-                                    .wordsData[index].checkSecondWordTitle,
+                                    .wordsData[index].isEditingWord2,
                                 toggleSecondWord: () {
                                   setState(() {
-                                    providerData.togglingSecondWord(
+                                    providerData.toggleWord2(
                                       providerData.wordsData[index],
                                     );
                                   });
                                 },
                                 submitSecondWord: (value) {
-                                  providerData.handleSubmitSecondWords(
+                                  providerData.handleSubmitWord2(
                                     value,
                                     providerData.wordsData[index],
                                   );
@@ -164,10 +164,10 @@ class _CollectionManagerState extends State<CollectionManager> {
                                 translationTitle:
                                     providerData.wordsData[index].translation,
                                 isCheckedTranslation: providerData
-                                    .wordsData[index].checkTranslationTitle,
+                                    .wordsData[index].isEditingTranslationTitle,
                                 toggleTranslation: () {
                                   setState(() {
-                                    providerData.togglingTranslation(
+                                    providerData.toggleTranslation(
                                         providerData.wordsData[index]);
                                   });
                                 },
@@ -180,7 +180,7 @@ class _CollectionManagerState extends State<CollectionManager> {
 
                                 // Example
                                 isCheckExampleTitle: providerData
-                                    .wordsData[index].checkExampleTitle,
+                                    .wordsData[index].isEditingExampleTitle,
 
                                 // WordsPicture
                                 wordPicture:
@@ -203,7 +203,7 @@ class _CollectionManagerState extends State<CollectionManager> {
 
                     // WordPicture
                     wordPicture: providerData.wordsData[index].image,
-                    showPicture: providerData.wordsData[index].checkShowPicture,
+                    showPicture: providerData.wordsData[index].isEditingShowImg,
 
                     /* When we press IconBotton is DialogTextHolderContainer, we pass an id of this WordCard to provider_data,
                           in provider_data Function choosePictureInProvider takes that id and send it to words_data throught 
@@ -213,8 +213,7 @@ class _CollectionManagerState extends State<CollectionManager> {
                       providerData.wordsData[index]
                           .selectImages(providerData.wordsData[index].id);
 
-                      providerData
-                          .togglingShowPicture(providerData.wordsData[index]);
+                      providerData.toggleShowImg(providerData.wordsData[index]);
                     },
                   ),
                 );

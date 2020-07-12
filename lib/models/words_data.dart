@@ -12,37 +12,37 @@ class WordsData {
   String word1;
   String word2;
   String translation;
-  bool checkMainWordTitle = true;
-  bool checkSecondWordTitle = true;
-  bool checkTranslationTitle = true;
-  bool checkExampleTitle = true;
-  bool checkShowPicture = true;
+  bool isEditingWord1 = true;
+  bool isEditingWord2 = true;
+  bool isEditingTranslationTitle = true;
+  bool isEditingExampleTitle = true;
+  bool isEditingShowImg = true;
 
   void selectImages(int id) {
     image = 'images/$id.jpeg';
   }
 
-  void toggleMainWords() {
-    checkMainWordTitle = !checkMainWordTitle;
+  void toggleWord1() {
+    isEditingWord1 = !isEditingWord1;
   }
 
-  void toggleSecondWords() {
-    checkSecondWordTitle = !checkSecondWordTitle;
+  void toggleWord2() {
+    isEditingWord2 = !isEditingWord2;
   }
 
-  void toggleTranslations() {
-    checkTranslationTitle = !checkTranslationTitle;
+  void toggleTranslation() {
+    isEditingTranslationTitle = !isEditingTranslationTitle;
   }
 
-  void toggleShowPicture() {
-    checkShowPicture = !checkShowPicture;
+  void toggleShowImg() {
+    isEditingShowImg = !isEditingShowImg;
   }
 
-  void changeMainWordTitle(String newName) {
+  void changeWord1Title(String newName) {
     word1 = newName;
   }
 
-  void changeSecondWordTitle(String newName) {
+  void changeWord2Title(String newName) {
     word2 = newName;
   }
 
