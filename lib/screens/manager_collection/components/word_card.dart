@@ -71,6 +71,8 @@ class WordCard extends StatelessWidget {
                   // Translation word container
                   Expanded(
                     child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                      alignment: Alignment.center,
                       child: Text(translationTitle),
                     ),
                   ),

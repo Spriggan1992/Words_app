@@ -123,8 +123,6 @@ class _ManagerCollectionState extends State<ManagerCollection> {
                                    if false {show Text field for editing title name} */
                                 toggleMainWord: () {
                                   setState(() {
-                                    print(providerData
-                                        .wordsData[index].checkMainWordTitle);
                                     providerData.togglingMainWord(
                                       providerData.wordsData[index],
                                     );
