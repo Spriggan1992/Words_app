@@ -33,7 +33,7 @@ class DialogTextHolderContainer extends StatelessWidget {
             Expanded(
               // Editing title name. Show text field, or just a title name
               child: !isCheckedTitlNameWords
-                  ? TextField(
+                  ? TextFormField(
                       autofocus: true,
                       textAlign: TextAlign.start,
                       controller: TextEditingController(text: textTitleName),
@@ -41,7 +41,7 @@ class DialogTextHolderContainer extends StatelessWidget {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                       ),
-                      onSubmitted: editingSubmit,
+                      onFieldSubmitted: editingSubmit,
                     )
                   : SizedBox(
                       width: 200,
