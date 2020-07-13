@@ -8,6 +8,7 @@ class DialogTextHolderContainer extends StatelessWidget {
     this.height = 45,
     this.onPressedEditButton,
     this.editingSubmit,
+    this.validator,
   });
   final String textTitleName;
   final double fontSize;
@@ -15,6 +16,7 @@ class DialogTextHolderContainer extends StatelessWidget {
   final double height;
   final Function onPressedEditButton;
   final Function editingSubmit;
+  final Function validator;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +24,13 @@ class DialogTextHolderContainer extends StatelessWidget {
       key: UniqueKey(),
       height: height,
       decoration: BoxDecoration(
+        border: isCheckedTitleName
+            ? null
+            : Border.all(
+                color: Colors.green,
+              ),
         borderRadius: BorderRadius.circular(10),
-        color: Colors.grey[200],
+        color: isCheckedTitleName ? Colors.grey[200] : Colors.white,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -33,15 +40,17 @@ class DialogTextHolderContainer extends StatelessWidget {
             Expanded(
               // Editing title name. Show text field, or just a title name
               child: !isCheckedTitleName
-                  ? TextFormField(
+                  ? TextField(
                       autofocus: true,
                       textAlign: TextAlign.start,
                       controller: TextEditingController(text: textTitleName),
                       style: TextStyle(fontSize: fontSize),
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 5),
                         border: InputBorder.none,
+                        // errorText: "blabla",
                       ),
-                      onFieldSubmitted: editingSubmit,
+                      onSubmitted: editingSubmit,
                     )
                   : SizedBox(
                       width: 200,
@@ -55,7 +64,15 @@ class DialogTextHolderContainer extends StatelessWidget {
                       ),
                     ),
             ),
-            IconButton(icon: Icon(Icons.edit), onPressed: onPressedEditButton),
+            IconButton(
+              icon: isCheckedTitleName
+                  ? Icon(Icons.edit)
+                  : Icon(
+                      Icons.done,
+                      color: Colors.green,
+                    ),
+              onPressed: onPressedEditButton,
+            ),
           ],
         ),
       ),

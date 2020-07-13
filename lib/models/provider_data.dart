@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:words_app/models/collections_data.dart';
 import 'package:words_app/models/words_data.dart';
 import 'dart:collection';
+// import 'package:words_app/models/validation.dart';
 
 class ProviderData extends ChangeNotifier {
   //listCollections
@@ -67,6 +68,9 @@ class ProviderData extends ChangeNotifier {
       image: null,
     ),
   ];
+
+  bool ignoreActions = false;
+
   //CardCreater
   void addNewWordCard(
       String main, String second, String translation, int newId, String image) {
@@ -88,6 +92,9 @@ class ProviderData extends ChangeNotifier {
 
   void toggleWord1(WordsData words) {
     words.toggleWord1();
+    ignoreActions = !ignoreActions;
+    print(ignoreActions);
+
     notifyListeners();
   }
 
@@ -123,12 +130,13 @@ class ProviderData extends ChangeNotifier {
     words.toggleShowImg();
     notifyListeners();
   }
-}
 
-// void submitText(dynamic value, WordsData words, bool id) {
+//   // Validation
 
-//     words.changeSecondWordTitle(value);
-//     words.toggleMainWords(id);
-//     print(id);
-//     notifyListeners();
+// Validation word1 = Validation(value: null, error: null);
+
+//   bool get isValid{
+//     if(word1.value !=null)
 //   }
+
+}

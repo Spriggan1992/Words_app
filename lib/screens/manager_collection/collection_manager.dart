@@ -19,6 +19,7 @@ class CollectionManager extends StatefulWidget {
 class _CollectionManagerState extends State<CollectionManager> {
   @override
   Widget build(BuildContext context) {
+    // bool ignoreActions = false;
     return Consumer<ProviderData>(builder: (context, providerData, child) {
       return SafeArea(
         // Exclude top from SafeArea
@@ -98,12 +99,13 @@ class _CollectionManagerState extends State<CollectionManager> {
                     // Here when we prees on word card, a diolog window pops up
                     onTap: () {
                       /*  when we prees on WordCard, we pass an id of this WordCard to provider_data,
-                          in provider_data Function choosePictureInProvider takes that id and send it to words_data throught 
-                          Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
-                       */
+              in provider_data Function choosePictureInProvider takes that id and send it to words_data throught 
+              Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
+           */
                       providerData.wordsData[index]
                           .selectImages(providerData.wordsData[index].id);
                       showDialog(
+                        barrierDismissible: true,
                         context: context,
                         builder: (context) {
                           return AlertDialog(
@@ -112,16 +114,15 @@ class _CollectionManagerState extends State<CollectionManager> {
                             content:
                                 StatefulBuilder(builder: (context, setState) {
                               return DialogWindow(
-                                // MainWord
+                                // Word1
                                 // Pass wain word title in DialogWindow
-                                mainWordTitle:
-                                    providerData.wordsData[index].word1,
+                                word1Title: providerData.wordsData[index].word1,
                                 // Pass bool in DialogWindow, for editing title name
-                                isCheckedTitleMainWords: providerData
+                                isCheckedWord1: providerData
                                     .wordsData[index].isEditingWord1,
                                 /* Toogle checkMainWordTitle(from words_data), if true {show just a text}, 
-                                   if false {show Text field for editing title name} */
-                                toggleMainWord: () {
+                       if false {show Text field for editing title name} */
+                                toggleWord1: () {
                                   setState(() {
                                     providerData.toggleWord1(
                                       providerData.wordsData[index],
@@ -130,23 +131,20 @@ class _CollectionManagerState extends State<CollectionManager> {
                                 },
 
                                 /*  Handle value of Text field, send it value to Function handleSubmitMainWords 
-                                    in provider_data, in handleSubmitMainWords pass this value to changeMainWordTitle 
-                                    in words_data and store this value in mainWordTitle. */
-                                submitMainWord: (value) {
+                        in provider_data, in handleSubmitMainWords pass this value to changeMainWordTitle 
+                        in words_data and store this value in mainWordTitle. */
+                                submitWord1: (value) {
                                   setState(() {
                                     providerData.handleSubmitWord1(
-                                      value,
-                                      providerData.wordsData[index],
-                                    );
+                                        value, providerData.wordsData[index]);
                                   });
                                 },
 
                                 // SecondWord
-                                secondWordTitle:
-                                    providerData.wordsData[index].word2,
-                                isCheckedSecondWord: providerData
+                                word2Title: providerData.wordsData[index].word2,
+                                isCheckedWord2: providerData
                                     .wordsData[index].isEditingWord2,
-                                toggleSecondWord: () {
+                                toggleword2: () {
                                   setState(() {
                                     providerData.toggleWord2(
                                       providerData.wordsData[index],
@@ -154,10 +152,12 @@ class _CollectionManagerState extends State<CollectionManager> {
                                   });
                                 },
                                 submitSecondWord: (value) {
-                                  providerData.handleSubmitWord2(
-                                    value,
-                                    providerData.wordsData[index],
-                                  );
+                                  setState(() {
+                                    providerData.handleSubmitWord2(
+                                      value,
+                                      providerData.wordsData[index],
+                                    );
+                                  });
                                 },
 
                                 // Translation Word
@@ -178,9 +178,9 @@ class _CollectionManagerState extends State<CollectionManager> {
                                   });
                                 },
 
-                                // Example
-                                isCheckExampleTitle: providerData
-                                    .wordsData[index].isEditingExampleTitle,
+                                // // Example
+                                // isCheckExampleTitle: providerData
+                                //     .wordsData[index].isEditingExampleTitle,
 
                                 // WordsPicture
                                 wordPicture:
@@ -206,9 +206,9 @@ class _CollectionManagerState extends State<CollectionManager> {
                     showPicture: providerData.wordsData[index].isEditingShowImg,
 
                     /* When we press IconBotton is DialogTextHolderContainer, we pass an id of this WordCard to provider_data,
-                          in provider_data Function choosePictureInProvider takes that id and send it to words_data throught 
-                          Function choosePicture, in that Function check wich id match to WordCard and stored image 
-                          in wordCardPicture.*/
+              in provider_data Function choosePictureInProvider takes that id and send it to words_data throught 
+              Function choosePicture, in that Function check wich id match to WordCard and stored image 
+              in wordCardPicture.*/
                     showOrHidePicture: () {
                       providerData.wordsData[index]
                           .selectImages(providerData.wordsData[index].id);

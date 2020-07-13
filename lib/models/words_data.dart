@@ -5,21 +5,30 @@ class WordsData {
     this.translation,
     this.id,
     this.image,
+    this.isEditingWord1 = true,
+    this.isEditingWord2 = true,
+    this.isEditingTranslationTitle = true,
+    this.ignoreActions = false,
   });
 
+  bool ignoreActions;
   int id;
   String image;
   String word1;
   String word2;
   String translation;
-  bool isEditingWord1 = true;
-  bool isEditingWord2 = true;
-  bool isEditingTranslationTitle = true;
+  bool isEditingWord1;
+  bool isEditingWord2;
+  bool isEditingTranslationTitle;
   bool isEditingExampleTitle = true;
   bool isEditingShowImg = true;
 
   void selectImages(int id) {
     image = 'images/$id.jpeg';
+  }
+
+  void toggleIgnoreActions() {
+    ignoreActions = !ignoreActions;
   }
 
   void toggleWord1() {
