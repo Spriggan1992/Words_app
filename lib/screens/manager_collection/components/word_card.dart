@@ -20,12 +20,14 @@ class _WordCardState extends State<WordCard> {
       var wordsData = providerData.wordsData[widget.index];
       return GestureDetector(
         onTap: () {
-          // When we prees on WordCard, we pass an id of this WordCard to provider_data,
-          // in provider_data Function choosePictureInProvider takes that id and send it to words_data throught
-          // Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
-          wordsData.selectImages(wordsData.id);
+          setState(() {
+            // When we prees on WordCard, we pass an id of this WordCard to provider_data,
+            // in provider_data Function choosePictureInProvider takes that id and send it to words_data throught
+            // Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
+            wordsData.selectImages(wordsData.id);
 
-          showDialogWindow(context, providerData, widget.index);
+            showDialogWindow(context, providerData, widget.index);
+          });
         },
         child: Padding(
             padding:
@@ -113,7 +115,7 @@ class _WordCardState extends State<WordCard> {
   Future showDialogWindow(
       BuildContext context, ProviderData providerData, int index) {
     return showDialog(
-      barrierDismissible: !providerData.ignore,
+      barrierDismissible: true,
       context: context,
       builder: (context) {
         return AlertDialog(
