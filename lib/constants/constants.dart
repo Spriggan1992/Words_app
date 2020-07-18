@@ -31,3 +31,9 @@ const kInputTextLogPass = InputDecoration(
     fontSize: 40.0,
   ),
 );
+
+const kBoxShadow = BoxShadow(
+    color: Color(0xFF878686),
+    blurRadius: 3.0,
+    spreadRadius: 1.0,
+    offset: Offset(1, 0.5));

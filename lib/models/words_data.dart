@@ -8,10 +8,9 @@ class WordsData {
     this.isEditingWord1 = true,
     this.isEditingWord2 = true,
     this.isEditingTranslationTitle = true,
-    this.ignoreActions = false,
+    this.isCheckEdit = false,
   });
-
-  bool ignoreActions;
+  bool isCheckEdit;
   int id;
   String image;
   String word1;
@@ -23,12 +22,12 @@ class WordsData {
   bool isEditingExampleTitle = true;
   bool isEditingShowImg = true;
 
-  void selectImages(int id) {
-    image = 'images/$id.jpeg';
+  void isChecked() {
+    isCheckEdit = !isCheckEdit;
   }
 
-  void toggleIgnoreActions() {
-    ignoreActions = !ignoreActions;
+  void selectImages(int id) {
+    image = 'images/$id.jpeg';
   }
 
   void toggleWord1() {
@@ -48,6 +47,9 @@ class WordsData {
   }
 
   void changeWord1Title(String newName) {
+    // if (newName.isEmpty) {
+    //   word1 = ' ';
+    // } else
     word1 = newName;
   }
 

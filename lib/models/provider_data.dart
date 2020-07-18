@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/models/collections_data.dart';
+import 'package:words_app/models/validation.dart';
 import 'package:words_app/models/words_data.dart';
 import 'dart:collection';
 // import 'package:words_app/models/validation.dart';
 
 class ProviderData extends ChangeNotifier {
+  bool ignore = false;
+
+  void ignorePointer() {
+    ignore = !ignore;
+    notifyListeners();
+  }
+
   //listCollections
   List<Collection> _wordsCollectionData = [
     Collection(title: "nouns"),
@@ -69,7 +77,11 @@ class ProviderData extends ChangeNotifier {
     ),
   ];
 
-  bool ignoreActions = false;
+  // bool ignoreActions = false;
+
+  // void toggle(){
+  //   ignoreActions = !ignoreActions;
+  // }
 
   //CardCreater
   void addNewWordCard(
@@ -92,15 +104,17 @@ class ProviderData extends ChangeNotifier {
 
   void toggleWord1(WordsData words) {
     words.toggleWord1();
-    ignoreActions = !ignoreActions;
-    print(ignoreActions);
 
     notifyListeners();
   }
 
+  // void toogle (WordsData words){
+  //   if()
+  // }
+
   void handleSubmitWord1(dynamic value, WordsData words) {
     words.changeWord1Title(value);
-    words.toggleWord1();
+    // words.toggleWord1();
     notifyListeners();
   }
 
@@ -111,7 +125,7 @@ class ProviderData extends ChangeNotifier {
 
   void handleSubmitWord2(dynamic value, WordsData words) {
     words.changeWord2Title(value);
-    words.toggleWord2();
+    // words.toggleWord2();
     notifyListeners();
   }
 
@@ -122,7 +136,7 @@ class ProviderData extends ChangeNotifier {
 
   void handleSubmitTranslation(dynamic value, WordsData words) {
     words.changeTranslationTitle(value);
-    words.toggleTranslation();
+    // words.toggleTranslation();
     notifyListeners();
   }
 
@@ -131,12 +145,34 @@ class ProviderData extends ChangeNotifier {
     notifyListeners();
   }
 
-//   // Validation
+  Validation _word1 = Validation(null, null);
+  Validation _word2 = Validation(null, null);
+  Validation _translation = Validation(null, null);
 
-// Validation word1 = Validation(value: null, error: null);
+  //Getters
+  Validation get word1 => _word1;
+  Validation get word2 => _word2;
+  Validation get translation => _translation;
 
-//   bool get isValid{
-//     if(word1.value !=null)
-//   }
+  bool get isValid {
+    if (word1.value != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
+  void changeWord1(String value) {
+    if (value.isNotEmpty) {
+      _word1 = Validation(value, null);
+    } else {
+      _word1 = Validation(null, 'required field');
+    }
+    notifyListeners();
+  }
+
+  void submitData() {
+    print(word1.value);
+    notifyListeners();
+  }
 }

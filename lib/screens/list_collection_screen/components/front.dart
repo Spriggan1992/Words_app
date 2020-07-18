@@ -1,5 +1,6 @@
 // Front side of WordsCollection
 import 'package:flutter/material.dart';
+import 'package:words_app/constants/constants.dart';
 
 import 'words_collection.dart';
 
@@ -18,13 +19,7 @@ class Front extends StatelessWidget {
       child: Container(
         key: ValueKey(1),
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color: Color(0xFF878686),
-                blurRadius: 3.0,
-                spreadRadius: 1.0,
-                offset: Offset(1, 3))
-          ],
+          boxShadow: [kBoxShadow],
           borderRadius: BorderRadius.circular(10.0),
           color: Colors.white, // Color Front container
         ),
