@@ -25,117 +25,131 @@ class _DialogWindowState extends State<DialogWindow> {
   Widget build(BuildContext context) {
     return Consumer<ProviderData>(builder: (context, providerData, child) {
       var wordsData = providerData.wordsData[widget.index];
-      return Container(
-        height: 400.0,
-        width: 380.0,
-        child: Builder(
-          builder: (context) => Form(
-            key: formKey,
-            child: Column(
-              children: <Widget>[
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Container(
-                      height: 150,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(wordsData.image),
-                            fit: BoxFit.cover),
-                        borderRadius: BorderRadius.circular(10),
+      return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+          // providerData.toggleWord1(
+          //   wordsData,
+          // );
+          // providerData.ignorePointer();
+        },
+        child: Container(
+          height: 400.0,
+          width: 380.0,
+          child: Builder(
+            builder: (context) => Form(
+              key: formKey,
+              child: Column(
+                children: <Widget>[
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Container(
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(wordsData.image),
+                              fit: BoxFit.cover),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                // Word1
-                DialogTextHolderContainer(
-                  // validator: (String value) {
-                  //   if (value.isEmpty) {
-                  //     return 'Required field';
-                  //   } else
-                  //     return null;
-                  // },
-                  focus: focusNode,
-                  textTitleName: wordsData.word1,
-                  fontSize: 20,
-                  isCheckedTitleName: wordsData.isEditingWord1,
-                  onPressedEditButton: () {
-                    setState(() {
-                      providerData.toggleWord1(
-                        wordsData,
-                      );
+                  // Word1
+                  DialogTextHolderContainer(
+                    // validator: (String value) {
+                    //   if (value.isEmpty) {
+                    //     return 'Required field';
+                    //   } else
+                    //     return null;
+                    // },
+                    focus: focusNode,
+                    textTitleName: wordsData.word1,
+                    fontSize: 20,
+                    isCheckedTitleName: wordsData.isEditingWord1,
+                    onPressedEditButton: () {
+                      setState(() {
+                        providerData.toggleWord1(
+                          wordsData,
+                        );
+                        providerData.ignorePointer();
+
+                        // if (focusNode.hasFocus) {
+                        //   providerData.toggleWord1(
+                        //     wordsData,
+                        //   );
+                        //   providerData.ignorePointer();
+                        // }
+                      });
+                    },
+                    editingSubmit: (value) {
+                      setState(() {
+                        word1Value = value;
+                        // if (word1Value == '') {
+                        //   focusNode.requestFocus();
+                        // }
+                        providerData.changeWord1(word1Value);
+                        providerData.handleSubmitWord1(word1Value, wordsData);
+                        // if (!focusNode.hasFocus) {}
+                      });
+                    },
+                  ),
+
+                  // RaisedButton(
+                  //     child: Text('Add'),
+                  //     onPressed: () {
+                  //       setState(() {
+                  //         final form = _formKey.currentState;
+                  //         if (form.validate()) {
+                  //           // form.save();
+                  //           providerData.handleSubmitWord1(word1Value, wordsData);
+                  //         }
+                  //       });
+                  //     }),
+
+                  SizedBox(height: 10),
+
+                  // Word2
+                  DialogTextHolderContainer(
+                    textTitleName: wordsData.word2,
+                    fontSize: 20,
+                    isCheckedTitleName: wordsData.isEditingWord2,
+                    onPressedEditButton: () {
+                      setState(() {
+                        providerData.toggleWord2(
+                          wordsData,
+                        );
+                        providerData.ignorePointer();
+                      });
+                    },
+                    editingSubmit: (value) {
+                      setState(() {
+                        providerData.handleSubmitWord2(value, wordsData);
+                      });
+                    },
+                  ),
+                  SizedBox(height: 10.0),
+
+                  // Translation word
+                  DialogTextHolderContainer(
+                    textTitleName: wordsData.translation,
+                    fontSize: 18.0,
+                    isCheckedTitleName: wordsData.isEditingTranslationTitle,
+                    onPressedEditButton: () {
+                      setState(() {
+                        providerData.toggleTranslation(wordsData);
+                      });
                       providerData.ignorePointer();
-
-                      // formState.save();
-                    });
-                  },
-                  editingSubmit: (value) {
-                    setState(() async {
-                      word1Value = await value;
-                      // if (word1Value == '') {
-                      //   focusNode.requestFocus();
-                      // }
-                      providerData.changeWord1(word1Value);
-                      providerData.handleSubmitWord1(word1Value, wordsData);
-                      // if (!focusNode.hasFocus) {}
-                    });
-                  },
-                ),
-
-                // RaisedButton(
-                //     child: Text('Add'),
-                //     onPressed: () {
-                //       setState(() {
-                //         final form = _formKey.currentState;
-                //         if (form.validate()) {
-                //           // form.save();
-                //           providerData.handleSubmitWord1(word1Value, wordsData);
-                //         }
-                //       });
-                //     }),
-
-                SizedBox(height: 10),
-
-                // Word2
-                DialogTextHolderContainer(
-                  textTitleName: wordsData.word2,
-                  fontSize: 20,
-                  isCheckedTitleName: wordsData.isEditingWord2,
-                  onPressedEditButton: () {
-                    setState(() {
-                      providerData.toggleWord2(
-                        wordsData,
-                      );
-                      providerData.ignorePointer();
-                    });
-                  },
-                  editingSubmit: (value) {
-                    setState(() {
-                      providerData.handleSubmitWord2(value, wordsData);
-                    });
-                  },
-                ),
-                SizedBox(height: 10.0),
-
-                // Translation word
-                DialogTextHolderContainer(
-                  textTitleName: wordsData.translation,
-                  fontSize: 18.0,
-                  isCheckedTitleName: wordsData.isEditingTranslationTitle,
-                  onPressedEditButton: () {
-                    setState(() {
-                      providerData.toggleTranslation(wordsData);
-                    });
-                    providerData.ignorePointer();
-                  },
-                  editingSubmit: (value) {
-                    setState(() {
-                      providerData.handleSubmitTranslation(value, wordsData);
-                    });
-                  },
-                ),
-              ],
+                    },
+                    editingSubmit: (value) {
+                      setState(() {
+                        providerData.handleSubmitTranslation(value, wordsData);
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

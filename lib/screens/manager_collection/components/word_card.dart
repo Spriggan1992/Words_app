@@ -20,13 +20,13 @@ class _WordCardState extends State<WordCard> {
       var wordsData = providerData.wordsData[widget.index];
       return GestureDetector(
         onTap: () {
-          setState(() {
+          setState(() async {
             // When we prees on WordCard, we pass an id of this WordCard to provider_data,
             // in provider_data Function choosePictureInProvider takes that id and send it to words_data throught
             // Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
             wordsData.selectImages(wordsData.id);
 
-            showDialogWindow(context, providerData, widget.index);
+            await showDialogWindow(context, providerData, widget.index);
           });
         },
         child: Padding(
