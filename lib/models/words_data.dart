@@ -8,9 +8,8 @@ class WordsData {
     this.isEditingWord1 = true,
     this.isEditingWord2 = true,
     this.isEditingTranslationTitle = true,
-    this.isCheckEdit = false,
   });
-  bool isCheckEdit;
+
   int id;
   String image;
   String word1;
@@ -21,10 +20,6 @@ class WordsData {
   bool isEditingTranslationTitle;
   bool isEditingExampleTitle = true;
   bool isEditingShowImg = true;
-
-  void isChecked() {
-    isCheckEdit = !isCheckEdit;
-  }
 
   void selectImages(int id) {
     image = 'images/$id.jpeg';
@@ -47,14 +42,14 @@ class WordsData {
   }
 
   void changeWord1Title(String newName) {
-    // if (newName.isEmpty) {
-    //   word1 = ' ';
-    // } else
     word1 = newName;
   }
 
   void changeWord2Title(String newName) {
-    word2 = newName;
+    if (newName.isEmpty) {
+      word2 = '-';
+    } else
+      word2 = newName;
   }
 
   void changeTranslationTitle(String newName) {

@@ -5,7 +5,7 @@ import 'package:words_app/models/provider_data.dart';
 
 // import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-class DialogTextHolderContainer extends StatelessWidget {
+class DialogTextHolderContainer extends StatefulWidget {
   DialogTextHolderContainer({
     key,
     this.textTitleName,
@@ -14,8 +14,6 @@ class DialogTextHolderContainer extends StatelessWidget {
     this.height = 45,
     this.onPressedEditButton,
     this.editingSubmit,
-    this.validator,
-    this.focus,
   }) : super(key: key);
 
   final String textTitleName;
@@ -24,23 +22,41 @@ class DialogTextHolderContainer extends StatelessWidget {
   final double height;
   final Function onPressedEditButton;
   final Function editingSubmit;
-  final Function validator;
-  final FocusNode focus;
+
+  @override
+  _DialogTextHolderContainerState createState() =>
+      _DialogTextHolderContainerState();
+}
+
+class _DialogTextHolderContainerState extends State<DialogTextHolderContainer> {
+  final myController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    myController.text = widget.textTitleName;
+  }
+
+  @override
+  void dispose() {
+    myController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ProviderData>(builder: (context, providerData, child) {
       return Container(
-        // key: UniqueKey(),
-        height: height,
+        height: widget.height,
         decoration: BoxDecoration(
-          border: isCheckedTitleName
+          border: widget.isCheckedTitleName
               ? null
               : Border.all(
-                  color: Colors.green,
-                ),
+                  color: providerData.isDisableEditingDoneButton
+                      ? Colors.green
+                      : Colors.red),
           borderRadius: BorderRadius.circular(10),
-          color: isCheckedTitleName ? Colors.grey[200] : Colors.white,
+          color: widget.isCheckedTitleName ? Colors.grey[200] : Colors.white,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -49,19 +65,18 @@ class DialogTextHolderContainer extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 // Editing title name. Show text field, or just a title name
-                child: !isCheckedTitleName
+                child: !widget.isCheckedTitleName
                     ? TextField(
-                        focusNode: focus,
                         autofocus: true,
                         textAlign: TextAlign.start,
-                        controller: TextEditingController(text: textTitleName),
-                        style: TextStyle(fontSize: fontSize),
+                        controller: myController,
+                        style: TextStyle(fontSize: widget.fontSize),
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(bottom: 5),
                           border: InputBorder.none,
-                          errorText: providerData.word1.error,
+                          errorText: providerData.errorMessage.error,
                         ),
-                        onChanged: editingSubmit,
+                        onChanged: widget.editingSubmit,
                       )
                     : SizedBox(
                         width: 200,
@@ -69,30 +84,35 @@ class DialogTextHolderContainer extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            textTitleName,
-                            style: TextStyle(fontSize: fontSize),
+                            widget.textTitleName,
+                            style: TextStyle(fontSize: widget.fontSize),
                           ),
                         ),
                       ),
               ),
-              isCheckedTitleName
+              // Here we pass condition for check {if isCheckedTitleName = true -> show EditingButton }
+              //{if isCheckedTitleName = false -> show DoneButton}
+              widget.isCheckedTitleName
                   ? IconButton(
                       icon: Icon(Icons.edit),
-                      onPressed:
-                          providerData.ignore ? null : onPressedEditButton)
+                      // Here we check {if isDisableEnableEditingButtons = true -> disable button}
+                      // {if isDisableEnableEditingButtons = false -> enable button}
+                      onPressed: providerData.isDisableEnableEditingButtons
+                          ? null
+                          : widget.onPressedEditButton)
                   : IconButton(
-                      icon: Icon(Icons.done, color: Colors.green),
-                      onPressed:
-                          providerData.ignore ? onPressedEditButton : null),
-              // () {
-
-              // setState(() async {
-              //   check = !check;
-              //   providerData.toggleWord1(wordsData);
-              //   providerData.toggleTranslation(wordsData);
-              //   providerData.toggleWord2(wordsData);
-              // });
-              // },
+                      icon: Icon(Icons.done,
+                          // Here we check {if value of text field isn't empty -> show green border color}
+                          // {if value of text field is empty - > show red border color  }
+                          color: providerData.isDisableEditingDoneButton
+                              ? Colors.green
+                              : Colors.red),
+                      // Here we check {if isDisableEnableEditingButtons = true and TextField value isn't empty -> enable button}
+                      // {if isDisableEnableEditingButtons = false and TextField value is empty -> disable button}
+                      onPressed: providerData.isDisableEnableEditingButtons &&
+                              providerData.isDisableEditingDoneButton
+                          ? widget.onPressedEditButton
+                          : null),
             ],
           ),
         ),

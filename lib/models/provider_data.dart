@@ -6,13 +6,6 @@ import 'dart:collection';
 // import 'package:words_app/models/validation.dart';
 
 class ProviderData extends ChangeNotifier {
-  bool ignore = false;
-
-  void ignorePointer() {
-    ignore = !ignore;
-    notifyListeners();
-  }
-
   //listCollections
   List<Collection> _wordsCollectionData = [
     Collection(title: "nouns"),
@@ -77,12 +70,6 @@ class ProviderData extends ChangeNotifier {
     ),
   ];
 
-  // bool ignoreActions = false;
-
-  // void toggle(){
-  //   ignoreActions = !ignoreActions;
-  // }
-
   //CardCreater
   void addNewWordCard(
       String main, String second, String translation, int newId, String image) {
@@ -97,20 +84,11 @@ class ProviderData extends ChangeNotifier {
     notifyListeners();
   }
 
-  // void chooseInProvider(WordsData words, int id) {
-  //   words.choosePictureInProvider(id);
-  //   notifyListeners();
-  // }
-
   void toggleWord1(WordsData words) {
     words.toggleWord1();
 
     notifyListeners();
   }
-
-  // void toogle (WordsData words){
-  //   if()
-  // }
 
   void handleSubmitWord1(dynamic value, WordsData words) {
     words.changeWord1Title(value);
@@ -145,34 +123,25 @@ class ProviderData extends ChangeNotifier {
     notifyListeners();
   }
 
-  Validation _word1 = Validation(null, null);
-  Validation _word2 = Validation(null, null);
-  Validation _translation = Validation(null, null);
+  // Validation
+  Validation _errorMessage = Validation(null, null);
+  Validation get errorMessage => _errorMessage;
+  bool isDisableEnableEditingButtons = false;
+  bool isDisableEditingDoneButton = true;
 
-  //Getters
-  Validation get word1 => _word1;
-  Validation get word2 => _word2;
-  Validation get translation => _translation;
-
-  bool get isValid {
-    if (word1.value != null) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  void changeWord1(String value) {
-    if (value.isNotEmpty) {
-      _word1 = Validation(value, null);
-    } else {
-      _word1 = Validation(null, 'required field');
-    }
+  void toggleEditingDoneButton() {
+    isDisableEnableEditingButtons = !isDisableEnableEditingButtons;
     notifyListeners();
   }
 
-  void submitData() {
-    print(word1.value);
+  void textValidation(String value) {
+    if (value.isNotEmpty) {
+      _errorMessage = Validation(value, null);
+      isDisableEditingDoneButton = true;
+    } else {
+      _errorMessage = Validation(null, 'This field cannot be empty.');
+      isDisableEditingDoneButton = false;
+    }
     notifyListeners();
   }
 }
