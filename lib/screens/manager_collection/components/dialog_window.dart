@@ -16,7 +16,7 @@ class DialogWindow extends StatefulWidget {
 
 class _DialogWindowState extends State<DialogWindow> {
   bool check = false;
-  FocusNode focusNode = FocusNode();
+  FocusNode focusNodeWord1 = FocusNode();
   final formKey = GlobalKey<FormState>();
   String word1Value;
   String textValue;
@@ -27,11 +27,12 @@ class _DialogWindowState extends State<DialogWindow> {
       var wordsData = providerData.wordsData[widget.index];
       return GestureDetector(
         onTap: () {
-          FocusScope.of(context).unfocus();
+          FocusScope.of(context).requestFocus(new FocusNode());
+          // FocusScope.of(context).unfocus();
           // providerData.toggleWord1(
           //   wordsData,
           // );
-          // providerData.ignorePointer();
+          //   providerData.ignorePointer();
         },
         child: Container(
           height: 400.0,
@@ -64,49 +65,35 @@ class _DialogWindowState extends State<DialogWindow> {
                     //   } else
                     //     return null;
                     // },
-                    focus: focusNode,
+                    focus: focusNodeWord1,
                     textTitleName: wordsData.word1,
                     fontSize: 20,
                     isCheckedTitleName: wordsData.isEditingWord1,
                     onPressedEditButton: () {
                       setState(() {
-                        providerData.toggleWord1(
-                          wordsData,
-                        );
+                        providerData.toggleWord1(wordsData);
                         providerData.ignorePointer();
 
                         // if (focusNode.hasFocus) {
-                        //   providerData.toggleWord1(
-                        //     wordsData,
-                        //   );
                         //   providerData.ignorePointer();
                         // }
                       });
                     },
                     editingSubmit: (value) {
-                      setState(() {
-                        word1Value = value;
+                      setState(() async {
+                        word1Value = await value;
                         // if (word1Value == '') {
                         //   focusNode.requestFocus();
                         // }
                         providerData.changeWord1(word1Value);
                         providerData.handleSubmitWord1(word1Value, wordsData);
                         // if (!focusNode.hasFocus) {}
+                        if (!focusNodeWord1.hasFocus) {
+                          print('Yes');
+                        }
                       });
                     },
                   ),
-
-                  // RaisedButton(
-                  //     child: Text('Add'),
-                  //     onPressed: () {
-                  //       setState(() {
-                  //         final form = _formKey.currentState;
-                  //         if (form.validate()) {
-                  //           // form.save();
-                  //           providerData.handleSubmitWord1(word1Value, wordsData);
-                  //         }
-                  //       });
-                  //     }),
 
                   SizedBox(height: 10),
 
@@ -117,9 +104,7 @@ class _DialogWindowState extends State<DialogWindow> {
                     isCheckedTitleName: wordsData.isEditingWord2,
                     onPressedEditButton: () {
                       setState(() {
-                        providerData.toggleWord2(
-                          wordsData,
-                        );
+                        providerData.toggleWord2(wordsData);
                         providerData.ignorePointer();
                       });
                     },
