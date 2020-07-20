@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/providers/collections_provider.dart';
+import 'package:words_app/providers/validation_provider.dart';
+import 'package:words_app/providers/words_provider.dart';
 import 'package:words_app/screens/loging_screen/login_screen.dart';
 import 'package:words_app/screens/registration_screen/registration_screen.dart';
 import 'package:words_app/screens/list_collection_screen/words_collections_list_screen.dart';
@@ -17,8 +20,21 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ProviderData(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ProviderData(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Collections(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Words(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ValidationForm(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Word App',
         debugShowCheckedModeBanner: false,
