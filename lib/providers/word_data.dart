@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Word {
+class Word with ChangeNotifier {
   Word({
     this.word1,
     this.word2,

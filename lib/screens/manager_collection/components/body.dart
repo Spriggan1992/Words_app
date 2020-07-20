@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/models/provider_data.dart';
+import 'package:words_app/providers/words_provider.dart';
 import 'package:words_app/screens/manager_collection/components/word_card.dart';
 
 class Body extends StatelessWidget {
@@ -10,22 +10,21 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProviderData>(builder: (context, providerData, child) {
-      return Container(
+    return Container(
         padding: EdgeInsets.only(top: 20.0),
-        child: ListView.builder(
-          itemCount: providerData.wordsData.length,
-          itemBuilder: (context, index) {
-            final item = providerData.wordsData[index].word1;
-            return buildDismissible(item, providerData, index, context);
-          },
-        ),
-      );
-    });
+        // Here we render only listView
+        child: Consumer<Words>(builder: (context, words, child) {
+          return ListView.builder(
+            itemCount: words.wordsData.length,
+            itemBuilder: (context, index) {
+              final item = words.wordsData[index].word1;
+              return buildDismissible(item, index, context);
+            },
+          );
+        }));
   }
 
-  Dismissible buildDismissible(
-      String item, ProviderData providerData, int index, BuildContext context) {
+  Dismissible buildDismissible(String item, int index, BuildContext context) {
     return Dismissible(
       background: Container(
         alignment: Alignment.centerRight,

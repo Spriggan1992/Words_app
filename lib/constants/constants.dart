@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 // Background for Login Screen
-
+const Color kMainColorBackground = Color(0xFFf8e6e6);
+const Color kAppBarsColor = Color(0xFFff9f9f);
 const Color kMainColorBlue = Color(0xFF498ba6);
 const Color kSecondColorPink = Color(0xFFF8B6b6);
 const kBackgroundColor = BoxDecoration(

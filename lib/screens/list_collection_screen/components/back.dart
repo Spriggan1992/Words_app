@@ -1,6 +1,5 @@
 // Back side of WordsCollection
 import 'package:flutter/material.dart';
-import 'package:words_app/constants/constants.dart';
 
 import 'words_collection.dart';
 
@@ -18,7 +17,7 @@ class Back extends StatelessWidget {
       height: 100,
       key: ValueKey(2),
       decoration: BoxDecoration(
-        boxShadow: [kBoxShadow],
+        // boxShadow: [kBoxShadow],
         borderRadius: BorderRadius.circular(10.0),
         color: Color(0xFFF8B6b6), // Color Back container
       ),

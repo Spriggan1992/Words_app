@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/models/provider_data.dart';
+import 'package:words_app/providers/validation_provider.dart';
+import 'package:words_app/providers/words_provider.dart';
 import 'dialog_text_holder_container.dart';
 // import 'package:validators/validators.dart';
 
@@ -11,11 +13,12 @@ class DialogWindow extends StatelessWidget {
   final int index;
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProviderData>(builder: (context, providerData, child) {
-      var wordsData = providerData.wordsData[index];
+    return Consumer<Words>(builder: (context, providerData, child) {
+      final wordsData = providerData.wordsData[index];
+      final validation = Provider.of<ValidationForm>(context);
       return WillPopScope(
         onWillPop: () async =>
-            !providerData.isDisableEnableEditingButtons, // Prevent any actions
+            !validation.isDisableEnableEditingButtons, // Prevent any actions
         child: Container(
           height: 400.0,
           width: 380.0,
@@ -43,10 +46,10 @@ class DialogWindow extends StatelessWidget {
                 isCheckedTitleName: wordsData.isEditingWord1,
                 onPressedEditButton: () {
                   providerData.toggleWord1(wordsData);
-                  providerData.toggleEditingDoneButton();
+                  validation.toggleEditingDoneButton();
                 },
                 editingSubmit: (value) {
-                  providerData.textValidation(value);
+                  validation.textValidation(value);
                   providerData.handleSubmitWord1(value, wordsData);
                 },
               ),
@@ -60,7 +63,7 @@ class DialogWindow extends StatelessWidget {
                 isCheckedTitleName: wordsData.isEditingWord2,
                 onPressedEditButton: () {
                   providerData.toggleWord2(wordsData);
-                  providerData.toggleEditingDoneButton();
+                  validation.toggleEditingDoneButton();
                 },
                 editingSubmit: (value) {
                   providerData.handleSubmitWord2(value, wordsData);
@@ -75,10 +78,10 @@ class DialogWindow extends StatelessWidget {
                 isCheckedTitleName: wordsData.isEditingTranslationTitle,
                 onPressedEditButton: () {
                   providerData.toggleTranslation(wordsData);
-                  providerData.toggleEditingDoneButton();
+                  validation.toggleEditingDoneButton();
                 },
                 editingSubmit: (value) {
-                  providerData.textValidation(value);
+                  validation.textValidation(value);
                   providerData.handleSubmitTranslation(value, wordsData);
                 },
               ),

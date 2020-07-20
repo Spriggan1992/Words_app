@@ -19,7 +19,7 @@ class Front extends StatelessWidget {
       child: Container(
         key: ValueKey(1),
         decoration: BoxDecoration(
-          boxShadow: [kBoxShadow],
+          // boxShadow: [kBoxShadow],
           borderRadius: BorderRadius.circular(10.0),
           color: Colors.white, // Color Front container
         ),

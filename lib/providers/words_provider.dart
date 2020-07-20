@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:words_app/providers/word_data.dart';
 
 class Words with ChangeNotifier {
-  List<Word> _wordsData = [
+  List<Word> wordsData = [
     Word(
       id: 1,
       word1: 'Summer',
@@ -26,9 +26,9 @@ class Words with ChangeNotifier {
     ),
   ];
 
-  List<Word> get wordsData {
-    return [..._wordsData];
-  }
+  // List<Word> get wordsData {
+  //   return [..._wordsData];
+  // }
 
   //CardCreater
   void addNewWordCard(
@@ -78,7 +78,7 @@ class Words with ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleShowImg(Word words) {
+  void toggleShowImgInWordsProvider(Word words) {
     words.toggleShowImg();
     notifyListeners();
   }

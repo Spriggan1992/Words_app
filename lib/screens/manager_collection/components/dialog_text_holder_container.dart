@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/models/provider_data.dart';
+import 'package:words_app/providers/validation_provider.dart';
+import 'package:words_app/providers/words_provider.dart';
 // import 'package:words_app/models/validation.dart';
 
 // import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -45,14 +47,15 @@ class _DialogTextHolderContainerState extends State<DialogTextHolderContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProviderData>(builder: (context, providerData, child) {
+    final validation = Provider.of<ValidationForm>(context);
+    return Consumer<Words>(builder: (context, providerData, child) {
       return Container(
         height: widget.height,
         decoration: BoxDecoration(
           border: widget.isCheckedTitleName
               ? null
               : Border.all(
-                  color: providerData.isDisableEditingDoneButton
+                  color: validation.isDisableEditingDoneButton
                       ? Colors.green
                       : Colors.red),
           borderRadius: BorderRadius.circular(10),
@@ -74,7 +77,7 @@ class _DialogTextHolderContainerState extends State<DialogTextHolderContainer> {
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(bottom: 5),
                           border: InputBorder.none,
-                          errorText: providerData.errorMessage.error,
+                          errorText: validation.errorMessage.error,
                         ),
                         onChanged: widget.editingSubmit,
                       )
@@ -97,20 +100,20 @@ class _DialogTextHolderContainerState extends State<DialogTextHolderContainer> {
                       icon: Icon(Icons.edit),
                       // Here we check {if isDisableEnableEditingButtons = true -> disable button}
                       // {if isDisableEnableEditingButtons = false -> enable button}
-                      onPressed: providerData.isDisableEnableEditingButtons
+                      onPressed: validation.isDisableEnableEditingButtons
                           ? null
                           : widget.onPressedEditButton)
                   : IconButton(
                       icon: Icon(Icons.done,
                           // Here we check {if value of text field isn't empty -> show green border color}
                           // {if value of text field is empty - > show red border color  }
-                          color: providerData.isDisableEditingDoneButton
+                          color: validation.isDisableEditingDoneButton
                               ? Colors.green
                               : Colors.red),
                       // Here we check {if isDisableEnableEditingButtons = true and TextField value isn't empty -> enable button}
                       // {if isDisableEnableEditingButtons = false and TextField value is empty -> disable button}
-                      onPressed: providerData.isDisableEnableEditingButtons &&
-                              providerData.isDisableEditingDoneButton
+                      onPressed: validation.isDisableEnableEditingButtons &&
+                              validation.isDisableEditingDoneButton
                           ? widget.onPressedEditButton
                           : null),
             ],

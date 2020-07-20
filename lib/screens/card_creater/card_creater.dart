@@ -3,19 +3,21 @@ import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/models/provider_data.dart';
+import 'package:words_app/providers/words_provider.dart';
 
 class CardCreater extends StatelessWidget {
   static String id = 'card_creator';
 
   @override
   Widget build(BuildContext context) {
+    // final addData = Provider.of<ProviderData>(context);
     String mainWord;
     String secondWord;
     String translation;
     int id = 3;
-    String picture = 'images/Spring.jpeg';
+    String image = 'images/Spring.jpeg';
 
-    return Consumer<ProviderData>(
+    return Consumer<Words>(
       builder: (context, providerData, child) {
         return SafeArea(
           top: false,
@@ -96,13 +98,13 @@ class CardCreater extends StatelessWidget {
                           child: ReusableMainButton(
                             titleText: 'Add',
                             onPressed: () {
-                              providerData.addNewWordCard(mainWord, secondWord,
-                                  translation, id, picture);
+                              providerData.addNewWordCard(
+                                  mainWord, secondWord, translation, id, image);
                               print(mainWord);
                               print(secondWord);
                               print(translation);
                               print(id);
-                              print(picture);
+                              print(image);
                               Navigator.pop(context);
                             },
                             titleColor: kMainColorBlue,

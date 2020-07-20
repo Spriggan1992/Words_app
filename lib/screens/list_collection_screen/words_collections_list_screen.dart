@@ -21,7 +21,7 @@ class WordsCollectionsList extends StatelessWidget {
             title: Text('WordsCollectionList'),
             appBar: AppBar(),
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: kMainColorBackground,
           floatingActionButton: ReusableFloatActionButton(
             onPressed: () {
               showModalBottomSheet(
@@ -37,7 +37,7 @@ class WordsCollectionsList extends StatelessWidget {
             clipBehavior: Clip.antiAlias,
             child: Container(
               height: 60.0,
-              color: kMainColorBlue,
+              color: kAppBarsColor,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +56,7 @@ class WordsCollectionsList extends StatelessWidget {
               FloatingActionButtonLocation.centerDocked,
           body: SafeArea(
             child: Container(
-              color: Colors.white,
+              color: kMainColorBackground,
               // decoration: kListCollectionBackground,
               padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 40.0),
               child: CustomScrollView(
