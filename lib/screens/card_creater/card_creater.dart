@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/models/provider_data.dart';
 import 'package:words_app/providers/words_provider.dart';
 
 class CardCreater extends StatelessWidget {
