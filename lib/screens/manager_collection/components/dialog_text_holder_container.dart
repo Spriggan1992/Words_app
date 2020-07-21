@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/providers/validation_provider.dart';
-import 'package:words_app/providers/words_provider.dart';
-// import 'package:words_app/models/validation.dart';
-
-// import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class DialogTextHolderContainer extends StatefulWidget {
   DialogTextHolderContainer({
@@ -14,7 +10,7 @@ class DialogTextHolderContainer extends StatefulWidget {
     this.isCheckedTitleName,
     this.height = 45,
     this.onPressedEditButton,
-    this.editingSubmit,
+    this.onChange,
   }) : super(key: key);
 
   final String textTitleName;
@@ -22,7 +18,7 @@ class DialogTextHolderContainer extends StatefulWidget {
   final bool isCheckedTitleName;
   final double height;
   final Function onPressedEditButton;
-  final Function editingSubmit;
+  final Function onChange;
 
   @override
   _DialogTextHolderContainerState createState() =>
@@ -47,8 +43,10 @@ class _DialogTextHolderContainerState extends State<DialogTextHolderContainer> {
   @override
   Widget build(BuildContext context) {
     final validation = Provider.of<ValidationForm>(context);
-    return Consumer<Words>(builder: (context, providerData, child) {
-      return Container(
+    return WillPopScope(
+      onWillPop: () async => !validation
+          .isDisableEnableEditingButtons, // Prevent any actions while its false;
+      child: Container(
         height: widget.height,
         decoration: BoxDecoration(
           border: widget.isCheckedTitleName
@@ -78,7 +76,7 @@ class _DialogTextHolderContainerState extends State<DialogTextHolderContainer> {
                           border: InputBorder.none,
                           errorText: validation.errorMessage.error,
                         ),
-                        onChanged: widget.editingSubmit,
+                        onChanged: widget.onChange,
                       )
                     : SizedBox(
                         width: 200,
@@ -118,7 +116,7 @@ class _DialogTextHolderContainerState extends State<DialogTextHolderContainer> {
             ],
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }

@@ -11,7 +11,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(top: 20.0),
+        padding: EdgeInsets.only(top: 30.0, bottom: 60.0),
         // Here we render only listView
         child: Consumer<Words>(builder: (context, words, child) {
           return ListView.builder(

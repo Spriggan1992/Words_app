@@ -24,7 +24,11 @@ class Word with ChangeNotifier {
   bool isEditingShowImg = true;
 
   void selectImages(int id) {
-    image = 'images/$id.jpeg';
+    try {
+      image = 'images/$id.jpeg';
+    } catch (e) {
+      print(e);
+    }
   }
 
   void toggleWord1() {

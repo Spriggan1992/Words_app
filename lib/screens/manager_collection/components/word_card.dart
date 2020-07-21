@@ -18,7 +18,6 @@ class WordCard extends StatelessWidget {
         // in provider_data Function choosePictureInProvider takes that id and send it to words_data throught
         // Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
         words.selectImages(words.id);
-
         showDialogWindow(context, index);
       },
       child: Padding(
@@ -82,7 +81,7 @@ class WordCard extends StatelessWidget {
                       // words
                       //     .toggleShowImgInWordsProvider(words);
                     },
-                    child: words.isEditingShowImg
+                    child: !words.isEditingShowImg
                         ? Icon(Icons.image)
                         : Container(
                             decoration: BoxDecoration(

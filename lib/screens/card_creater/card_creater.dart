@@ -14,7 +14,7 @@ class CardCreater extends StatelessWidget {
     String secondWord;
     String translation;
     int id = 3;
-    String image = 'images/Spring.jpeg';
+    String image = 'images/3.jpeg';
 
     return Consumer<Words>(
       builder: (context, providerData, child) {
@@ -28,7 +28,7 @@ class CardCreater extends StatelessWidget {
               clipBehavior: Clip.antiAlias,
               child: Container(
                 height: 60.0,
-                color: kMainColorBlue,
+                color: kAppBarsColor,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -53,6 +53,7 @@ class CardCreater extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Container(
+                    color: kMainColorBackground,
                     padding: EdgeInsets.only(top: 30),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -65,7 +66,7 @@ class CardCreater extends StatelessWidget {
                               Container(
                                 width: 300,
                                 height: 200,
-                                color: Colors.grey[300],
+                                color: Colors.grey[500],
                               ),
                               CircleAvatar(
                                 backgroundColor: Colors.white,

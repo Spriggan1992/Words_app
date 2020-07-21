@@ -2,33 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:words_app/providers/word_data.dart';
 
 class Words with ChangeNotifier {
-  List<Word> wordsData = [
+  List<Word> _wordsData = [
     Word(
       id: 1,
       word1: 'Summer',
       word2: '夏天',
       translation: 'Лето',
-      image: null,
+      image: 'images/1.jpeg',
     ),
     Word(
       id: 2,
       word1: 'Winter',
       word2: '冬天',
       translation: 'Зима',
-      image: null,
+      image: 'images/2.jpeg',
     ),
     Word(
       id: 3,
       word1: 'Spring',
       word2: '春天',
       translation: 'Весна',
-      image: null,
+      image: 'images/3.jpeg',
     ),
   ];
 
-  // List<Word> get wordsData {
-  //   return [..._wordsData];
-  // }
+  List<Word> get wordsData {
+    return [..._wordsData];
+  }
+
+  Word findById(id) {
+    return _wordsData.firstWhere((wordId) => wordId.id == id);
+  }
 
   //CardCreater
   void addNewWordCard(
@@ -40,7 +44,7 @@ class Words with ChangeNotifier {
         id: newId,
         image: image);
 
-    wordsData.add(wordCard);
+    _wordsData.add(wordCard);
     notifyListeners();
   }
 
