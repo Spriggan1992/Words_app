@@ -72,7 +72,7 @@ class DialogWindow extends StatelessWidget {
           // Translation word
           DialogTextHolderContainer(
             textTitleName: wordsDataIndex.translation,
-            fontSize: 18.0,
+            fontSize: 20.0,
             isCheckedTitleName: wordsDataIndex.isEditingTranslationTitle,
             onPressedEditButton: () {
               wordsData.toggleTranslation(wordsDataIndex);

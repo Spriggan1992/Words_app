@@ -3,7 +3,6 @@ import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/base_bottom_appbar.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
-import 'package:words_app/screens/create_box_collection_screen/create_box_collection_screen.dart';
 import 'package:words_app/screens/list_collection_screen/components/body.dart';
 
 class WordsCollectionsList extends StatelessWidget {
@@ -19,14 +18,52 @@ class WordsCollectionsList extends StatelessWidget {
           appBar: AppBar(),
         ),
         backgroundColor: kMainColorBackground,
-        floatingActionButton: ReusableFloatActionButton(
-          onPressed: () {
-            showModalBottomSheet(
+        floatingActionButton: ReusableFloatActionButton(onPressed: () {
+          showGeneralDialog(
+              barrierColor: Color(0xFFb48484).withOpacity(0.9),
+              transitionBuilder: (context, a1, a2, widget) {
+                return Transform.scale(
+                  scale: a1.value,
+                  child: Opacity(
+                    opacity: a1.value,
+                    child: AlertDialog(
+                      // insetPadding: EdgeInsets.only(bottom: 200),
+                      shape: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      content: Container(
+                          height: 300,
+                          width: 310,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              TextField(
+                                decoration: InputDecoration(
+                                  labelText: 'Collection name',
+                                  enabledBorder: OutlineInputBorder(),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              TextField(
+                                  decoration: InputDecoration(
+                                labelText: 'Language',
+                                enabledBorder: OutlineInputBorder(),
+                              ))
+                            ],
+                          )),
+                    ),
+                  ),
+                );
+              },
+              transitionDuration: Duration(milliseconds: 200),
+              barrierDismissible: true,
+              barrierLabel: '',
               context: context,
-              builder: (context) => CreateBoxCollections(),
-            );
-          },
-        ),
+              pageBuilder: (context, animation1, animation2) {});
+        }),
+        // showModalBottomSheet(
+        //   context: context,
+        //   builder: (context) => CreateBoxCollections(),
+
         //Footer AppBar
         // In this screen Bottom AppBar just take empty container, cause child1 and child2 cannot be emty(==null);
         bottomNavigationBar: BaseBottomAppBar(
