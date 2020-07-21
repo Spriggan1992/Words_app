@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_main_button.dart';
-import 'package:words_app/models/provider_data.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/providers/collections_provider.dart';
 
 class CreateBoxCollections extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String textTitleCollection;
-    return Consumer<ProviderData>(builder: (context, providerData, child) {
+    return Consumer<Collections>(builder: (context, providerData, child) {
       return Scaffold(
         resizeToAvoidBottomPadding: true,
         body: Container(
