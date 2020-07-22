@@ -66,8 +66,8 @@ class Body extends StatelessWidget {
                 );
               }, childCount: providerData.wordsCollectionData.length),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 2.5,
-                crossAxisCount: 2,
+                childAspectRatio: 0.8,
+                crossAxisCount: 3,
                 mainAxisSpacing: 20,
                 crossAxisSpacing: 15,
               ),
