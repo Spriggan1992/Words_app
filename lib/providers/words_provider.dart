@@ -38,14 +38,16 @@ class Words with ChangeNotifier {
   }
 
   //CardCreater
-  void addNewWordCard(
-      String main, String second, String translation, int newId, String image) {
+  void addNewWordCard(String main, String second, String translation, int newId,
+      String image, String part) {
     final wordCard = Word(
-        word1: main,
-        word2: second,
-        translation: translation,
-        id: newId,
-        image: image);
+      word1: main,
+      word2: second,
+      translation: translation,
+      id: newId,
+      image: image,
+      part: part,
+    );
 
     _wordsData.add(wordCard);
     notifyListeners();

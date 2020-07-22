@@ -3,9 +3,8 @@ import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/providers/words_provider.dart';
-
-import 'components/radio_button_group.dart';
-
+q
+enum PartOfSpeech { verb, noun, adjective, adverb, pronoun }
 const Color color = Color(0xff03DAC6);
 
 class CardCreater extends StatelessWidget {
@@ -20,6 +19,7 @@ class CardCreater extends StatelessWidget {
     int id = 3;
     String image = 'images/3.jpeg';
     String dropdownValue = 'One';
+    String part = 'n';
 
     return Consumer<Words>(
       builder: (context, providerData, child) {
@@ -109,8 +109,8 @@ class CardCreater extends StatelessWidget {
                       child: ReusableMainButton(
                         titleText: 'ADD WORD',
                         onPressed: () {
-                          providerData.addNewWordCard(
-                              mainWord, secondWord, translation, id, image);
+                          providerData.addNewWordCard(mainWord, secondWord,
+                              translation, id, image, part);
 //                          print(mainWord);
 //                          print(secondWord);
 //                          print(translation);
@@ -159,6 +159,109 @@ class Field extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class RadioButtonGroup extends StatefulWidget {
+  RadioButtonGroup({Key key}) : super(key: key);
+
+  @override
+  _RadioButtonGroupState createState() => _RadioButtonGroupState();
+}
+
+class _RadioButtonGroupState extends State<RadioButtonGroup> {
+  PartOfSpeech _part = PartOfSpeech.verb;
+
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Text('v'),
+                Radio(
+                  value: PartOfSpeech.verb,
+                  groupValue: _part,
+                  onChanged: (PartOfSpeech value) {
+                    setState(
+                      () {
+                        _part = value;
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text('n'),
+                Radio(
+                  value: PartOfSpeech.noun,
+                  groupValue: _part,
+                  onChanged: (PartOfSpeech value) {
+                    setState(
+                      () {
+                        _part = value;
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text('adj'),
+                Radio(
+                  value: PartOfSpeech.adjective,
+                  groupValue: _part,
+                  onChanged: (PartOfSpeech value) {
+                    setState(
+                      () {
+                        _part = value;
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text('adv'),
+                Radio(
+                  value: PartOfSpeech.adverb,
+                  groupValue: _part,
+                  onChanged: (PartOfSpeech value) {
+                    setState(
+                      () {
+                        _part = value;
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text('pron'),
+                Radio(
+                  value: PartOfSpeech.pronoun,
+                  groupValue: _part,
+                  onChanged: (PartOfSpeech value) {
+                    setState(
+                      () {
+                        _part = value;
+                      },
+                    );
+                  },
+                ),
+              ],
+            )
+          ],
+        )
+      ],
     );
   }
 }

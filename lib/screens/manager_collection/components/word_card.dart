@@ -39,8 +39,7 @@ class WordCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: Text(
-//                          word.part,
-                          'v',
+                          word.part,
                           style: TextStyle(fontSize: 24),
                         ),
                       ),
