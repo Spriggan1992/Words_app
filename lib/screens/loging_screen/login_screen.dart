@@ -90,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Flexible(
                 child: ReusableMainButton(
                   titleText: 'Login',
-                  titleColor: kMainColorBlue,
+                  textColor: kMainColorBlue,
                   backgroundColor: Color(0xFFf0f3f8),
                   fontSize: 25,
                   onPressed: () =>

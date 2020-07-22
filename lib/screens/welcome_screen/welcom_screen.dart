@@ -20,7 +20,7 @@ class WelcomScreen extends StatelessWidget {
             children: <Widget>[
               ReusableMainButton(
                 titleText: 'Login',
-                titleColor: Color(0xFFf0f3f8),
+                textColor: Color(0xFFf0f3f8),
                 backgroundColor: Color(0xFF498ba6),
                 fontSize: 25,
                 onPressed: () {
@@ -30,7 +30,7 @@ class WelcomScreen extends StatelessWidget {
               SizedBox(height: 50),
               ReusableMainButton(
                 titleText: 'Registration',
-                titleColor: Color(0xFF498ba6),
+                textColor: Color(0xFF498ba6),
                 backgroundColor: Color(0xFFf0f3f8),
                 fontSize: 25,
                 onPressed: () {

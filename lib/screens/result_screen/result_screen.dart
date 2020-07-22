@@ -60,7 +60,7 @@ class Result extends StatelessWidget {
               ReusableMainButton(
                 titleText: 'Back To Collections',
                 onPressed: null,
-                titleColor: kMainColorBlue,
+                textColor: kMainColorBlue,
                 backgroundColor: Colors.white,
                 fontSize: 25,
               ),

@@ -24,7 +24,8 @@ class CollectionManager extends StatelessWidget {
         ),
         body: Body(), // Body
         floatingActionButton: ReusableFloatActionButton(
-            onPressed: () => Navigator.pushNamed(context, CardCreater.id)),
+          onPressed: () => Navigator.pushNamed(context, CardCreater.id),
+        ),
 
         bottomNavigationBar: BaseBottomAppBar(
           child1: ReusableBottomIconBtn(

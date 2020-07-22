@@ -20,45 +20,46 @@ class WordsCollectionsList extends StatelessWidget {
         backgroundColor: kMainColorBackground,
         floatingActionButton: ReusableFloatActionButton(onPressed: () {
           showGeneralDialog(
-              barrierColor: Color(0xFFb48484).withOpacity(0.9),
-              transitionBuilder: (context, a1, a2, widget) {
-                return Transform.scale(
-                  scale: a1.value,
-                  child: Opacity(
-                    opacity: a1.value,
-                    child: AlertDialog(
-                      // insetPadding: EdgeInsets.only(bottom: 200),
-                      shape: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      content: Container(
-                          height: 300,
-                          width: 310,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              TextField(
-                                decoration: InputDecoration(
-                                  labelText: 'Collection name',
-                                  enabledBorder: OutlineInputBorder(),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              TextField(
-                                  decoration: InputDecoration(
-                                labelText: 'Language',
+            barrierColor: Color(0xFFb48484).withOpacity(0.9),
+            transitionBuilder: (context, a1, a2, widget) {
+              return Transform.scale(
+                scale: a1.value,
+                child: Opacity(
+                  opacity: a1.value,
+                  child: AlertDialog(
+                    // insetPadding: EdgeInsets.only(bottom: 200),
+                    shape: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    content: Container(
+                        height: 300,
+                        width: 310,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            TextField(
+                              decoration: InputDecoration(
+                                labelText: 'Collection name',
                                 enabledBorder: OutlineInputBorder(),
-                              ))
-                            ],
-                          )),
-                    ),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            TextField(
+                                decoration: InputDecoration(
+                              labelText: 'Language',
+                              enabledBorder: OutlineInputBorder(),
+                            ))
+                          ],
+                        )),
                   ),
-                );
-              },
-              transitionDuration: Duration(milliseconds: 200),
-              barrierDismissible: true,
-              barrierLabel: '',
-              context: context,
-              pageBuilder: (context, animation1, animation2) {});
+                ),
+              );
+            },
+            transitionDuration: Duration(milliseconds: 200),
+            barrierDismissible: true,
+            barrierLabel: '',
+            context: context,
+            pageBuilder: (context, animation1, animation2) {},
+          );
         }),
         // showModalBottomSheet(
         //   context: context,

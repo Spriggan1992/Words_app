@@ -51,7 +51,7 @@ class CreateBoxCollections extends StatelessWidget {
                     child: ReusableMainButton(
                       backgroundColor: kMainColorBlue,
                       titleText: 'Add',
-                      titleColor: Colors.white,
+                      textColor: Colors.white,
                       onPressed: () {
                         providerData.addNewCollection(textTitleCollection);
                         Navigator.pop(context);

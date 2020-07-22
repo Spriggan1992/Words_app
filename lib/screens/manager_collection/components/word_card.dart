@@ -10,14 +10,15 @@ class WordCard extends StatelessWidget {
   final index;
   @override
   Widget build(BuildContext context) {
-    final words = Provider.of<Words>(context, listen: false).wordsData[index];
+    //Receiving word data from word_data provider, using index to extract single item from array
+    final word = Provider.of<Words>(context, listen: false).wordsData[index];
     final showImg = Provider.of<Words>(context);
     return GestureDetector(
       onTap: () {
-        // When we prees on WordCard, we pass an id of this WordCard to provider_data,
+        // When we press on WordCard, we pass an id of this WordCard to provider_data,
         // in provider_data Function choosePictureInProvider takes that id and send it to words_data throught
         // Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
-        words.selectImages(words.id);
+        word.selectImages(word.id);
         showDialogWindow(context, index);
       },
       child: Padding(
@@ -37,13 +38,9 @@ class WordCard extends StatelessWidget {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
-                        child: Checkbox(
-                          visualDensity:
-                              VisualDensity(horizontal: -4, vertical: -4),
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                          value: false,
-                          onChanged: null,
+                        child: Text(
+                          word.part,
+                          style: TextStyle(fontSize: 24),
                         ),
                       ),
                       //Main word container
@@ -52,7 +49,7 @@ class WordCard extends StatelessWidget {
                         width: 100,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
-                          child: Text(words.word1, //Main word
+                          child: Text(word.word1, //Main word
                               style: TextStyle(
                                   fontSize: 25.0, color: Color(0xFFF8b6b6))),
                         ),
@@ -65,7 +62,7 @@ class WordCard extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 5.0),
                       alignment: Alignment.center,
                       child: Text(
-                        words.translation, //  Translation
+                        word.translation, //  Translation
                       ),
                     ),
                   ),
@@ -75,20 +72,20 @@ class WordCard extends StatelessWidget {
                     // in provider_data Function choosePictureInProvider takes that id and send it to words_data throught
                     // Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
                     onTap: () {
-                      words.selectImages(words.id);
-                      showImg.toggleShowImgInWordsProvider(words);
+                      word.selectImages(word.id);
+                      showImg.toggleShowImgInWordsProvider(word);
 
                       // words
                       //     .toggleShowImgInWordsProvider(words);
                     },
-                    child: !words.isEditingShowImg
+                    child: !word.isEditingShowImg
                         ? Icon(Icons.image)
                         : Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               image: DecorationImage(
                                   image: AssetImage(
-                                    words.image,
+                                    word.image,
                                   ),
                                   fit: BoxFit.cover),
                             ),

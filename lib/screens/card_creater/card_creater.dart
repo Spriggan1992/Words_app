@@ -4,6 +4,10 @@ import 'package:words_app/constants/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/providers/words_provider.dart';
 
+import 'components/radio_button_group.dart';
+
+const Color color = Color(0xff03DAC6);
+
 class CardCreater extends StatelessWidget {
   static String id = 'card_creator';
 
@@ -15,6 +19,7 @@ class CardCreater extends StatelessWidget {
     String translation;
     int id = 3;
     String image = 'images/3.jpeg';
+    String dropdownValue = 'One';
 
     return Consumer<Words>(
       builder: (context, providerData, child) {
@@ -33,89 +38,94 @@ class CardCreater extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
-                        width: 90,
-                        height: 55,
-                        padding: EdgeInsets.only(bottom: 20),
-                        alignment: Alignment.center,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.keyboard_arrow_left,
-                            size: 40,
-                            color: Colors.white,
-                          ),
-                          onPressed: () => Navigator.pop(context),
-                        )),
+                      width: 90,
+                      height: 55,
+                      padding: EdgeInsets.only(bottom: 20),
+                      alignment: Alignment.center,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.keyboard_arrow_left,
+                          size: 40,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                    color: kMainColorBackground,
-                    padding: EdgeInsets.only(top: 30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            body: Container(
+                color: Colors.white,
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Container(
+                      child: Column(
+                        children: <Widget>[
+                          Field(
+                              title: 'First Word',
+                              handleText: (value) => mainWord = value),
+                          Field(
+                              title: 'Second Word',
+                              handleText: (value) => secondWord = value),
+                          Field(
+                              title: 'Translation',
+                              handleText: (value) => translation = value),
+                          Field(title: 'Example'),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Flexible(
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: <Widget>[
-                              Container(
-                                width: 300,
-                                height: 200,
-                                color: Colors.grey[500],
-                              ),
-                              CircleAvatar(
-                                backgroundColor: Colors.white,
-                                child: IconButton(
-                                    icon: Icon(Icons.add), onPressed: null),
-                              ),
-                            ],
-                          ),
-                        ),
                         Container(
-                          child: Column(
-                            children: <Widget>[
-                              Fields(
-                                  title: 'First Word',
-                                  handleText: (value) => mainWord = value),
-                              Fields(
-                                  title: 'Second Word',
-                                  handleText: (value) => secondWord = value),
-                              Fields(
-                                  title: 'Translation',
-                                  handleText: (value) => translation = value),
-                              Fields(title: 'Example'),
-                            ],
+                          width: 150,
+                          height: 150,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                        ),
-                        // SizedBox(height: 80.0),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 17),
-                          child: ReusableMainButton(
-                            titleText: 'Add',
-                            onPressed: () {
-                              providerData.addNewWordCard(
-                                  mainWord, secondWord, translation, id, image);
-                              print(mainWord);
-                              print(secondWord);
-                              print(translation);
-                              print(id);
-                              print(image);
-                              Navigator.pop(context);
-                            },
-                            titleColor: kMainColorBlue,
+                          child: CircleAvatar(
                             backgroundColor: Colors.white,
-                            fontSize: 25,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.add,
+                                size: 36,
+                                color: Color(0xff03DAC6),
+                              ),
+                              onPressed: null,
+                            ),
                           ),
                         ),
                       ],
-                    )),
-              ),
-            ),
+                    ),
+                    RadioButtonGroup(),
+                    // SizedBox(height: 80.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 17),
+                      child: ReusableMainButton(
+                        titleText: 'ADD WORD',
+                        onPressed: () {
+                          providerData.addNewWordCard(
+                              mainWord, secondWord, translation, id, image);
+//                          print(mainWord);
+//                          print(secondWord);
+//                          print(translation);
+//                          print(id);
+//                          print(image);
+                          Navigator.pop(context);
+                        },
+                        textColor: Colors.white,
+                        backgroundColor: Color(0xff03DAC6),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                )),
           ),
         );
       },
@@ -123,8 +133,8 @@ class CardCreater extends StatelessWidget {
   }
 }
 
-class Fields extends StatelessWidget {
-  const Fields({this.title, this.handleText});
+class Field extends StatelessWidget {
+  const Field({this.title, this.handleText});
 
   final String title;
   final Function handleText;
@@ -135,19 +145,14 @@ class Fields extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.center,
+
         children: <Widget>[
           Expanded(
-            child: Container(
-              width: 30,
-              child: Text(title),
-            ),
-          ),
-          Container(
-            width: 220,
             child: TextField(
               onChanged: handleText,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
+                  labelText: title,
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.only(top: 5, right: 10)),
             ),

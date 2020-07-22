@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class Word with ChangeNotifier {
   Word({
+    this.id,
     this.word1,
     this.word2,
     this.translation,
-    this.id,
+    this.part,
     this.image,
     this.isEditingWord1 = true,
     this.isEditingWord2 = true,
@@ -13,6 +14,7 @@ class Word with ChangeNotifier {
   });
 
   int id;
+  String part;
   String image;
   String word1;
   String word2;
