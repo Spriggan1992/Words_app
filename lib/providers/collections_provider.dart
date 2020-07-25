@@ -4,9 +4,10 @@ import '../providers/collection_data.dart';
 
 class Collections with ChangeNotifier {
   List<Collection> _wordsCollectionData = [
-    Collection(title: "nouns"),
-    Collection(title: "verbs"),
-    Collection(title: "adjectives")
+    Collection(title: "nouns", language: 'eng'),
+    Collection(title: "verbs", language: 'ru'),
+    Collection(title: "adjectives", language: 'eng'),
+    Collection(title: 'pron', language: 'cn')
   ];
 
   UnmodifiableListView<Collection> get wordsCollectionData {
@@ -36,8 +37,14 @@ class Collections with ChangeNotifier {
   }
 
   void handleSubmitEditTitle(dynamic value, Collection collection) {
-    collection.changeCollectionName(value);
-    collection.toggleCheckTextEditing();
+    collection.changeCollectionTitle(value);
+    // collection.toggleCheckTextEditing();
+    notifyListeners();
+  }
+
+  void handleSubmitEditLangugeTitle(dynamic value, Collection collection) {
+    collection.changeLanguageTitle(value);
+    // collection.toggleCheckTextEditing();
     notifyListeners();
   }
 }

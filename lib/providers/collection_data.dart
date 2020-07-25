@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Collection with ChangeNotifier {
-  Collection({this.title, checkTextEdit});
+  Collection({this.title, this.language});
 
   String title;
+  String language;
   bool isEditing = true;
   bool isFront = true;
 
@@ -15,7 +16,11 @@ class Collection with ChangeNotifier {
     isFront = !isFront;
   }
 
-  void changeCollectionName(String newName) {
+  void changeCollectionTitle(String newName) {
     title = newName;
+  }
+
+  void changeLanguageTitle(String language) {
+    title = language;
   }
 }

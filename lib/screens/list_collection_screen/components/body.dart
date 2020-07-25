@@ -14,50 +14,43 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: kMainColorBackground,
-      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 40.0),
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       child: CustomScrollView(
         slivers: <Widget>[
           // Provider data, here
           Consumer<Collections>(builder: (context, providerData, child) {
             return SliverGrid(
               delegate: SliverChildBuilderDelegate((context, index) {
+                String handleSubmiteText;
+
                 var wordsCollectionData =
                     providerData.wordsCollectionData[index];
+
                 return WordsCollection(
-                  // Name of Collections. Pass STRING collectionNameTitle from box_collection_data
-                  collectionTitleName: wordsCollectionData.title,
-
-                  /* Pass conditional  bool checkTextEditing from box_collection_data for check if
-                  checkTextEditing = true {show Text field} if false {show Text('collectionTitleName')}
-                  */
-                  isCheckedTextEditing: wordsCollectionData.isEditing,
-
-                  /* Pass conditional checkFrontBack containers. Check if bool checkFrontBack = true
-                  {show Front container}, if false{show Back container}
-                  */
-                  isFront: wordsCollectionData.isFront,
-
-                  // Just toggle bool checkFrontBack，thereby switching between Front and Backcontainers
-                  chooseFrontBackContainers: () {
-                    providerData.switchFrontBack(wordsCollectionData);
+                  index: index,
+                  /* Takes value from TextField, and stored it in handleSubmiteText */
+                  onSubmit: (value) async {
+                    handleSubmiteText = await value;
                   },
-
-                  /* Here we just toggle isCheckedTextEditing and check if isCheckedTextEditing = true
-                {show Text Field} if false {show Text(collectionTitleName)}
-                */
-                  editingText: () {
-                    providerData.editText(wordsCollectionData);
-                  },
-
-                  /* Takes value from TextField, when we submitted value it change collectionTitleName */
-                  onSubmit: (value) {
-                    providerData.handleSubmitEditTitle(
-                        value, wordsCollectionData);
+                  // Submitted Form, if handleSubmiteText == null -> return previous value of title
+                  // else save new value
+                  onSaveForm: () {
+                    print('dsa');
+                    var collectionData =
+                        Provider.of<Collections>(context, listen: false);
+                    if (handleSubmiteText == null) {
+                      collectionData.handleSubmitEditTitle(
+                          wordsCollectionData.title, wordsCollectionData);
+                    } else
+                      collectionData.handleSubmitEditTitle(handleSubmiteText,
+                          collectionData.wordsCollectionData[index]);
+                    Navigator.pop(context);
                   },
 
                   // Remove collection from data
                   deleteCollection: () {
                     providerData.deleteCollection(wordsCollectionData);
+                    Navigator.pop(context);
                   },
 
                   goToManagerCollections: () {
@@ -66,10 +59,10 @@ class Body extends StatelessWidget {
                 );
               }, childCount: providerData.wordsCollectionData.length),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 0.8,
+                childAspectRatio: 0.65,
                 crossAxisCount: 3,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 15,
+                mainAxisSpacing: 1,
+                crossAxisSpacing: 3,
               ),
             );
           })

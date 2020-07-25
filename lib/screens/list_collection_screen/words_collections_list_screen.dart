@@ -27,7 +27,6 @@ class WordsCollectionsList extends StatelessWidget {
                 child: Opacity(
                   opacity: a1.value,
                   child: AlertDialog(
-                    // insetPadding: EdgeInsets.only(bottom: 200),
                     shape: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0)),
                     content: Container(
@@ -61,18 +60,17 @@ class WordsCollectionsList extends StatelessWidget {
             pageBuilder: (context, animation1, animation2) {},
           );
         }),
-        // showModalBottomSheet(
-        //   context: context,
-        //   builder: (context) => CreateBoxCollections(),
-
-        //Footer AppBar
-        // In this screen Bottom AppBar just take empty container, cause child1 and child2 cannot be emty(==null);
         bottomNavigationBar: BaseBottomAppBar(
           child1: Container(),
           child2: Container(),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: Body(),
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Body(),
+        ),
       ),
     );
   }

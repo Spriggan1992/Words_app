@@ -9,7 +9,7 @@ import 'package:words_app/screens/list_collection_screen/words_collections_list_
 import 'package:words_app/screens/welcome_screen/welcom_screen.dart';
 import 'screens/manager_collection/collection_manager.dart';
 import 'package:words_app/screens/card_creater/card_creater.dart';
-import 'package:words_app/models/provider_data.dart';
+
 import 'package:words_app/screens/training_screen/training_screen.dart';
 import 'package:words_app/screens/result_screen/result_screen.dart';
 
@@ -22,9 +22,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => ProviderData(),
-        ),
         ChangeNotifierProvider(
           create: (context) => Collections(),
         ),
