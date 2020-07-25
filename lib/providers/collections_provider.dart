@@ -25,26 +25,13 @@ class Collections with ChangeNotifier {
     notifyListeners();
   }
 
-  void switchFrontBack(Collection collection) {
-    collection.toggleCheckFrontBack();
-    notifyListeners();
-  }
-
-  void editText(Collection collection) {
-    collection.toggleCheckTextEditing();
-    collection.toggleCheckFrontBack();
-    notifyListeners();
-  }
-
   void handleSubmitEditTitle(dynamic value, Collection collection) {
     collection.changeCollectionTitle(value);
-    // collection.toggleCheckTextEditing();
     notifyListeners();
   }
 
   void handleSubmitEditLangugeTitle(dynamic value, Collection collection) {
     collection.changeLanguageTitle(value);
-    // collection.toggleCheckTextEditing();
     notifyListeners();
   }
 }

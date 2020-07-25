@@ -5,22 +5,18 @@ class Collection with ChangeNotifier {
 
   String title;
   String language;
-  bool isEditing = true;
-  bool isFront = true;
-
-  void toggleCheckTextEditing() {
-    isEditing = !isEditing;
-  }
-
-  void toggleCheckFrontBack() {
-    isFront = !isFront;
-  }
 
   void changeCollectionTitle(String newName) {
-    title = newName;
+    if (newName == null) {
+      title = title;
+    } else
+      title = newName;
   }
 
-  void changeLanguageTitle(String language) {
-    title = language;
+  void changeLanguageTitle(String newLanguage) {
+    if (newLanguage == null) {
+      language = language;
+    } else
+      language = newLanguage;
   }
 }

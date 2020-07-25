@@ -21,29 +21,29 @@ class Body extends StatelessWidget {
           Consumer<Collections>(builder: (context, providerData, child) {
             return SliverGrid(
               delegate: SliverChildBuilderDelegate((context, index) {
-                String handleSubmiteText;
-
+                String handleSubmiteTitle;
+                String handleSubmitLanguage;
                 var wordsCollectionData =
                     providerData.wordsCollectionData[index];
 
                 return WordsCollection(
                   index: index,
                   /* Takes value from TextField, and stored it in handleSubmiteText */
-                  onSubmit: (value) async {
-                    handleSubmiteText = await value;
+                  onSubmitTitleField: (value) {
+                    handleSubmiteTitle = value;
                   },
-                  // Submitted Form, if handleSubmiteText == null -> return previous value of title
-                  // else save new value
+                  onSubmitLanguageField: (value) {
+                    handleSubmitLanguage = value;
+                  },
+                  // Save form
                   onSaveForm: () {
-                    print('dsa');
-                    var collectionData =
-                        Provider.of<Collections>(context, listen: false);
-                    if (handleSubmiteText == null) {
-                      collectionData.handleSubmitEditTitle(
-                          wordsCollectionData.title, wordsCollectionData);
-                    } else
-                      collectionData.handleSubmitEditTitle(handleSubmiteText,
-                          collectionData.wordsCollectionData[index]);
+                    providerData.handleSubmitEditTitle(
+                        handleSubmiteTitle, wordsCollectionData);
+
+                    providerData.handleSubmitEditLangugeTitle(
+                        handleSubmitLanguage, wordsCollectionData);
+
+                    print(handleSubmitLanguage);
                     Navigator.pop(context);
                   },
 

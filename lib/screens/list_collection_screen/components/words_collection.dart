@@ -10,19 +10,20 @@ import 'package:words_app/screens/list_collection_screen/components/text_holder.
 class WordsCollection extends StatelessWidget {
   WordsCollection({
     this.goToManagerCollections,
-    this.isFront,
-    this.onSubmit,
+    this.onSubmitTitleField,
     this.onChanged,
     this.deleteCollection,
     this.index,
     this.onSaveForm,
+    this.onSubmitLanguageField,
   });
 
   final Function goToManagerCollections;
-  final bool isFront;
-  final Function onSubmit;
+
+  final Function onSubmitTitleField;
   final Function onChanged;
   final Function deleteCollection;
+  final Function onSubmitLanguageField;
   final int index;
 
   final Function onSaveForm;
@@ -31,7 +32,6 @@ class WordsCollection extends StatelessWidget {
   Widget build(BuildContext context) {
     final providerData = Provider.of<Collections>(context, listen: false)
         .wordsCollectionData[index];
-    print('dsadsa');
     return GestureDetector(
         onTap: goToManagerCollections, // Go to managerCollection
         child: Padding(
@@ -125,8 +125,9 @@ class WordsCollection extends StatelessWidget {
                               context,
                               index,
                               deleteCollection,
-                              onSubmit,
                               onSaveForm,
+                              onSubmitTitleField,
+                              onSubmitLanguageField,
                             );
                           }),
                       SizedBox(width: 5),
@@ -143,8 +144,9 @@ class WordsCollection extends StatelessWidget {
     BuildContext context,
     index,
     deleteCollection,
-    onSubmit,
     onSaveForm,
+    onSubmitTitleField,
+    onSubmitLanguageField,
   ) {
     return showGeneralDialog(
         barrierColor: Color(0xFFb48484).withOpacity(0.9),
@@ -161,11 +163,11 @@ class WordsCollection extends StatelessWidget {
                   ),
                   content: StatefulBuilder(builder: (context, setState) {
                     return CollectionListDialog(
-                      index: index,
-                      deleteCollection: deleteCollection,
-                      onSubmit: onSubmit,
-                      onSaveForm: onSaveForm,
-                    );
+                        index: index,
+                        deleteCollection: deleteCollection,
+                        onSubmit: onSubmitTitleField,
+                        onSaveForm: onSaveForm,
+                        onSubmitLanguageField: onSubmitLanguageField);
                   }),
                 ),
               ));
@@ -174,6 +176,7 @@ class WordsCollection extends StatelessWidget {
         barrierDismissible: false,
         barrierLabel: '',
         context: context,
+        // ignore: missing_return
         pageBuilder: (context, animation1, animation2) {});
   }
 }

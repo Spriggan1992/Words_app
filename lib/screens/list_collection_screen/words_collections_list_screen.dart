@@ -5,6 +5,8 @@ import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/screens/list_collection_screen/components/body.dart';
 
+import 'components/btns.dart';
+
 class WordsCollectionsList extends StatelessWidget {
   static String id = 'list_collection';
 
@@ -35,6 +37,31 @@ class WordsCollectionsList extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                // Done btn
+                                Btns(
+                                  padding: 5.0,
+                                  backgroundColor: Colors.grey[100],
+                                  icon: Icons.done,
+                                  color: Colors.green[400],
+                                  onPress: null,
+                                ),
+                                SizedBox(width: 5.0),
+                                // Close btn
+                                Btns(
+                                    padding: 5.0,
+                                    backgroundColor: Colors.grey[100],
+                                    icon: Icons.close,
+                                    color: Colors.red[400],
+                                    onPress: () {
+                                      Navigator.pop(context);
+                                    })
+                              ],
+                            ),
+                            Spacer(),
                             TextField(
                               decoration: InputDecoration(
                                 labelText: 'Collection name',
@@ -57,6 +84,7 @@ class WordsCollectionsList extends StatelessWidget {
             barrierDismissible: true,
             barrierLabel: '',
             context: context,
+            // ignore: missing_return
             pageBuilder: (context, animation1, animation2) {},
           );
         }),

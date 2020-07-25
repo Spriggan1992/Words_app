@@ -11,6 +11,7 @@ class CollectionListDialog extends StatelessWidget {
     this.deleteCollection,
     this.onSubmit,
     this.onSaveForm,
+    this.onSubmitLanguageField,
     Key key,
   }) : super(key: key);
 
@@ -19,8 +20,8 @@ class CollectionListDialog extends StatelessWidget {
   final Function deleteCollection;
   final Function onSubmit;
   final Function onSaveForm;
+  final Function onSubmitLanguageField;
 
-  @override
   @override
   Widget build(BuildContext context) {
     final providerData = Provider.of<Collections>(context, listen: false)
@@ -36,12 +37,12 @@ class CollectionListDialog extends StatelessWidget {
               children: <Widget>[
                 // Done btn
                 Btns(
-                  padding: 5.0,
-                  backgroundColor: Colors.grey[100],
-                  icon: Icons.done,
-                  color: Colors.green[400],
-                  onPress: onSaveForm,
-                ),
+                    padding: 5.0,
+                    backgroundColor: Colors.grey[100],
+                    icon: Icons.done,
+                    color: Colors.green[400],
+                    onPress: onSaveForm),
+
                 SizedBox(width: 5.0),
                 // Close btn
                 Btns(
@@ -61,11 +62,7 @@ class CollectionListDialog extends StatelessWidget {
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(border: InputBorder.none),
                 controller: TextEditingController(text: providerData.title),
-                onChanged: onSubmit
-
-                // handleSubmiteText = value;
-
-                ),
+                onChanged: onSubmit),
             SizedBox(height: 15),
             MySeparator(
               padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -75,20 +72,19 @@ class CollectionListDialog extends StatelessWidget {
               height: 3.0,
             ),
             Flexible(child: SizedBox(height: 20)),
-            // Language Text Field
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text('language:  ', style: TextStyle(fontSize: 20.0)),
                 Container(
-                  width: 50,
+                  width: 60,
                   child: TextField(
-                    style: TextStyle(fontSize: 25, color: Color(0xFF34c7b3)),
-                    controller:
-                        TextEditingController(text: providerData.language),
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(border: InputBorder.none),
-                  ),
+                      style: TextStyle(fontSize: 25, color: Color(0xFF34c7b3)),
+                      controller:
+                          TextEditingController(text: providerData.language),
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(border: InputBorder.none),
+                      onChanged: onSubmitLanguageField),
                 ),
               ],
             ),
