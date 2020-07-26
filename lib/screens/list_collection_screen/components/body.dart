@@ -49,8 +49,8 @@ class Body extends StatelessWidget {
 
                   // Remove collection from data
                   deleteCollection: () {
-                    providerData.deleteCollection(wordsCollectionData);
                     Navigator.pop(context);
+                    providerData.deleteCollection(wordsCollectionData);
                   },
 
                   goToManagerCollections: () {

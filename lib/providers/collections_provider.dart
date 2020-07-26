@@ -14,14 +14,17 @@ class Collections with ChangeNotifier {
     return UnmodifiableListView(_wordsCollectionData);
   }
 
-  void addNewCollection(String newCollection) {
-    final collection = Collection(title: newCollection);
+  void addNewCollection(String collectionTitle, String languageTitle) {
+    final collection =
+        Collection(title: collectionTitle, language: languageTitle);
     _wordsCollectionData.add(collection);
+
     notifyListeners();
   }
 
   void deleteCollection(Collection collection) {
     _wordsCollectionData.remove(collection);
+    print(_wordsCollectionData);
     notifyListeners();
   }
 

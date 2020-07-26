@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 const Color kMainColorBackground = Color(0xFFf8e6e6);
 const Color kAppBarsColor = Color(0xFFff9f9f);
 const Color kMainColorBlue = Color(0xFF498ba6);
+const Color kMainButtonColor = Color(0xFF34c7b3);
 
 const kBackgroundColor = BoxDecoration(
   gradient: LinearGradient(
