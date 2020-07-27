@@ -6,11 +6,13 @@ class FoldingBtnField extends StatelessWidget {
     @required this.selected,
     this.title,
     this.onPress,
+    this.onChanged,
   }) : super(key: key);
 
   final bool selected;
 
   final String title;
+  final Function onChanged;
   final Function onPress;
 
   @override
@@ -28,6 +30,7 @@ class FoldingBtnField extends StatelessWidget {
           curve: Curves.fastOutSlowIn,
           child: Container(
             child: TextField(
+              onChanged: onChanged,
               enabled: selected ? true : false,
               textAlign: selected ? TextAlign.center : TextAlign.end,
               decoration: InputDecoration(

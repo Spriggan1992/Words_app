@@ -33,7 +33,7 @@ class _CardCreatorState extends State<CardCreator> {
   int id = 3;
   String image = 'images/3.jpeg';
   String dropdownValue = 'One';
-  String part = 'n';
+  String part = '';
 
   //method to work with camera
   getImageFile(ImageSource source) async {
@@ -114,9 +114,9 @@ class _CardCreatorState extends State<CardCreator> {
             flipOnTouch: false,
             direction: FlipDirection.HORIZONTAL,
             speed: 500,
-            onFlipDone: (status) {
-              print(status);
-            },
+//            onFlipDone: (status) {
+//              print(status);
+//            },
 //        front: CardCreatorFront(() => cardKey.currentState.toggleCard()),
             front: SingleChildScrollView(
               child: Padding(
@@ -147,6 +147,7 @@ class _CardCreatorState extends State<CardCreator> {
                                           width: 2, color: Colors.black),
                                     ),
                                   ),
+                                  onChanged: (value) => mainWord = value,
                                 ),
                                 SizedBox(
                                   height: 20,
@@ -154,7 +155,9 @@ class _CardCreatorState extends State<CardCreator> {
                                 Container(
                                   width: size.width * 0.7,
                                   height: 40,
-                                  child: CustomRadio(),
+                                  child: CustomRadio(
+                                    getPart: (value) => part = value,
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 24,
@@ -246,6 +249,7 @@ class _CardCreatorState extends State<CardCreator> {
                                     MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
+                                  // main word text field
                                   TextField(
                                     decoration: InputDecoration(
                                       labelText: 'main word in your language',
@@ -258,6 +262,7 @@ class _CardCreatorState extends State<CardCreator> {
                                             width: 2, color: Colors.black),
                                       ),
                                     ),
+                                    onChanged: (value) => translation = value,
                                   ),
                                   FoldingBtnField(
                                     selected: _secondLangSelect,
@@ -270,6 +275,7 @@ class _CardCreatorState extends State<CardCreator> {
                                         },
                                       );
                                     },
+                                    onChanged: (value) => secondWord = value,
                                   ),
                                   FoldingBtnField(
                                     selected: _thirdLangSelect,

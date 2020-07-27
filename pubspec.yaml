@@ -29,6 +29,7 @@ dependencies:
   flip_card: ^0.4.4
   image_picker: ^0.6.7+4
   image_cropper: ^1.2.3
+  uuid: ^2.2.0q
   # hive: ^1.4.1+1
   # hive_flutter: ^0.3.0+2
   # path_provider: ^1.6.11

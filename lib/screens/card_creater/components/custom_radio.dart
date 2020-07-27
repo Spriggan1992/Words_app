@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 const Color mintColor = Color(0xff03dac6);
 
 class CustomRadio extends StatefulWidget {
+  final Function getPart;
   static const id = 'custom_radio';
+
+  const CustomRadio({this.getPart});
   @override
   createState() {
     return new CustomRadioState();
@@ -43,6 +46,7 @@ class CustomRadioState extends State<CustomRadio> {
                 radioButtonList
                     .forEach((element) => element.isSelected = false);
                 radioButtonList[index].isSelected = true;
+                widget.getPart(radioButtonList[index].buttonText);
               },
             );
           },
