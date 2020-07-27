@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/providers/words_provider.dart';
-
+import 'package:uuid/uuid.dart';
 import 'components/custom_radio.dart';
 import 'components/folding_btn_field.dart';
 import 'components/reusable_card.dart';
@@ -19,6 +19,7 @@ class CardCreator extends StatefulWidget {
 }
 
 class _CardCreatorState extends State<CardCreator> {
+  static var uuid = Uuid();
   //to store image locally
   File _image;
   //get access to camera or gallery
@@ -30,7 +31,7 @@ class _CardCreatorState extends State<CardCreator> {
   String mainWord = 'one';
   String secondWord = 'two';
   String translation = 'three';
-  int id = 3;
+  String id = uuid.v4();
   String image = 'images/3.jpeg';
   String dropdownValue = 'One';
   String part = '';
@@ -95,7 +96,7 @@ class _CardCreatorState extends State<CardCreator> {
               SizedBox(
                 width: 10,
               ),
-//   dismiss button poping the context back to list of words
+//   dismiss button pop the context back to list of words
               Padding(
                 padding: const EdgeInsets.only(right: 20),
                 child: InkWell(

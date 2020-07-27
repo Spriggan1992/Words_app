@@ -110,7 +110,7 @@ class CardCreater extends StatelessWidget {
                         titleText: 'ADD WORD',
                         onPressed: () {
                           providerData.addNewWordCard(mainWord, secondWord,
-                              translation, id, image, part);
+                              translation, 'id', image, part);
 //                          print(mainWord);
 //                          print(secondWord);
 //                          print(translation);

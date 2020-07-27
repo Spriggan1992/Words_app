@@ -13,7 +13,7 @@ class Word with ChangeNotifier {
     this.isEditingTranslationTitle = true,
   });
 
-  int id;
+  String id;
   String part;
   String image;
   String word1;
@@ -25,7 +25,7 @@ class Word with ChangeNotifier {
   bool isEditingExampleTitle = true;
   bool isEditingShowImg = true;
 
-  void selectImages(int id) {
+  void selectImages(String id) {
     try {
       image = 'images/$id.jpeg';
     } catch (e) {

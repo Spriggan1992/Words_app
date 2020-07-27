@@ -4,7 +4,7 @@ import 'package:words_app/providers/word_data.dart';
 class Words with ChangeNotifier {
   List<Word> _wordsData = [
     Word(
-      id: 1,
+      id: '1',
       word1: 'Summer',
       word2: '夏天',
       translation: 'Лето',
@@ -12,7 +12,7 @@ class Words with ChangeNotifier {
       image: 'images/1.jpeg',
     ),
     Word(
-      id: 2,
+      id: '2',
       word1: 'go',
       word2: '走',
       translation: 'идти',
@@ -20,7 +20,7 @@ class Words with ChangeNotifier {
       image: 'images/2.jpeg',
     ),
     Word(
-      id: 3,
+      id: '3',
       word1: 'beautiful',
       word2: '漂亮',
       translation: 'красивый',
@@ -38,8 +38,8 @@ class Words with ChangeNotifier {
   }
 
   //CardCreater
-  void addNewWordCard(String main, String second, String translation, int newId,
-      String image, String part) {
+  void addNewWordCard(String main, String second, String translation,
+      String newId, String image, String part) {
     final wordCard = Word(
       word1: main,
       word2: second,
