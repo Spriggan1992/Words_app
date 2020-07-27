@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:words_app/providers/collections_provider.dart';
 import 'package:words_app/providers/validation_provider.dart';
 import 'package:words_app/providers/words_provider.dart';
+import 'package:words_app/screens/card_creater/card_creator.dart';
 import 'package:words_app/screens/loging_screen/login_screen.dart';
 import 'package:words_app/screens/registration_screen/registration_screen.dart';
 import 'package:words_app/screens/list_collection_screen/words_collections_list_screen.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        theme: ThemeData(),
         title: 'Word App',
         debugShowCheckedModeBanner: false,
         initialRoute: WordsCollectionsList.id,
@@ -42,7 +44,7 @@ class MyApp extends StatelessWidget {
           RegistrationScreen.id: (context) => RegistrationScreen(),
           WordsCollectionsList.id: (context) => WordsCollectionsList(),
           CollectionManager.id: (context) => CollectionManager(),
-          CardCreater.id: (context) => CardCreater(),
+          CardCreator.id: (context) => CardCreator(),
           Training.id: (context) => Training(),
           Result.id: (context) => Result(),
         },
