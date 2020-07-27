@@ -13,6 +13,8 @@ import 'package:uuid/uuid.dart';
 import 'components/custom_radio.dart';
 import 'components/folding_btn_field.dart';
 import 'components/reusable_card.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart' as syspaths;
 
 class CardCreator extends StatefulWidget {
   static const id = 'card_creator';
@@ -60,9 +62,15 @@ class _CardCreatorState extends State<CardCreator> {
 //      quality: 88,
 //    );
     setState(() {
-      _image = croppedFile;
-      print(_image.lengthSync());
+      _image = File(croppedFile.path);
     });
+    final appDir = await syspaths
+        .getApplicationDocumentsDirectory(); //to get current app folder path.
+    final fileName = path
+        .basename(croppedFile.path); // to obtain the name of the created file;
+    final savedImage =
+        await File(croppedFile.path).copy('${appDir.path}/$fileName');
+    image = savedImage.path;
   }
 
   //Global key for Flip card
@@ -85,7 +93,7 @@ class _CardCreatorState extends State<CardCreator> {
                 ),
                 onTap: () {
                   providerData.addNewWordCard(
-                      mainWord, secondWord, translation, id, image, part);
+                      mainWord, secondWord, translation, id, _image, part);
 
 //                          print(mainWord);
 //                          print(secondWord);

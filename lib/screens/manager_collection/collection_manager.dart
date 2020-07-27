@@ -4,7 +4,7 @@ import 'package:words_app/components/base_bottom_appbar.dart';
 import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
-import 'package:words_app/screens/card_creater/card_creater.dart';
+import 'package:words_app/screens/card_creater/card_creator.dart';
 import 'package:words_app/screens/manager_collection/components/body.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
 
@@ -24,7 +24,7 @@ class CollectionManager extends StatelessWidget {
         ),
         body: Body(), // Body
         floatingActionButton: ReusableFloatActionButton(
-          onPressed: () => Navigator.pushNamed(context, CardCreater.id),
+          onPressed: () => Navigator.pushNamed(context, CardCreator.id),
         ),
 
         bottomNavigationBar: BaseBottomAppBar(

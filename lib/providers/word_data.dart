@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class Word with ChangeNotifier {
@@ -14,24 +16,24 @@ class Word with ChangeNotifier {
   });
 
   String id;
-  String part;
-  String image;
   String word1;
   String word2;
   String translation;
+  String part;
+  String image;
   bool isEditingWord1;
   bool isEditingWord2;
   bool isEditingTranslationTitle;
   bool isEditingExampleTitle = true;
   bool isEditingShowImg = true;
 
-  void selectImages(String id) {
-    try {
-      image = 'images/$id.jpeg';
-    } catch (e) {
-      print(e);
-    }
-  }
+//  void selectImages(String id) {
+//    try {
+//      image = 'images/$id.jpeg';
+//    } catch (e) {
+//      print(e);
+//    }
+//  }
 
   void toggleWord1() {
     isEditingWord1 = !isEditingWord1;

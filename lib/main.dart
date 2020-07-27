@@ -10,7 +10,6 @@ import 'package:words_app/screens/registration_screen/registration_screen.dart';
 import 'package:words_app/screens/list_collection_screen/words_collections_list_screen.dart';
 import 'package:words_app/screens/welcome_screen/welcom_screen.dart';
 import 'screens/manager_collection/collection_manager.dart';
-import 'package:words_app/screens/card_creater/card_creater.dart';
 
 import 'package:words_app/screens/training_screen/training_screen.dart';
 import 'package:words_app/screens/result_screen/result_screen.dart';

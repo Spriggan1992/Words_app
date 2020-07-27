@@ -18,7 +18,7 @@ class WordCard extends StatelessWidget {
         // When we press on WordCard, we pass an id of this WordCard to provider_data,
         // in provider_data Function choosePictureInProvider takes that id and send it to words_data throught
         // Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
-        word.selectImages(word.id);
+//        word.selectImages(word.id);
         showDialogWindow(context, index);
       },
       child: Padding(
@@ -72,7 +72,7 @@ class WordCard extends StatelessWidget {
                     // in provider_data Function choosePictureInProvider takes that id and send it to words_data throught
                     // Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
                     onTap: () {
-                      word.selectImages(word.id);
+//                      word.selectImages(word.id);
                       showImg.toggleShowImgInWordsProvider(word);
 
                       // words

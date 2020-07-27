@@ -1,32 +1,35 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:words_app/db_helper.dart';
 import 'package:words_app/providers/word_data.dart';
 
 class Words with ChangeNotifier {
   List<Word> _wordsData = [
-    Word(
-      id: '1',
-      word1: 'Summer',
-      word2: '夏天',
-      translation: 'Лето',
-      part: 'n',
-      image: 'images/1.jpeg',
-    ),
-    Word(
-      id: '2',
-      word1: 'go',
-      word2: '走',
-      translation: 'идти',
-      part: 'v',
-      image: 'images/2.jpeg',
-    ),
-    Word(
-      id: '3',
-      word1: 'beautiful',
-      word2: '漂亮',
-      translation: 'красивый',
-      part: 'adj',
-      image: 'images/3.jpeg',
-    ),
+//    Word(
+//      id: '1',
+//      word1: 'Summer',
+//      word2: '夏天',
+//      translation: 'Лето',
+//      part: 'n',
+//      image: 'images/1.jpeg',
+//    ),
+//    Word(
+//      id: '2',
+//      word1: 'go',
+//      word2: '走',
+//      translation: 'идти',
+//      part: 'v',
+//      image: 'images/2.jpeg',
+//    ),
+//    Word(
+//      id: '3',
+//      word1: 'beautiful',
+//      word2: '漂亮',
+//      translation: 'красивый',
+//      part: 'adj',
+//      image: 'images/3.jpeg',
+//    ),
   ];
 
   List<Word> get wordsData {
@@ -39,17 +42,39 @@ class Words with ChangeNotifier {
 
   //CardCreater
   void addNewWordCard(String main, String second, String translation,
-      String newId, String image, String part) {
+      String newId, File image, String part) {
     final wordCard = Word(
+      id: newId,
       word1: main,
       word2: second,
       translation: translation,
-      id: newId,
-      image: image,
+      image: image.path,
       part: part,
     );
-
     _wordsData.add(wordCard);
+    notifyListeners();
+    DBHelper.insert('words_app', {
+      'id': newId,
+      'word1': main,
+      'word2': second,
+      'translation': translation,
+      'part': part,
+      'image': image.path,
+    });
+  }
+
+  Future<void> fetchAndSetPlaces() async {
+    final dataList = await DBHelper.getData('words_app');
+    _wordsData = dataList
+        .map((item) => Word(
+              id: item['id'],
+              word1: item['id'],
+              word2: item['id'],
+              translation: item['id'],
+              part: item['part'],
+              image: item['image'],
+            ))
+        .toList();
     notifyListeners();
   }
 
