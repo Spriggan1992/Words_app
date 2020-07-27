@@ -16,7 +16,7 @@ class WordCard extends StatelessWidget {
       width: size.width * 0.85,
       height: size.height * 0.60,
       decoration: BoxDecoration(
-        color: Color(0xFF720d5d).withOpacity(0.40),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(25),
         border: Border.all(color: Colors.black, width: 2),
       ),

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:words_app/constants/constants.dart';
+import 'package:words_app/screens/card_creater/components/text_field_area.dart';
 
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +90,7 @@ class _CardCreatorState extends State<CardCreator> {
 //                          print(mainWord);
 //                          print(secondWord);
 //                          print(translation);
-//                          print(id);
+//                  print(id);
 //                          print(image);
                   Navigator.pop(context);
                 },
@@ -212,20 +214,7 @@ class _CardCreatorState extends State<CardCreator> {
                     SizedBox(
                       height: 24.0,
                     ),
-                    TextField(
-                      style: TextStyle(color: Colors.black87),
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(color: Colors.black),
-                        labelText: 'add comments to example',
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.black),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.black),
-                        ),
-                      ),
-                    )
+                    TextFieldArea(),
                   ],
                 ),
               ),
@@ -312,22 +301,8 @@ class _CardCreatorState extends State<CardCreator> {
                       SizedBox(
                         height: 24.0,
                       ),
-                      TextField(
-                        style: TextStyle(color: Colors.black87),
-                        maxLines: 5,
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(color: Colors.black),
-                          labelText: 'add comments to example',
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 2, color: Colors.black),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 2, color: Colors.black),
-                          ),
-                        ),
-                      )
+                      //Text area with Five line to enter the comments or examples
+                      TextFieldArea()
                     ],
                   ),
                 ),
