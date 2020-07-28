@@ -3,84 +3,143 @@ import 'package:provider/provider.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/providers/words_provider.dart';
 import 'package:words_app/screens/manager_collection/components/dialog_window.dart';
-// import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'expandable_container.dart';
 
-class WordCard extends StatelessWidget {
+class WordCard extends StatefulWidget {
   const WordCard({this.index});
   final index;
+
+  @override
+  _WordCardState createState() => _WordCardState();
+}
+
+class _WordCardState extends State<WordCard>
+    with SingleTickerProviderStateMixin {
+  bool isExpand = false;
+
+  AnimationController expandController;
+  Animation<double> animation;
+  Animation rotationAnimation;
+
+  void runExpandCheck() {
+    setState(() {
+      if (!isExpand) {
+        expandController.forward();
+      } else {
+        expandController.reverse();
+      }
+      isExpand = !isExpand;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    expandController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    animation =
+        CurvedAnimation(parent: expandController, curve: Curves.fastOutSlowIn);
+    rotationAnimation =
+        Tween<double>(begin: 0.0, end: 0.5).animate(expandController);
+  }
+
+  @override
+  void dispose() {
+    expandController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     //Receiving word data from word_data provider, using index to extract single item from array
-    final word = Provider.of<Words>(context, listen: false).wordsData[index];
-    final showImg = Provider.of<Words>(context);
-    return GestureDetector(
-      onTap: () {
-        // When we press on WordCard, we pass an id of this WordCard to provider_data,
-        // in provider_data Function choosePictureInProvider takes that id and send it to words_data throught
-        // Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
-        word.selectImages(word.id);
-        showDialogWindow(context, index);
-      },
-      child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          child: Container(
-            decoration: BoxDecoration(
-              boxShadow: [kBoxShadow],
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Text(
-                          word.part,
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ),
-                      //Main word container
-                      Container(
-                        height: 30,
-                        width: 100,
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(word.word1, //Main word
-                              style: TextStyle(
-                                  fontSize: 25.0, color: Color(0xFFF8b6b6))),
-                        ),
-                      ),
-                    ],
-                  ),
-                  // Translation word container
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 5.0),
-                      alignment: Alignment.center,
-                      child: Text(
-                        word.translation, //  Translation
-                      ),
-                    ),
-                  ),
-                  // Image
-                  GestureDetector(
-                    // When we press IconBotton is DialogTextHolderContainer, we pass an id of this WordCard to provider_data,
-                    // in provider_data Function choosePictureInProvider takes that id and send it to words_data throught
-                    // Function choosePicture, in that Function check wich id match to WordCard and stored image in wordCardPicture.
-                    onTap: () {
-                      word.selectImages(word.id);
-                      showImg.toggleShowImgInWordsProvider(word);
+    final word =
+        Provider.of<Words>(context, listen: false).wordsData[widget.index];
 
-                      // words
-                      //     .toggleShowImgInWordsProvider(words);
-                    },
-                    child: !word.isEditingShowImg
-                        ? Icon(Icons.image)
-                        : Container(
+    return ExpandableContainer(
+      expanded: isExpand,
+      child: GestureDetector(
+        onTap: () {
+          // When we press on WordCard, we pass an id of this WordCard to provider_data,
+          // in provider_data Function choosePictureInProvider takes that id and send it to words_data throught
+          // Function choosePicture, in that Function check wich id match to WordCard and stosred image in wordCardPicture.
+          word.selectImages(word.id);
+          showDialogWindow(context, widget.index);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide()),
+            color: kMainColorBackground,
+          ),
+          child: Stack(
+            alignment: Alignment.topLeft,
+            overflow: Overflow.clip,
+            children: <Widget>[
+              //Part of speech
+              AnimatedPositioned(
+                top: 20,
+                left: 10,
+                duration: Duration(milliseconds: 300),
+                key: ValueKey(widget.index),
+                child: Text(
+                  word.part,
+                  style: TextStyle(fontSize: 20.0),
+                ),
+              ),
+
+              //Main word container
+              AnimatedPositioned(
+                left: isExpand ? 50 : 70,
+                top: 20,
+                duration: Duration(milliseconds: 300),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 120, maxHeight: 60),
+                  child: Text(word.word1, //Main word
+                      style: TextStyle(fontSize: 20.0)),
+                ),
+              ),
+              // Translation word container
+              AnimatedPositioned(
+                curve: Curves.easeIn,
+                left: isExpand ? 50 : 230,
+                top: isExpand ? 60 : 27,
+                duration: Duration(milliseconds: 200),
+                child: Text(
+                  word.translation, // Translation
+                ),
+              ),
+              // Arrow Icon
+              Positioned(
+                left: 350,
+                top: 10,
+                child: RotationTransition(
+                  turns: rotationAnimation,
+                  child: Container(
+                    child: IconButton(
+                        icon: Icon(Icons.arrow_drop_down),
+                        iconSize: 30,
+                        color: isExpand ? Color(0xFF34c7b3) : Colors.black,
+                        onPressed: () {
+                          runExpandCheck();
+                        }),
+                  ),
+                ),
+              ),
+              // Container with Word2 and Image
+              Positioned(
+                  left: 50,
+                  top: 90,
+                  child: ScaleTransition(
+                      scale: animation,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          // Word2
+                          Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(word.word2)),
+                          SizedBox(height: 20),
+                          // Image
+                          Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               image: DecorationImage(
@@ -89,15 +148,36 @@ class WordCard extends StatelessWidget {
                                   ),
                                   fit: BoxFit.cover),
                             ),
-                            // padding: EdgeInsets.all(0),
-                            width: 48,
-                            height: 48,
-                          ),
-                  ),
-                ],
-              ),
-            ),
-          )),
+                            width: 80,
+                            height: 80,
+                          )
+                        ],
+                      ))),
+
+              // Example
+              Positioned(
+                left: 160,
+                top: 20,
+                child: ScaleTransition(
+                  scale: animation,
+                  child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                      ),
+                      width: 180,
+                      height: 195,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                            'Venäjällä on kylmä talviWinter is cold in Russia.'),
+                      )),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 
