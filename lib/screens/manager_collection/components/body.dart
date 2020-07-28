@@ -11,9 +11,11 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(top: 30.0, bottom: 60.0),
-        // Here we render only listView
-        child: Consumer<Words>(builder: (context, words, child) {
+      padding: EdgeInsets.only(top: 30.0, bottom: 60.0),
+      // Here we render only listView
+      child: Consumer<Words>(
+        builder: (context, words, child) {
+          words.fetchAndSetWords();
           return ListView.builder(
             itemCount: words.wordsData.length,
             itemBuilder: (context, index) {
@@ -21,7 +23,9 @@ class Body extends StatelessWidget {
               return buildDismissible(item, index, context);
             },
           );
-        }));
+        },
+      ),
+    );
   }
 
   Dismissible buildDismissible(String item, int index, BuildContext context) {

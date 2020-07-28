@@ -36,7 +36,8 @@ class _CardCreatorState extends State<CardCreator> {
   String secondWord = 'two';
   String translation = 'three';
   String id = uuid.v4();
-  String image = 'images/3.jpeg';
+  String defaultImage = 'images/noimage.png';
+  File image;
   String dropdownValue = 'One';
   String part = '';
 
@@ -48,13 +49,13 @@ class _CardCreatorState extends State<CardCreator> {
     if (imageFile == null) {
       return;
     }
-    //Crop image
+    //Call imageCropper module and crop the image. I has different looks on Android and IOS
     File croppedFile = await ImageCropper.cropImage(
       sourcePath: imageFile.path,
       maxWidth: 2500,
       maxHeight: 2500,
     );
-//    Compress the image
+//    Compress the image, not working currently
 
 //    var result = await FlutterImageCompress.compressAndGetFile(
 //      croppedFile.absolute.path,
@@ -64,13 +65,15 @@ class _CardCreatorState extends State<CardCreator> {
     setState(() {
       _image = File(croppedFile.path);
     });
-    final appDir = await syspaths
-        .getApplicationDocumentsDirectory(); //to get current app folder path.
-    final fileName = path
-        .basename(croppedFile.path); // to obtain the name of the created file;
+    //to get current app folder path.
+    final appDir = await syspaths.getApplicationDocumentsDirectory();
+    // to obtain the name of the created file;
+    final fileName = path.basename(croppedFile.path);
+
     final savedImage =
         await File(croppedFile.path).copy('${appDir.path}/$fileName');
-    image = savedImage.path;
+    print(savedImage);
+    image = savedImage;
   }
 
   //Global key for Flip card
@@ -93,7 +96,7 @@ class _CardCreatorState extends State<CardCreator> {
                 ),
                 onTap: () {
                   providerData.addNewWordCard(
-                      mainWord, secondWord, translation, id, _image, part);
+                      mainWord, secondWord, translation, id, image, part);
 
 //                          print(mainWord);
 //                          print(secondWord);

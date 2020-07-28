@@ -40,7 +40,8 @@ class Words with ChangeNotifier {
     return _wordsData.firstWhere((wordId) => wordId.id == id);
   }
 
-  //CardCreater
+  //Card Creator
+
   void addNewWordCard(String main, String second, String translation,
       String newId, File image, String part) {
     final wordCard = Word(
@@ -53,7 +54,7 @@ class Words with ChangeNotifier {
     );
     _wordsData.add(wordCard);
     notifyListeners();
-    DBHelper.insert('words_app', {
+    DBHelper.insert('words', {
       'id': newId,
       'word1': main,
       'word2': second,
@@ -63,16 +64,16 @@ class Words with ChangeNotifier {
     });
   }
 
-  Future<void> fetchAndSetPlaces() async {
-    final dataList = await DBHelper.getData('words_app');
+  Future<void> fetchAndSetWords() async {
+    final dataList = await DBHelper.getData('words');
     _wordsData = dataList
         .map((item) => Word(
               id: item['id'],
-              word1: item['id'],
-              word2: item['id'],
-              translation: item['id'],
+              word1: item['word1'],
+              word2: item['word2'],
+              translation: item['translation'],
               part: item['part'],
-              image: item['image'],
+              image: File(item['image']).path,
             ))
         .toList();
     notifyListeners();
