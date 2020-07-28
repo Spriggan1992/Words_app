@@ -5,7 +5,7 @@ class ExpandableContainer extends StatelessWidget {
     Key key,
     this.child,
     this.collapseHeight = 70.0,
-    this.expandeHeight = 230.0,
+    this.expandeHeight = 240.0,
     this.expanded = true,
   }) : super(key: key);
 
@@ -18,8 +18,9 @@ class ExpandableContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return AnimatedContainer(
-      duration: Duration(milliseconds: 600),
-      curve: Curves.easeInOut,
+      // curve: ,
+      duration: Duration(milliseconds: 200),
+      // curve: Curves.easeOut,
       height: expanded ? expandeHeight : collapseHeight,
       width: screenWidth,
       child: Container(child: child),
