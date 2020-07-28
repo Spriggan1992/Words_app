@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/base_bottom_appbar.dart';
 import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
-import 'package:words_app/screens/card_creater/card_creater.dart';
+import 'package:words_app/providers/words_provider.dart';
+import 'package:words_app/screens/card_creater/card_creator.dart';
 import 'package:words_app/screens/manager_collection/components/body.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
 
@@ -22,9 +24,18 @@ class CollectionManager extends StatelessWidget {
           title: Text('Collection Name'),
           appBar: AppBar(),
         ),
-        body: Body(), // Body
+        // Use future builder because when using fetch data it returns future
+        body: FutureBuilder(
+          future: Provider.of<Words>(context, listen: false).fetchAndSetWords(),
+          builder: (context, snapshot) =>
+              snapshot.connectionState == ConnectionState.waiting
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Body(),
+        ), // Body
         floatingActionButton: ReusableFloatActionButton(
-          onPressed: () => Navigator.pushNamed(context, CardCreater.id),
+          onPressed: () => Navigator.pushNamed(context, CardCreator.id),
         ),
 
         bottomNavigationBar: BaseBottomAppBar(

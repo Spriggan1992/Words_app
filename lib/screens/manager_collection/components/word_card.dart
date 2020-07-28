@@ -35,6 +35,7 @@ class _WordCardState extends State<WordCard>
   @override
   void initState() {
     super.initState();
+
     expandController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     animation =
@@ -54,6 +55,7 @@ class _WordCardState extends State<WordCard>
     //Receiving word data from word_data provider, using index to extract single item from array
     final word =
         Provider.of<Words>(context, listen: false).wordsData[widget.index];
+    print("DEBUG wordCard${word.image}");
 
     return ExpandableContainer(
       expanded: isExpand,
@@ -62,7 +64,7 @@ class _WordCardState extends State<WordCard>
           // When we press on WordCard, we pass an id of this WordCard to provider_data,
           // in provider_data Function choosePictureInProvider takes that id and send it to words_data throught
           // Function choosePicture, in that Function check wich id match to WordCard and stosred image in wordCardPicture.
-          word.selectImages(word.id);
+//          word.selectImages(word.id);
           showDialogWindow(context, widget.index);
         },
         child: Container(
@@ -161,17 +163,18 @@ class _WordCardState extends State<WordCard>
                 child: ScaleTransition(
                   scale: animation,
                   child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      width: 180,
-                      height: 195,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                            'Venäjällä on kylmä talviWinter is cold in Russia.'),
-                      )),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
+                    width: 180,
+                    height: 195,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                          'Venäjällä on kylmä talviWinter is cold in Russia.'),
+                    ),
+                  ),
                 ),
               )
             ],
