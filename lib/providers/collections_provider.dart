@@ -52,6 +52,7 @@ class Collections with ChangeNotifier {
     _wordsCollectionData.remove(collection);
     print(_wordsCollectionData);
     notifyListeners();
+    DBHelper.delete('collections', collection.id);
   }
 
 // we utilize DBHelper method insert,  which can also modify data if it finds this entry in db

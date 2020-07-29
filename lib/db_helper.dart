@@ -4,6 +4,7 @@ import 'package:path/path.dart' as path;
 
 class DBHelper {
   static sql.Database _db;
+
   static const String DB_NAME = 'words_app.db';
 
 //  static Future<sql.Database> database() async {
@@ -51,7 +52,7 @@ class DBHelper {
   //TODO: create ui delete collection method
   static Future<void> delete(String table, String id) async {
     final db = await DBHelper.database();
-    db.delete(table, where: '$id');
+    db.delete(table, where: 'id = ?', whereArgs: [id]);
   }
 
   static Future<List<Map<String, dynamic>>> getData(String table) async {
