@@ -53,7 +53,7 @@ class BackContainer extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
-                            image: AssetImage(wordsData[index].image),
+                            image: FileImage(wordsData[index].image),
                             fit: BoxFit.cover,
                           ),
                         ),
