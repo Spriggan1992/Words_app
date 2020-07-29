@@ -15,8 +15,10 @@ class Word with ChangeNotifier {
     this.isEditingWord1 = true,
     this.isEditingWord2 = true,
     this.isEditingTranslationTitle = true,
+    this.trainingPadding = 10,
   });
 
+  double trainingPadding;
   String id;
   String word1;
   String word2;
