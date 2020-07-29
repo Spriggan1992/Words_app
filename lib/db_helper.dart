@@ -3,15 +3,34 @@ import 'package:sqflite/sqflite.dart'
 import 'package:path/path.dart' as path;
 
 class DBHelper {
+  static sql.Database _db;
+  static const String DB_NAME = 'words_app.db';
+
+//  static Future<sql.Database> database() async {
+//    //first we create a data base if we don't have one
+//    final dbPath = await sql.getDatabasesPath();
+//    //it will open existing data base or otherwise will create data base with specified name
+//    return sql.openDatabase(path.join(dbPath, DB_NAME),
+//        onCreate:
+//            (db, version) {
+//      return db.execute(
+//          'CREATE TABLE words(id TEXT PRIMARY KEY, word1 TEXT, word2 TEXT, translation TEXT, part TEXT, image TEXT)');},
+//        version: 1);
+//  }
+
   static Future<sql.Database> database() async {
     //first we create a data base if we don't have one
     final dbPath = await sql.getDatabasesPath();
     //it will open existing data base or otherwise will create data base with specified name
-    return sql.openDatabase(path.join(dbPath, 'words_app.db'),
-        onCreate: (db, version) {
-      return db.execute(
-          'CREATE TABLE words(id TEXT PRIMARY KEY, word1 TEXT, word2 TEXT, translation TEXT, part TEXT, image TEXT)');
-    }, version: 1);
+    return await sql.openDatabase(path.join(dbPath, DB_NAME),
+        version: 1, onCreate: _onCreate);
+  }
+
+  static _onCreate(sql.Database db, int version) async {
+    await db.execute(
+        'CREATE TABLE collections(id TEXT PRIMARY KEY, name TEXT, language TEXT)');
+    await db.execute(
+        'CREATE TABLE words(id TEXT PRIMARY KEY, word1 TEXT, word2 TEXT, translation TEXT, part TEXT, image TEXT)');
   }
 
   //method's will all be static So we don't need to create an instance of it, to work with it

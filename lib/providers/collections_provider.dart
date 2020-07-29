@@ -5,9 +5,9 @@ import '../providers/collection_data.dart';
 class Collections with ChangeNotifier {
   List<Collection> _wordsCollectionData = [
     Collection(title: "nouns", language: 'eng'),
-    Collection(title: "verbs", language: 'ru'),
-    Collection(title: "adjectives", language: 'eng'),
-    Collection(title: 'pron', language: 'cn')
+//    Collection(title: "verbs", language: 'ru'),
+//    Collection(title: "adjectives", language: 'eng'),
+//    Collection(title: 'pron', language: 'cn'),
   ];
 
   UnmodifiableListView<Collection> get wordsCollectionData {
