@@ -83,7 +83,7 @@ class FlipContainer extends StatelessWidget {
                 ),
                 child: Padding(
                     padding: const EdgeInsets.only(top: 20.0),
-                    child: !isFlipped
+                    child: isFlipped
                         ? Column(
                             // mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
