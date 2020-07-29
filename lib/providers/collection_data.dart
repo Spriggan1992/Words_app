@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Collection with ChangeNotifier {
-  Collection({this.title, this.language});
-
+  Collection({this.title, this.language, this.id});
+  String id;
   String title;
   String language;
 

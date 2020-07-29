@@ -28,7 +28,7 @@ class DBHelper {
 
   static _onCreate(sql.Database db, int version) async {
     await db.execute(
-        'CREATE TABLE collections(id TEXT PRIMARY KEY, name TEXT, language TEXT)');
+        'CREATE TABLE collections(id TEXT PRIMARY KEY, title TEXT, language TEXT)');
     await db.execute(
         'CREATE TABLE words(id TEXT PRIMARY KEY, word1 TEXT, word2 TEXT, translation TEXT, part TEXT, image TEXT)');
   }
@@ -46,6 +46,12 @@ class DBHelper {
       data,
       conflictAlgorithm: sql.ConflictAlgorithm.replace,
     );
+  }
+
+  //TODO: create ui delete collection method
+  static Future<void> delete(String table, String id) async {
+    final db = await DBHelper.database();
+    db.delete(table, where: '$id');
   }
 
   static Future<List<Map<String, dynamic>>> getData(String table) async {
