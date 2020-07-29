@@ -10,6 +10,8 @@ class Word with ChangeNotifier {
     this.translation,
     this.part,
     this.image,
+    this.example,
+    this.exampleTranslations,
     this.isEditingWord1 = true,
     this.isEditingWord2 = true,
     this.isEditingTranslationTitle = true,
@@ -20,7 +22,9 @@ class Word with ChangeNotifier {
   String word2;
   String translation;
   String part;
-  String image;
+  File image;
+  String example;
+  String exampleTranslations;
   bool isEditingWord1;
   bool isEditingWord2;
   bool isEditingTranslationTitle;

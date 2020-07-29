@@ -145,9 +145,7 @@ class _WordCardState extends State<WordCard>
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               image: DecorationImage(
-                                  image: AssetImage(
-                                    word.image,
-                                  ),
+                                  image: FileImage(word.image),
                                   fit: BoxFit.cover),
                             ),
                             width: 80,

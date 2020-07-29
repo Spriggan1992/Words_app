@@ -30,8 +30,9 @@ class DialogWindow extends StatelessWidget {
                 width: 150,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(wordsDataIndex.image),
-                      fit: BoxFit.cover),
+                    image: FileImage(wordsDataIndex.image),
+                    fit: BoxFit.cover,
+                  ),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
