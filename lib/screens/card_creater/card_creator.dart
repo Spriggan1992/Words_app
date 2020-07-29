@@ -147,7 +147,7 @@ class _CardCreatorState extends State<CardCreator> {
                               children: <Widget>[
                                 TextField(
                                   decoration: InputDecoration(
-                                    labelText: 'main word in your language',
+                                    labelText: 'Enter a word',
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           width: 2, color: Colors.black),
@@ -226,92 +226,87 @@ class _CardCreatorState extends State<CardCreator> {
                 ),
               ),
             ),
-            back: SafeArea(
-              top: false,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0, vertical: 16.0),
-                  child: Column(
-                    children: <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          WordCard(
-                            size: size,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 24, vertical: 36),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  // main word text field
-                                  TextField(
-                                    decoration: InputDecoration(
-                                      labelText: 'main word in your language',
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 2, color: Colors.black),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 2, color: Colors.black),
-                                      ),
+            back: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0, vertical: 16.0),
+                child: Column(
+                  children: <Widget>[
+                    Stack(
+                      children: <Widget>[
+                        WordCard(
+                          size: size,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 36),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                // main word text field
+                                TextField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Enter translation',
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2, color: Colors.black),
                                     ),
-                                    onChanged: (value) => translation = value,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2, color: Colors.black),
+                                    ),
                                   ),
-                                  FoldingBtnField(
-                                    selected: _secondLangSelect,
-                                    title: 'Enter a language',
-                                    onPress: () {
-                                      setState(
-                                        () {
-                                          _secondLangSelect =
-                                              !_secondLangSelect;
-                                        },
-                                      );
-                                    },
-                                    onChanged: (value) => secondWord = value,
-                                  ),
-                                  FoldingBtnField(
-                                    selected: _thirdLangSelect,
-                                    title: 'Enter a language',
-                                    onPress: () {
-                                      setState(
-                                        () {
-                                          _thirdLangSelect = !_thirdLangSelect;
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
+                                  onChanged: (value) => translation = value,
+                                ),
+                                FoldingBtnField(
+                                  selected: _secondLangSelect,
+                                  title: 'Enter a language',
+                                  onPress: () {
+                                    setState(
+                                      () {
+                                        _secondLangSelect = !_secondLangSelect;
+                                      },
+                                    );
+                                  },
+                                  onChanged: (value) => secondWord = value,
+                                ),
+                                FoldingBtnField(
+                                  selected: _thirdLangSelect,
+                                  title: 'Enter a language',
+                                  onPress: () {
+                                    setState(
+                                      () {
+                                        _thirdLangSelect = !_thirdLangSelect;
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.repeat,
-                                  size: 32,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                onPressed: () =>
-                                    cardKey.currentState.toggleCard(),
+                        ),
+                        Positioned.fill(
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.repeat,
+                                size: 32,
+                                color: Theme.of(context).primaryColor,
                               ),
+                              onPressed: () =>
+                                  cardKey.currentState.toggleCard(),
                             ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 24.0,
-                      ),
-                      //Text area with Five line to enter the comments or examples
-                      TextFieldArea()
-                    ],
-                  ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 24.0,
+                    ),
+                    //Text area with Five line to enter the comments or examples
+                    TextFieldArea()
+                  ],
                 ),
               ),
             ),

@@ -66,16 +66,18 @@ class Words with ChangeNotifier {
 
   Future<void> fetchAndSetWords() async {
     final dataList = await DBHelper.getData('words');
-    print('DEBUG fetchAndSetWords ${dataList}');
+//    print('DEBUG fetchAndSetWords ${dataList}');
     _wordsData = dataList
-        .map((item) => Word(
-              id: item['id'],
-              word1: item['word1'],
-              word2: item['word2'],
-              translation: item['translation'],
-              part: item['part'],
-              image: File(item['image']).path,
-            ))
+        .map(
+          (item) => Word(
+            id: item['id'],
+            word1: item['word1'],
+            word2: item['word2'],
+            translation: item['translation'],
+            part: item['part'],
+            image: File(item['image']).path,
+          ),
+        )
         .toList();
     notifyListeners();
   }
