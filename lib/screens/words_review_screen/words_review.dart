@@ -102,7 +102,8 @@ class FlipContainer extends StatelessWidget {
                                 height: screenHeight * 0.3,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage(wordsData[index].image),
+//                                    image: AssetImage(wordsData[index].image),
+                                    image: FileImage(wordsData[index].image),
                                     fit: BoxFit.cover,
                                   ),
                                 ),

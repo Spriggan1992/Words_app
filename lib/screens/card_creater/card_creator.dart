@@ -34,6 +34,8 @@ class _CardCreatorState extends State<CardCreator> {
   String mainWord = 'one';
   String secondWord = 'two';
   String translation = 'three';
+  String example;
+  String exampleTranslations;
   String id = uuid.v4();
   File image;
   String dropdownValue = 'One';
