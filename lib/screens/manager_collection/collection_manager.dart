@@ -9,6 +9,7 @@ import 'package:words_app/providers/words_provider.dart';
 import 'package:words_app/screens/card_creater/card_creator.dart';
 import 'package:words_app/screens/manager_collection/components/body.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
+import 'package:words_app/screens/words_review_screen/words_review.dart';
 
 class CollectionManager extends StatelessWidget {
   static String id = 'collection_manager_screen';
@@ -47,7 +48,7 @@ class CollectionManager extends StatelessWidget {
           child2: ReusableBottomIconBtn(
             icons: Icons.fitness_center,
             color: kMainColorBackground,
-            onPress: () => Navigator.pushNamed(context, Training.id),
+            onPress: () => Navigator.pushNamed(context, WordsReview.id),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
