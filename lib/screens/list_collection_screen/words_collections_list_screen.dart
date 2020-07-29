@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/base_bottom_appbar.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
+import 'package:words_app/providers/collections_provider.dart';
 import 'package:words_app/screens/list_collection_screen/components/body.dart';
 
 import 'components/dialog_add_collection.dart';
@@ -18,7 +20,7 @@ class WordsCollectionsList extends StatelessWidget {
           title: Text('WordsCollectionList'),
           appBar: AppBar(),
         ),
-        backgroundColor: kMainColorBackground,
+//        backgroundColor: kMainColorBackground,
         floatingActionButton: ReusableFloatActionButton(onPressed: () {
           buildShowGeneralDialog(
             context,
@@ -29,11 +31,20 @@ class WordsCollectionsList extends StatelessWidget {
           child2: Container(),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: Body(),
+        body: FutureBuilder(
+          future: Provider.of<Collections>(context, listen: false)
+              .fetchAndSetCollection(),
+          builder: (context, snapshot) =>
+              snapshot.connectionState == ConnectionState.waiting
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                      },
+                      child: Body(),
+                    ),
         ),
       ),
     );

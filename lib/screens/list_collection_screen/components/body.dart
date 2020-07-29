@@ -21,7 +21,7 @@ class Body extends StatelessWidget {
           Consumer<Collections>(builder: (context, providerData, child) {
             return SliverGrid(
               delegate: SliverChildBuilderDelegate((context, index) {
-                String handleSubmiteTitle;
+                String handleSubmitTitle;
                 String handleSubmitLanguage;
                 var wordsCollectionData =
                     providerData.wordsCollectionData[index];
@@ -30,7 +30,7 @@ class Body extends StatelessWidget {
                   index: index,
                   /* Takes value from TextField, and stored it in handleSubmiteText */
                   onSubmitTitleField: (value) {
-                    handleSubmiteTitle = value;
+                    handleSubmitTitle = value;
                   },
                   onSubmitLanguageField: (value) {
                     handleSubmitLanguage = value;
@@ -38,7 +38,7 @@ class Body extends StatelessWidget {
                   // Save form
                   onSaveForm: () {
                     providerData.handleSubmitEditTitle(
-                        handleSubmiteTitle, wordsCollectionData);
+                        handleSubmitTitle, wordsCollectionData);
 
                     providerData.handleSubmitEditLangugeTitle(
                         handleSubmitLanguage, wordsCollectionData);
