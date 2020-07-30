@@ -68,7 +68,7 @@ List<Widget> deck(List<Word> dataWords) {
                 width: 200,
                 height: 200,
                 color: Colors.grey,
-                child: Text(dataWords[i].word1)),
+                child: Text(dataWords[i].targetLang)),
           ),
         ),
       ),

@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 class Word with ChangeNotifier {
   Word({
     this.id,
-    this.word1,
-    this.word2,
-    this.translation,
+    this.targetLang,
+    this.secondLang,
+    this.thirdLang,
+    this.ownLang,
     this.part,
     this.image,
     this.example,
@@ -15,14 +16,13 @@ class Word with ChangeNotifier {
     this.isEditingWord1 = true,
     this.isEditingWord2 = true,
     this.isEditingTranslationTitle = true,
-    this.trainingPadding = 10,
   });
 
-  double trainingPadding;
   String id;
-  String word1;
-  String word2;
-  String translation;
+  String targetLang;
+  String secondLang;
+  String thirdLang;
+  String ownLang;
   String part;
   File image;
   String example;
@@ -32,14 +32,6 @@ class Word with ChangeNotifier {
   bool isEditingTranslationTitle;
   bool isEditingExampleTitle = true;
   bool isEditingShowImg = true;
-
-//  void selectImages(String id) {
-//    try {
-//      image = 'images/$id.jpeg';
-//    } catch (e) {
-//      print(e);
-//    }
-//  }
 
   void toggleWord1() {
     isEditingWord1 = !isEditingWord1;
@@ -58,17 +50,17 @@ class Word with ChangeNotifier {
   }
 
   void changeWord1Title(String newName) {
-    word1 = newName;
+    targetLang = newName;
   }
 
   void changeWord2Title(String newName) {
     if (newName.isEmpty) {
-      word2 = '-';
+      secondLang = '-';
     } else
-      word2 = newName;
+      secondLang = newName;
   }
 
   void changeTranslationTitle(String newName) {
-    translation = newName;
+    ownLang = newName;
   }
 }

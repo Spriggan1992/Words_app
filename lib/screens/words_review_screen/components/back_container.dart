@@ -38,7 +38,7 @@ class BackContainer extends StatelessWidget {
                     // mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        wordsData[index].translation,
+                        wordsData[index].ownLang,
                         style: TextStyle(fontSize: 30),
                       ),
                       SizedBox(height: 10),

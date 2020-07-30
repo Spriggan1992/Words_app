@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Collection with ChangeNotifier {
   Collection({this.title, this.language, this.id});
+  //id for DB
   String id;
   String title;
   String language;

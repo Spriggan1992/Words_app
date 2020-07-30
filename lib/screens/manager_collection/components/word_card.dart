@@ -95,7 +95,7 @@ class _WordCardState extends State<WordCard>
                 duration: Duration(milliseconds: 300),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: 120, maxHeight: 60),
-                  child: Text(word.word1, //Main word
+                  child: Text(word.targetLang, //Main word
                       style: TextStyle(fontSize: 20.0)),
                 ),
               ),
@@ -106,7 +106,7 @@ class _WordCardState extends State<WordCard>
                 top: isExpand ? 60 : 27,
                 duration: Duration(milliseconds: 200),
                 child: Text(
-                  word.translation, // Translation
+                  word.ownLang, // Translation
                 ),
               ),
               // Arrow Icon
@@ -138,7 +138,7 @@ class _WordCardState extends State<WordCard>
                           // Word2
                           Container(
                               alignment: Alignment.centerLeft,
-                              child: Text(word.word2)),
+                              child: Text(word.secondLang)),
                           SizedBox(height: 20),
                           // Image
                           Container(

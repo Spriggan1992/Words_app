@@ -46,9 +46,9 @@ class Words with ChangeNotifier {
       String newId, File image, String part) {
     final wordCard = Word(
       id: newId,
-      word1: main,
-      word2: second,
-      translation: translation,
+      targetLang: main,
+      secondLang: second,
+      ownLang: translation,
       image: image,
       part: part,
     );
@@ -71,9 +71,9 @@ class Words with ChangeNotifier {
         .map(
           (item) => Word(
             id: item['id'],
-            word1: item['word1'],
-            word2: item['word2'],
-            translation: item['translation'],
+            targetLang: item['word1'],
+            secondLang: item['word2'],
+            ownLang: item['translation'],
             part: item['part'],
             image: File(item['image']),
           ),

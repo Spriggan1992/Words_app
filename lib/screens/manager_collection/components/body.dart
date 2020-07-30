@@ -22,7 +22,7 @@ class Body extends StatelessWidget {
             itemCount: words.wordsData.length,
             // semanticChildCount: 1,
             itemBuilder: (context, index) {
-              final item = words.wordsData[index].word1;
+              final item = words.wordsData[index].targetLang;
               return buildDismissible(item, index, context);
             },
           );

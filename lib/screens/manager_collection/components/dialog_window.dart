@@ -40,7 +40,7 @@ class DialogWindow extends StatelessWidget {
           ),
           // Word1
           DialogTextHolderContainer(
-            textTitleName: wordsDataIndex.word1,
+            textTitleName: wordsDataIndex.targetLang,
             fontSize: 20,
             isCheckedTitleName: wordsDataIndex.isEditingWord1,
             onPressedEditButton: () {
@@ -57,7 +57,7 @@ class DialogWindow extends StatelessWidget {
 
           // Word2
           DialogTextHolderContainer(
-            textTitleName: wordsDataIndex.word2,
+            textTitleName: wordsDataIndex.secondLang,
             fontSize: 20,
             isCheckedTitleName: wordsDataIndex.isEditingWord2,
             onPressedEditButton: () {
@@ -72,7 +72,7 @@ class DialogWindow extends StatelessWidget {
 
           // Translation word
           DialogTextHolderContainer(
-            textTitleName: wordsDataIndex.translation,
+            textTitleName: wordsDataIndex.ownLang,
             fontSize: 20.0,
             isCheckedTitleName: wordsDataIndex.isEditingTranslationTitle,
             onPressedEditButton: () {

@@ -34,8 +34,8 @@ class FrontContainer extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      TextHolder(title: wordsData[index].word1),
-                      TextHolder(title: wordsData[index].word2),
+                      TextHolder(title: wordsData[index].targetLang),
+                      TextHolder(title: wordsData[index].secondLang),
                       TextHolder(title: 'third word'),
                     ],
                   )),
