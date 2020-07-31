@@ -64,8 +64,9 @@ class Words with ChangeNotifier {
     });
   }
 
-  Future<void> fetchAndSetWords() async {
-    final dataList = await DBHelper.getData('words');
+  Future<void> fetchAndSetWords(String collectionId) async {
+    final dataList =
+        await DBHelper.getData('words', collectionId: collectionId);
 //    print('DEBUG fetchAndSetWords ${dataList}');
     _wordsData = dataList
         .map(

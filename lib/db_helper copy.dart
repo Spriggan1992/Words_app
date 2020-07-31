@@ -3,20 +3,21 @@ import 'package:sqflite/sqflite.dart'
 import 'package:path/path.dart' as path;
 
 class DBHelper {
-  // static sql.Database _db;
+  static sql.Database _db;
 
   static const String DB_NAME = 'words_app.db';
 
-  // static Future<sql.Database> database() async {
-  //   //first we create a data base if we don't have one
-  //   final dbPath = await sql.getDatabasesPath();
-  //   //it will open existing data base or otherwise will create data base with specified name
-  //   return sql.openDatabase(path.join(dbPath, DB_NAME),
-  //       onCreate: (db, version) {
-  //     return db.execute(
-  //         'CREATE TABLE collections(id TEXT PRIMARY KEY, title TEXT, language TEXT)');
-  //   }, version: 1);
-  // }
+//  static Future<sql.Database> database() async {
+//    //first we create a data base if we don't have one
+//    final dbPath = await sql.getDatabasesPath();
+//    //it will open existing data base or otherwise will create data base with specified name
+//    return sql.openDatabase(path.join(dbPath, DB_NAME),
+//        onCreate:
+//            (db, version) {
+//      return db.execute(
+//          'CREATE TABLE words(id TEXT PRIMARY KEY, word1 TEXT, word2 TEXT, translation TEXT, part TEXT, image TEXT)');},
+//        version: 1);
+//  }
 
   static Future<sql.Database> database() async {
     //first we create a data base if we don't have one
@@ -30,7 +31,7 @@ class DBHelper {
     await db.execute(
         'CREATE TABLE collections(id TEXT PRIMARY KEY, title TEXT, language TEXT)');
     await db.execute(
-        'CREATE TABLE words(collectionId Text, id TEXT PRIMARY KEY, word1 TEXT, word2 TEXT, translation TEXT, part TEXT, image TEXT)');
+        'CREATE TABLE words(id TEXT PRIMARY KEY, word1 TEXT, word2 TEXT, translation TEXT, part TEXT, image TEXT)');
   }
 
   //method's will all be static So we don't need to create an instance of it, to work with it
@@ -54,11 +55,8 @@ class DBHelper {
     db.delete(table, where: 'id = ?', whereArgs: [id]);
   }
 
-  static Future<List<Map<String, dynamic>>> getData(String table,
-      {String collectionId}) async {
+  static Future<List<Map<String, dynamic>>> getData(String table) async {
     final db = await DBHelper.database();
-    return collectionId == null
-        ? db.query(table)
-        : db.query(table, where: 'collectionId = ?', whereArgs: [collectionId]);
+    return db.query(table);
   }
 }
