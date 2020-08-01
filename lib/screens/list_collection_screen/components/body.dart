@@ -54,7 +54,9 @@ class Body extends StatelessWidget {
                   },
 
                   goToManagerCollections: (String collectionId) {
-                    Navigator.pushNamed(context, CollectionManager.id, arguments: {'id': collectionId});
+                    print('print from boddy $collectionId');
+                    Navigator.pushNamed(context, CollectionManager.id,
+                        arguments: {'id': collectionId});
                   },
                 );
               }, childCount: providerData.wordsCollectionData.length),

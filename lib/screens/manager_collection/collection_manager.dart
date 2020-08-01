@@ -17,7 +17,7 @@ class CollectionManager extends StatelessWidget {
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context).settings.arguments;
     String collectionId = args['id'];
-    print(id);
+    print('ID $collectionId');
     print('fuck');
     return SafeArea(
       // Exclude top from SafeArea
@@ -30,8 +30,8 @@ class CollectionManager extends StatelessWidget {
         ),
         // Use future builder because when using fetch data it returns future
         body: FutureBuilder(
-          future:
-              Provider.of<Words>(context, listen: false).fetchAndSetWords(collectionId),
+          future: Provider.of<Words>(context, listen: false)
+              .fetchAndSetWords(collectionId),
           builder: (context, snapshot) =>
               snapshot.connectionState == ConnectionState.waiting
                   ? Center(
@@ -40,7 +40,7 @@ class CollectionManager extends StatelessWidget {
                   : Body(),
         ), // Body
         floatingActionButton: ReusableFloatActionButton(
-          onPressed: () => Navigator.pushNamed(context, CardCreator.id),
+          onPressed: () => Navigator.pushNamed(context, CardCreator.id, arguments: {'id': collectionId}),
         ),
 
         bottomNavigationBar: BaseBottomAppBar(

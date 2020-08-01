@@ -18,6 +18,8 @@ class Collections with ChangeNotifier {
 
   void addNewCollection(String collectionTitle, String languageTitle) {
     final collection = Collection(
+      // Creating object here for later adding it to _wordsCollectionData
+      id: Uuid().v4(), //create Id for collection
       title: collectionTitle,
       language: languageTitle,
     );
@@ -27,9 +29,9 @@ class Collections with ChangeNotifier {
     DBHelper.insert(
       'collections',
       {
-        'id': Uuid().v4(),
-        'title': collectionTitle,
-        'language': languageTitle,
+        'id': collection.id,
+        'title': collection.title,
+        'language': collection.language,
       },
     );
   }

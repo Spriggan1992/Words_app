@@ -48,6 +48,20 @@ class DBHelper {
     );
   }
 
+  static Future<void> update(String table, Map<String, Object> data) async {
+    //if table is created it's created with specified table structure
+    //where's ID is a Primary key,
+
+    // sql.ConflictAlgorithm.replace if the entry already exists, it will override it
+    final db = await DBHelper.database();
+    db.update(
+      table,
+      data,
+      conflictAlgorithm: sql.ConflictAlgorithm.replace,
+    );
+  }
+
+
   //TODO: create ui delete collection method
   static Future<void> delete(String table, String id) async {
     final db = await DBHelper.database();

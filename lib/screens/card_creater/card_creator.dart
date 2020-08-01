@@ -18,6 +18,7 @@ import 'package:path_provider/path_provider.dart' as syspaths;
 
 class CardCreator extends StatefulWidget {
   static const id = 'card_creator';
+  
   @override
   _CardCreatorState createState() => _CardCreatorState();
 }
@@ -83,6 +84,8 @@ class _CardCreatorState extends State<CardCreator> {
   GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
   @override
   Widget build(BuildContext context) {
+    Map args = ModalRoute.of(context).settings.arguments;
+    String collectionId = args['id'];
     Size size = MediaQuery.of(context).size;
 
     return Consumer<Words>(
@@ -98,7 +101,7 @@ class _CardCreatorState extends State<CardCreator> {
                   color: Colors.white,
                 ),
                 onTap: () {
-                  providerData.addNewWordCard(
+                  providerData.addNewWordCard(collectionId,
                       mainWord, secondWord, translation, id, image, part);
 
                   Navigator.pop(context);
