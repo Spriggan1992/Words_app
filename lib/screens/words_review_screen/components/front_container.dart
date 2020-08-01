@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/providers/words_provider.dart';
-import 'package:words_app/screens/words_review_screen/components/text_holder.dart';
 
 class FrontContainer extends StatelessWidget {
   const FrontContainer({
     Key key,
     this.index,
+
+    // this.toggleContainer,
   }) : super(key: key);
+
   final int index;
 
+  // final Function toggleContainer;
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -30,34 +33,44 @@ class FrontContainer extends StatelessWidget {
                 color: kAppBarsColor,
               ),
               child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
+                  padding: const EdgeInsets.only(top: 40.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      TextHolder(title: wordsData[index].targetLang),
-                      TextHolder(title: wordsData[index].secondLang),
-                      TextHolder(title: 'third word'),
+                      Text(
+                        wordsData[index].ownLang,
+                        style: TextStyle(fontSize: 30),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'сущ',
+                        style: TextStyle(fontSize: 20, color: Colors.green),
+                      ),
+                      SizedBox(height: 30.0),
+                      Container(
+                        width: screenWidth * 0.4,
+                        height: screenHeight * 0.4,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: FileImage(wordsData[index].image),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
                     ],
                   )),
             ),
             SizedBox(height: 20),
             Container(
-              width: screenWidth * 0.8,
-              height: screenHeight * 0.35,
-              decoration: BoxDecoration(
-                border: Border.all(),
-                color: Colors.grey[400],
-              ),
+              width: screenWidth * 0.7,
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.only(top: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('Venäjällä on kylmä talvi.',
+                    Text('В России холодная зима',
                         style: TextStyle(fontSize: 20)),
-                    Text('Winter is cold in Russia.',
-                        style: TextStyle(fontSize: 20)),
-                    Text('俄罗斯的冬天很冷。', style: TextStyle(fontSize: 20)),
                   ],
                 ),
               ),

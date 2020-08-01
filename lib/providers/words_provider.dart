@@ -82,6 +82,12 @@ class Words with ChangeNotifier {
     notifyListeners();
   }
 
+  void removeWord(value) {
+    _wordsData.remove(value);
+    notifyListeners();
+    DBHelper.delete('words', value.id);
+  }
+
   void toggleWord1(Word words) {
     words.toggleWord1();
 

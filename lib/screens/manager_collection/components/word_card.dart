@@ -68,10 +68,7 @@ class _WordCardState extends State<WordCard>
           showDialogWindow(context, widget.index);
         },
         child: Container(
-          decoration: BoxDecoration(
-            border: Border(bottom: BorderSide()),
-            color: kMainColorBackground,
-          ),
+          color: kMainColorBackground,
           child: Stack(
             alignment: Alignment.topLeft,
             overflow: Overflow.clip,

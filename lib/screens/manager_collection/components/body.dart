@@ -23,7 +23,7 @@ class Body extends StatelessWidget {
             // semanticChildCount: 1,
             itemBuilder: (context, index) {
               final item = words.wordsData[index].targetLang;
-              return buildDismissible(item, index, context);
+              return buildDismissible(item, index, context, words);
             },
           );
         },
@@ -31,8 +31,12 @@ class Body extends StatelessWidget {
     );
   }
 
-  Dismissible buildDismissible(String item, int index, BuildContext context) {
+  Dismissible buildDismissible(
+      String item, int index, BuildContext context, Words words) {
     return Dismissible(
+      onDismissed: (direction) {
+        words.removeWord(words.wordsData[index]);
+      },
       background: Container(
         alignment: Alignment.centerRight,
         color: Color(0xFFF8b6b6),
