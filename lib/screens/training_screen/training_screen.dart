@@ -6,7 +6,7 @@ import 'package:words_app/constants/constants.dart';
 import 'package:words_app/providers/word_data.dart';
 import 'package:words_app/providers/words_provider.dart';
 import 'package:provider/provider.dart';
-// import "dart:math";
+import "dart:math";
 
 class Training extends StatelessWidget {
   static String id = 'training_screen';
