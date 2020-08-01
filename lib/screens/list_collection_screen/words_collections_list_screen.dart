@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/base_bottom_appbar.dart';
-import 'package:words_app/constants/constants.dart';
+
 import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/providers/collections_provider.dart';
 import 'package:words_app/screens/list_collection_screen/components/body.dart';

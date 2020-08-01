@@ -53,8 +53,10 @@ class Body extends StatelessWidget {
                     providerData.deleteCollection(wordsCollectionData);
                   },
 
-                  goToManagerCollections: () {
-                    Navigator.pushNamed(context, CollectionManager.id);
+                  goToManagerCollections: (String collectionId) {
+                    print('print from boddy $collectionId');
+                    Navigator.pushNamed(context, CollectionManager.id,
+                        arguments: {'id': collectionId});
                   },
                 );
               }, childCount: providerData.wordsCollectionData.length),

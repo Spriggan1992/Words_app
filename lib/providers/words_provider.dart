@@ -42,8 +42,8 @@ class Words with ChangeNotifier {
 
   //Card Creator
 
-  void addNewWordCard(String main, String second, String translation,
-      String newId, File image, String part) {
+  void addNewWordCard(String collectionId, String main, String second,
+      String translation, String newId, File image, String part) {
     final wordCard = Word(
       id: newId,
       targetLang: main,
@@ -55,6 +55,7 @@ class Words with ChangeNotifier {
     _wordsData.add(wordCard);
     notifyListeners();
     DBHelper.insert('words', {
+      'collectionId': collectionId,
       'id': newId,
       'word1': main,
       'word2': second,
@@ -64,8 +65,9 @@ class Words with ChangeNotifier {
     });
   }
 
-  Future<void> fetchAndSetWords() async {
-    final dataList = await DBHelper.getData('words');
+  Future<void> fetchAndSetWords(String collectionId) async {
+    final dataList =
+        await DBHelper.getData('words', collectionId: collectionId);
 //    print('DEBUG fetchAndSetWords ${dataList}');
     _wordsData = dataList
         .map(
