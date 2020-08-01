@@ -56,10 +56,10 @@ class _TrainingState extends State<Training> {
     // for (int i=0; targetWords.length< 0; i++ ){
     //   a.add(targetWords.every((element) => i % 2 ==0));
 
-    // targetWords.shuffle();
+    targetWords.shuffle();
     ownLanguageWords = [...widget.dataWord];
 
-    // ownLanguageWords.shuffle();
+    ownLanguageWords.shuffle();
   }
 
   void setUpFlagForIcon(data) {
