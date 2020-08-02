@@ -63,7 +63,7 @@ class Collections with ChangeNotifier {
     collection.changeCollectionTitle(value);
 
     notifyListeners();
-    DBHelper.insert(
+    DBHelper.update(
       'collections',
       {
         'id': collection.id,
