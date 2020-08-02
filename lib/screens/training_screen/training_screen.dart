@@ -22,9 +22,8 @@ class Training extends StatefulWidget {
 class _TrainingState extends State<Training> {
   List<Word> targetWords;
   List<Word> ownLanguageWords;
-  int flag = 0;
-  final int rightSwipe = 1;
-  final int leftSwipe = 0;
+  bool correct = false;
+  bool wrong = false;
 
   @override
   void initState() {
@@ -32,73 +31,39 @@ class _TrainingState extends State<Training> {
     createData();
   }
 
-  bool checkAnswer() {
-    // setState(() {
-    if (targetWords[-1].id == ownLanguageWords[-1].id) {
-      print('yes');
-      return true;
-    } else {
-      print('no');
-      return false;
-    }
-    // });
+  void toggleAnswerCorrect() {
+    setState(() {
+      correct = true;
+      wrong = false;
+    });
   }
 
-// for (int i=0;i< a.length; i +=1){
-//       b.add(i);
-//       a.remove(i);
-//     };
+  void toggleAnswerWrong() {
+    setState(() {
+      correct = false;
+      wrong = true;
+    });
+  }
 
   void createData() {
     targetWords = [...widget.dataWord];
-    // var a = [];
-    // targetWords.
-    // for (int i=0; targetWords.length< 0; i++ ){
-    //   a.add(targetWords.every((element) => i % 2 ==0));
-
     targetWords.shuffle();
     ownLanguageWords = [...widget.dataWord];
-
     ownLanguageWords.shuffle();
   }
 
-  void setUpFlagForIcon(data) {
-    if (data == 1) {
-      flag = 1;
-    } else {
-      flag = 2;
-    }
-    setState(() {});
-  }
-
-  void removeOwnLanguageWord() {
-    ownLanguageWords.removeLast();
-    if (ownLanguageWords.length < 1) {
-      ownLanguageWords.clear();
-    }
-    print(ownLanguageWords);
-    setState(() {});
-  }
-
-  void removeTargetWord(value) {
+  void removeTWords(value) {
     setState(() {
-      if (targetWords.last.id == ownLanguageWords.last.id) {
-        print("yes");
-      } else {
-        print('no');
-      }
       targetWords.remove(value);
-      removeOwnLanguageWord();
+      ownLanguageWords.removeLast();
+      if (ownLanguageWords.length < 1) {
+        ownLanguageWords.clear();
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // final dataWords = Provider.of<Words>(context).wordsData;
-
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       appBar: BaseAppBar(
         title: Text('Training'),
@@ -115,27 +80,54 @@ class _TrainingState extends State<Training> {
       body: Center(
         child: Stack(
           children: <Widget>[
-            Expanded(
-              // flex: 3,
-              child: Container(
-                  child: targetWords.length > 0
-                      ? Stack(
-                          alignment: Alignment.center,
-                          children: deck(
-                              targetWords,
-                              removeTargetWord,
-                              setUpFlagForIcon,
-                              checkAnswer,
-                              removeOwnLanguageWord))
-                      : Text('fdskjajfds')),
-            ),
+            Container(
+                child: targetWords.length > 0
+                    ? Stack(
+                        alignment: Alignment.center,
+                        children: deck(
+                            targetWords,
+                            removeTWords,
+                            ownLanguageWords,
+                            toggleAnswerCorrect,
+                            toggleAnswerWrong))
+                    : Text('fdskjajfds')),
             Container(
               child: Stack(
                 alignment: Alignment.center,
                 children: matchWords(ownLanguageWords),
               ),
             ),
-            widget.dataWord.length > 0 ? nioticeContainer(flag) : Container()
+            // widget.dataWord.length > 0 ? nioticeContainer(flag) : Container(),
+            Positioned(
+              top: 480,
+              left: 270,
+              child: Container(
+                alignment: Alignment.center,
+                width: 100,
+                height: 40,
+                decoration:
+                    BoxDecoration(color: correct ? Colors.green : Colors.grey),
+                child: Text(
+                  'correct',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 480,
+              left: 60,
+              child: Container(
+                alignment: Alignment.center,
+                width: 100,
+                height: 40,
+                decoration:
+                    BoxDecoration(color: wrong ? Colors.red : Colors.grey),
+                child: Text(
+                  'wrong',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -143,25 +135,25 @@ class _TrainingState extends State<Training> {
   }
 }
 
-Widget nioticeContainer(flag) {
-  if (flag == 1) {
-    return Center(
-      child: Expanded(
-          // flex: 1,
-          child:
-              Container(child: Text('I know', style: TextStyle(fontSize: 20)))),
-    );
-  } else if (flag == 2) {
-    return Center(
-      child: Expanded(
-          // flex: 1,
-          child: Container(
-              child: Text("I don't know", style: TextStyle(fontSize: 20)))),
-    );
-  } else {
-    return Container();
-  }
-}
+// Widget nioticeContainer(flag) {
+//   if (flag == 1) {
+//     return Center(
+//       child: Expanded(
+//           // flex: 1,
+//           child:
+//               Container(child: Text('I know', style: TextStyle(fontSize: 20)))),
+//     );
+//   } else if (flag == 2) {
+//     return Center(
+//       child: Expanded(
+//           // flex: 1,
+//           child: Container(
+//               child: Text("I don't know", style: TextStyle(fontSize: 20)))),
+//     );
+//   } else {
+//     return Container();
+//   }
+// }
 
 List matchWords(List dataWord) {
   var matches = dataWord.map(
@@ -181,15 +173,12 @@ List matchWords(List dataWord) {
   return matches;
 }
 
-List<Widget> deck(List<Word> data, removieItem, setUpFlagForIcon, checkAnswer,
-    removeOwnLanguageWord) {
+List<Widget> deck(targetWords, removieItem, ownLanguageWords,
+    toogleAnswerCorrect, toogleAnswerWrong) {
   List<Widget> cardList = new List();
   int count = 0;
   double padding = 50.0;
-  List<Word> randomTargetWord = data;
-  // randomTargetWord.shuffle();
-
-  for (int i = 0; i < randomTargetWord.length; i++) {
+  for (int i = 0; i < targetWords.length; i++) {
     if (count >= 1) {
       padding += 4;
     } else if (count >= 2) {
@@ -205,14 +194,20 @@ List<Widget> deck(List<Word> data, removieItem, setUpFlagForIcon, checkAnswer,
         child: Dismissible(
           onDismissed: (DismissDirection derection) {
             if (derection == DismissDirection.startToEnd) {
-              removieItem(data[i]);
-
-              setUpFlagForIcon(1);
-              // checkAnswer();
+              if (targetWords.last.id == ownLanguageWords.last.id) {
+                toogleAnswerCorrect();
+              } else {
+                toogleAnswerWrong();
+              }
+              removieItem(targetWords[i]);
             }
             if (derection == DismissDirection.endToStart) {
-              removieItem(data[i]);
-              setUpFlagForIcon(2);
+              if (targetWords.last.id == ownLanguageWords.last.id) {
+                toogleAnswerWrong();
+              } else {
+                toogleAnswerCorrect();
+              }
+              removieItem(targetWords[i]);
             }
           },
           key: UniqueKey(),
@@ -222,7 +217,7 @@ List<Widget> deck(List<Word> data, removieItem, setUpFlagForIcon, checkAnswer,
                 width: 300,
                 height: 300,
                 color: Colors.grey,
-                child: Center(child: Text(data[i].targetLang))),
+                child: Center(child: Text(targetWords[i].targetLang))),
           ),
         ),
       ),
