@@ -55,7 +55,7 @@ class _WordCardState extends State<WordCard>
     //Receiving word data from word_data provider, using index to extract single item from array
     final word =
         Provider.of<Words>(context, listen: false).wordsData[widget.index];
-    print("DEBUG wordCard${word.image}");
+    // print("DEBUG wordCard${word.image}");
 
     return ExpandableContainer(
       expanded: isExpand,
@@ -167,7 +167,7 @@ class _WordCardState extends State<WordCard>
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                          'Venäjällä on kylmä talviWinter is cold in Russia.'),
+                          'example : ${word.example} \n translationExample: ${word.exampleTranslations}'),
                     ),
                   ),
                 ),

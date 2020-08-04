@@ -42,14 +42,24 @@ class Words with ChangeNotifier {
 
   //Card Creator
 
-  void addNewWordCard(String collectionId, String main, String second,
-      String translation, String newId, File image, String part) {
+  void addNewWordCard(
+      String collectionId,
+      String main,
+      String second,
+      String translation,
+      String newId,
+      File image,
+      String part,
+      String example,
+      String exampleTranslations) {
     final wordCard = Word(
       id: newId,
       targetLang: main,
       secondLang: second,
       ownLang: translation,
       image: image,
+      example: example,
+      exampleTranslations: exampleTranslations,
       part: part,
     );
     _wordsData.add(wordCard);
@@ -62,6 +72,8 @@ class Words with ChangeNotifier {
       'translation': translation,
       'part': part,
       'image': image.path,
+      'example': example,
+      'exampleTranslations': exampleTranslations,
     });
   }
 
@@ -77,6 +89,8 @@ class Words with ChangeNotifier {
             secondLang: item['word2'],
             ownLang: item['translation'],
             part: item['part'],
+            example: item['example'],
+            exampleTranslations: item['exampleTranslations'],
             image: File(item['image']),
           ),
         )

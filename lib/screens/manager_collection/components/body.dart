@@ -45,7 +45,9 @@ class Body extends StatelessWidget {
           child: Icon(Icons.delete),
         ),
       ),
-      key: Key(item),
+      // key: Key(item),
+      // TODO: here was error when dismiss widget, stackoverflows sugested to use UniqueKey()
+      key: UniqueKey(),
       direction: DismissDirection.endToStart,
       child: WordCard(
         index: index,

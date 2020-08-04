@@ -43,7 +43,7 @@ class Body extends StatelessWidget {
                     providerData.handleSubmitEditLangugeTitle(
                         handleSubmitLanguage, wordsCollectionData);
 
-                    print(handleSubmitLanguage);
+                    // print(handleSubmitLanguage);
                     Navigator.pop(context);
                   },
 
@@ -53,10 +53,11 @@ class Body extends StatelessWidget {
                     providerData.deleteCollection(wordsCollectionData);
                   },
 
-                  goToManagerCollections: (String collectionId) {
-                    print('print from boddy $collectionId');
+                  goToManagerCollections: (String collectionId, String title) {
+                    // print('print from boddy $collectionId');
+                    // print(title);
                     Navigator.pushNamed(context, CollectionManager.id,
-                        arguments: {'id': collectionId});
+                        arguments: {'id': collectionId, 'title': title});
                   },
                 );
               }, childCount: providerData.wordsCollectionData.length),
