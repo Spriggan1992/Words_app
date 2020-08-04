@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CollapsebleBtnField extends StatelessWidget {
-  const CollapsebleBtnField({
+class CollapsableFieldBtn extends StatelessWidget {
+  const CollapsableFieldBtn({
     Key key,
     @required this.selected,
     this.title,
@@ -27,18 +27,19 @@ class CollapsebleBtnField extends StatelessWidget {
           duration: Duration(milliseconds: 300),
           curve: Curves.fastOutSlowIn,
           child: Container(
-              child: TextField(
-            enabled: selected ? true : false,
-            textAlign: selected ? TextAlign.center : TextAlign.end,
-            decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(),
-                enabledBorder:
-                    selected ? OutlineInputBorder() : InputBorder.none,
-                border: InputBorder.none,
-                hintText: title,
-                isDense: true,
-                hintStyle: TextStyle(fontSize: 10)),
-          )),
+            child: TextField(
+              enabled: selected ? true : false,
+              textAlign: selected ? TextAlign.center : TextAlign.end,
+              decoration: InputDecoration(
+                  focusedBorder: OutlineInputBorder(),
+                  enabledBorder:
+                      selected ? OutlineInputBorder() : InputBorder.none,
+                  border: InputBorder.none,
+                  hintText: title,
+                  isDense: true,
+                  hintStyle: TextStyle(fontSize: 10)),
+            ),
+          ),
         ),
         Positioned(
           child: Container(

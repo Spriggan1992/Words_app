@@ -22,9 +22,10 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
-        height: 300,
-        width: 310,
+        height: size.height * 0.3,
+        width: size.width * 0.8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -82,23 +83,6 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
               onChanged: (value) => holderLanguageTitle = value,
             ),
             SizedBox(height: 20),
-            CollapsebleBtnField(
-              selected: is2ndLanguage,
-              title: '2nd language',
-              onPress: () {
-                is2ndLanguage = !is2ndLanguage;
-                setState(() {});
-              },
-            ),
-            SizedBox(height: 10),
-            CollapsebleBtnField(
-              selected: is3ndLanguage,
-              title: '3rd language',
-              onPress: () {
-                is3ndLanguage = !is3ndLanguage;
-                setState(() {});
-              },
-            ),
           ],
         ));
   }

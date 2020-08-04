@@ -8,10 +8,12 @@ class ReusableFloatActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: onPressed,
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffDA627D),
       child: Icon(
         Icons.add,
-        color: Colors.black45,
+        color: Colors.white,
+        size: 48,
+        
       ),
     );
   }

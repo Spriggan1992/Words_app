@@ -95,12 +95,10 @@ class _CardCreatorState extends State<CardCreator> {
             title: Text('Create your word card'),
             appBar: AppBar(),
             actions: [
-              InkWell(
-                child: Icon(
-                  Icons.check,
-                  color: Colors.white,
-                ),
-                onTap: () {
+              CustomRoundBtn(
+                icon: Icons.check,
+                fillColor: Color(0xffDA627D),
+                onPressed: () {
                   providerData.addNewWordCard(
                     collectionId,
                     mainWord,
@@ -115,20 +113,14 @@ class _CardCreatorState extends State<CardCreator> {
                   Navigator.pop(context);
                 },
               ),
-              SizedBox(
-                width: 10,
+
+              CustomRoundBtn(
+                icon: Icons.close,
+                onPressed: () => Navigator.of(context).pop(),
+                color: Theme.of(context).primaryColor,
               ),
+
 //   dismiss button pop the context back to list of words
-              Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: InkWell(
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                  ),
-                  onTap: () => Navigator.of(context).pop(),
-                ),
-              )
             ],
           ),
           body: FlipCard(
@@ -357,6 +349,34 @@ class _CardCreatorState extends State<CardCreator> {
           ),
         );
       },
+    );
+  }
+}
+
+class CustomRoundBtn extends StatelessWidget {
+  final Function onPressed;
+  final IconData icon;
+  final Color fillColor;
+  final Color color;
+
+  const CustomRoundBtn(
+      {Key key, this.onPressed, this.icon, this.fillColor, this.color})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      onPressed: onPressed,
+      shape: CircleBorder(),
+      constraints: BoxConstraints(
+        minHeight: 35,
+        minWidth: 35,
+      ),
+      fillColor: fillColor,
+      child: Icon(
+        icon,
+        color: Colors.white,
+      ),
     );
   }
 }

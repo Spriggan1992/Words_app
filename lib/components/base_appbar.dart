@@ -13,7 +13,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      backgroundColor: kAppBarsColor,
+      backgroundColor: Theme.of(context).primaryColor,
       automaticallyImplyLeading: false,
       title: title,
       actions: actions,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/constants/constants.dart';
+
 import 'package:words_app/providers/collections_provider.dart';
 import 'package:words_app/providers/validation_provider.dart';
 import 'package:words_app/providers/words_provider.dart';
@@ -35,8 +36,10 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: ThemeData.light().copyWith(
-            primaryColor: kAppBarsColor,
-            scaffoldBackgroundColor: kMainColorBackground),
+            primaryColor: Color(0xff450920),
+            backgroundColor: Color(0xffEAE2DA),
+            scaffoldBackgroundColor: Color(0xffEAE2DA),
+            bottomAppBarColor: Color(0xffA53860)),
         title: 'Word App',
         debugShowCheckedModeBanner: false,
         initialRoute: WordsCollectionsList.id,

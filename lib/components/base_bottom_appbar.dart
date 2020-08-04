@@ -16,7 +16,7 @@ class BaseBottomAppBar extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: Container(
         height: 60.0,
-        color: kAppBarsColor,
+        color: Theme.of(context).bottomAppBarColor,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
