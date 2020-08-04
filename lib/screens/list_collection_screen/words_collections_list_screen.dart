@@ -17,7 +17,7 @@ class WordsCollectionsList extends StatelessWidget {
       top: false,
       child: Scaffold(
         appBar: BaseAppBar(
-          title: Text('WordsCollectionList'),
+          title: Text('Word Collections'),
           appBar: AppBar(),
         ),
 //        backgroundColor: kMainColorBackground,

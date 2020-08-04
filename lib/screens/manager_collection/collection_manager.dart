@@ -17,15 +17,16 @@ class CollectionManager extends StatelessWidget {
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context).settings.arguments;
     String collectionId = args['id'];
-    print('ID $collectionId');
-    print('fuck');
+    String collectionTitle = args['title'];
+
     return SafeArea(
       // Exclude top from SafeArea
       top: false,
       child: Scaffold(
         backgroundColor: kMainColorBackground,
         appBar: BaseAppBar(
-          title: Text('Collection Name'),
+          title: Text('$collectionTitle'),
+          actions: <Widget>[],
           appBar: AppBar(),
         ),
         // Use future builder because when using fetch data it returns future
@@ -40,7 +41,8 @@ class CollectionManager extends StatelessWidget {
                   : Body(),
         ), // Body
         floatingActionButton: ReusableFloatActionButton(
-          onPressed: () => Navigator.pushNamed(context, CardCreator.id, arguments: {'id': collectionId}),
+          onPressed: () => Navigator.pushNamed(context, CardCreator.id,
+              arguments: {'id': collectionId}),
         ),
 
         bottomNavigationBar: BaseBottomAppBar(

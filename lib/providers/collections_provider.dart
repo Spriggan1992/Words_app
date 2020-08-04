@@ -35,7 +35,7 @@ class Collections with ChangeNotifier {
       },
     );
   }
-
+  ///Fetching data from db  and setting the _wordsCollectionData 
   Future<void> fetchAndSetCollection() async {
     final dataList = await DBHelper.getData('collections');
     _wordsCollectionData = dataList
@@ -63,7 +63,7 @@ class Collections with ChangeNotifier {
     collection.changeCollectionTitle(value);
 
     notifyListeners();
-    DBHelper.insert(
+    DBHelper.update(
       'collections',
       {
         'id': collection.id,

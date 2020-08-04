@@ -18,7 +18,7 @@ import 'package:path_provider/path_provider.dart' as syspaths;
 
 class CardCreator extends StatefulWidget {
   static const id = 'card_creator';
-  
+
   @override
   _CardCreatorState createState() => _CardCreatorState();
 }
@@ -35,8 +35,8 @@ class _CardCreatorState extends State<CardCreator> {
   String mainWord = 'one';
   String secondWord = 'two';
   String translation = 'three';
-  String example;
-  String exampleTranslations;
+  String example = 'test example';
+  String exampleTranslations = 'test example';
   String id = uuid.v4();
   File image;
   String dropdownValue = 'One';
@@ -58,26 +58,26 @@ class _CardCreatorState extends State<CardCreator> {
       maxHeight: 600,
     );
 
-//    Compress the image, not working currently
-
-//    var result = await FlutterImageCompress.compressAndGetFile(
-//      croppedFile.absolute.path,
-//      "${croppedFile.path}1",
-//      quality: 88,
-//    );
-
     setState(() {
       image = croppedFile;
     });
 
-    //to get current app folder path.
-    final appDir = await syspaths.getApplicationDocumentsDirectory();
-    // to obtain the name of the created file;
-    final fileName = path.basename(croppedFile.path);
+    //   //to get current app folder path.
+    //   final appDir = await syspaths.getApplicationDocumentsDirectory();
+    //   // to obtain the name of the created file;
+    //   final fileName = path.basename(croppedFile.path);
 
-    final savedImage =
-        await File(croppedFile.path).copy('${appDir.path}/$fileName');
-    print("saved image: ${savedImage}");
+    //   final savedImage =
+    //       await File(croppedFile.path).copy('${appDir.path}/$fileName');
+    //   print("saved image: ${savedImage}");
+
+    //   //    Compress the image, not working currently
+
+    //  var result = await FlutterImageCompress.compressAndGetFile(
+    //    croppedFile.absolute.path,
+    //    "${croppedFile.path}1",
+    //    quality: 88,
+    //  );
   }
 
   //Global key for Flip card
@@ -101,9 +101,17 @@ class _CardCreatorState extends State<CardCreator> {
                   color: Colors.white,
                 ),
                 onTap: () {
-                  providerData.addNewWordCard(collectionId,
-                      mainWord, secondWord, translation, id, image, part);
-
+                  providerData.addNewWordCard(
+                    collectionId,
+                    mainWord,
+                    secondWord,
+                    translation,
+                    id,
+                    image,
+                    part,
+                    example,
+                    exampleTranslations,
+                  );
                   Navigator.pop(context);
                 },
               ),
@@ -226,7 +234,21 @@ class _CardCreatorState extends State<CardCreator> {
                     SizedBox(
                       height: 24.0,
                     ),
-                    TextFieldArea(),
+                    TextField(
+                      style: TextStyle(color: Colors.black87),
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(color: Colors.black),
+                        labelText: 'add comments to example',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: Colors.black),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: Colors.black),
+                        ),
+                      ),
+                      onChanged: (value) => example = value,
+                    ),
                   ],
                 ),
               ),
@@ -290,6 +312,9 @@ class _CardCreatorState extends State<CardCreator> {
                             ),
                           ),
                         ),
+
+                        //you can position widget inside stack with alignment proprerty
+                        //fill property is responsible formfilling all available size
                         Positioned.fill(
                           child: Align(
                             alignment: Alignment.bottomCenter,
@@ -310,7 +335,21 @@ class _CardCreatorState extends State<CardCreator> {
                       height: 24.0,
                     ),
                     //Text area with Five line to enter the comments or examples
-                    TextFieldArea()
+                    TextField(
+                      onChanged: (value) => exampleTranslations = value,
+                      style: TextStyle(color: Colors.black87),
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(color: Colors.black),
+                        labelText: 'add comments to example',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: Colors.black),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: Colors.black),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

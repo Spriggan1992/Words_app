@@ -32,8 +32,10 @@ class WordsCollection extends StatelessWidget {
   Widget build(BuildContext context) {
     final providerData = Provider.of<Collections>(context, listen: false)
         .wordsCollectionData[index];
+    // print(providerData.title);
     return GestureDetector(
-        onTap: () => goToManagerCollections(providerData.id), // Go to managerCollection
+        onTap: () => goToManagerCollections(
+            providerData.id, providerData.title), // Go to managerCollection
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Stack(
