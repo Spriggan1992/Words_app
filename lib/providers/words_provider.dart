@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:words_app/db_helper.dart';
+import 'package:words_app/providers/part_data.dart';
 import 'package:words_app/providers/word_data.dart';
+import 'package:words_app/utils/utilities.dart';
 
 class Words with ChangeNotifier {
   List<Word> _wordsData = [
@@ -43,20 +45,23 @@ class Words with ChangeNotifier {
   //Card Creator
 
   void addNewWordCard(
-      String collectionId,
-      String main,
-      String second,
-      String translation,
-      String newId,
-      File image,
-      String part,
-      String example,
-      String exampleTranslations) {
+    String collectionId,
+    String id,
+    String targetLang,
+    String ownLang,
+    String secondLang,
+    String thirdLang,
+    File image,
+    Part part,
+    String example,
+    String exampleTranslations,
+  ) {
     final wordCard = Word(
-      id: newId,
-      targetLang: main,
-      secondLang: second,
-      ownLang: translation,
+      id: id,
+      targetLang: targetLang,
+      ownLang: ownLang,
+      secondLang: secondLang,
+      thirdLang: thirdLang,
       image: image,
       example: example,
       exampleTranslations: exampleTranslations,
@@ -66,11 +71,13 @@ class Words with ChangeNotifier {
     notifyListeners();
     DBHelper.insert('words', {
       'collectionId': collectionId,
-      'id': newId,
-      'word1': main,
-      'word2': second,
-      'translation': translation,
-      'part': part,
+      'id': id,
+      'targetLang': targetLang,
+      'ownLang': ownLang,
+      'secondLang': secondLang,
+      'thirdLang': thirdLang,
+      'partName': part.partName,
+      'partColor': part.partColor.toString(),
       'image': image.path,
       'example': example,
       'exampleTranslations': exampleTranslations,
@@ -81,20 +88,24 @@ class Words with ChangeNotifier {
     final dataList =
         await DBHelper.getData('words', collectionId: collectionId);
 //    print('DEBUG fetchAndSetWords ${dataList}');
-    _wordsData = dataList
-        .map(
-          (item) => Word(
-            id: item['id'],
-            targetLang: item['word1'],
-            secondLang: item['word2'],
-            ownLang: item['translation'],
-            part: item['part'],
-            example: item['example'],
-            exampleTranslations: item['exampleTranslations'],
-            image: File(item['image']),
-          ),
-        )
-        .toList();
+    _wordsData = dataList.map((item) {
+//      print(item['partColor']);
+      Word word = Word(
+        id: item['id'],
+        targetLang: item['targetLang'],
+        ownLang: item['ownLang'],
+        secondLang: item['secondLang'],
+        thirdLang: item['thirdLang'],
+        part: (Part(item['partName'], Utilities.getColor(item['partColor']))),
+        image: File(item['image']),
+        example: item['example'],
+        exampleTranslations: item['exampleTranslations'],
+      );
+
+      print('DEBUG: ${word.image.path}');
+      return word;
+    }).toList();
+
     notifyListeners();
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/constants/constants.dart';
 
 class BaseBottomAppBar extends StatelessWidget {
   const BaseBottomAppBar({

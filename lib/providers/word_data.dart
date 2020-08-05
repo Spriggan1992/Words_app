@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:words_app/providers/part_data.dart';
 
 class Word with ChangeNotifier {
   Word({
@@ -17,13 +18,12 @@ class Word with ChangeNotifier {
     this.isEditingWord2 = true,
     this.isEditingTranslationTitle = true,
   });
-
   String id;
   String targetLang;
+  String ownLang;
   String secondLang;
   String thirdLang;
-  String ownLang;
-  String part;
+  Part part;
   File image;
   String example;
   String exampleTranslations;

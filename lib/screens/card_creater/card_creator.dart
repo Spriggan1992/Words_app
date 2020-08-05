@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:words_app/constants/constants.dart';
+import 'package:words_app/providers/part_data.dart';
 import 'package:words_app/screens/card_creater/components/text_field_area.dart';
 
 import 'package:flip_card/flip_card.dart';
@@ -24,7 +25,6 @@ class CardCreator extends StatefulWidget {
 }
 
 class _CardCreatorState extends State<CardCreator> {
-  static var uuid = Uuid();
   //to store image locally
   //get access to camera or gallery
   final picker = ImagePicker();
@@ -32,15 +32,16 @@ class _CardCreatorState extends State<CardCreator> {
   bool _thirdLangSelect = false;
 
   //variables to work with card
-  String mainWord = 'one';
-  String secondWord = 'two';
-  String translation = 'three';
+  String targetLang = 'one';
+  String ownLang = 'two';
+  String secondLang = 'two';
+  String thirdLang = 'three';
   String example = 'test example';
   String exampleTranslations = 'test example';
-  String id = uuid.v4();
+  String id = Uuid().v4();
   File image;
   String dropdownValue = 'One';
-  String part = '';
+  Part part = Part('', Colors.white);
 
   //method to work with camera
   getImageFile(ImageSource source) async {
@@ -80,6 +81,12 @@ class _CardCreatorState extends State<CardCreator> {
     //  );
   }
 
+  _getColor(Color color) {
+    setState(() {
+      part.partColor = color;
+    });
+  }
+
   //Global key for Flip card
   GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
   @override
@@ -101,10 +108,11 @@ class _CardCreatorState extends State<CardCreator> {
                 onPressed: () {
                   providerData.addNewWordCard(
                     collectionId,
-                    mainWord,
-                    secondWord,
-                    translation,
                     id,
+                    targetLang,
+                    ownLang,
+                    secondLang,
+                    thirdLang,
                     image,
                     part,
                     example,
@@ -124,229 +132,241 @@ class _CardCreatorState extends State<CardCreator> {
             ],
           ),
           body: FlipCard(
-            //Card key  is used to pass the toggle card method into card
-            key: cardKey,
-            flipOnTouch: false,
-            direction: FlipDirection.HORIZONTAL,
-            speed: 500,
+              //Card key  is used to pass the toggle card method into card
+              key: cardKey,
+              flipOnTouch: false,
+              direction: FlipDirection.HORIZONTAL,
+              speed: 500,
 //            onFlipDone: (status) {
 //              print(status);
 //            },
 //        front: CardCreatorFront(() => cardKey.currentState.toggleCard()),
-            front: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 24.0, vertical: 16.0),
-                child: Column(
-                  children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        WordCard(
-                          size: size,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 36),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                TextField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Enter a word',
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 2, color: Colors.black),
+              front: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0, vertical: 16.0),
+                  child: Column(
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          WordCard(
+                            color: part.partColor,
+                            size: size,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 36),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  TextField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Enter a word',
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2, color: Colors.black),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2, color: Colors.black),
+                                      ),
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 2, color: Colors.black),
+                                    onChanged: (value) => targetLang = value,
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                    width: size.width * 0.7,
+                                    height: 40,
+                                    child: CustomRadio(
+                                      //TODO: create setter for part
+                                      getPart: (value) => part.partName = value,
+                                      getColor: _getColor,
                                     ),
                                   ),
-                                  onChanged: (value) => mainWord = value,
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                  width: size.width * 0.7,
-                                  height: 40,
-                                  child: CustomRadio(
-                                    getPart: (value) => part = value,
+                                  SizedBox(
+                                    height: 24,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 24,
-                                ),
-                                Container(
-                                  width: size.width * 0.45,
-                                  height: size.width * 0.45,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(color: Colors.black87),
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: image == null
-                                      ? IconButton(
-                                          onPressed: () =>
-                                              getImageFile(ImageSource.camera),
-                                          icon: Icon(
-                                            Icons.photo_camera,
-                                            size: 48,
+                                  Container(
+                                    width: size.width * 0.45,
+                                    height: size.width * 0.45,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border:
+                                            Border.all(color: Colors.black87),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: image == null
+                                        ? IconButton(
+                                            onPressed: () => getImageFile(
+                                                ImageSource.camera),
+                                            icon: Icon(
+                                              Icons.photo_camera,
+                                              size: 48,
+                                            ),
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          )
+                                        : ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(14),
+                                            child: Image.file(
+                                              image,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                          color: Theme.of(context).primaryColor,
-                                        )
-                                      : ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(14),
-                                          child: Image.file(
-                                            image,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Positioned.fill(
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.repeat,
-                                size: 32,
-                                color: Theme.of(context).primaryColor,
+                                  )
+                                ],
                               ),
-                              onPressed: () =>
-                                  cardKey.currentState.toggleCard(),
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 24.0,
-                    ),
-                    TextField(
-                      style: TextStyle(color: Colors.black87),
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(color: Colors.black),
-                        labelText: 'add comments to example',
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.black),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.black),
-                        ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.repeat,
+                                  size: 32,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                onPressed: () =>
+                                    cardKey.currentState.toggleCard(),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                      onChanged: (value) => example = value,
-                    ),
-                  ],
+                      SizedBox(
+                        height: 24.0,
+                      ),
+                      TextField(
+                        style: TextStyle(color: Colors.black87),
+                        maxLines: 5,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(color: Colors.black),
+                          labelText: 'add comments to example',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 2, color: Colors.black),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 2, color: Colors.black),
+                          ),
+                        ),
+                        onChanged: (value) => example = value,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            back: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 24.0, vertical: 16.0),
-                child: Column(
-                  children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        WordCard(
-                          size: size,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 36),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                // main word text field
-                                TextField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Enter translation',
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 2, color: Colors.black),
+              back: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0, vertical: 16.0),
+                  child: Column(
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          WordCard(
+                            size: size,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 36),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  // main word text field
+                                  TextField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Enter translation',
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2, color: Colors.black),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2, color: Colors.black),
+                                      ),
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 2, color: Colors.black),
-                                    ),
+                                    onChanged: (value) => thirdLang = value,
                                   ),
-                                  onChanged: (value) => translation = value,
-                                ),
-                                FoldingBtnField(
-                                  selected: _secondLangSelect,
-                                  title: 'Enter a language',
-                                  onPress: () {
-                                    setState(
-                                      () {
-                                        _secondLangSelect = !_secondLangSelect;
-                                      },
-                                    );
-                                  },
-                                  onChanged: (value) => secondWord = value,
-                                ),
-                                FoldingBtnField(
-                                  selected: _thirdLangSelect,
-                                  title: 'Enter a language',
-                                  onPress: () {
-                                    setState(
-                                      () {
-                                        _thirdLangSelect = !_thirdLangSelect;
-                                      },
-                                    );
-                                  },
-                                ),
-                              ],
+                                  FoldingBtnField(
+                                    selected: _secondLangSelect,
+                                    title: 'Enter a language',
+                                    onPress: () {
+                                      setState(
+                                        () {
+                                          _secondLangSelect =
+                                              !_secondLangSelect;
+                                        },
+                                      );
+                                    },
+                                    onChanged: (value) => ownLang = value,
+                                  ),
+                                  FoldingBtnField(
+                                    selected: _thirdLangSelect,
+                                    title: 'Enter a language',
+                                    onPress: () {
+                                      setState(
+                                        () {
+                                          _thirdLangSelect = !_thirdLangSelect;
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
 
-                        //you can position widget inside stack with alignment proprerty
-                        //fill property is responsible formfilling all available size
-                        Positioned.fill(
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.repeat,
-                                size: 32,
-                                color: Theme.of(context).primaryColor,
+                          //you can position widget inside stack with alignment proprerty
+                          //fill property is responsible formfilling all available size
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.repeat,
+                                  size: 32,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                onPressed: () =>
+                                    cardKey.currentState.toggleCard(),
                               ),
-                              onPressed: () =>
-                                  cardKey.currentState.toggleCard(),
                             ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 24.0,
+                      ),
+                      //Text area with Five line to enter the comments or examples
+                      TextField(
+                        onChanged: (value) => exampleTranslations = value,
+                        style: TextStyle(color: Colors.black87),
+                        maxLines: 5,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(color: Colors.black),
+                          labelText: 'add comments to example',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 2, color: Colors.black),
                           ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 24.0,
-                    ),
-                    //Text area with Five line to enter the comments or examples
-                    TextField(
-                      onChanged: (value) => exampleTranslations = value,
-                      style: TextStyle(color: Colors.black87),
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        labelStyle: TextStyle(color: Colors.black),
-                        labelText: 'add comments to example',
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.black),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.black),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 2, color: Colors.black),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ),
-          ),
+              )),
         );
       },
     );
