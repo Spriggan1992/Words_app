@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/providers/words_provider.dart';
-import 'package:words_app/screens/words_review_screen/components/text_holder.dart';
+import 'package:words_app/screens/review_card_screen/components/text_holder.dart';
 
 class BackContainer extends StatelessWidget {
   const BackContainer({
