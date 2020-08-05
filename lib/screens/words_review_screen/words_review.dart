@@ -11,8 +11,8 @@ import 'package:words_app/providers/words_provider.dart';
 import 'package:words_app/screens/training_screen/matches.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
 
-import 'components/front_container.dart';
-import 'components/back_container.dart';
+import '../review_card_screen/components/front_container.dart';
+import '../review_card_screen/components/back_container.dart';
 
 class WordsReview extends StatelessWidget {
   static String id = 'words_review_screen';

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/providers/words_provider.dart';
 import 'package:words_app/screens/manager_collection/components/dialog_window.dart';
+import 'package:words_app/screens/review_card_screen/review_card.dart';
 import 'expandable_container.dart';
 
 class WordCard extends StatefulWidget {
@@ -65,7 +66,8 @@ class _WordCardState extends State<WordCard>
           // in provider_data Function choosePictureInProvider takes that id and send it to words_data throught
           // Function choosePicture, in that Function check wich id match to WordCard and stosred image in wordCardPicture.
 //          word.selectImages(word.id);
-          showDialogWindow(context, widget.index);
+          // showDialogWindow(context, widget.index);
+          Navigator.pushNamed(context, ReviewCard.id);
         },
         child: Container(
           color: kMainColorBackground,
