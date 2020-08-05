@@ -9,6 +9,7 @@ import 'package:words_app/screens/card_creater/card_creator.dart';
 import 'package:words_app/screens/loging_screen/login_screen.dart';
 import 'package:words_app/screens/registration_screen/registration_screen.dart';
 import 'package:words_app/screens/list_collection_screen/words_collections_list_screen.dart';
+import 'package:words_app/screens/review_card_screen/review_card.dart';
 import 'package:words_app/screens/training_screen/matches.dart';
 import 'package:words_app/screens/welcome_screen/welcom_screen.dart';
 import 'package:words_app/screens/words_review_screen/words_review.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
           CollectionManager.id: (context) => CollectionManager(),
           CardCreator.id: (context) => CardCreator(),
           WordsReview.id: (context) => WordsReview(),
+          ReviewCard.id: (context) => ReviewCard(),
           Training.id: (context) => Training(),
           Matches.id: (context) => Matches(),
           Result.id: (context) => Result(),
