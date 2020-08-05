@@ -97,7 +97,9 @@ class Words with ChangeNotifier {
         secondLang: item['secondLang'],
         thirdLang: item['thirdLang'],
         part: (Part(item['partName'], Utilities.getColor(item['partColor']))),
-        image: item['image'],
+        image: File(item['image']),
+        example: item['example'],
+        exampleTranslations: item['exampleTranslations'],
       );
 
       print('DEBUG: ${word.image.path}');
