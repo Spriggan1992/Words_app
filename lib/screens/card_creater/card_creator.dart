@@ -160,6 +160,18 @@ class _CardCreatorState extends State<CardCreator> {
                                     MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
+                                  Container(
+                                    width: size.width * 0.7,
+                                    height: 40,
+                                    child: CustomRadio(
+                                      //TODO: create setter for part
+                                      getPart: (value) => part.partName = value,
+                                      getColor: _getColor,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
                                   TextField(
                                     decoration: InputDecoration(
                                       labelText: 'Enter a word',
@@ -173,18 +185,6 @@ class _CardCreatorState extends State<CardCreator> {
                                       ),
                                     ),
                                     onChanged: (value) => targetLang = value,
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Container(
-                                    width: size.width * 0.7,
-                                    height: 40,
-                                    child: CustomRadio(
-                                      //TODO: create setter for part
-                                      getPart: (value) => part.partName = value,
-                                      getColor: _getColor,
-                                    ),
                                   ),
                                   SizedBox(
                                     height: 24,
