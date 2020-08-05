@@ -9,6 +9,7 @@ class BaseBottomAppBar extends StatelessWidget {
   }) : super(key: key);
   final Widget child1;
   final Widget child2;
+
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(

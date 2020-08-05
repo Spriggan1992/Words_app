@@ -8,6 +8,7 @@ import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/providers/word_data.dart';
 import 'package:words_app/providers/words_provider.dart';
+import 'package:words_app/screens/training_screen/matches.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
 
 import 'components/front_container.dart';
@@ -28,7 +29,7 @@ class WordsReview extends StatelessWidget {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => Training(dataWord: dataWords)));
+              builder: (context) => Matches(dataWord: dataWords)));
     }
 
     return Scaffold(

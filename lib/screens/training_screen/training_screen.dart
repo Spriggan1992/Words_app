@@ -45,6 +45,8 @@ class _TrainingState extends State<Training> {
     });
   }
 
+  void getData(List data) {}
+
   void createData() {
     targetWords = [...widget.dataWord];
     targetWords.shuffle();
@@ -173,7 +175,7 @@ List matchWords(List dataWord) {
   return matches;
 }
 
-List<Widget> deck(targetWords, removieItem, ownLanguageWords,
+List<Widget> deck(List<Word> targetWords, removieItem, ownLanguageWords,
     toogleAnswerCorrect, toogleAnswerWrong) {
   List<Widget> cardList = new List();
   int count = 0;
