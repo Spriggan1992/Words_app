@@ -39,7 +39,10 @@ class MyApp extends StatelessWidget {
             primaryColor: Color(0xff450920),
             backgroundColor: Color(0xffEAE2DA),
             scaffoldBackgroundColor: Color(0xffEAE2DA),
-            bottomAppBarColor: Color(0xffA53860)),
+            bottomAppBarColor: Color(0xffA53860),
+            primaryTextTheme:
+                //this responsible for appBAr title
+                TextTheme(headline6: TextStyle(color: Color(0xffA53860)))),
         title: 'Word App',
         debugShowCheckedModeBanner: false,
         initialRoute: WordsCollectionsList.id,

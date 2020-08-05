@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:words_app/db_helper.dart';
+import 'package:words_app/providers/part_data.dart';
 import 'package:words_app/providers/word_data.dart';
 
 class Words with ChangeNotifier {
@@ -49,7 +50,7 @@ class Words with ChangeNotifier {
       String translation,
       String newId,
       File image,
-      String part,
+      Part part,
       String example,
       String exampleTranslations) {
     final wordCard = Word(
@@ -70,7 +71,8 @@ class Words with ChangeNotifier {
       'word1': main,
       'word2': second,
       'translation': translation,
-      'part': part,
+      'part': part.part,
+      'partColor': part.color.value.toString(),
       'image': image.path,
       'example': example,
       'exampleTranslations': exampleTranslations,
@@ -88,7 +90,7 @@ class Words with ChangeNotifier {
             targetLang: item['word1'],
             secondLang: item['word2'],
             ownLang: item['translation'],
-            part: item['part'],
+            part: Part(item['part'], Color(item['partColor'])),
             example: item['example'],
             exampleTranslations: item['exampleTranslations'],
             image: File(item['image']),

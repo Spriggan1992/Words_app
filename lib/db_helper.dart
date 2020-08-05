@@ -17,7 +17,7 @@ class DBHelper {
   //         'CREATE TABLE collections(id TEXT PRIMARY KEY, title TEXT, language TEXT)');
   //   }, version: 1);
   // }
-  
+
   /// Method execute creation of two tables by using helper function _onCreate
   static Future<sql.Database> database() async {
     //first we create a data base if we don't have one
@@ -31,7 +31,7 @@ class DBHelper {
     await db.execute(
         'CREATE TABLE collections(id TEXT PRIMARY KEY, title TEXT, language TEXT)');
     await db.execute(
-        'CREATE TABLE words(collectionId Text, id TEXT PRIMARY KEY, word1 TEXT, word2 TEXT, translation TEXT, part TEXT, image TEXT, example Text, exampleTranslations Text)');
+        'CREATE TABLE words(collectionId Text, id TEXT PRIMARY KEY, word1 TEXT, word2 TEXT, translation TEXT, part TEXT, partColor TEXT, image TEXT, example Text, exampleTranslations Text)');
   }
 
   //method's will all be static So we don't need to create an instance of it, to work with it

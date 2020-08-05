@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-const Color mintColor = Color(0xff03dac6);
-
 class CustomRadio extends StatefulWidget {
   final Function getPart;
+  final Function getColor;
   static const id = 'custom_radio';
 
-  const CustomRadio({this.getPart});
+  const CustomRadio({this.getPart, this.getColor});
   @override
   createState() {
-    return new CustomRadioState();
+    return CustomRadioState();
   }
 }
 
@@ -20,14 +19,14 @@ class CustomRadioState extends State<CustomRadio> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    radioButtonList.add(new RadioModel(false, 'n'));
-    radioButtonList.add(new RadioModel(false, 'pron'));
-    radioButtonList.add(new RadioModel(false, 'adj'));
-    radioButtonList.add(new RadioModel(false, 'v'));
-    radioButtonList.add(new RadioModel(false, 'adv'));
-    radioButtonList.add(new RadioModel(false, 'prep'));
-    radioButtonList.add(new RadioModel(false, 'conj'));
-    radioButtonList.add(new RadioModel(false, 'inter'));
+    radioButtonList.add(new RadioModel(false, '', Color(0xffF3F3F3)));
+    radioButtonList.add(new RadioModel(false, 'n', Color(0xffB6D7A8)));
+    radioButtonList.add(new RadioModel(false, 'pron', Color(0xffB6D7A8)));
+    radioButtonList.add(new RadioModel(false, 'v', Color(0xffEB7676)));
+    radioButtonList.add(new RadioModel(false, 'adv', Color(0xffEB7676)));
+    radioButtonList.add(new RadioModel(false, 'adj', Color(0xffFFE599)));
+    radioButtonList.add(new RadioModel(false, 'conj', Color(0xff9FC5F8)));
+    radioButtonList.add(new RadioModel(false, 'prep', Color(0xffB4A7D6)));
   }
 
   @override
@@ -47,6 +46,7 @@ class CustomRadioState extends State<CustomRadio> {
                     .forEach((element) => element.isSelected = false);
                 radioButtonList[index].isSelected = true;
                 widget.getPart(radioButtonList[index].buttonText);
+                widget.getColor(radioButtonList[index].color);
               },
             );
           },
@@ -71,25 +71,26 @@ class RadioItem extends StatelessWidget {
             height: 30,
             width: 30,
             child: new Center(
-              child: new Text(
+              child: Text(
                 _item.buttonText,
-                style: new TextStyle(
-                  color: _item.isSelected ? Colors.white : Colors.black,
-                  //fontWeight: FontWeight.bold,
-                  fontSize: 12.0,
-                ),
+                style: TextStyle(
+                    color: _item.isSelected ? Colors.white : Colors.black,
+                    //fontWeight: FontWeight.bold,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold),
               ),
             ),
-            decoration: new BoxDecoration(
+            decoration: BoxDecoration(
               color: _item.isSelected
                   ? Theme.of(context).primaryColor
-                  : Colors.transparent,
-              border: new Border.all(
-                width: 1.0,
-                color: _item.isSelected
-                    ? Colors.black
-                    : Theme.of(context).primaryColor,
-              ),
+                  : _item.color,
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xff382F266D),
+                  offset: Offset(1, 1),
+                  blurRadius: 4,
+                )
+              ],
               borderRadius: const BorderRadius.all(
                 const Radius.circular(5.0),
               ),
@@ -104,6 +105,7 @@ class RadioItem extends StatelessWidget {
 class RadioModel {
   bool isSelected;
   final String buttonText;
+  final Color color;
 
-  RadioModel(this.isSelected, this.buttonText);
+  RadioModel(this.isSelected, this.buttonText, this.color);
 }

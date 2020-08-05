@@ -80,8 +80,8 @@ class _WordCardState extends State<WordCard>
                 duration: Duration(milliseconds: 300),
                 key: ValueKey(widget.index),
                 child: Text(
-                  word.part,
-                  style: TextStyle(fontSize: 20.0),
+                  word.part.part,
+                  style: TextStyle(fontSize: 20.0, color: word.part.color),
                 ),
               ),
 
@@ -92,8 +92,12 @@ class _WordCardState extends State<WordCard>
                 duration: Duration(milliseconds: 300),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: 120, maxHeight: 60),
-                  child: Text(word.targetLang, //Main word
-                      style: TextStyle(fontSize: 20.0)),
+                  child: Text(
+                    word.targetLang, //Main word
+                    style: TextStyle(
+                      fontSize: 20.0,
+                    ),
+                  ),
                 ),
               ),
               // Translation word container
