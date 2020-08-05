@@ -25,7 +25,6 @@ class CardCreator extends StatefulWidget {
 }
 
 class _CardCreatorState extends State<CardCreator> {
-  static var uuid = Uuid();
   //to store image locally
   //get access to camera or gallery
   final picker = ImagePicker();
@@ -33,12 +32,13 @@ class _CardCreatorState extends State<CardCreator> {
   bool _thirdLangSelect = false;
 
   //variables to work with card
-  String mainWord = 'one';
-  String secondWord = 'two';
-  String translation = 'three';
+  String targetLang = 'one';
+  String ownLang = 'two';
+  String secondLang = 'two';
+  String thirdLang = 'three';
   String example = 'test example';
   String exampleTranslations = 'test example';
-  String id = uuid.v4();
+  String id = Uuid().v4();
   File image;
   String dropdownValue = 'One';
   Part part = Part('', Colors.white);
@@ -83,7 +83,7 @@ class _CardCreatorState extends State<CardCreator> {
 
   _getColor(Color color) {
     setState(() {
-      part.color = color;
+      part.partColor = color;
     });
   }
 
@@ -108,10 +108,11 @@ class _CardCreatorState extends State<CardCreator> {
                 onPressed: () {
                   providerData.addNewWordCard(
                     collectionId,
-                    mainWord,
-                    secondWord,
-                    translation,
                     id,
+                    targetLang,
+                    ownLang,
+                    secondLang,
+                    thirdLang,
                     image,
                     part,
                     example,
@@ -148,7 +149,7 @@ class _CardCreatorState extends State<CardCreator> {
                   Stack(
                     children: <Widget>[
                       WordCard(
-                        color: part.color,
+                        color: part.partColor,
                         size: size,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -169,7 +170,7 @@ class _CardCreatorState extends State<CardCreator> {
                                         width: 2, color: Colors.black),
                                   ),
                                 ),
-                                onChanged: (value) => mainWord = value,
+                                onChanged: (value) => targetLang = value,
                               ),
                               SizedBox(
                                 height: 20,
@@ -179,7 +180,7 @@ class _CardCreatorState extends State<CardCreator> {
                                 height: 40,
                                 child: CustomRadio(
                                   //TODO: create setter for part
-                                  getPart: (value) => part.part = value,
+                                  getPart: (value) => part.partName = value,
                                   getColor: _getColor,
                                 ),
                               ),
@@ -280,7 +281,7 @@ class _CardCreatorState extends State<CardCreator> {
                                         width: 2, color: Colors.black),
                                   ),
                                 ),
-                                onChanged: (value) => translation = value,
+                                onChanged: (value) => thirdLang = value,
                               ),
                               FoldingBtnField(
                                 selected: _secondLangSelect,
@@ -292,7 +293,7 @@ class _CardCreatorState extends State<CardCreator> {
                                     },
                                   );
                                 },
-                                onChanged: (value) => secondWord = value,
+                                onChanged: (value) => ownLang = value,
                               ),
                               FoldingBtnField(
                                 selected: _thirdLangSelect,

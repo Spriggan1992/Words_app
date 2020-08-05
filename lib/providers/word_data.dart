@@ -18,12 +18,11 @@ class Word with ChangeNotifier {
     this.isEditingWord2 = true,
     this.isEditingTranslationTitle = true,
   });
-
   String id;
   String targetLang;
+  String ownLang;
   String secondLang;
   String thirdLang;
-  String ownLang;
   Part part;
   File image;
   String example;

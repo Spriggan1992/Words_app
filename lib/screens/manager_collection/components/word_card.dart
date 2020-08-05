@@ -80,8 +80,8 @@ class _WordCardState extends State<WordCard>
                 duration: Duration(milliseconds: 300),
                 key: ValueKey(widget.index),
                 child: Text(
-                  word.part.part,
-                  style: TextStyle(fontSize: 20.0, color: word.part.color),
+                  word.part.partName,
+                  style: TextStyle(fontSize: 20.0, color: word.part.partColor),
                 ),
               ),
 
