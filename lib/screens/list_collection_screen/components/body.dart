@@ -40,7 +40,7 @@ class Body extends StatelessWidget {
                     providerData.handleSubmitEditTitle(
                         handleSubmitTitle, wordsCollectionData);
 
-                    providerData.handleSubmitEditLangugeTitle(
+                    providerData.handleSubmitEditLanguageTitle(
                         handleSubmitLanguage, wordsCollectionData);
 
                     // print(handleSubmitLanguage);

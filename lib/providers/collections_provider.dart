@@ -35,7 +35,8 @@ class Collections with ChangeNotifier {
       },
     );
   }
-  ///Fetching data from db  and setting the _wordsCollectionData 
+
+  ///Fetching data from db  and setting the _wordsCollectionData
   Future<void> fetchAndSetCollection() async {
     final dataList = await DBHelper.getData('collections');
     _wordsCollectionData = dataList
@@ -73,12 +74,12 @@ class Collections with ChangeNotifier {
     );
   }
 
-  void handleSubmitEditLangugeTitle(dynamic value, Collection collection) {
+  void handleSubmitEditLanguageTitle(dynamic value, Collection collection) {
     collection.changeLanguageTitle(value);
     notifyListeners();
 
     // we utilize DBHelper method insert,  which can also modify data if it finds this entry in db
-    DBHelper.insert(
+    DBHelper.update(
       'collections',
       {
         'id': collection.id,
