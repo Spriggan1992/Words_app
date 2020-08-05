@@ -40,7 +40,8 @@ class CollectionManager extends StatelessWidget {
                   : Body(),
         ), // Body
         floatingActionButton: ReusableFloatActionButton(
-          onPressed: () => Navigator.pushNamed(context, CardCreator.id, arguments: {'id': collectionId}),
+          onPressed: () => Navigator.pushNamed(context, CardCreator.id,
+              arguments: {'id': collectionId}),
         ),
 
         bottomNavigationBar: BaseBottomAppBar(
