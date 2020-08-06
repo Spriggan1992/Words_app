@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/components/collapseble_btn_field.dart';
+import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/providers/collections_provider.dart';
 
 import 'btns.dart';
@@ -34,28 +35,45 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 // Done btn
-                Btns(
-                  padding: 5.0,
-                  backgroundColor: Colors.grey[100],
-                  icon: Icons.done,
-                  color: Colors.green[400],
-                  onPress: () {
+
+                CustomRoundBtn(
+                  icon: Icons.check,
+                  fillColor: Color(0xffDA627D),
+                  onPressed: () {
                     Provider.of<Collections>(context, listen: false)
                         .addNewCollection(
                             holderCollectionTitle, holderLanguageTitle);
                     Navigator.pop(context);
                   },
                 ),
-                SizedBox(width: 5.0),
+//                Btns(
+//                  padding: 5.0,
+//                  backgroundColor: Colors.grey[100],
+//                  icon: Icons.done,
+//                  color: Colors.green[400],
+//                  onPress: () {
+//                    Provider.of<Collections>(context, listen: false)
+//                        .addNewCollection(
+//                            holderCollectionTitle, holderLanguageTitle);
+//                    Navigator.pop(context);
+//                  },
+//                ),
+//                SizedBox(width: 5.0),
                 // Close btn
-                Btns(
-                    padding: 5.0,
-                    backgroundColor: Colors.grey[100],
-                    icon: Icons.close,
-                    color: Colors.red[400],
-                    onPress: () {
-                      Navigator.pop(context);
-                    })
+                CustomRoundBtn(
+                  fillColor: Color(0xff450920),
+                  icon: Icons.close,
+                  onPressed: () => Navigator.of(context).pop(),
+                  color: Theme.of(context).primaryColor,
+                ),
+//                Btns(
+//                    padding: 5.0,
+//                    backgroundColor: Colors.grey[100],
+//                    icon: Icons.close,
+//                    color: Colors.red[400],
+//                    onPress: () {
+//                      Navigator.pop(context);
+//                    })
               ],
             ),
             SizedBox(height: 20.0),

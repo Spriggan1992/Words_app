@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/providers/part_data.dart';
 import 'package:words_app/screens/card_creater/components/text_field_area.dart';
@@ -133,7 +134,6 @@ class _CardCreatorState extends State<CardCreator> {
     Map args = ModalRoute.of(context).settings.arguments;
     String collectionId = args['id'];
     Size size = MediaQuery.of(context).size;
-    print("DEBUG: ${defaultImage}");
 
     return Consumer<Words>(
       builder: (context, providerData, child) {
@@ -412,34 +412,6 @@ class _CardCreatorState extends State<CardCreator> {
               )),
         );
       },
-    );
-  }
-}
-
-class CustomRoundBtn extends StatelessWidget {
-  final Function onPressed;
-  final IconData icon;
-  final Color fillColor;
-  final Color color;
-
-  const CustomRoundBtn(
-      {Key key, this.onPressed, this.icon, this.fillColor, this.color})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      onPressed: onPressed,
-      shape: CircleBorder(),
-      constraints: BoxConstraints(
-        minHeight: 35,
-        minWidth: 35,
-      ),
-      fillColor: fillColor,
-      child: Icon(
-        icon,
-        color: Colors.white,
-      ),
     );
   }
 }
