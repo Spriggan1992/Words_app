@@ -102,7 +102,7 @@ class Words with ChangeNotifier {
         exampleTranslations: item['exampleTranslations'],
       );
 
-      print('DEBUG: ${word.image.path}');
+//      print('DEBUG: ${word.image.path}');
       return word;
     }).toList();
 

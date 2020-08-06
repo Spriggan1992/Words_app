@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:async';
+import 'package:flutter/services.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/providers/part_data.dart';
 import 'package:words_app/screens/card_creater/components/text_field_area.dart';
@@ -11,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/providers/words_provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:words_app/utils/utilities.dart';
 import 'components/custom_radio.dart';
 import 'components/folding_btn_field.dart';
 import 'components/reusable_card.dart';
@@ -19,7 +22,6 @@ import 'package:path_provider/path_provider.dart' as syspaths;
 
 class CardCreator extends StatefulWidget {
   static const id = 'card_creator';
-
   @override
   _CardCreatorState createState() => _CardCreatorState();
 }
@@ -32,26 +34,63 @@ class _CardCreatorState extends State<CardCreator> {
   bool _thirdLangSelect = false;
 
   //variables to work with card
-  String targetLang = 'one';
-  String ownLang = 'two';
-  String secondLang = 'two';
-  String thirdLang = 'three';
-  String example = 'test example';
-  String exampleTranslations = 'test example';
+  String targetLang = 'sano';
+  String ownLang = 'слово';
+  String secondLang = 'word';
+  String thirdLang = '单词';
+  String example = 'tämä on tarkea sano';
+  String exampleTranslations = 'Это важное слово. It is important word';
   String id = Uuid().v4();
   File image;
+  File defaultImage;
+  String temp = 'fuck';
   String dropdownValue = 'One';
-  Part part = Part('', Colors.white);
+  Part part = Part('n', Colors.white);
+
+//  void initState() {
+//    super.initState();
+//    image = Utilities.setImage();
+//  }
+
+  ///Method to work with asset [image], to save it  as file
+  Future<File> assetToFile(String path) async {
+    //loading data from file in assets
+    final byteData = await rootBundle.load('assets/$path');
+    //name of the file
+    String name = "noimage.png";
+    final appDir = await syspaths.getApplicationDocumentsDirectory();
+    final savedImage = await File('${appDir.path}/$name');
+    await savedImage.writeAsBytes(byteData.buffer
+        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    return (savedImage);
+  }
+
+  setImage() async {
+    final pic = await assetToFile('images/noimage.png');
+    print("pic $pic");
+
+    setState(() {
+      defaultImage = pic;
+    });
+  }
+
+  void initState() {
+    super.initState();
+    setImage();
+  }
 
   //method to work with camera
   getImageFile(ImageSource source) async {
-    final imageFile =
+    PickedFile imageFile =
         await picker.getImage(source: ImageSource.camera, maxWidth: 600);
+//    final imageFile2 = await assetToFile('images/noimages.png');
+//    print(imageFile2.path);
     //This check is needed if we didn't take a picture  and used back button in camera;
 
     if (imageFile == null) {
       return;
     }
+
     //Call imageCropper module and crop the image. I has different looks on Android and IOS
     File croppedFile = await ImageCropper.cropImage(
       sourcePath: imageFile.path,
@@ -94,6 +133,7 @@ class _CardCreatorState extends State<CardCreator> {
     Map args = ModalRoute.of(context).settings.arguments;
     String collectionId = args['id'];
     Size size = MediaQuery.of(context).size;
+    print("DEBUG: ${defaultImage}");
 
     return Consumer<Words>(
       builder: (context, providerData, child) {
@@ -113,7 +153,7 @@ class _CardCreatorState extends State<CardCreator> {
                     ownLang,
                     secondLang,
                     thirdLang,
-                    image,
+                    image ?? defaultImage,
                     part,
                     example,
                     exampleTranslations,
@@ -200,8 +240,11 @@ class _CardCreatorState extends State<CardCreator> {
                                             BorderRadius.circular(15)),
                                     child: image == null
                                         ? IconButton(
+//                                            onPressed: setImage,
+
                                             onPressed: () => getImageFile(
-                                                ImageSource.camera),
+                                              ImageSource.camera,
+                                            ),
                                             icon: Icon(
                                               Icons.photo_camera,
                                               size: 48,
