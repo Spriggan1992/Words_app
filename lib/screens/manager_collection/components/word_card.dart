@@ -14,10 +14,14 @@ class WordCard extends StatefulWidget {
   _WordCardState createState() => _WordCardState();
 }
 
-class _WordCardState extends State<WordCard>
-    with SingleTickerProviderStateMixin {
+class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
+  final GlobalKey _cardKey = GlobalKey();
+
+  Offset cardPosition;
   bool isExpand = false;
 
+  AnimationController pageAnimationController;
+  Animation pageAnimation;
   AnimationController expandController;
   Animation<double> animation;
   Animation rotationAnimation;
@@ -36,7 +40,7 @@ class _WordCardState extends State<WordCard>
   @override
   void initState() {
     super.initState();
-
+    WidgetsBinding.instance.addPostFrameCallback((_) => getSizeAndPosition());
     expandController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     animation =
@@ -49,6 +53,15 @@ class _WordCardState extends State<WordCard>
   void dispose() {
     expandController.dispose();
     super.dispose();
+  }
+
+  getSizeAndPosition() {
+    RenderBox _cardBox = _cardKey.currentContext.findRenderObject();
+
+    cardPosition = _cardBox.localToGlobal(Offset.zero);
+
+    print(cardPosition);
+    setState(() {});
   }
 
   @override
@@ -67,9 +80,31 @@ class _WordCardState extends State<WordCard>
           // Function choosePicture, in that Function check wich id match to WordCard and stosred image in wordCardPicture.
 //          word.selectImages(word.id);
           // showDialogWindow(context, widget.index);
-          Navigator.pushNamed(context, ReviewCard.id);
+          // Navigator.pushNamed(context, ReviewCard.id);
+          Navigator.push(
+              context,
+              PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      ReviewCard(index: widget.index),
+                  // wordData: Provider.of<Words>(context, listen: false)
+                  // .wordsData
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    var begin = 0.0;
+                    var end = 1.0;
+                    var curve = Curves.ease;
+
+                    var tween = Tween(begin: begin, end: end)
+                        .chain(CurveTween(curve: curve));
+                    return ScaleTransition(
+                      scale: animation.drive(tween),
+                      alignment: Alignment.center,
+                      child: child,
+                    );
+                  }));
         },
         child: Container(
+          key: _cardKey,
           color: kMainColorBackground,
           child: Stack(
             alignment: Alignment.topLeft,

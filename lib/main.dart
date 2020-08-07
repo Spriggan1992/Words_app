@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:words_app/providers/collections_provider.dart';
 import 'package:words_app/providers/training_matches_provider.dart';
 import 'package:words_app/providers/validation_provider.dart';
@@ -12,7 +11,6 @@ import 'package:words_app/screens/list_collection_screen/words_collections_list_
 import 'package:words_app/screens/review_card_screen/review_card.dart';
 import 'package:words_app/screens/training_screen/matches.dart';
 import 'package:words_app/screens/welcome_screen/welcom_screen.dart';
-import 'package:words_app/screens/words_review_screen/words_review.dart';
 import 'screens/manager_collection/collection_manager.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
 import 'package:words_app/screens/result_screen/result_screen.dart';
@@ -58,7 +56,6 @@ class MyApp extends StatelessWidget {
           WordsCollectionsList.id: (context) => WordsCollectionsList(),
           CollectionManager.id: (context) => CollectionManager(),
           CardCreator.id: (context) => CardCreator(),
-          WordsReview.id: (context) => WordsReview(),
           ReviewCard.id: (context) => ReviewCard(),
           Training.id: (context) => Training(),
           Matches.id: (context) => Matches(),

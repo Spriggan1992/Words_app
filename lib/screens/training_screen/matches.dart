@@ -1,13 +1,8 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/providers/training_matches_data.dart';
 import 'package:words_app/providers/training_matches_provider.dart';
 import 'package:words_app/providers/word_data.dart';
-import 'package:words_app/screens/list_collection_screen/words_collections_list_screen.dart';
-import 'package:words_app/screens/words_review_screen/words_review.dart';
 
 class Matches extends StatefulWidget {
   static String id = 'matches_screen';
@@ -119,9 +114,9 @@ class _MatchesState extends State<Matches> with TickerProviderStateMixin {
       String targetLangWord;
       for (int i = 0; i < initialData.length; i++) {
         targetLangWord = initialData[i].targetLang;
-        matches = targetLangWord;
+        matches = targetLangWord.toLowerCase();
       }
-      List<String> targetSplitted = targetLangWord.split('');
+      List<String> targetSplitted = targetLangWord.toLowerCase().split('');
       // here we check if providerData.listMatches empty or not. If it empty-> add new word, else dont add it.
       if (providerData.listMatches.isEmpty) {
         targetSplitted.forEach((item) {

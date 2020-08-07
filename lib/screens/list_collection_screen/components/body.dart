@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/constants/constants.dart';
@@ -50,7 +52,9 @@ class Body extends StatelessWidget {
                   // Remove collection from data
                   deleteCollection: () {
                     Navigator.pop(context);
-                    providerData.deleteCollection(wordsCollectionData);
+                    Timer(Duration(milliseconds: 200), () {
+                      providerData.deleteCollection(wordsCollectionData);
+                    });
                   },
 
                   goToManagerCollections: (String collectionId, String title) {

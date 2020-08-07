@@ -47,16 +47,16 @@ class BackContainer extends StatelessWidget {
               decoration: BoxDecoration(),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('Venäjällä on kylmä talvi.',
-                        style: TextStyle(fontSize: 20)),
-                    Text('Winter is cold in Russia.',
-                        style: TextStyle(fontSize: 20)),
-                    Text('俄罗斯的冬天很冷。', style: TextStyle(fontSize: 20)),
-                  ],
-                ),
+                // child: Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: <Widget>[
+                //     Text('Venäjällä on kylmä talvi.',
+                //         style: TextStyle(fontSize: 20)),
+                //     Text('Winter is cold in Russia.',
+                //         style: TextStyle(fontSize: 20)),
+                //     Text('俄罗斯的冬天很冷。', style: TextStyle(fontSize: 20)),
+                //   ],
+                // ),
               ),
             ),
           ],
