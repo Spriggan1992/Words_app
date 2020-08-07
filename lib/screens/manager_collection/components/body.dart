@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:words_app/providers/words_provider.dart';
 import 'package:words_app/screens/manager_collection/components/word_card.dart';
 
+import 'package:words_app/screens/review_card_screen/review_card.dart';
+
 class Body extends StatelessWidget {
   const Body({
     Key key,

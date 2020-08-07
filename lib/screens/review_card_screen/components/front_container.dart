@@ -21,7 +21,7 @@ class FrontContainer extends StatelessWidget {
     final wordsData = Provider.of<Words>(context, listen: false).wordsData;
 
     return Container(
-        padding: EdgeInsets.only(top: 30),
+        padding: EdgeInsets.only(top: 20),
         child: Column(
           children: <Widget>[
             Container(
@@ -33,7 +33,7 @@ class FrontContainer extends StatelessWidget {
                 color: kAppBarsColor,
               ),
               child: Padding(
-                  padding: const EdgeInsets.only(top: 40.0),
+                  padding: const EdgeInsets.only(top: 20.0),
                   child: Column(
                     // mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -62,19 +62,19 @@ class FrontContainer extends StatelessWidget {
                   )),
             ),
             SizedBox(height: 20),
-            Container(
-              width: screenWidth * 0.7,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('В России холодная зима',
-                        style: TextStyle(fontSize: 20)),
-                  ],
-                ),
-              ),
-            ),
+            // Container(
+            //   width: screenWidth * 0.7,
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(top: 10.0),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: <Widget>[
+            //         Text('В России холодная зима',
+            //             style: TextStyle(fontSize: 20)),
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ));
   }
