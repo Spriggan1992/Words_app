@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:math' as math;
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +10,6 @@ import 'package:words_app/constants/constants.dart';
 import 'package:words_app/providers/word_data.dart';
 import 'package:words_app/providers/words_provider.dart';
 import 'package:words_app/screens/review_card_screen/components/back_container.dart';
-import 'dart:math' as math;
-
 import 'package:words_app/screens/review_card_screen/components/front_container.dart';
 import 'package:words_app/screens/training_screen/matches.dart';
 
@@ -28,7 +26,10 @@ class _ReviewCardState extends State<ReviewCard>
     with SingleTickerProviderStateMixin {
   PageController _pageController;
 
-  int initialPage = 0;
+  /// Initial index of page;
+  int initialPage;
+
+  /// If `true` show front - examples text
   bool isFront = true;
 
   @override
@@ -45,11 +46,13 @@ class _ReviewCardState extends State<ReviewCard>
     super.dispose();
   }
 
+  /// Set up [isFront] `true` or `false`
   void toggleIsFront() {
     isFront = !isFront;
     setState(() {});
   }
 
+  /// Pass throught [initialPage] what we get from [screens/manager_collection/components/word_card.dart]
   void getCurrInd() {
     initialPage = widget.index;
     Timer(Duration(milliseconds: 100), () {
@@ -57,11 +60,11 @@ class _ReviewCardState extends State<ReviewCard>
     });
   }
 
+  /// Send data to [screens/training_screen/matches.dart]
   void sendDataToTrainingScreen(context) {
     final wordsData = Provider.of<Words>(context, listen: false).wordsData;
     List<Word> dataWords = [...wordsData];
     dataWords.shuffle();
-
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => Matches(dataWord: dataWords)));
   }
@@ -118,7 +121,7 @@ class _ReviewCardState extends State<ReviewCard>
                               value = (value * 0.06).clamp(-1, 1);
                             }
                             return AnimatedOpacity(
-                              duration: Duration(milliseconds: 100),
+                              duration: Duration(milliseconds: 500),
                               opacity: initialPage == index ? 1 : 0.1,
                               child: Transform.rotate(
                                   angle: math.pi * value,
@@ -159,6 +162,7 @@ class _ReviewCardState extends State<ReviewCard>
                                                 child: widget);
                                           },
                                           child: isFront
+                                              // Example Text
                                               ? Column(
                                                   key: ValueKey(1),
                                                   crossAxisAlignment:

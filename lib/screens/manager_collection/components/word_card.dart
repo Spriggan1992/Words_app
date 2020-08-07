@@ -15,8 +15,6 @@ class WordCard extends StatefulWidget {
 }
 
 class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
-  final GlobalKey _cardKey = GlobalKey();
-
   Offset cardPosition;
   bool isExpand = false;
 
@@ -40,7 +38,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => getSizeAndPosition());
+
     expandController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     animation =
@@ -55,18 +53,9 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  getSizeAndPosition() {
-    RenderBox _cardBox = _cardKey.currentContext.findRenderObject();
-
-    cardPosition = _cardBox.localToGlobal(Offset.zero);
-
-    print(cardPosition);
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
-    //Receiving word data from word_data provider, using index to extract single item from array
+    /// Receiving word data from[ word_data provider], using index to extract single item from array
     final word =
         Provider.of<Words>(context, listen: false).wordsData[widget.index];
     // print("DEBUG wordCard${word.image}");
@@ -104,7 +93,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                   }));
         },
         child: Container(
-          key: _cardKey,
           color: kMainColorBackground,
           child: Stack(
             alignment: Alignment.topLeft,

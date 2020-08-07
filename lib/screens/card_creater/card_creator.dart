@@ -5,7 +5,6 @@ import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/providers/part_data.dart';
 import 'package:words_app/screens/card_creater/components/text_field_area.dart';
-
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -68,7 +67,7 @@ class _CardCreatorState extends State<CardCreator> {
 
   setImage() async {
     final pic = await assetToFile('images/noimage.png');
-    print("pic $pic");
+    // print("pic $pic");
 
     setState(() {
       defaultImage = pic;

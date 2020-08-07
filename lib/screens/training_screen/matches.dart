@@ -74,11 +74,13 @@ class _MatchesState extends State<Matches> with TickerProviderStateMixin {
               });
   }
 
-  // @override
-  // void dispose() {
-  //   controller.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    errorAnimationController.dispose();
+    shakeController.dispose();
+    slideTransitionController.dispose();
+    super.dispose();
+  }
 
   void runSlideAnimation() {
     slideTransitionController.forward();
@@ -117,7 +119,7 @@ class _MatchesState extends State<Matches> with TickerProviderStateMixin {
         matches = targetLangWord.toLowerCase();
       }
       List<String> targetSplitted = targetLangWord.toLowerCase().split('');
-      // here we check if providerData.listMatches empty or not. If it empty-> add new word, else dont add it.
+      // Check if providerData.listMatches empty or not. If it empty-> add new word, else dont add it.
       if (providerData.listMatches.isEmpty) {
         targetSplitted.forEach((item) {
           providerData.addWord(item, true);
