@@ -43,35 +43,33 @@ class _CardCreatorState extends State<CardCreator> {
   String exampleTranslations = 'Это важное слово. It is important word';
   String id = Uuid().v4();
   File image;
+  // this variable will be created when state initiatet
   File defaultImage;
   String temp = 'fuck';
   String dropdownValue = 'One';
   Part part = Part('n', Colors.white);
 
-//  void initState() {
-//    super.initState();
-//    image = Utilities.setImage();
-//  }
-
   ///Method to work with asset [image], to save it  as file
   Future<File> assetToFile(String path) async {
     //loading data from file in assets
     final byteData = await rootBundle.load('assets/$path');
-    //name of the file
-    String name = "noimage.png";
+    //[name] of the file can be anything
+    final String name = "noimage.png";
+    //to get current app folder path.
     final appDir = await syspaths.getApplicationDocumentsDirectory();
+    //creating savedImage in path on the phone
     final savedImage = await File('${appDir.path}/$name');
+    //write data from byteData to savedImage
     await savedImage.writeAsBytes(byteData.buffer
         .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
-    return (savedImage);
+    return savedImage;
   }
 
   setImage() async {
-    final pic = await assetToFile('images/noimage.png');
-    print("pic $pic");
-
+    //image receive File which we ca freely use in our app. Coz word data saves images as File object
+    final image = await assetToFile('images/noimage.png');
     setState(() {
-      defaultImage = pic;
+      defaultImage = image;
     });
   }
 
@@ -98,6 +96,7 @@ class _CardCreatorState extends State<CardCreator> {
       maxWidth: 600,
       maxHeight: 600,
     );
+    //TODO: find compression method for File
 
     setState(() {
       image = croppedFile;
@@ -204,7 +203,6 @@ class _CardCreatorState extends State<CardCreator> {
                                     width: size.width * 0.7,
                                     height: 40,
                                     child: CustomRadio(
-                                      //TODO: create setter for part
                                       getPart: (value) => part.partName = value,
                                       getColor: _getColor,
                                     ),
