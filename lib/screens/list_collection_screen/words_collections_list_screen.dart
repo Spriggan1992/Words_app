@@ -52,13 +52,14 @@ class WordsCollectionsList extends StatelessWidget {
 
   Future buildShowGeneralDialog(BuildContext context) {
     return showGeneralDialog(
-      barrierColor: Color(0xFFb48484).withOpacity(0.9),
+      barrierColor: Color(0xff906c7a),
       transitionBuilder: (context, a1, a2, widget) {
         return Transform.scale(
           scale: a1.value,
           child: Opacity(
             opacity: a1.value,
             child: AlertDialog(
+              backgroundColor: Color(0xffEAE2DA),
               shape:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
               content: StatefulBuilder(builder: (context, setState) {

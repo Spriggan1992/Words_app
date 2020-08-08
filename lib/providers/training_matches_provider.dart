@@ -17,7 +17,6 @@ class TrainingMatches with ChangeNotifier {
 
   void cleanData() {
     listMatches.clear();
-    print(listMatches);
     notifyListeners();
   }
 }

@@ -30,7 +30,7 @@ class Body extends StatelessWidget {
 
                 return WordsCollection(
                   index: index,
-                  /* Takes value from TextField, and stored it in handleSubmiteText */
+                  // Takes value from [TextField], and stored it in handleSubmiteText
                   onSubmitTitleField: (value) {
                     handleSubmitTitle = value;
                   },
@@ -44,15 +44,13 @@ class Body extends StatelessWidget {
 
                     providerData.handleSubmitEditLanguageTitle(
                         handleSubmitLanguage, wordsCollectionData);
-
-                    // print(handleSubmitLanguage);
                     Navigator.pop(context);
                   },
 
                   // Remove collection from data
                   deleteCollection: () {
                     Navigator.pop(context);
-                    Timer(Duration(milliseconds: 200), () {
+                    Timer(Duration(milliseconds: 150), () {
                       providerData.deleteCollection(wordsCollectionData);
                     });
                   },

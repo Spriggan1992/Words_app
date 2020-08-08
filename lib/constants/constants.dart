@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:words_app/components/concave_decoration.dart';
 
 // Background for Login Screen
 const Color kMainColorBackground = Color(0xFFf8e6e6);
@@ -27,3 +28,9 @@ const kBoxShadow = BoxShadow(
     blurRadius: 3.0,
     spreadRadius: 1.0,
     offset: Offset(1, 0.5));
+
+final innerShadow = ConcaveDecoration(
+  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+  depth: 7,
+  colors: [Colors.white, Colors.black],
+);

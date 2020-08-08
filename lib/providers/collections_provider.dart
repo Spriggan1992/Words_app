@@ -53,7 +53,6 @@ class Collections with ChangeNotifier {
 
   void deleteCollection(Collection collection) {
     _wordsCollectionData.remove(collection);
-    print(_wordsCollectionData);
     notifyListeners();
     DBHelper.delete('collections', collection.id);
   }
