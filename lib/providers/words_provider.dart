@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:words_app/db_helper.dart';
+import 'package:words_app/utils/db_helper.dart';
 import 'package:words_app/providers/part_data.dart';
 import 'package:words_app/providers/word_data.dart';
 import 'package:words_app/utils/utilities.dart';
