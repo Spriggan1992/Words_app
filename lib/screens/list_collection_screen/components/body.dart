@@ -50,7 +50,7 @@ class Body extends StatelessWidget {
                   // Remove collection from data
                   deleteCollection: () {
                     Navigator.pop(context);
-                    Timer(Duration(milliseconds: 200), () {
+                    Timer(Duration(milliseconds: 150), () {
                       providerData.deleteCollection(wordsCollectionData);
                     });
                   },
