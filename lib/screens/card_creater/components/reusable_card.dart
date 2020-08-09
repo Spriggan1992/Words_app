@@ -14,12 +14,11 @@ class WordCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double defaultSize = SizeConfig.defaultSize;
     return Stack(
       children: <Widget>[
         Container(
-//          width: defaultSize * 35.4,
-//          height: defaultSize * 39.5,
+          width: SizeConfig.blockSizeHorizontal * 95,
+          height: SizeConfig.blockSizeVertical * 56,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(5),
@@ -34,7 +33,7 @@ class WordCard extends StatelessWidget {
           child: child,
         ),
         Container(
-          width: defaultSize * 35.4,
+          width: SizeConfig.blockSizeHorizontal * 95,
           height: 10,
           decoration: BoxDecoration(
               color: color,

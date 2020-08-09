@@ -142,110 +142,116 @@ class _CardCreatorState extends State<CardCreator> {
 //              print(status);
 //            },
 //        front: CardCreatorFront(() => cardKey.currentState.toggleCard()),
-            front: Padqqding(
-              padding: EdgeInsets.symmetric(
-                horizontal: defaultSize * 2.4,
-                vertical: defaultSize * 1.6,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  WordCard(
-                    color: part.partColor,
-                    size: size,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 36),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: size.width * 0.7,
-                            height: 40,
-                            child: CustomRadio(
-                              getPart: (value) => part.partName = value,
-                              getColor: _getColor,
-                            ),
-                          ),
-                          Container(
-                            decoration: innerShadow,
-                            child: TextFormField(
-                              style: GoogleFonts.montserrat(
-                                  fontSize: defaultSize * 3.2,
-                                  color: Colors.black87),
-                              focusNode: targetLangFocusNode,
-                              decoration: InputDecoration(
-                                hintText: 'word',
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 10),
-                                hintStyle: GoogleFonts.montserrat(
-                                  fontSize: defaultSize * 3.2,
-                                  letterSpacing: 1.4,
-                                  color: Color(0xffDA627D).withOpacity(0.5),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide.none,
-                                ),
+            front: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: defaultSize * 2.6, vertical: defaultSize * 1.6),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    WordCard(
+                      color: part.partColor,
+                      size: size,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 36),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              width: size.width * 0.7,
+                              height: 40,
+                              child: CustomRadio(
+                                getPart: (value) => part.partName = value,
+                                getColor: _getColor,
                               ),
-                              onTap: _requestFocus,
-                              onChanged: (value) => targetLang = value,
-                              onEditingComplete: () =>
-                                  FocusScope.of(context).unfocus(),
                             ),
-                          ),
-                          Container(
-                            width: size.width * 0.45,
-                            height: size.width * 0.45,
-                            decoration: innerShadow,
-                            child: image == null
-                                ? IconButton(
-                                    onPressed: () => getImageFile(
-                                      ImageSource.camera,
-                                    ),
-                                    icon: Icon(
-                                      Icons.photo_camera,
-                                      size: 48,
-                                    ),
-                                    color: Color(0xFFDA627D),
-                                  )
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(14),
-                                    child: Image.file(
-                                      image,
-                                      fit: BoxFit.cover,
-                                    ),
+                            Container(
+                              decoration: innerShadow,
+                              child: TextFormField(
+                                style: GoogleFonts.montserrat(
+                                    fontSize: defaultSize * 3.2,
+                                    color: Colors.black87),
+                                focusNode: targetLangFocusNode,
+                                decoration: InputDecoration(
+                                  hintText: 'word',
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 10),
+                                  hintStyle: GoogleFonts.montserrat(
+                                    fontSize: defaultSize * 3.2,
+                                    letterSpacing: 1.4,
+                                    color: Color(0xffDA627D).withOpacity(0.5),
                                   ),
-                          )
-                        ],
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                                onTap: _requestFocus,
+                                onChanged: (value) => targetLang = value,
+                                onEditingComplete: () =>
+                                    FocusScope.of(context).unfocus(),
+                              ),
+                            ),
+                            Container(
+                              width: size.width * 0.45,
+                              height: size.width * 0.45,
+                              decoration: innerShadow,
+                              child: image == null
+                                  ? IconButton(
+                                      onPressed: () => getImageFile(
+                                        ImageSource.camera,
+                                      ),
+                                      icon: Icon(
+                                        Icons.photo_camera,
+                                        size: 48,
+                                      ),
+                                      color: Color(0xFFDA627D),
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(14),
+                                      child: Image.file(
+                                        image,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    decoration: innerShadow,
-                    child: TextField(
-                      style: TextStyle(
-                          color: Colors.black87, fontSize: defaultSize * 2.4),
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 10),
-                        hintText: 'EXAMPLE',
-                        hintStyle: GoogleFonts.montserrat(
-                          fontSize: defaultSize * 2.4,
-                          letterSpacing: 1.4,
-                          color: Color(0xffDA627D).withOpacity(0.5),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
-                        ),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: defaultSize * 2.4,
+                        minHeight: defaultSize * 2.4,
                       ),
-                      onChanged: (value) => example = value,
                     ),
-                  ),
-                ],
+                    Container(
+                      decoration: innerShadow,
+                      child: TextField(
+                        style: TextStyle(
+                            color: Colors.black87, fontSize: defaultSize * 2.4),
+                        maxLines: 5,
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                          hintText: 'example',
+                          hintStyle: GoogleFonts.montserrat(
+                            fontSize: defaultSize * 2.4,
+                            letterSpacing: 1.4,
+                            color: Color(0xffDA627D).withOpacity(0.5),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                        onChanged: (value) => example = value,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             back: SingleChildScrollView(
@@ -276,6 +282,7 @@ class _CardCreatorState extends State<CardCreator> {
 //                                      autofocus: true,
 //                                    textAlign: TextAlign.center,
                                     decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(10),
                                       hintStyle: TextStyle(
                                         color: Color(0xFFDA627D),
                                       ),
@@ -298,6 +305,7 @@ class _CardCreatorState extends State<CardCreator> {
 //                                      autofocus: true,
 //                                    textAlign: TextAlign.center,
                                     decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(10),
                                       hintStyle: TextStyle(
                                         color: Color(0xFFDA627D),
                                       ),
@@ -320,6 +328,7 @@ class _CardCreatorState extends State<CardCreator> {
 //                                      autofocus: true,
 //                                    textAlign: TextAlign.center,
                                     decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(10),
                                       hintStyle: TextStyle(
                                         color: Color(0xFFDA627D),
                                       ),
@@ -345,12 +354,15 @@ class _CardCreatorState extends State<CardCreator> {
                     Container(
                       decoration: innerShadow,
                       child: TextField(
-                        style: TextStyle(color: Colors.black87, fontSize: 24),
+                        style: TextStyle(
+                            color: Colors.black87, fontSize: defaultSize * 2.4),
                         maxLines: 5,
                         decoration: InputDecoration(
-                          hintText: 'examples',
+                          contentPadding:
+                              EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+                          hintText: 'example',
                           hintStyle: GoogleFonts.montserrat(
-                            fontSize: 24,
+                            fontSize: defaultSize * 2.4,
                             letterSpacing: 1.4,
                             color: Color(0xffDA627D).withOpacity(0.5),
                           ),
