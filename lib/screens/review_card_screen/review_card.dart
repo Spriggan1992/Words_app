@@ -136,7 +136,7 @@ class _ReviewCardState extends State<ReviewCard>
                                             });
                                           },
                                           direction: FlipDirection.HORIZONTAL,
-                                          speed: 300,
+                                          speed: 400,
                                           front: FrontContainer(
                                             index: index,
                                           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/providers/collection_data.dart';
 import 'package:words_app/providers/collections_provider.dart';
 import 'package:words_app/screens/list_collection_screen/components/btns.dart';
 import 'package:words_app/screens/list_collection_screen/components/list_collection_dialog.dart';
@@ -25,17 +26,21 @@ class WordsCollection extends StatelessWidget {
   final Function deleteCollection;
   final Function onSubmitLanguageField;
   final int index;
-
   final Function onSaveForm;
 
   @override
   Widget build(BuildContext context) {
     final providerData = Provider.of<Collections>(context, listen: false)
         .wordsCollectionData[index];
+    final showBtnsdata = Provider.of<Collections>(context);
+
     // print(providerData.title);
     return GestureDetector(
         onTap: () => goToManagerCollections(
             providerData.id, providerData.title), // Go to managerCollection
+        onLongPress: () {
+          showBtnsdata.toggleBtns();
+        },
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Stack(
@@ -85,11 +90,13 @@ class WordsCollection extends StatelessWidget {
                           color: Colors.grey,
                           height: 2.0,
                         ),
-                        TextHolder(
-                          titleName: 'language: ',
-                          titleNameValue: providerData.language,
-                          fontSize1: 9.0,
-                          fontSize2: 15.0,
+                        SizedBox(height: 5.0),
+                        FittedBox(
+                          child: TextHolder(
+                            titleNameValue: providerData.language,
+                            fontSize1: 9.0,
+                            fontSize2: 15.0,
+                          ),
                         ),
                         SizedBox(height: 5.0),
                         TextHolder(
@@ -110,33 +117,42 @@ class WordsCollection extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
-                top: -1,
-                left: 83,
-                child: Container(
-                  child: Row(
-                    children: <Widget>[
-                      // Edit btn
-                      Btns(
-                          backgroundColor: Colors.white,
-                          icon: Icons.edit,
-                          color: Colors.green[300],
-                          onPress: () {
-                            // Open Dialog Window
-                            showEditDialog(
-                              context,
-                              index,
-                              deleteCollection,
-                              onSaveForm,
-                              onSubmitTitleField,
-                              onSubmitLanguageField,
-                            );
-                          }),
-                      SizedBox(width: 5),
-                    ],
-                  ),
-                ),
-              ),
+              providerData.showBtns
+                  ? Positioned(
+                      top: -1,
+                      left: 75,
+                      child: Container(
+                        child: Row(
+                          children: <Widget>[
+                            // Edit btn
+                            Btns(
+                              backgroundColor: Colors.white,
+                              icon: Icons.edit,
+                              color: Colors.black54,
+                              onPress: () {
+                                // Open Dialog Window
+                                showEditDialog(
+                                  context,
+                                  index,
+                                  deleteCollection,
+                                  onSaveForm,
+                                  onSubmitTitleField,
+                                  onSubmitLanguageField,
+                                );
+                              },
+                            ),
+                            Btns(
+                              backgroundColor: Colors.white,
+                              icon: Icons.delete,
+                              color: Colors.black54,
+                              onPress: () {},
+                            ),
+                            SizedBox(width: 5),
+                          ],
+                        ),
+                      ),
+                    )
+                  : Container()
             ],
           ),
         ));
@@ -151,7 +167,7 @@ class WordsCollection extends StatelessWidget {
     onSubmitLanguageField,
   ) {
     return showGeneralDialog(
-        barrierColor: Color(0xFFb48484).withOpacity(0.9),
+        barrierColor: Color(0xff906c7a).withOpacity(0.9),
         transitionBuilder: (context, a1, a2, widget) {
           final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
           return Transform(
@@ -159,10 +175,8 @@ class WordsCollection extends StatelessWidget {
               child: Opacity(
                 opacity: a1.value,
                 child: AlertDialog(
-                  shape: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide.none,
-                  ),
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
                   content: StatefulBuilder(builder: (context, setState) {
                     return CollectionListDialog(
                         index: index,

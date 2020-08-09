@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class Collection with ChangeNotifier {
-  Collection({this.title, this.language, this.id});
+  Collection({this.title, this.language, this.id, this.showBtns = false});
   //id for DB
   String id;
   String title;
   String language;
+  bool showBtns;
 
   void changeCollectionTitle(String newName) {
     if (newName == null) {
@@ -19,5 +20,9 @@ class Collection with ChangeNotifier {
       language = language;
     } else
       language = newLanguage;
+  }
+
+  void toggleShowBtns() {
+    showBtns = !showBtns;
   }
 }

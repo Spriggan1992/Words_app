@@ -14,16 +14,55 @@ class DialogAddCollection extends StatefulWidget {
 }
 
 class _DialogAddCollectionState extends State<DialogAddCollection> {
+  FocusNode myFocusNodeCollectionName;
+  FocusNode myFocusNodeLanguage;
   String holderCollectionTitle;
   String holderLanguageTitle;
   bool is2ndLanguage = false;
   bool is3ndLanguage = false;
+  double heightCollectionName = 0;
+  double heightLanguage = 1.2;
+
+  @override
+  void initState() {
+    super.initState();
+    myFocusNodeLanguage = FocusNode();
+    myFocusNodeCollectionName = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    myFocusNodeLanguage.dispose();
+    myFocusNodeCollectionName.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    // Setup height for [heightCollectionName]
+    myFocusNodeCollectionName.addListener(() {
+      setState(() {
+        if (myFocusNodeCollectionName.hasFocus) {
+          heightCollectionName = 0;
+        } else {
+          heightCollectionName = 1.2;
+        }
+      });
+    });
+    // Setup height for [heightLanguage]
+    myFocusNodeLanguage.addListener(() {
+      setState(() {
+        if (myFocusNodeLanguage.hasFocus) {
+          heightLanguage = 0;
+        } else {
+          heightLanguage = 1.2;
+        }
+      });
+    });
+
     Size size = MediaQuery.of(context).size;
     return Container(
-        height: size.height * 0.45,
+        height: size.height * 0.43,
         width: size.width * 0.8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -50,12 +89,17 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
             Container(
               decoration: innerShadow,
               child: TextField(
+                focusNode: myFocusNodeCollectionName,
                 autofocus: true,
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                     fillColor: Colors.white.withOpacity(0.6),
                     filled: true,
-                    labelStyle: TextStyle(color: Colors.grey[500]),
+                    labelStyle: TextStyle(
+                      color: Colors.grey[500],
+                      fontSize: 18,
+                      height: heightCollectionName,
+                    ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none),
@@ -68,16 +112,20 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
             Container(
               decoration: innerShadow,
               child: TextField(
-                autofocus: true,
+                focusNode: myFocusNodeLanguage,
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                     fillColor: Colors.white.withOpacity(0.6),
                     filled: true,
-                    labelStyle: TextStyle(color: Colors.grey[500]),
+                    labelStyle: TextStyle(
+                      color: Colors.grey[500],
+                      fontSize: 18,
+                      height: heightLanguage,
+                    ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none),
-                    labelText: 'Collection name',
+                    labelText: 'Language',
                     isDense: true),
                 onChanged: (value) => holderLanguageTitle = value,
               ),
