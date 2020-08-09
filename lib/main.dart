@@ -16,6 +16,8 @@ import 'screens/manager_collection/collection_manager.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
 import 'package:words_app/screens/result_screen/result_screen.dart';
 
+import 'utils/size_config.dart';
+
 // import 'package:hive/hive.dart';
 
 void main() => runApp(MyApp());
@@ -43,12 +45,19 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: ThemeData.light().copyWith(
+          //primary font is Montserrat and font for appbar titles is Anybody
           primaryTextTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
             headline6: TextStyle(
               color: Color(0xffA53860),
+              fontFamily: 'Anybody',
+              fontStyle: FontStyle.italic,
+            ),
+            bodyText1: TextStyle(
+              color: Color(0xFFDA627D),
             ),
           ),
           primaryColor: Color(0xff450920),
+          accentColor: Color(0xFFDA627D),
           backgroundColor: Color(0xffEAE2DA),
           scaffoldBackgroundColor: Color(0xffEAE2DA),
           bottomAppBarColor: Color(0xffA53860),

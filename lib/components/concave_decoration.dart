@@ -85,7 +85,10 @@ class _ConcaveDecorationPainter extends BoxPainter {
     final paint = Paint()
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, depth);
     final clipSize = rect.size.aspectRatio > 1
-        ? Size(rect.width, rect.height / 2)
+        ? Size(
+            rect.width,
+            rect.height / 2,
+          )
         : Size(rect.width / 2, rect.height);
     for (final alignment in [Alignment.topLeft, Alignment.bottomRight]) {
       final shaderRect =

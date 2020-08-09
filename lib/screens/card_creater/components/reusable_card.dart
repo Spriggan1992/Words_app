@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:words_app/utils/size_config.dart';
 
 class WordCard extends StatelessWidget {
   const WordCard({
@@ -13,11 +14,12 @@ class WordCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double defaultSize = SizeConfig.defaultSize;
     return Stack(
       children: <Widget>[
         Container(
-          width: size.width * 0.9,
-          height: size.height * 0.6,
+//          width: defaultSize * 35.4,
+//          height: defaultSize * 39.5,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(5),
@@ -32,7 +34,7 @@ class WordCard extends StatelessWidget {
           child: child,
         ),
         Container(
-          width: size.width * 0.9,
+          width: defaultSize * 35.4,
           height: 10,
           decoration: BoxDecoration(
               color: color,

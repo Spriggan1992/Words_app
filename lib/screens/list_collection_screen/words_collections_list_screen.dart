@@ -9,6 +9,8 @@ import 'package:words_app/screens/list_collection_screen/components/body.dart';
 
 import 'components/dialog_add_collection.dart';
 
+/// [WordsCollectionsList] responsible for showing all collections  created by user
+/// it is separated into components for better modularity
 class WordsCollectionsList extends StatelessWidget {
   static String id = 'list_collection';
 
@@ -17,15 +19,16 @@ class WordsCollectionsList extends StatelessWidget {
       top: false,
       child: Scaffold(
         appBar: BaseAppBar(
-          title: Text('Word Collections'),
+          title: Text('words_collection'),
           appBar: AppBar(),
         ),
-//        backgroundColor: kMainColorBackground,
-        floatingActionButton: ReusableFloatActionButton(onPressed: () {
-          buildShowGeneralDialog(
-            context,
-          );
-        }),
+        floatingActionButton: ReusableFloatActionButton(
+          onPressed: () {
+            buildShowGeneralDialog(
+              context,
+            );
+          },
+        ),
         bottomNavigationBar: BaseBottomAppBar(
           child1: Container(),
           child2: Container(),

@@ -16,14 +16,16 @@ class Utilities {
   static Future<File> assetToFile(String path) async {
     //loading data from file in assets
     final byteData = await rootBundle.load('assets/$path');
-    //name of the file
-    String name = "noimage.png";
+    //[name] of the file can be anything
+    final String name = "noimage.png";
+    //to get current app folder path.
     final appDir = await syspaths.getApplicationDocumentsDirectory();
+    //creating savedImage in path on the phone
     final savedImage = await File('${appDir.path}/$name');
+    //write data from byteData to savedImage
     await savedImage.writeAsBytes(byteData.buffer
         .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
-    print(savedImage.path);
-    return (savedImage);
+    return savedImage;
   }
 
   static setImage() async {

@@ -31,6 +31,6 @@ const kBoxShadow = BoxShadow(
 
 final innerShadow = ConcaveDecoration(
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-  depth: 7,
-  colors: [Colors.white, Colors.black],
+  depth: 3,
+  colors: [Colors.grey, Colors.black],
 );
