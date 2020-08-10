@@ -26,6 +26,7 @@ class CardCreator extends StatefulWidget {
 }
 
 class _CardCreatorState extends State<CardCreator> {
+  //Global key for Flip card
   GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
   //to store image locally
   //get access to camera or gallery
@@ -110,8 +111,6 @@ class _CardCreatorState extends State<CardCreator> {
       part.partColor = color;
     });
   }
-
-  //Global key for Flip card
 
   @override
   Widget build(BuildContext context) {
