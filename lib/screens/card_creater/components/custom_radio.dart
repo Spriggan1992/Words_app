@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 class CustomRadio extends StatefulWidget {
   final Function getPart;
   final Function getColor;
+  final double defaultSize;
   static const id = 'custom_radio';
 
-  const CustomRadio({this.getPart, this.getColor});
+  const CustomRadio({this.getPart, this.getColor, this.defaultSize});
   @override
   createState() {
     return CustomRadioState();
@@ -31,73 +32,73 @@ class CustomRadioState extends State<CustomRadio> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: radioButtonList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return new InkWell(
-          //highlightColor: Colors.red,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: List.generate(
+          radioButtonList.length,
+          (index) => InkWell(
+                //highlightColor: Colors.red,
 //            splashColor: mintColor,
-          radius: 30,
-          onTap: () {
-            setState(
-              () {
-                radioButtonList
-                    .forEach((element) => element.isSelected = false);
-                radioButtonList[index].isSelected = true;
-                widget.getPart(radioButtonList[index].buttonText);
-                widget.getColor(radioButtonList[index].color);
-              },
-            );
-          },
-          child: new RadioItem(radioButtonList[index]),
-        );
-      },
+                radius: 30,
+                onTap: () {
+                  setState(
+                    () {
+                      radioButtonList
+                          .forEach((element) => element.isSelected = false);
+                      radioButtonList[index].isSelected = true;
+                      widget.getPart(radioButtonList[index].buttonText);
+                      widget.getColor(radioButtonList[index].color);
+                    },
+                  );
+                },
+                child: new RadioItem(
+                  radioButtonList[index],
+                  defaultSize: widget.defaultSize,
+                ),
+              )),
     );
   }
 }
 
 class RadioItem extends StatelessWidget {
+  final double defaultSize;
   final RadioModel _item;
-  RadioItem(this._item);
+  RadioItem(this._item, {this.defaultSize});
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      margin: new EdgeInsets.all(2.0),
-      child: new Row(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          new Container(
-            height: 30,
-            width: 30,
-            child: new Center(
-              child: Text(
-                _item.buttonText,
-                style: TextStyle(
-                    color: _item.isSelected ? Colors.white : Colors.black,
-                    //fontWeight: FontWeight.bold,
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            decoration: BoxDecoration(
-              color: _item.isSelected
-                  ? Theme.of(context).primaryColor
-                  : _item.color,
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0xff382F266D),
-                  offset: Offset(1, 1),
-                  blurRadius: 4,
-                )
-              ],
-              borderRadius: const BorderRadius.all(
-                const Radius.circular(5.0),
-              ),
+    return new Row(
+//          mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        new Container(
+          height: defaultSize * 3.3,
+          width: defaultSize * 3.3,
+          child: new Center(
+            child: Text(
+              _item.buttonText,
+              style: TextStyle(
+                  color: _item.isSelected ? Colors.white : Colors.black,
+                  //fontWeight: FontWeight.bold,
+                  fontSize: defaultSize * 1.2,
+                  fontWeight: FontWeight.bold),
             ),
           ),
-        ],
-      ),
+          decoration: BoxDecoration(
+            color:
+                _item.isSelected ? Theme.of(context).primaryColor : _item.color,
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xff382F266D),
+                offset: Offset(1, 1),
+                blurRadius: 4,
+              )
+            ],
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(5.0),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

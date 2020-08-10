@@ -1,11 +1,8 @@
 import 'dart:io';
-import 'dart:async';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/providers/part_data.dart';
-import 'package:words_app/screens/card_creater/components/text_field_area.dart';
 
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +14,10 @@ import 'package:words_app/providers/words_provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/size_config.dart';
 import 'package:words_app/utils/utilities.dart';
+import 'components/InnerShadowTextField.dart';
 import 'components/custom_radio.dart';
-import 'components/folding_btn_field.dart';
+
 import 'components/reusable_card.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart' as syspaths;
 
 class CardCreator extends StatefulWidget {
   static const id = 'card_creator';
@@ -30,6 +26,7 @@ class CardCreator extends StatefulWidget {
 }
 
 class _CardCreatorState extends State<CardCreator> {
+  GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
   //to store image locally
   //get access to camera or gallery
   final picker = ImagePicker();
@@ -45,7 +42,7 @@ class _CardCreatorState extends State<CardCreator> {
   String exampleTranslations = 'Это важное слово. It is important word';
   String id = Uuid().v4();
   File image;
-  // this variable will be created when state initiatet
+  // this variable will be created when state initiate
   File defaultImage;
   String temp = 'fuck';
   String dropdownValue = 'One';
@@ -108,12 +105,6 @@ class _CardCreatorState extends State<CardCreator> {
     //  );
   }
 
-  void _requestFocus() {
-    setState(() {
-      FocusScope.of(context).requestFocus(targetLangFocusNode);
-    });
-  }
-
   _getColor(Color color) {
     setState(() {
       part.partColor = color;
@@ -121,12 +112,11 @@ class _CardCreatorState extends State<CardCreator> {
   }
 
   //Global key for Flip card
-  GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
+
   @override
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context).settings.arguments;
     String collectionId = args['id'];
-    Size size = MediaQuery.of(context).size;
     SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize;
     return Consumer<Words>(
@@ -138,65 +128,46 @@ class _CardCreatorState extends State<CardCreator> {
             key: cardKey,
             direction: FlipDirection.HORIZONTAL,
             speed: 500,
-//            onFlipDone: (status) {
-//              print(status);
-//            },
-//        front: CardCreatorFront(() => cardKey.currentState.toggleCard()),
+
             front: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: defaultSize * 2.6, vertical: defaultSize * 1.6),
+                    horizontal: defaultSize * 2, vertical: defaultSize * 1.6),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     WordCard(
                       color: part.partColor,
-                      size: size,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 36),
+                        padding: EdgeInsets.only(
+                            left: defaultSize * 2.4,
+                            right: defaultSize * 2.4,
+                            top: defaultSize * 2,
+                            bottom: defaultSize * 2),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Container(
-                              width: size.width * 0.7,
-                              height: 40,
-                              child: CustomRadio(
-                                getPart: (value) => part.partName = value,
-                                getColor: _getColor,
-                              ),
-                            ),
-                            Container(
-                              decoration: innerShadow,
-                              child: TextFormField(
-                                style: GoogleFonts.montserrat(
-                                    fontSize: defaultSize * 3.2,
-                                    color: Colors.black87),
-                                focusNode: targetLangFocusNode,
-                                decoration: InputDecoration(
-                                  hintText: 'word',
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 10.0, horizontal: 10),
-                                  hintStyle: GoogleFonts.montserrat(
-                                    fontSize: defaultSize * 3.2,
-                                    letterSpacing: 1.4,
-                                    color: Color(0xffDA627D).withOpacity(0.5),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none,
-                                  ),
+                              height: defaultSize * 4,
+                              child: SingleChildScrollView(
+                                child: CustomRadio(
+                                  getPart: (value) => part.partName = value,
+                                  getColor: _getColor,
+                                  defaultSize: defaultSize,
                                 ),
-                                onTap: _requestFocus,
-                                onChanged: (value) => targetLang = value,
-                                onEditingComplete: () =>
-                                    FocusScope.of(context).unfocus(),
                               ),
                             ),
+                            InnerShadowTextField(
+                              hintText: 'word',
+                              onChanged: (value) => targetLang = value,
+                              defaultSize: defaultSize,
+                              fontSizeMultiplyer: 3.2,
+                            ),
                             Container(
-                              width: size.width * 0.45,
-                              height: size.width * 0.45,
+                              width: defaultSize * 23,
+                              height: defaultSize * 23,
                               decoration: innerShadow,
                               child: image == null
                                   ? IconButton(
@@ -223,32 +194,14 @@ class _CardCreatorState extends State<CardCreator> {
                     ),
                     ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxHeight: defaultSize * 2.4,
-                        minHeight: defaultSize * 2.4,
-                      ),
+                          minHeight: SizeConfig.blockSizeVertical * 5),
                     ),
-                    Container(
-                      decoration: innerShadow,
-                      child: TextField(
-                        style: TextStyle(
-                            color: Colors.black87, fontSize: defaultSize * 2.4),
-                        maxLines: 5,
-                        decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                          hintText: 'example',
-                          hintStyle: GoogleFonts.montserrat(
-                            fontSize: defaultSize * 2.4,
-                            letterSpacing: 1.4,
-                            color: Color(0xffDA627D).withOpacity(0.5),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                        onChanged: (value) => example = value,
-                      ),
+                    InnerShadowTextField(
+                      maxLines: SizeConfig.blockSizeVertical > 7 ? 6 : 5,
+                      defaultSize: defaultSize,
+                      hintText: 'example',
+                      fontSizeMultiplyer: 2.4,
+                      onChanged: (value) => example = value,
                     ),
                   ],
                 ),
@@ -263,83 +216,31 @@ class _CardCreatorState extends State<CardCreator> {
                     Stack(
                       children: <Widget>[
                         WordCard(
-                          size: size,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 36),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 10),
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 // main word text field
-                                Container(
-                                  decoration: innerShadow,
-                                  child: TextField(
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 32,
-                                    ),
-//                                      autofocus: true,
-//                                    textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(10),
-                                      hintStyle: TextStyle(
-                                        color: Color(0xFFDA627D),
-                                      ),
-                                      hintText: 'translation',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                    onChanged: (value) => ownLang = value,
-                                  ),
+                                InnerShadowTextField(
+                                  hintText: 'translation',
+                                  onChanged: (value) => ownLang = value,
+                                  defaultSize: defaultSize,
+                                  fontSizeMultiplyer: 3.2,
                                 ),
-                                Container(
-                                  decoration: innerShadow,
-                                  child: TextField(
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 32,
-                                    ),
-//                                      autofocus: true,
-//                                    textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(10),
-                                      hintStyle: TextStyle(
-                                        color: Color(0xFFDA627D),
-                                      ),
-                                      hintText: '2nd language',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                    onChanged: (value) => secondLang = value,
-                                  ),
+                                InnerShadowTextField(
+                                  hintText: '2nd language',
+                                  onChanged: (value) => secondLang = value,
+                                  defaultSize: defaultSize,
+                                  fontSizeMultiplyer: 3.2,
                                 ),
-                                Container(
-                                  decoration: innerShadow,
-                                  child: TextField(
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 32,
-                                    ),
-//                                      autofocus: true,
-//                                    textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(10),
-                                      hintStyle: TextStyle(
-                                        color: Color(0xFFDA627D),
-                                      ),
-                                      hintText: '3rd language',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                    onChanged: (value) => thirdLang = value,
-                                  ),
+                                InnerShadowTextField(
+                                  hintText: '3rd language',
+                                  onChanged: (value) => thirdLang = value,
+                                  defaultSize: defaultSize,
+                                  fontSizeMultiplyer: 3.2,
                                 ),
                               ],
                             ),
@@ -347,32 +248,17 @@ class _CardCreatorState extends State<CardCreator> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 24.0,
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                          minHeight: SizeConfig.blockSizeVertical * 5),
                     ),
                     //Text area with Five line to enter the comments or examples
-                    Container(
-                      decoration: innerShadow,
-                      child: TextField(
-                        style: TextStyle(
-                            color: Colors.black87, fontSize: defaultSize * 2.4),
-                        maxLines: 5,
-                        decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 20, horizontal: 8),
-                          hintText: 'example',
-                          hintStyle: GoogleFonts.montserrat(
-                            fontSize: defaultSize * 2.4,
-                            letterSpacing: 1.4,
-                            color: Color(0xffDA627D).withOpacity(0.5),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                        onChanged: (value) => exampleTranslations = value,
-                      ),
+                    InnerShadowTextField(
+                      maxLines: SizeConfig.blockSizeVertical > 7.5 ? 6 : 5,
+                      hintText: 'example',
+                      onChanged: (value) => exampleTranslations = value,
+                      defaultSize: defaultSize,
+                      fontSizeMultiplyer: 2.4,
                     ),
                   ],
                 ),

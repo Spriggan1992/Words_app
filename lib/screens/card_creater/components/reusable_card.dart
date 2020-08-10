@@ -4,12 +4,11 @@ import 'package:words_app/utils/size_config.dart';
 class WordCard extends StatelessWidget {
   const WordCard({
     Key key,
-    @required this.size,
     this.child,
     this.color,
   }) : super(key: key);
   final Color color;
-  final Size size;
+
   final Widget child;
 
   @override
