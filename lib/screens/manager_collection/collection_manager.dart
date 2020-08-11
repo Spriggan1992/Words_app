@@ -5,8 +5,9 @@ import 'package:words_app/components/base_bottom_appbar.dart';
 import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
+import 'package:words_app/providers/collections_provider.dart';
 import 'package:words_app/providers/words_provider.dart';
-import 'package:words_app/screens/card_creater/card_creator.dart';
+import 'package:words_app/screens/card_creator_screen//card_creator.dart';
 import 'package:words_app/screens/manager_collection/components/body.dart';
 
 class CollectionManager extends StatelessWidget {
@@ -25,7 +26,15 @@ class CollectionManager extends StatelessWidget {
         backgroundColor: kMainColorBackground,
         appBar: BaseAppBar(
           title: Text('$collectionTitle'),
-          actions: <Widget>[],
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () async {
+                await Provider.of<Words>(context, listen: false)
+                    .populateList(collectionId);
+              },
+            )
+          ],
           appBar: AppBar(),
         ),
         // Use future builder because when using fetch data it returns future
@@ -50,10 +59,14 @@ class CollectionManager extends StatelessWidget {
             color: kMainColorBackground,
             onPress: () => Navigator.pop(context),
           ),
-          child2: ReusableBottomIconBtn(
-            icons: Icons.fitness_center,
-            color: kMainColorBackground,
-            onPress: () => Navigator.pushNamed(context, null),
+          child2: Row(
+            children: [
+              ReusableBottomIconBtn(
+                icons: Icons.fitness_center,
+                color: kMainColorBackground,
+                onPress: () => Navigator.pushNamed(context, null),
+              ),
+            ],
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

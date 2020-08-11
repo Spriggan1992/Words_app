@@ -5,7 +5,7 @@ import 'package:words_app/providers/collections_provider.dart';
 import 'package:words_app/providers/training_matches_provider.dart';
 import 'package:words_app/providers/validation_provider.dart';
 import 'package:words_app/providers/words_provider.dart';
-import 'package:words_app/screens/card_creater/card_creator.dart';
+import 'package:words_app/screens/card_creator_screen//card_creator.dart';
 import 'package:words_app/screens/loging_screen/login_screen.dart';
 import 'package:words_app/screens/registration_screen/registration_screen.dart';
 import 'package:words_app/screens/list_collection_screen/words_collections_list_screen.dart';

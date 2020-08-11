@@ -63,7 +63,7 @@ class _CardCreatorState extends State<CardCreator> {
 
   void initState() {
     super.initState();
-    targetLangFocusNode.addListener(() {});
+
     setImage();
   }
 
@@ -193,7 +193,8 @@ class _CardCreatorState extends State<CardCreator> {
                     ),
                     ConstrainedBox(
                       constraints: BoxConstraints(
-                          minHeight: SizeConfig.blockSizeVertical * 5),
+                        minHeight: SizeConfig.blockSizeVertical * 5,
+                      ),
                     ),
                     InnerShadowTextField(
                       maxLines: SizeConfig.blockSizeVertical > 7 ? 6 : 5,

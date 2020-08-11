@@ -13,11 +13,12 @@ class Utilities {
   }
 
   ///Method to work with asset [image], to save it  as file
-  static Future<File> assetToFile(String path) async {
+  static Future<File> assetToFile(String path,
+      {String imageName = 'noimage'}) async {
     //loading data from file in assets
     final byteData = await rootBundle.load('assets/$path');
     //[name] of the file can be anything
-    final String name = "noimage.png";
+    final String name = "$imageName.png";
     //to get current app folder path.
     final appDir = await syspaths.getApplicationDocumentsDirectory();
     //creating savedImage in path on the phone
