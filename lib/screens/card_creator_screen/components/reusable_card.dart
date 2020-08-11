@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:words_app/utils/size_config.dart';
 
 class WordCard extends StatelessWidget {
   const WordCard({
     Key key,
-    @required this.size,
     this.child,
     this.color,
   }) : super(key: key);
   final Color color;
-  final Size size;
+
   final Widget child;
 
   @override
@@ -16,8 +16,8 @@ class WordCard extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          width: size.width * 0.9,
-          height: size.height * 0.6,
+          width: SizeConfig.blockSizeHorizontal * 95,
+          height: SizeConfig.blockSizeVertical * 56,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(5),
@@ -32,7 +32,7 @@ class WordCard extends StatelessWidget {
           child: child,
         ),
         Container(
-          width: size.width * 0.9,
+          width: SizeConfig.blockSizeHorizontal * 95,
           height: 10,
           decoration: BoxDecoration(
               color: color,

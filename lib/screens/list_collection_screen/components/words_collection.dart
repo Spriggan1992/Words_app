@@ -43,7 +43,7 @@ class WordsCollection extends StatelessWidget {
             overflow: Overflow.visible,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(top: 10, right: 5, left: 5),
+                padding:  EdgeInsets.only(top: 10, right: 5, left: 5),
                 child: Container(
                   key: ValueKey(1),
                   decoration: BoxDecoration(

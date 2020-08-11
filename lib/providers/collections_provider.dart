@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import 'package:words_app/db_helper.dart';
+import 'package:words_app/utils/db_helper.dart';
 import '../providers/collection_data.dart';
 
 class Collections with ChangeNotifier {

@@ -1,38 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:words_app/db_helper.dart';
+import 'package:words_app/utils/DummyData.dart';
+import 'package:words_app/utils/db_helper.dart';
 import 'package:words_app/providers/part_data.dart';
 import 'package:words_app/providers/word_data.dart';
 import 'package:words_app/utils/utilities.dart';
 
 class Words with ChangeNotifier {
-  List<Word> _wordsData = [
-//    Word(
-//      id: '1',
-//      word1: 'Summer',
-//      word2: '夏天',
-//      translation: 'Лето',
-//      part: 'n',
-//      image: 'images/1.jpeg',
-//    ),
-//    Word(
-//      id: '2',
-//      word1: 'go',
-//      word2: '走',
-//      translation: 'идти',
-//      part: 'v',
-//      image: 'images/2.jpeg',
-//    ),
-//    Word(
-//      id: '3',
-//      word1: 'beautiful',
-//      word2: '漂亮',
-//      translation: 'красивый',
-//      part: 'adj',
-//      image: 'images/3.jpeg',
-//    ),
-  ];
+  List<Word> _wordsData = [];
 
   List<Word> get wordsData {
     return [..._wordsData];
@@ -82,6 +58,29 @@ class Words with ChangeNotifier {
       'example': example,
       'exampleTranslations': exampleTranslations,
     });
+  }
+
+  // temporary method for pre-populating list
+  Future<void> populateList(String collectionId) async {
+    DummyData.words.forEach((item) async {
+      File imagePath = await Utilities.assetToFile(
+          'images/${item.targetLang}.jpg',
+          imageName: item.targetLang);
+      DBHelper.populateList('words', {
+        'collectionId': collectionId,
+        'id': item.id,
+        'targetLang': item.targetLang,
+        'ownLang': item.ownLang,
+        'secondLang': item.secondLang,
+        'thirdLang': item.thirdLang,
+        'partName': item.part.partName,
+        'partColor': item.part.partColor.toString(),
+        'image': imagePath.path,
+        'example': item.example,
+        'exampleTranslations': item.exampleTranslations,
+      });
+    });
+    notifyListeners();
   }
 
   Future<void> fetchAndSetWords(String collectionId) async {
