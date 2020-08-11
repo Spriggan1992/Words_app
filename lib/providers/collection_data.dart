@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 class Collection with ChangeNotifier {
-  Collection({this.title, this.language, this.id});
+  Collection({this.title, this.language, this.id, this.showBtns = false});
   //id for DB
-  String id, title, language;
+
+  String id;
+  String title;
+  String language;
+  bool showBtns;
 
   /// this method is for textField, to change [title]
   void changeCollectionTitle(String newName) {
@@ -19,5 +23,9 @@ class Collection with ChangeNotifier {
       language = language;
     } else
       language = newLanguage;
+  }
+
+  void toggleShowBtns() {
+    showBtns = !showBtns;
   }
 }

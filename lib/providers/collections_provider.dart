@@ -22,6 +22,7 @@ class Collections with ChangeNotifier {
       id: Uuid().v4(), //create Id for collection
       title: collectionTitle,
       language: languageTitle,
+      showBtns: false,
     );
     _wordsCollectionData.add(collection);
     notifyListeners();
@@ -86,5 +87,14 @@ class Collections with ChangeNotifier {
         'language': collection.language,
       },
     );
+  }
+
+  /// toggle [showBtns] in path: [providers\collection_data.dart]
+  void toggleBtns() {
+    for (int i = 0; i < wordsCollectionData.length; i++) {
+      wordsCollectionData[i].toggleShowBtns();
+
+      notifyListeners();
+    }
   }
 }
