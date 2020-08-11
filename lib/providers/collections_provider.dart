@@ -93,6 +93,7 @@ class Collections with ChangeNotifier {
   void toggleBtns() {
     for (int i = 0; i < wordsCollectionData.length; i++) {
       wordsCollectionData[i].toggleShowBtns();
+
       notifyListeners();
     }
   }

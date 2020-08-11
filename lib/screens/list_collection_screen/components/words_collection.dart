@@ -4,11 +4,11 @@ import 'package:words_app/providers/collection_data.dart';
 import 'package:words_app/providers/collections_provider.dart';
 import 'package:words_app/screens/list_collection_screen/components/btns.dart';
 import 'package:words_app/screens/list_collection_screen/components/list_collection_dialog.dart';
-
+import 'globals.dart' as globals;
 import 'package:words_app/components/my_separator.dart';
 import 'package:words_app/screens/list_collection_screen/components/text_holder.dart';
 
-class WordsCollection extends StatelessWidget {
+class WordsCollection extends StatefulWidget {
   WordsCollection({
     this.goToManagerCollections,
     this.onSubmitTitleField,
@@ -29,17 +29,111 @@ class WordsCollection extends StatelessWidget {
   final Function onSaveForm;
 
   @override
+  _WordsCollectionState createState() => _WordsCollectionState();
+}
+
+class _WordsCollectionState extends State<WordsCollection>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation rotateAnimation;
+  bool isEditing = true;
+
+  static final tweenSequence = TweenSequence(<TweenSequenceItem<double>>[
+    TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 0.0, end: 0.2)
+            .chain(CurveTween(curve: Curves.easeIn)),
+        weight: 2),
+    TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 0.0, end: -0.2)
+            .chain(CurveTween(curve: Curves.easeInOut)),
+        weight: 2),
+    TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 0.0, end: 0.2)
+            .chain(CurveTween(curve: Curves.easeIn)),
+        weight: 2),
+    TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 0.0, end: -0.2)
+            .chain(CurveTween(curve: Curves.easeInOut)),
+        weight: 2),
+    TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 0.0, end: 0.0)
+            .chain(CurveTween(curve: Curves.easeInOut)),
+        weight: 92)
+  ]);
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 3000));
+    rotateAnimation = tweenSequence.animate(_controller);
+
+    _controller.addListener(() {
+      setState(() {});
+      _controller.addStatusListener((status) {
+        print(status);
+      });
+    });
+
+    // runAnimation();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  // void runAnimation() {
+  //   setState(() {
+  //     final showBtnsdata = Provider.of<Collections>(context, listen: false);
+
+  //     if (showBtnsdata.wordsCollectionData[widget.index].showBtns) {
+  //       _controller.repeat(reverse: true);
+  //     } else {
+  //       _controller.reset();
+  //     }
+  //   });
+  // }
+  void runAnimation() {
+    setState(() {
+      if (isEditing) {
+        _controller.repeat(reverse: true);
+      } else {
+        _controller.reset();
+      }
+    });
+  }
+
+  void toggleIsEditing() {
+    setState(() {});
+    isEditing = !isEditing;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final providerData = Provider.of<Collections>(context, listen: false)
-        .wordsCollectionData[index];
+        .wordsCollectionData[widget.index];
     final showBtnsdata = Provider.of<Collections>(context);
 
     // print(providerData.title);
     return GestureDetector(
-        onTap: () => goToManagerCollections(
+        onTap: () => widget.goToManagerCollections(
             providerData.id, providerData.title), // Go to managerCollection
         onLongPress: () {
+          setState(() {});
           showBtnsdata.toggleBtns();
+          // globals.toggleShowAnimation();
+
+          // runAnimation();
+
+          // toggleIsEditing();
+          // if (isEditing) {
+          //   _controller.repeat(reverse: true);
+          // } else {
+          //   _controller.reset();
+          // }
         },
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
@@ -121,7 +215,14 @@ class WordsCollection extends StatelessWidget {
                   ? Positioned(
                       top: -1,
                       left: 75,
-                      child: Container(
+                      child: AnimatedBuilder(
+                        animation: _controller,
+                        builder: (context, child) {
+                          return Transform.rotate(
+                            angle: rotateAnimation.value,
+                            child: child,
+                          );
+                        },
                         child: Row(
                           children: <Widget>[
                             // Edit btn
@@ -133,11 +234,11 @@ class WordsCollection extends StatelessWidget {
                                 // Open Dialog Window
                                 showEditDialog(
                                   context,
-                                  index,
-                                  deleteCollection,
-                                  onSaveForm,
-                                  onSubmitTitleField,
-                                  onSubmitLanguageField,
+                                  widget.index,
+                                  widget.deleteCollection,
+                                  widget.onSaveForm,
+                                  widget.onSubmitTitleField,
+                                  widget.onSubmitLanguageField,
                                 );
                               },
                             ),
@@ -150,8 +251,7 @@ class WordsCollection extends StatelessWidget {
                             SizedBox(width: 5),
                           ],
                         ),
-                      ),
-                    )
+                      ))
                   : Container()
             ],
           ),
