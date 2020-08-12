@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/providers/collections_provider.dart';
+import 'package:words_app/providers/pair_game_card_provider.dart';
 import 'package:words_app/providers/training_matches_provider.dart';
 import 'package:words_app/providers/validation_provider.dart';
 import 'package:words_app/providers/words_provider.dart';
 import 'package:words_app/screens/card_creator_screen//card_creator.dart';
 import 'package:words_app/screens/loging_screen/login_screen.dart';
+import 'package:words_app/screens/pair_game_screen/pair_game.dart';
 import 'package:words_app/screens/registration_screen/registration_screen.dart';
 import 'package:words_app/screens/list_collection_screen/words_collections_list_screen.dart';
 import 'package:words_app/screens/review_card_screen/review_card.dart';
@@ -29,17 +31,20 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => Collections(),
+          create: (_) => Collections(),
         ),
         ChangeNotifierProvider(
-          create: (context) => Words(),
+          create: (_) => Words(),
         ),
         ChangeNotifierProvider(
-          create: (context) => ValidationForm(),
+          create: (_) => ValidationForm(),
         ),
         ChangeNotifierProvider(
-          create: (context) => TrainingMatches(),
+          create: (_) => TrainingMatches(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => GameCards(),
+        )
       ],
       child: MaterialApp(
         theme: ThemeData.light().copyWith(
@@ -51,6 +56,9 @@ class MyApp extends StatelessWidget {
               fontStyle: FontStyle.italic,
             ),
             bodyText1: TextStyle(
+              color: Color(0xFFDA627D),
+            ),
+            bodyText2: TextStyle(
               color: Color(0xFFDA627D),
             ),
           ),
@@ -71,16 +79,17 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: WordsCollectionsList.id,
         routes: {
-          WelcomScreen.id: (context) => WelcomScreen(),
-          LoginScreen.id: (context) => LoginScreen(),
-          RegistrationScreen.id: (context) => RegistrationScreen(),
-          WordsCollectionsList.id: (context) => WordsCollectionsList(),
-          CollectionManager.id: (context) => CollectionManager(),
-          CardCreator.id: (context) => CardCreator(),
-          ReviewCard.id: (context) => ReviewCard(),
-          Training.id: (context) => Training(),
-          Matches.id: (context) => Matches(),
-          Result.id: (context) => Result(),
+          WelcomScreen.id: (_) => WelcomScreen(),
+          LoginScreen.id: (_) => LoginScreen(),
+          RegistrationScreen.id: (_) => RegistrationScreen(),
+          WordsCollectionsList.id: (_) => WordsCollectionsList(),
+          CollectionManager.id: (_) => CollectionManager(),
+          CardCreator.id: (_) => CardCreator(),
+          ReviewCard.id: (_) => ReviewCard(),
+          Training.id: (_) => Training(),
+          Matches.id: (_) => Matches(),
+          PairGame.id: (_) => PairGame(),
+          Result.id: (_) => Result(),
         },
       ),
     );
