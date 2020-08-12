@@ -97,4 +97,27 @@ class Collections with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  bool isEditingBtns = false;
+  void toggleIsEditingBtns() {
+    isEditingBtns = !isEditingBtns;
+    notifyListeners();
+  }
+
+  void checkIsEditingBtns(AnimationController controller) {
+    if (isEditingBtns == true) {
+      isEditingBtns = false;
+      controller.reset();
+    }
+    notifyListeners();
+  }
+
+  void runAnimation(AnimationController controller) {
+    toggleIsEditingBtns();
+    if (isEditingBtns) {
+      controller.repeat(reverse: true);
+    } else {
+      controller.reset();
+    }
+  }
 }

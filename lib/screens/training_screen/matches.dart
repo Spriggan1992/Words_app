@@ -249,7 +249,6 @@ class _MatchesState extends State<Matches> with TickerProviderStateMixin {
             decoration: BoxDecoration(
               border: Border.all(),
               color: setUpColor(),
-              // color: isCorrect ? Colors.lightBlueAccent : Colors.red,
             ),
             alignment: Alignment.center,
             width: 40,

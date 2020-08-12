@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/providers/collection_data.dart';
 import 'package:words_app/providers/collections_provider.dart';
 import 'package:words_app/screens/list_collection_screen/components/btns.dart';
 import 'package:words_app/screens/list_collection_screen/components/list_collection_dialog.dart';
-
 import 'package:words_app/components/my_separator.dart';
 import 'package:words_app/screens/list_collection_screen/components/text_holder.dart';
 
-class WordsCollection extends StatefulWidget {
+class WordsCollection extends StatelessWidget {
   WordsCollection({
     this.goToManagerCollections,
     this.onSubmitTitleField,
@@ -17,6 +15,9 @@ class WordsCollection extends StatefulWidget {
     this.index,
     this.onSaveForm,
     this.onSubmitLanguageField,
+    this.rotateAnimation,
+    this.runAnimation,
+    this.showEditDialog,
   });
 
   final Function goToManagerCollections;
@@ -27,114 +28,23 @@ class WordsCollection extends StatefulWidget {
   final Function onSubmitLanguageField;
   final int index;
   final Function onSaveForm;
-
-  @override
-  _WordsCollectionState createState() => _WordsCollectionState();
-}
-
-class _WordsCollectionState extends State<WordsCollection>
-    with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation rotateAnimation;
-  bool isEditing = true;
-
-  static final tweenSequence = TweenSequence(<TweenSequenceItem<double>>[
-    TweenSequenceItem<double>(
-        tween: Tween<double>(begin: 0.0, end: 0.2)
-            .chain(CurveTween(curve: Curves.easeIn)),
-        weight: 2),
-    TweenSequenceItem<double>(
-        tween: Tween<double>(begin: 0.0, end: -0.2)
-            .chain(CurveTween(curve: Curves.easeInOut)),
-        weight: 2),
-    TweenSequenceItem<double>(
-        tween: Tween<double>(begin: 0.0, end: 0.2)
-            .chain(CurveTween(curve: Curves.easeIn)),
-        weight: 2),
-    TweenSequenceItem<double>(
-        tween: Tween<double>(begin: 0.0, end: -0.2)
-            .chain(CurveTween(curve: Curves.easeInOut)),
-        weight: 2),
-    TweenSequenceItem<double>(
-        tween: Tween<double>(begin: 0.0, end: 0.0)
-            .chain(CurveTween(curve: Curves.easeInOut)),
-        weight: 92)
-  ]);
-
-  @override
-  void initState() {
-    _controller = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 3000));
-    rotateAnimation = tweenSequence.animate(_controller);
-
-    _controller.addListener(() {
-      setState(() {});
-      _controller.addStatusListener((status) {
-        print(status);
-      });
-    });
-
-    // runAnimation();
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  // void runAnimation() {
-  //   setState(() {
-  //     final showBtnsdata = Provider.of<Collections>(context, listen: false);
-
-  //     if (showBtnsdata.wordsCollectionData[widget.index].showBtns) {
-  //       _controller.repeat(reverse: true);
-  //     } else {
-  //       _controller.reset();
-  //     }
-  //   });
-  // }
-  void runAnimation() {
-    setState(() {
-      if (isEditing) {
-        _controller.repeat(reverse: true);
-      } else {
-        _controller.reset();
-      }
-    });
-  }
-
-  void toggleIsEditing() {
-    setState(() {});
-    isEditing = !isEditing;
-  }
+  final Animation rotateAnimation;
+  final Function runAnimation;
+  final Function showEditDialog;
 
   @override
   Widget build(BuildContext context) {
     final providerData = Provider.of<Collections>(context, listen: false)
-        .wordsCollectionData[widget.index];
-    final showBtnsdata = Provider.of<Collections>(context);
+        .wordsCollectionData[index];
+    final data = Provider.of<Collections>(context, listen: false);
 
     // print(providerData.title);
     return GestureDetector(
-        onTap: () => widget.goToManagerCollections(
-            providerData.id, providerData.title), // Go to managerCollection
-        onLongPress: () {
-          setState(() {});
-          showBtnsdata.toggleBtns();
-          // globals.toggleShowAnimation();
-
-          // runAnimation();
-
-          // toggleIsEditing();
-          // if (isEditing) {
-          //   _controller.repeat(reverse: true);
-          // } else {
-          //   _controller.reset();
-          // }
+        onTap: () {
+          // Go to managerCollection
+          goToManagerCollections(providerData.id, providerData.title);
         },
+        onLongPress: runAnimation,
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Stack(
@@ -144,7 +54,6 @@ class _WordsCollectionState extends State<WordsCollection>
               Padding(
                 padding: EdgeInsets.only(top: 10, right: 5, left: 5),
                 child: Container(
-                  key: ValueKey(1),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4.0),
                       color: Colors.white,
@@ -211,12 +120,12 @@ class _WordsCollectionState extends State<WordsCollection>
                   ),
                 ),
               ),
-              providerData.showBtns
+              data.isEditingBtns
                   ? Positioned(
                       top: -1,
                       left: 75,
                       child: AnimatedBuilder(
-                        animation: _controller,
+                        animation: rotateAnimation,
                         builder: (context, child) {
                           return Transform.rotate(
                             angle: rotateAnimation.value,
@@ -230,23 +139,14 @@ class _WordsCollectionState extends State<WordsCollection>
                               backgroundColor: Colors.white,
                               icon: Icons.edit,
                               color: Colors.black54,
-                              onPress: () {
-                                // Open Dialog Window
-                                showEditDialog(
-                                  context,
-                                  widget.index,
-                                  widget.deleteCollection,
-                                  widget.onSaveForm,
-                                  widget.onSubmitTitleField,
-                                  widget.onSubmitLanguageField,
-                                );
-                              },
+                              onPress: showEditDialog,
                             ),
+
                             Btns(
                               backgroundColor: Colors.white,
                               icon: Icons.delete,
                               color: Colors.black54,
-                              onPress: () {},
+                              onPress: deleteCollection,
                             ),
                             SizedBox(width: 5),
                           ],
@@ -256,43 +156,5 @@ class _WordsCollectionState extends State<WordsCollection>
             ],
           ),
         ));
-  }
-
-  Future showEditDialog(
-    BuildContext context,
-    index,
-    deleteCollection,
-    onSaveForm,
-    onSubmitTitleField,
-    onSubmitLanguageField,
-  ) {
-    return showGeneralDialog(
-        barrierColor: Color(0xff906c7a).withOpacity(0.9),
-        transitionBuilder: (context, a1, a2, widget) {
-          final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
-          return Transform(
-              transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
-              child: Opacity(
-                opacity: a1.value,
-                child: AlertDialog(
-                  elevation: 0,
-                  backgroundColor: Colors.transparent,
-                  content: StatefulBuilder(builder: (context, setState) {
-                    return CollectionListDialog(
-                        index: index,
-                        deleteCollection: deleteCollection,
-                        onSubmit: onSubmitTitleField,
-                        onSaveForm: onSaveForm,
-                        onSubmitLanguageField: onSubmitLanguageField);
-                  }),
-                ),
-              ));
-        },
-        transitionDuration: Duration(milliseconds: 200),
-        barrierDismissible: false,
-        barrierLabel: '',
-        context: context,
-        // ignore: missing_return
-        pageBuilder: (context, animation1, animation2) {});
   }
 }
