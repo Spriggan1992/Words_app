@@ -25,9 +25,9 @@ const kInputTextLogPass = InputDecoration(
 
 const kBoxShadow = BoxShadow(
     color: Color(0xFF878686),
-    blurRadius: 3.0,
+    blurRadius: 2.0,
     spreadRadius: 1.0,
-    offset: Offset(1, 0.5));
+    offset: Offset(3, 3));
 
 final innerShadow = ConcaveDecoration(
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
