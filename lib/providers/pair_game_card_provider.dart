@@ -1,12 +1,17 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:words_app/providers/game_card_data.dart';
 import 'package:words_app/utils/db_helper.dart';
 
 class GameCards extends ChangeNotifier {
   List<GameCard> _pairGameList = [];
+  List<MyCard> _cards = [];
 
   List<GameCard> get pairGameList {
     return [..._pairGameList];
+  }
+
+  List<MyCard> get cards {
+    return [..._cards];
   }
 
   Future<void> fetchWordsFromDB(String collectionId) async {
@@ -26,14 +31,32 @@ class GameCards extends ChangeNotifier {
     notifyListeners();
   }
 
-  void gameStart() {
-    while (_pairGameList.isNotEmpty) {}
+  void getNumberOfCards() {
+    GameCard gameCard;
+    _cards = [];
+    for (int i = 0; i <= 3; i++) {
+      try {
+        gameCard = getOneCard(0);
+        _cards.add(MyCard(id: gameCard.id, word: gameCard.targetLang));
+        _cards.add(MyCard(id: gameCard.id, word: gameCard.ownLang));
+      } catch (e) {
+        print(e);
+      }
+    }
     notifyListeners();
+  }
+
+  GameCard getOneCard(int index) {
+    GameCard gameCard = _pairGameList.removeAt(index);
+//    print(_cards.length);
+    return gameCard;
   }
 }
 
-class Card {
+class MyCard {
   String id;
   String word;
   bool isToggled;
+
+  MyCard({this.id, this.isToggled, this.word});
 }

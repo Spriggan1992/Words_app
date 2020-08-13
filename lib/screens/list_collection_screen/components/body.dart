@@ -20,57 +20,60 @@ class Body extends StatelessWidget {
       child: CustomScrollView(
         slivers: <Widget>[
           // Provider data, here
-          Consumer<Collections>(builder: (context, providerData, child) {
-            return SliverGrid(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                String handleSubmitTitle;
-                String handleSubmitLanguage;
-                var wordsCollectionData =
-                    providerData.wordsCollectionData[index];
+          Consumer<Collections>(
+            builder: (context, providerData, child) {
+              return SliverGrid(
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  String handleSubmitTitle;
+                  String handleSubmitLanguage;
+                  var wordsCollectionData =
+                      providerData.wordsCollectionData[index];
 
-                return WordsCollection(
-                  index: index,
-                  // Takes value from [TextField], and stored it in handleSubmiteText
-                  onSubmitTitleField: (value) {
-                    handleSubmitTitle = value;
-                  },
-                  onSubmitLanguageField: (value) {
-                    handleSubmitLanguage = value;
-                  },
-                  // Save form
-                  onSaveForm: () {
-                    providerData.handleSubmitEditTitle(
-                        handleSubmitTitle, wordsCollectionData);
+                  return WordsCollection(
+                    index: index,
+                    // Takes value from [TextField], and stored it in handleSubmiteText
+                    onSubmitTitleField: (value) {
+                      handleSubmitTitle = value;
+                    },
+                    onSubmitLanguageField: (value) {
+                      handleSubmitLanguage = value;
+                    },
+                    // Save form
+                    onSaveForm: () {
+                      providerData.handleSubmitEditTitle(
+                          handleSubmitTitle, wordsCollectionData);
 
-                    providerData.handleSubmitEditLanguageTitle(
-                        handleSubmitLanguage, wordsCollectionData);
-                    Navigator.pop(context);
-                  },
+                      providerData.handleSubmitEditLanguageTitle(
+                          handleSubmitLanguage, wordsCollectionData);
+                      Navigator.pop(context);
+                    },
 
-                  // Remove collection from data
-                  deleteCollection: () {
-                    Navigator.pop(context);
-                    Timer(Duration(milliseconds: 150), () {
-                      providerData.deleteCollection(wordsCollectionData);
-                    });
-                  },
+                    // Remove collection from data
+                    deleteCollection: () {
+                      Navigator.pop(context);
+                      Timer(Duration(milliseconds: 150), () {
+                        providerData.deleteCollection(wordsCollectionData);
+                      });
+                    },
 
-                  goToManagerCollections: (String collectionId, String title) {
-                    // print('print from boddy $collectionId');
-                    // print(title);
-                    Navigator.pushNamed(context, CollectionManager.id,
-                        arguments: {'id': collectionId, 'title': title});
-                  },
-                );
-              }, childCount: providerData.wordsCollectionData.length),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 0.65,
-                crossAxisCount: 3,
-                mainAxisSpacing: 1,
-                crossAxisSpacing: 3,
-              ),
-            );
-          })
+                    goToManagerCollections:
+                        (String collectionId, String title) {
+                      // print('print from boddy $collectionId');
+                      // print(title);
+                      Navigator.pushNamed(context, CollectionManager.id,
+                          arguments: {'id': collectionId, 'title': title});
+                    },
+                  );
+                }, childCount: providerData.wordsCollectionData.length),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 0.65,
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 1,
+                  crossAxisSpacing: 3,
+                ),
+              );
+            },
+          )
         ],
       ),
     );
