@@ -51,12 +51,21 @@ class GameCards extends ChangeNotifier {
 //    print(_cards.length);
     return gameCard;
   }
+
+  void toggleCard(int index) {
+    _cards[index].toggleMyCard();
+    notifyListeners();
+  }
 }
 
 class MyCard {
   String id;
   String word;
-  bool isToggled;
+  bool isToggled = false;
 
-  MyCard({this.id, this.isToggled, this.word});
+  MyCard({this.id, this.word});
+
+  void toggleMyCard() {
+    isToggled = !isToggled;
+  }
 }
