@@ -34,7 +34,7 @@ class _BodyState extends State<Body> {
     var pairGameList =
         Provider.of<GameCards>(context, listen: false).pairGameList;
     List<MyCard> myCards = Provider.of<GameCards>(context).cards;
-    myCards.shuffle();
+
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: widget.defaultSize * 1.6, vertical: widget.defaultSize),
@@ -57,7 +57,18 @@ class _BodyState extends State<Body> {
 //                        label: providerData.cards[0].word,
 //                      )
 //                    ],
-                children: buildWrap(myCards),
+                children: List<CustomChip>.generate(
+                  myCards.length,
+                  (index) => CustomChip(
+                    id: myCards[index].id,
+                    word: myCards[index].word,
+                    onTap: () {
+                      Provider.of<GameCards>(context, listen: false)
+                          .toggleCard(index);
+                    },
+                    isToggled: myCards[index].isToggled,
+                  ),
+                ),
               ),
             ),
           ),
@@ -98,26 +109,22 @@ class _BodyState extends State<Body> {
       ),
     );
   }
-
-  List<CustomChip> buildWrap(List<dynamic> data) {
-//    print('length of data${data.length}');
-    return List<CustomChip>.generate(
-      data.length,
-      (index) => CustomChip(
-        id: data[index].id,
-        word: data[index].word,
-      ),
-    );
-  }
 }
 
 class CustomChip extends StatelessWidget {
   final String id;
   final String word;
+  final bool isToggled;
   final double fontSize;
   final Function onTap;
   final Color color;
-  const CustomChip({this.id, this.word, this.fontSize, this.onTap, this.color});
+  const CustomChip(
+      {this.id,
+      this.word,
+      this.fontSize,
+      this.onTap,
+      this.color,
+      this.isToggled});
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +138,7 @@ class CustomChip extends StatelessWidget {
             fontSize: 24,
           ),
         ),
-        backgroundColor: color,
+        backgroundColor: isToggled ? Colors.grey : color,
         elevation: 4,
       ),
     );
