@@ -81,16 +81,56 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                   index: index,
 
                   // Remove collection from data
+                  /// Show dialog with delete confirmation
                   deleteCollection: () {
-                    providerData.deleteCollection(wordsCollectionData);
+                    showGeneralDialog(
+                        barrierColor: Color(0xff906c7a).withOpacity(0.9),
+                        transitionBuilder: (context, a1, a2, widget) {
+                          final curvedValue =
+                              Curves.easeInOutBack.transform(a1.value) - 1.0;
+                          return Transform(
+                              transform: Matrix4.translationValues(
+                                  0.0, curvedValue * 200, 0.0),
+                              child: Opacity(
+                                opacity: a1.value,
+                                child: AlertDialog(
+                                  title: new Text('Are you sure?'),
+                                  content: new Text(
+                                      'Do you want to delete your collection?'),
+                                  actions: <Widget>[
+                                    new GestureDetector(
+                                      onTap: () =>
+                                          Navigator.of(context).pop(false),
+                                      child: Text("NO"),
+                                    ),
+                                    SizedBox(height: 16),
+                                    new GestureDetector(
+                                      onTap: () {
+                                        providerData.deleteCollection(
+                                            wordsCollectionData);
+                                        Navigator.of(context).pop(true);
+                                      },
+                                      child: Text("YES"),
+                                    ),
+                                  ],
+                                ),
+                              ));
+                        },
+                        transitionDuration: Duration(milliseconds: 200),
+                        barrierDismissible: false,
+                        barrierLabel: '',
+                        context: context,
+                        // ignore: missing_return
+                        pageBuilder: (context, animation1, animation2) {});
                   },
-
                   goToManagerCollections: (String collectionId, String title) {
                     Navigator.pushNamed(context, CollectionManager.id,
                         arguments: {'id': collectionId, 'title': title});
                     providerData.checkIsEditingBtns(_controller);
                     setState(() {});
                   },
+
+                  /// Show dialog with add collection
                   showEditDialog: () {
                     showGeneralDialog(
                         barrierColor: Color(0xff906c7a).withOpacity(0.9),

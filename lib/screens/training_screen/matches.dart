@@ -314,8 +314,6 @@ class _MatchesState extends State<Matches> with TickerProviderStateMixin {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(onPressed: () {
           runSlideAnimation();
-          // runShakeAnimation();
-          // resetWords();
         }),
         body: SafeArea(
             child: initialData.isNotEmpty

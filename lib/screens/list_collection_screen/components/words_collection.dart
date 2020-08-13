@@ -78,7 +78,7 @@ class WordsCollection extends StatelessWidget {
                               padding: const EdgeInsets.only(
                                   top: 1, right: 1, bottom: 1, left: 1),
                               child: Text(
-                                providerData.title ?? '',
+                                providerData.title ?? ' ',
                                 style: TextStyle(
                                     fontSize: 20.0, color: Colors.black),
                               ),
@@ -96,7 +96,7 @@ class WordsCollection extends StatelessWidget {
                         SizedBox(height: 5.0),
                         FittedBox(
                           child: TextHolder(
-                            titleNameValue: providerData.language,
+                            titleNameValue: providerData.language ?? ' ',
                             fontSize1: 9.0,
                             fontSize2: 15.0,
                           ),

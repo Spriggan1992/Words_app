@@ -16,12 +16,14 @@ class DialogAddCollection extends StatefulWidget {
 class _DialogAddCollectionState extends State<DialogAddCollection> {
   FocusNode myFocusNodeCollectionName;
   FocusNode myFocusNodeLanguage;
-  String holderCollectionTitle;
-  String holderLanguageTitle;
+  String titleCollectionHolder;
+  String titleLanguageHolder;
   bool is2ndLanguage = false;
   bool is3ndLanguage = false;
   double heightCollectionName = 0;
   double heightLanguage = 1.2;
+  bool isTextCollectionNameFiledEmpty = true;
+  bool isLanguageTextFileEmpty = true;
 
   @override
   void initState() {
@@ -42,8 +44,9 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
     // Setup height for [heightCollectionName]
     myFocusNodeCollectionName.addListener(() {
       setState(() {
-        if (myFocusNodeCollectionName.hasFocus) {
-          heightCollectionName = 0;
+        if (myFocusNodeCollectionName.hasFocus ||
+            !isTextCollectionNameFiledEmpty) {
+          heightCollectionName = 0.0;
         } else {
           heightCollectionName = 1.2;
         }
@@ -52,7 +55,7 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
     // Setup height for [heightLanguage]
     myFocusNodeLanguage.addListener(() {
       setState(() {
-        if (myFocusNodeLanguage.hasFocus) {
+        if (myFocusNodeLanguage.hasFocus || !isLanguageTextFileEmpty) {
           heightLanguage = 0;
         } else {
           heightLanguage = 1.2;
@@ -71,12 +74,6 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                // Done btn
-                // CustomRoundBtn(
-                //   icon: Icons.check,
-                //   fillColor: Color(0xffDA627D),
-                //   onPressed: () {},
-                // ),
                 CustomRoundBtn(
                   fillColor: Color(0xff450920),
                   icon: Icons.close,
@@ -105,7 +102,14 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                         borderSide: BorderSide.none),
                     labelText: 'Collection name',
                     isDense: true),
-                onChanged: (value) => holderCollectionTitle = value,
+                onChanged: (value) {
+                  titleCollectionHolder = value;
+                  if (titleCollectionHolder.length > 0) {
+                    isTextCollectionNameFiledEmpty = false;
+                  } else {
+                    isTextCollectionNameFiledEmpty = true;
+                  }
+                },
               ),
             ),
             SizedBox(height: 30),
@@ -127,10 +131,19 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                         borderSide: BorderSide.none),
                     labelText: 'Language',
                     isDense: true),
-                onChanged: (value) => holderLanguageTitle = value,
+                onChanged: (value) {
+                  titleLanguageHolder = value;
+                  if (titleCollectionHolder.length > 0) {
+                    isLanguageTextFileEmpty = false;
+                  } else {
+                    isLanguageTextFileEmpty = true;
+                  }
+                },
               ),
             ),
             SizedBox(height: 20),
+
+            /// Create collection Btn
             RaisedButton(
                 highlightElevation: 5,
                 elevation: 10,
@@ -143,7 +156,7 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                 onPressed: () {
                   Provider.of<Collections>(context, listen: false)
                       .addNewCollection(
-                          holderCollectionTitle, holderLanguageTitle);
+                          titleCollectionHolder, titleLanguageHolder);
                   Navigator.pop(context);
                 })
           ],
