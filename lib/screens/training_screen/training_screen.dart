@@ -48,9 +48,10 @@ class _TrainingState extends State<Training> {
   void getData(List data) {}
 
   void createData() {
-    targetWords = [...widget.dataWord];
+    final providerData = Provider.of<Words>(context, listen: false).wordsData;
+    targetWords = [...providerData];
     targetWords.shuffle();
-    ownLanguageWords = [...widget.dataWord];
+    ownLanguageWords = [...providerData];
     ownLanguageWords.shuffle();
   }
 

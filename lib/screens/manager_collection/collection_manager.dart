@@ -10,6 +10,8 @@ import 'package:words_app/providers/words_provider.dart';
 import 'package:words_app/screens/card_creator_screen//card_creator.dart';
 import 'package:words_app/screens/manager_collection/components/body.dart';
 import 'package:words_app/screens/pair_game_screen/pair_game.dart';
+import 'package:words_app/screens/training_screen/matches.dart';
+import 'package:words_app/screens/training_screen/training_screen.dart';
 
 class CollectionManager extends StatelessWidget {
   static String id = 'collection_manager_screen';
@@ -65,7 +67,7 @@ class CollectionManager extends StatelessWidget {
               ReusableBottomIconBtn(
                 icons: Icons.fitness_center,
                 color: kMainColorBackground,
-                onPress: () => Navigator.pushNamed(context, null),
+                onPress: () => Navigator.pushNamed(context, Matches.id),
               ),
               ReusableBottomIconBtn(
                 icons: Icons.directions_bike,
@@ -73,6 +75,15 @@ class CollectionManager extends StatelessWidget {
                 onPress: () => Navigator.pushNamed(
                   context,
                   PairGame.id,
+                  arguments: {'id': collectionId},
+                ),
+              ),
+              ReusableBottomIconBtn(
+                icons: Icons.photo_album,
+                color: kMainColorBackground,
+                onPress: () => Navigator.pushNamed(
+                  context,
+                  Training.id,
                   arguments: {'id': collectionId},
                 ),
               ),

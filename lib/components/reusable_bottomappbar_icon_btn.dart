@@ -14,10 +14,10 @@ class ReusableBottomIconBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(right: 20),
+        padding: EdgeInsets.only(right: 5),
         alignment: Alignment.center,
         child: IconButton(
-          iconSize: 40,
+          iconSize: 20,
           icon: Icon(icons),
           color: color,
           onPressed: onPress,

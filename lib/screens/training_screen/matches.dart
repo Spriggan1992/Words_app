@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/providers/training_matches_provider.dart';
 import 'package:words_app/providers/word_data.dart';
+import 'package:words_app/providers/words_provider.dart';
 
 class Matches extends StatefulWidget {
   static String id = 'matches_screen';
-
-  Matches({this.dataWord});
-  final List<Word> dataWord;
 
   @override
   _MatchesState createState() => _MatchesState();
@@ -106,7 +104,10 @@ class _MatchesState extends State<Matches> with TickerProviderStateMixin {
   }
 
   void getDataFromProvider() {
-    initialData = [...widget.dataWord];
+    final providerData = Provider.of<Words>(context, listen: false).wordsData;
+    providerData.shuffle();
+    initialData = [...providerData];
+    // initialData = [...widget.dataWord];
   }
 
   void extractAndGetDataFromProvider() {

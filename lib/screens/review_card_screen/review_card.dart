@@ -62,15 +62,6 @@ class _ReviewCardState extends State<ReviewCard>
     });
   }
 
-  /// Send data to [screens/training_screen/matches.dart]
-  void sendDataToTrainingScreen(context) {
-    final wordsData = Provider.of<Words>(context, listen: false).wordsData;
-    List<Word> dataWords = [...wordsData];
-    dataWords.shuffle();
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => Matches(dataWord: dataWords)));
-  }
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -90,10 +81,9 @@ class _ReviewCardState extends State<ReviewCard>
           onPress: () => Navigator.pop(context),
         ),
         child2: ReusableBottomIconBtn(
-          icons: Icons.fitness_center,
-          color: kMainColorBackground,
-          onPress: () => sendDataToTrainingScreen(context),
-        ),
+            icons: Icons.fitness_center,
+            color: kMainColorBackground,
+            onPress: () => Navigator.pushNamed(context, Matches.id)),
       ),
       body: Column(
         children: <Widget>[
