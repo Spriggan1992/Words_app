@@ -83,6 +83,7 @@ class _ReviewCardState extends State<ReviewCard>
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize;
 
     final wordsData = Provider.of<Words>(context, listen: false).wordsData;
