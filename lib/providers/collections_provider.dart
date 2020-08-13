@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/db_helper.dart';
@@ -7,9 +6,6 @@ import '../providers/collection_data.dart';
 class Collections with ChangeNotifier {
   List<Collection> _wordsCollectionData = [
     Collection(title: "nouns", language: 'eng'),
-//    Collection(title: "verbs", language: 'ru'),
-//    Collection(title: "adjectives", language: 'eng'),
-//    Collection(title: 'pron', language: 'cn'),
   ];
   //  using spread operator to return copy of our list, to prevent access to original list
   List<Collection> get wordsCollectionData {
