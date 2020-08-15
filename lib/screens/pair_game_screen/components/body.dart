@@ -29,15 +29,24 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   List<MyCard> cards = [];
 
+//  @override
+//  void initState() {
+//    // TODO: implement initState
+//    super.initState();
+//    Provider.of<GameCards>(context, listen: false).getNumberOfCards();
+//  }
+
   @override
   Widget build(BuildContext context) {
     var pairGameList =
         Provider.of<GameCards>(context, listen: false).pairGameList;
     List<MyCard> myCards = Provider.of<GameCards>(context).cards;
-
+//    Provider.of<GameCards>(context, listen: false).getNumberOfCards();
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: widget.defaultSize * 1.6, vertical: widget.defaultSize),
+        horizontal: widget.defaultSize * 1.6,
+        vertical: widget.defaultSize,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -61,6 +70,7 @@ class _BodyState extends State<Body> {
                   myCards.length,
                   (index) => CustomChip(
                     id: myCards[index].id,
+                    color: myCards[index].color,
                     word: myCards[index].word,
                     onTap: () {
                       Provider.of<GameCards>(context, listen: false)
@@ -97,8 +107,7 @@ class _BodyState extends State<Body> {
                     color: Colors.pink,
                     child: Text('GET WORDS'),
                     onPressed: () {
-                      Provider.of<GameCards>(context, listen: false)
-                          .getNumberOfCards();
+                      Provider.of<GameCards>(context, listen: false).getCards();
                     },
                   )
                 ],
@@ -118,13 +127,15 @@ class CustomChip extends StatelessWidget {
   final double fontSize;
   final Function onTap;
   final Color color;
+  final Color shadowColor;
   const CustomChip(
       {this.id,
       this.word,
       this.fontSize,
       this.onTap,
       this.color,
-      this.isToggled});
+      this.isToggled,
+      this.shadowColor});
 
   @override
   Widget build(BuildContext context) {
@@ -134,12 +145,11 @@ class CustomChip extends StatelessWidget {
         padding: EdgeInsets.all(10),
         label: Text(
           word,
-          style: TextStyle(
-            fontSize: 24,
-          ),
+          style: TextStyle(fontSize: 24, color: Colors.black),
         ),
-        backgroundColor: isToggled ? Colors.grey : color,
-        elevation: 4,
+        backgroundColor: color,
+        elevation: 5,
+        shadowColor: isToggled ? shadowColor : Colors.black,
       ),
     );
   }

@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:words_app/providers/game_card_data.dart';
 import 'package:words_app/utils/db_helper.dart';
@@ -5,6 +8,9 @@ import 'package:words_app/utils/db_helper.dart';
 class GameCards extends ChangeNotifier {
   List<GameCard> _pairGameList = [];
   List<MyCard> _cards = [];
+  int toggleCount = 0;
+  List<MyCard> chosenPair = [];
+  int allDone = 0;
 
   List<GameCard> get pairGameList {
     return [..._pairGameList];
@@ -14,6 +20,7 @@ class GameCards extends ChangeNotifier {
     return [..._cards];
   }
 
+  /// method fetching data drom DB suing [collectionId]
   Future<void> fetchWordsFromDB(String collectionId) async {
     final dataList =
         await DBHelper.getData('words', collectionId: collectionId);
@@ -31,8 +38,9 @@ class GameCards extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getNumberOfCards() {
+  void getCards() {
     GameCard gameCard;
+    toggleCount = 0;
     _cards = [];
     for (int i = 0; i <= 3; i++) {
       try {
@@ -46,22 +54,45 @@ class GameCards extends ChangeNotifier {
     notifyListeners();
   }
 
-  GameCard getOneCard(int index) {
-    GameCard gameCard = _pairGameList.removeAt(index);
-//    print(_cards.length);
-    return gameCard;
-  }
+  void gameLoop() {}
 
   void toggleCard(int index) {
+    chosenPair.add(_cards[index]);
     _cards[index].toggleMyCard();
+    _cards[index].color = Colors.grey;
+    if (chosenPair.length == 2) {
+      if (chosenPair[0].id == chosenPair[1].id) {
+        chosenPair[0].color = Colors.green;
+        chosenPair[1].color = Colors.green;
+
+        _cards.remove(chosenPair[0]);
+        _cards.remove(chosenPair[1]);
+
+        chosenPair = [];
+        allDone = allDone + 2;
+      }
+    }
+
+    if (_cards.isEmpty) {
+      getCards();
+      allDone = 0;
+    }
     notifyListeners();
+  }
+
+  ///method removes item at given index from [_pairGameList] and return one GameCard
+  GameCard getOneCard(int index) {
+    GameCard gameCard = _pairGameList.removeAt(index);
+    return gameCard;
   }
 }
 
 class MyCard {
   String id;
+  bool isDone = false;
   String word;
   bool isToggled = false;
+  Color color;
 
   MyCard({this.id, this.word});
 
