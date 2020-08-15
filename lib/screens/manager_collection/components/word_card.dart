@@ -18,6 +18,7 @@ class WordCard extends StatefulWidget {
 class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
   Offset cardPosition;
   bool isExpanded = false;
+  bool isSelected = false;
 
   AnimationController pageAnimationController;
   Animation pageAnimation;
@@ -54,6 +55,10 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  void toggleIsSelected() {
+    isSelected = !isSelected;
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -62,11 +67,18 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
     /// Receiving word data from[ word_data provider], using index to extract single item from array
     final word =
         Provider.of<Words>(context, listen: false).wordsData[widget.index];
+
     // print("DEBUG wordCard${word.image}");
 
     return ExpandableContainer(
+      collapseHeight: defaultSize * 9,
+      expandeHeight: defaultSize * 23,
       expanded: isExpanded,
       child: GestureDetector(
+        onLongPress: () {
+          toggleIsSelected();
+          setState(() {});
+        },
         onTap: () {
           Navigator.push(
               context,
@@ -94,7 +106,9 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
               bottom: BorderSide(
                   color: isExpanded ? Colors.black38 : Colors.transparent),
             ),
-            color: isExpanded ? Color(0xFFCFD8DC) : Color(0xFFeae2da),
+            color: isExpanded
+                ? Color(0xFFCFD8DC)
+                : isSelected ? Colors.grey[500] : Colors.transparent,
           ),
           width: SizeConfig.blockSizeHorizontal * 100,
           child: Stack(
@@ -127,7 +141,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
               //Main word container
               AnimatedPositioned(
                 left: isExpanded ? defaultSize * 3.7 : defaultSize * 6,
-                top: defaultSize * 2.7,
+                top: defaultSize * 1.7,
                 duration: Duration(milliseconds: 300),
                 child: Container(
                   width: isExpanded ? defaultSize * 32 : defaultSize * 30,
@@ -149,7 +163,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
               AnimatedPositioned(
                 curve: Curves.easeIn,
                 left: isExpanded ? defaultSize * 3.7 : defaultSize * 6.0,
-                top: defaultSize * 6.0,
+                top: defaultSize * 5.0,
                 duration: Duration(milliseconds: 300),
                 child: Container(
                   height: defaultSize * 3,
@@ -166,7 +180,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
               // Arrow Icon
               Positioned(
                 left: defaultSize * 36,
-                top: defaultSize * 1.3,
+                top: defaultSize * 0.9,
                 child: RotationTransition(
                   turns: rotationAnimation,
                   child: Container(
@@ -183,7 +197,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
               // Container with Word2 and Image
               Positioned(
                   left: defaultSize * 3.7,
-                  top: defaultSize * 9.5,
+                  top: defaultSize * 8.5,
                   child: ScaleTransition(
                     scale: animation,
                     child:
@@ -205,7 +219,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
               // Example
               Positioned(
                 left: defaultSize * 3.7,
-                top: defaultSize * 13,
+                top: defaultSize * 12,
                 child: ScaleTransition(
                   scale: animation,
                   child: Container(

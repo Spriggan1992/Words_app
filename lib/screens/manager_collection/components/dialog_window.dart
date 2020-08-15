@@ -49,7 +49,7 @@ class DialogWindow extends StatelessWidget {
             },
             onChange: (value) {
               validation.textValidation(value);
-              wordsData.handleSubmitWord1(value, wordsDataIndex);
+              wordsData.targetLanghandleSubmit(value, wordsDataIndex);
             },
           ),
 
@@ -65,7 +65,7 @@ class DialogWindow extends StatelessWidget {
               validation.toggleEditingDoneButton();
             },
             onChange: (value) {
-              wordsData.handleSubmitWord2(value, wordsDataIndex);
+              wordsData.secondLangHandleSubmit(value, wordsDataIndex);
             },
           ),
           SizedBox(height: 10.0),
@@ -81,7 +81,7 @@ class DialogWindow extends StatelessWidget {
             },
             onChange: (value) {
               validation.textValidation(value);
-              wordsData.handleSubmitTranslation(value, wordsDataIndex);
+              wordsData.ownLangHandleSubmit(value, wordsDataIndex);
             },
           ),
         ],

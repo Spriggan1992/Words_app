@@ -10,6 +10,7 @@ import 'package:words_app/providers/words_provider.dart';
 import 'package:words_app/screens/card_creator_screen//card_creator.dart';
 import 'package:words_app/screens/manager_collection/components/body.dart';
 import 'package:words_app/screens/pair_game_screen/pair_game.dart';
+import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
 import 'package:words_app/screens/training_screen/matches.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
 
@@ -53,7 +54,7 @@ class CollectionManager extends StatelessWidget {
         ), // Body
         floatingActionButton: ReusableFloatActionButton(
           onPressed: () => Navigator.pushNamed(context, CardCreator.id,
-              arguments: {'id': collectionId}),
+              arguments: {'id': collectionId, 'editMode': false}),
         ),
 
         bottomNavigationBar: BaseBottomAppBar(
@@ -67,25 +68,8 @@ class CollectionManager extends StatelessWidget {
               ReusableBottomIconBtn(
                 icons: Icons.fitness_center,
                 color: kMainColorBackground,
-                onPress: () => Navigator.pushNamed(context, Matches.id),
-              ),
-              ReusableBottomIconBtn(
-                icons: Icons.directions_bike,
-                color: kMainColorBackground,
-                onPress: () => Navigator.pushNamed(
-                  context,
-                  PairGame.id,
-                  arguments: {'id': collectionId},
-                ),
-              ),
-              ReusableBottomIconBtn(
-                icons: Icons.photo_album,
-                color: kMainColorBackground,
-                onPress: () => Navigator.pushNamed(
-                  context,
-                  Training.id,
-                  arguments: {'id': collectionId},
-                ),
+                onPress: () => Navigator.pushNamed(context, TrainingManager.id,
+                    arguments: {'id': collectionId}),
               ),
             ],
           ),

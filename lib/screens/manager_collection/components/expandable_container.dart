@@ -4,7 +4,7 @@ class ExpandableContainer extends StatelessWidget {
   const ExpandableContainer({
     Key key,
     this.child,
-    this.collapseHeight = 83.0,
+    this.collapseHeight = 100.0,
     this.expandeHeight = 240.0,
     this.expanded = true,
   }) : super(key: key);

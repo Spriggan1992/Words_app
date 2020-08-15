@@ -49,18 +49,22 @@ class Word with ChangeNotifier {
     isEditingShowImg = !isEditingShowImg;
   }
 
-  void changeWord1Title(String newName) {
+  void changeTargetLang(String newName) {
     targetLang = newName;
   }
 
-  void changeWord2Title(String newName) {
+  void changeSecondLang(String newName) {
     if (newName.isEmpty) {
       secondLang = '-';
     } else
       secondLang = newName;
   }
 
-  void changeTranslationTitle(String newName) {
+  void changeOwnLang(String newName) {
     ownLang = newName;
+  }
+
+  void changeThirdLang(String newName) {
+    thirdLang = newName;
   }
 }

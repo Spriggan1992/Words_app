@@ -12,6 +12,7 @@ import 'package:words_app/screens/pair_game_screen/pair_game.dart';
 import 'package:words_app/screens/registration_screen/registration_screen.dart';
 import 'package:words_app/screens/list_collection_screen/words_collections_list_screen.dart';
 import 'package:words_app/screens/review_card_screen/review_card.dart';
+import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
 import 'package:words_app/screens/training_screen/matches.dart';
 import 'package:words_app/screens/welcome_screen/welcom_screen.dart';
 import 'screens/manager_collection/collection_manager.dart';
@@ -90,6 +91,7 @@ class MyApp extends StatelessWidget {
           Matches.id: (_) => Matches(),
           PairGame.id: (_) => PairGame(),
           Result.id: (_) => Result(),
+          TrainingManager.id: (_) => TrainingManager(),
         },
       ),
     );
