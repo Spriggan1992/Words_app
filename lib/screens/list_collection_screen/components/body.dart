@@ -1,9 +1,10 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/providers/collections_provider.dart';
 import 'package:words_app/screens/list_collection_screen/components/words_collection.dart';
 import 'package:words_app/screens/manager_collection/collection_manager.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'list_collection_dialog.dart';
 
@@ -59,137 +60,127 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      child: CustomScrollView(
-        slivers: <Widget>[
-          // Provider data, here
-          Consumer<Collections>(builder: (context, providerData, child) {
-            return SliverGrid(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                String handleSubmitTitle;
-                String handleSubmitLanguage;
-                final wordsCollectionData =
-                    providerData.wordsCollectionData[index];
-                return WordsCollection(
-                  runAnimation: () {
-                    // providerData.toggleBtns();
-                    providerData.runAnimation(_controller);
-                  },
-                  rotateAnimation: rotateAnimation,
-                  index: index,
+    return AnimationLimiter(
+      child: Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+        child: CustomScrollView(
+          slivers: <Widget>[
+            // Provider data, here
+            Consumer<Collections>(builder: (context, providerData, child) {
+              return SliverGrid(
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  /// Delete collection
+                  void removeCollection() {
+                    providerData.deleteCollection(
+                        providerData.wordsCollectionData[index]);
+                    Navigator.of(context).pop(true);
+                  }
 
-                  // Remove collection from data
-                  /// Show dialog with delete confirmation
-                  deleteCollection: () {
-                    showGeneralDialog(
-                        barrierColor: Color(0xff906c7a).withOpacity(0.9),
-                        transitionBuilder: (context, a1, a2, widget) {
-                          final curvedValue =
-                              Curves.easeInOutBack.transform(a1.value) - 1.0;
-                          return Transform(
-                              transform: Matrix4.translationValues(
-                                  0.0, curvedValue * 200, 0.0),
-                              child: Opacity(
-                                opacity: a1.value,
-                                child: AlertDialog(
-                                  title: new Text('Are you sure?'),
-                                  content: new Text(
-                                      'Do you want to delete your collection?'),
-                                  actions: <Widget>[
-                                    new GestureDetector(
-                                      onTap: () =>
-                                          Navigator.of(context).pop(false),
-                                      child: Text("NO"),
-                                    ),
-                                    SizedBox(height: 16),
-                                    new GestureDetector(
-                                      onTap: () {
-                                        providerData.deleteCollection(
-                                            wordsCollectionData);
-                                        Navigator.of(context).pop(true);
-                                      },
-                                      child: Text("YES"),
-                                    ),
-                                  ],
-                                ),
-                              ));
-                        },
-                        transitionDuration: Duration(milliseconds: 200),
-                        barrierDismissible: false,
-                        barrierLabel: '',
-                        context: context,
-                        // ignore: missing_return
-                        pageBuilder: (context, animation1, animation2) {});
-                  },
-                  goToManagerCollections: (String collectionId, String title) {
-                    Navigator.pushNamed(context, CollectionManager.id,
-                        arguments: {'id': collectionId, 'title': title});
-                    providerData.checkIsEditingBtns(_controller);
-                    setState(() {});
-                  },
+                  String handleSubmitTitle;
+                  String handleSubmitLanguage;
+                  final wordsCollectionData =
+                      providerData.wordsCollectionData[index];
+                  return AnimationConfiguration.staggeredGrid(
+                    columnCount: 3,
+                    position: index,
+                    duration: Duration(milliseconds: 400),
+                    child: ScaleAnimation(
+                      // scale: 0.5,
+                      child: FadeInAnimation(
+                        child: WordsCollection(
+                          runAnimation: () {
+                            // providerData.toggleBtns();
+                            providerData.runAnimation(_controller);
+                          },
+                          rotateAnimation: rotateAnimation,
+                          index: index,
 
-                  /// Show dialog with add collection
-                  showEditDialog: () {
-                    showGeneralDialog(
-                        barrierColor: Color(0xff906c7a).withOpacity(0.9),
-                        transitionBuilder: (context, a1, a2, widget) {
-                          final curvedValue =
-                              Curves.easeInOutBack.transform(a1.value) - 1.0;
-                          return Transform(
-                              transform: Matrix4.translationValues(
-                                  0.0, curvedValue * 200, 0.0),
-                              child: Opacity(
-                                opacity: a1.value,
-                                child: AlertDialog(
-                                  elevation: 0,
-                                  backgroundColor: Colors.transparent,
-                                  content: StatefulBuilder(
-                                      builder: (context, setState) {
-                                    return CollectionListDialog(
-                                      index: index,
-                                      // Save form
-                                      onSaveForm: () {
-                                        providerData.handleSubmitEditTitle(
-                                            handleSubmitTitle,
-                                            wordsCollectionData);
-                                        providerData
-                                            .handleSubmitEditLanguageTitle(
-                                                handleSubmitLanguage,
-                                                wordsCollectionData);
-                                        Navigator.pop(context);
-                                      },
-                                      onSubmitLanguageField: (value) {
-                                        handleSubmitLanguage = value;
-                                      },
-                                      // Takes value from [TextField], and stored it in handleSubmiteText
-                                      onSubmitTitleField: (value) {
-                                        handleSubmitTitle = value;
-                                      },
-                                    );
-                                  }),
-                                ),
-                              ));
-                        },
-                        transitionDuration: Duration(milliseconds: 200),
-                        barrierDismissible: false,
-                        barrierLabel: '',
-                        context: context,
-                        // ignore: missing_return
-                        pageBuilder: (context, animation1, animation2) {});
-                  },
-                );
-              }, childCount: providerData.wordsCollectionData.length),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 0.65,
-                crossAxisCount: 3,
-                mainAxisSpacing: 1,
-                crossAxisSpacing: 3,
-              ),
-            );
-          })
-        ],
+                          // Remove collection from data
+                          /// Show dialog with delete confirmation
+                          deleteCollection: () {
+                            deleteConfirmation(context, removeCollection,
+                                'Do you want to delete your collection?');
+                          },
+                          goToManagerCollections:
+                              (String collectionId, String title) {
+                            Navigator.pushNamed(context, CollectionManager.id,
+                                arguments: {
+                                  'id': collectionId,
+                                  'title': title
+                                });
+                            providerData.checkIsEditingBtns(_controller);
+                            setState(() {});
+                          },
+
+                          /// Show dialog with add collection
+                          showEditDialog: () {
+                            showGeneralDialog(
+                                barrierColor:
+                                    Color(0xff906c7a).withOpacity(0.9),
+                                transitionBuilder: (context, a1, a2, widget) {
+                                  final curvedValue =
+                                      Curves.easeInOutBack.transform(a1.value) -
+                                          1.0;
+                                  return Transform(
+                                      transform: Matrix4.translationValues(
+                                          0.0, curvedValue * 200, 0.0),
+                                      child: Opacity(
+                                        opacity: a1.value,
+                                        child: AlertDialog(
+                                          elevation: 0,
+                                          backgroundColor: Colors.transparent,
+                                          content: StatefulBuilder(
+                                              builder: (context, setState) {
+                                            return CollectionListDialog(
+                                              index: index,
+                                              // Save form
+                                              onSaveForm: () {
+                                                providerData
+                                                    .handleSubmitEditTitle(
+                                                        handleSubmitTitle,
+                                                        wordsCollectionData);
+                                                providerData
+                                                    .handleSubmitEditLanguageTitle(
+                                                        handleSubmitLanguage,
+                                                        wordsCollectionData);
+                                                Navigator.pop(context);
+                                              },
+                                              onSubmitLanguageField: (value) {
+                                                handleSubmitLanguage = value;
+                                              },
+                                              // Takes value from [TextField], and stored it in handleSubmiteText
+                                              onSubmitTitleField: (value) {
+                                                handleSubmitTitle = value;
+                                              },
+                                            );
+                                          }),
+                                        ),
+                                      ));
+                                },
+                                transitionDuration: Duration(milliseconds: 200),
+                                barrierDismissible: false,
+                                barrierLabel: '',
+                                context: context,
+                                // ignore: missing_return
+                                pageBuilder:
+                                    (context, animation1, animation2) {});
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                }, childCount: providerData.wordsCollectionData.length),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 0.65,
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 1,
+                  crossAxisSpacing: 3,
+                ),
+              );
+            })
+          ],
+        ),
       ),
     );
   }

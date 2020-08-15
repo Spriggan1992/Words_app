@@ -120,9 +120,27 @@ class Words with ChangeNotifier {
     notifyListeners();
   }
 
-  void handleSubmitWord1(dynamic value, Word words) {
-    words.changeWord1Title(value);
+  void targetLanghandleSubmit(dynamic value, Word words) {
+    words.changeTargetLang(value);
     // words.toggleWord1();
+    notifyListeners();
+  }
+
+  void secondLangHandleSubmit(dynamic value, Word words) {
+    words.changeSecondLang(value);
+    // words.toggleWord2();
+    notifyListeners();
+  }
+
+  void thirdLangHandleSubmit(dynamic value, Word words) {
+    words.changeThirdLang(value);
+    // words.toggleWord2();
+    notifyListeners();
+  }
+
+  void ownLangHandleSubmit(dynamic value, Word words) {
+    words.changeOwnLang(value);
+    // words.toggleTranslation();
     notifyListeners();
   }
 
@@ -131,20 +149,8 @@ class Words with ChangeNotifier {
     notifyListeners();
   }
 
-  void handleSubmitWord2(dynamic value, Word words) {
-    words.changeWord2Title(value);
-    // words.toggleWord2();
-    notifyListeners();
-  }
-
   void toggleTranslation(Word words) {
     words.toggleTranslation();
-    notifyListeners();
-  }
-
-  void handleSubmitTranslation(dynamic value, Word words) {
-    words.changeTranslationTitle(value);
-    // words.toggleTranslation();
     notifyListeners();
   }
 
