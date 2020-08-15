@@ -26,7 +26,7 @@ class CollectionManager extends StatelessWidget {
       // Exclude top from SafeArea
       top: false,
       child: Scaffold(
-        backgroundColor: kMainColorBackground,
+        backgroundColor: Color(0xFFeae2da),
         appBar: BaseAppBar(
           title: Text('$collectionTitle'),
           actions: <Widget>[
