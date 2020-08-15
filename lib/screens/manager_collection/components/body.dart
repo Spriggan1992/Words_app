@@ -41,43 +41,45 @@ class Body extends StatelessWidget {
                 }
 
                 return AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: Duration(milliseconds: 400),
-                    child: SlideAnimation(
-                        verticalOffset: 44.0,
-                        child: FadeInAnimation(
-                          child: Slidable(
-                            key: UniqueKey(),
-                            child: WordCard(
-                              index: index,
+                  position: index,
+                  duration: Duration(milliseconds: 400),
+                  child: SlideAnimation(
+                    verticalOffset: 44.0,
+                    child: FadeInAnimation(
+                      child: Slidable(
+                        key: UniqueKey(),
+                        child: WordCard(
+                          index: index,
+                        ),
+                        actionPane: SlidableDrawerActionPane(),
+                        secondaryActions: <Widget>[
+                          IconSlideAction(
+                            caption: 'Edit',
+                            color: Colors.black45,
+                            icon: Icons.edit,
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              CardCreator.id,
+                              arguments: {
+                                'id': collectionId,
+                                'index': index,
+                                'editMode': true,
+                              },
                             ),
-                            actionPane: SlidableDrawerActionPane(),
-                            secondaryActions: <Widget>[
-                              IconSlideAction(
-                                caption: 'Edit',
-                                color: Colors.black45,
-                                icon: Icons.edit,
-                                onTap: () => Navigator.pushNamed(
-                                  context,
-                                  CardCreator.id,
-                                  arguments: {
-                                    'id': collectionId,
-                                    'index': index,
-                                    'editMode': true,
-                                  },
-                                ),
-                              ),
-                              IconSlideAction(
-                                  caption: 'Delete',
-                                  color: Colors.red,
-                                  icon: Icons.delete,
-                                  onTap: () => deleteConfirmation(
-                                      context,
-                                      removeWord,
-                                      'Do you want to delete this word?')),
-                            ],
                           ),
-                        )));
+                          IconSlideAction(
+                              caption: 'Delete',
+                              color: Colors.red,
+                              icon: Icons.delete,
+                              onTap: () => deleteConfirmation(
+                                  context,
+                                  removeWord,
+                                  'Do you want to delete this word?')),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
               },
             ),
           );
