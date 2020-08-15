@@ -15,7 +15,7 @@ class BaseBottomAppBar extends StatelessWidget {
       shape: CircularNotchedRectangle(),
       clipBehavior: Clip.antiAlias,
       child: Container(
-        height: 60.0,
+        height: 40.0,
         color: Theme.of(context).bottomAppBarColor,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
