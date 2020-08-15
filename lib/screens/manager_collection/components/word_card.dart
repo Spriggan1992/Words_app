@@ -89,7 +89,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                   }));
         },
         child: Container(
-          // margin: EdgeInsets.only(bottom: defaultSize * 3),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
@@ -105,8 +104,8 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
               //Part of speech
               AnimatedPositioned(
                 top: word.part.partName.length > 1
-                    ? defaultSize * 2.8
-                    : defaultSize * 2.5,
+                    ? defaultSize * 3.5
+                    : defaultSize * 3.0,
                 left: defaultSize,
                 duration: Duration(milliseconds: 300),
                 child: Container(
@@ -118,7 +117,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                     style: TextStyle(
                       fontSize: word.part.partName.length > 1
                           ? defaultSize * 1.5
-                          : defaultSize * 2.2,
+                          : defaultSize * 2.0,
                       color: word.part.partColor,
                     ),
                   ),
@@ -131,7 +130,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                 top: defaultSize * 2.7,
                 duration: Duration(milliseconds: 300),
                 child: Container(
-                  width: defaultSize * 30,
+                  width: isExpanded ? defaultSize * 32 : defaultSize * 30,
                   height: defaultSize * 3,
                   child: FittedBox(
                     alignment: Alignment.centerLeft,
@@ -151,10 +150,10 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                 curve: Curves.easeIn,
                 left: isExpanded ? defaultSize * 3.7 : defaultSize * 6.0,
                 top: defaultSize * 6.0,
-                duration: Duration(milliseconds: 200),
+                duration: Duration(milliseconds: 300),
                 child: Container(
                   height: defaultSize * 3,
-                  width: defaultSize * 30.0,
+                  width: isExpanded ? defaultSize * 32 : defaultSize * 30,
                   child: FittedBox(
                     alignment: Alignment.centerLeft,
                     fit: BoxFit.scaleDown,
@@ -190,7 +189,10 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                     child:
                         // Word2
                         Container(
-                            width: defaultSize * 30.0,
+                            width: isExpanded
+                                ? defaultSize * 32
+                                : defaultSize * 30,
+                            height: defaultSize * 2,
                             child: FittedBox(
                               alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
@@ -211,8 +213,8 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                       borderRadius: BorderRadius.circular(defaultSize * 0.5),
                       color: Colors.white,
                     ),
-                    width: defaultSize * 35,
-                    height: 100,
+                    width: defaultSize * 32,
+                    height: defaultSize * 10,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(

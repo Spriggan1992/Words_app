@@ -19,7 +19,7 @@ class ExpandableContainer extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     return AnimatedContainer(
       // curve: ,
-      duration: Duration(milliseconds: 200),
+      duration: Duration(milliseconds: 300),
       // curve: Curves.easeOut,
       height: expanded ? expandeHeight : collapseHeight,
       width: screenWidth,
