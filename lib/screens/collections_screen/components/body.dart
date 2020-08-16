@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/providers/collections_provider.dart';
-import 'package:words_app/screens/list_collection_screen/components/words_collection.dart';
-import 'package:words_app/screens/manager_collection/collection_manager.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-
+import 'package:words_app/screens/collections_screen/components/words_collection.dart';
+import 'package:words_app/screens/words_screen/words_screen.dart';
+import '../collections_screen.dart';
 import 'list_collection_dialog.dart';
 
 class Body extends StatefulWidget {
@@ -104,7 +104,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                           },
                           goToManagerCollections:
                               (String collectionId, String title) {
-                            Navigator.pushNamed(context, CollectionManager.id,
+                            Navigator.pushNamed(context, WordsScreen.id,
                                 arguments: {
                                   'id': collectionId,
                                   'title': title
@@ -132,7 +132,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                           backgroundColor: Colors.transparent,
                                           content: StatefulBuilder(
                                               builder: (context, setState) {
-                                            return CollectionListDialog(
+                                            return CollectionsDialog(
                                               index: index,
                                               // Save form
                                               onSaveForm: () {

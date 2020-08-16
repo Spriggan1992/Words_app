@@ -5,13 +5,13 @@ import 'package:words_app/components/base_bottom_appbar.dart';
 
 import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/providers/collections_provider.dart';
-import 'package:words_app/screens/list_collection_screen/components/body.dart';
 
+import 'components/body.dart';
 import 'components/dialog_add_collection.dart';
 
-/// [WordsCollectionsList] responsible for showing all collections  created by user
+/// [CollectionsScreen] responsible for showing all collections  created by user
 /// it is separated into components for better modularity
-class WordsCollectionsList extends StatelessWidget {
+class CollectionsScreen extends StatelessWidget {
   static String id = 'list_collection';
 
   Widget build(BuildContext context) {

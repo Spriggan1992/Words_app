@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/providers/collections_provider.dart';
-import 'package:words_app/screens/list_collection_screen/components/btns.dart';
 import 'package:words_app/components/my_separator.dart';
-import 'package:words_app/screens/list_collection_screen/components/text_holder.dart';
+import 'package:words_app/screens/collections_screen/components/text_holder.dart';
 
-class CollectionListDialog extends StatelessWidget {
-  const CollectionListDialog({
+class CollectionsDialog extends StatelessWidget {
+  const CollectionsDialog({
     this.index,
     this.onSubmitTitleField,
     this.onSaveForm,

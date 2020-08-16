@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/providers/words_provider.dart';
-import 'package:words_app/screens/manager_collection/components/dialog_window.dart';
+
 import 'package:words_app/screens/review_card_screen/review_card.dart';
+import 'package:words_app/screens/words_screen/components/dialog_window.dart';
 import 'package:words_app/utils/size_config.dart';
 import 'expandable_container.dart';
 
 class WordCard extends StatefulWidget {
-  const WordCard({this.index});
+  const WordCard({this.index, this.isEditingMode, this.isSelected});
   final index;
+  final bool isEditingMode;
+  final bool isSelected;
 
   @override
   _WordCardState createState() => _WordCardState();
 }
 
 class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
-  Offset cardPosition;
   bool isExpanded = false;
-  bool isSelected = false;
-
   AnimationController pageAnimationController;
   Animation pageAnimation;
   AnimationController expandController;
@@ -55,10 +55,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void toggleIsSelected() {
-    isSelected = !isSelected;
-  }
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -67,6 +63,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
     /// Receiving word data from[ word_data provider], using index to extract single item from array
     final word =
         Provider.of<Words>(context, listen: false).wordsData[widget.index];
+    final providerData = Provider.of<Words>(context, listen: false);
 
     // print("DEBUG wordCard${word.image}");
 
@@ -76,8 +73,10 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
       expanded: isExpanded,
       child: GestureDetector(
         onLongPress: () {
-          toggleIsSelected();
-          setState(() {});
+          setState(() {
+            providerData.toggleIsSelected();
+            providerData.toggleIsEditingMode();
+          });
         },
         onTap: () {
           Navigator.push(
@@ -108,7 +107,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
             ),
             color: isExpanded
                 ? Color(0xFFCFD8DC)
-                : isSelected ? Colors.grey[500] : Colors.transparent,
+                : widget.isSelected ? Colors.grey[500] : Colors.transparent,
           ),
           width: SizeConfig.blockSizeHorizontal * 100,
           child: Stack(
@@ -279,6 +278,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 // class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 //   Offset cardPosition;
 //   bool isExpanded = false;
+//   bool isSelected = false;
 
 //   AnimationController pageAnimationController;
 //   Animation pageAnimation;
@@ -315,6 +315,10 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 //     super.dispose();
 //   }
 
+//   void toggleIsSelected() {
+//     isSelected = !isSelected;
+//   }
+
 //   @override
 //   Widget build(BuildContext context) {
 //     SizeConfig().init(context);
@@ -323,23 +327,18 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 //     /// Receiving word data from[ word_data provider], using index to extract single item from array
 //     final word =
 //         Provider.of<Words>(context, listen: false).wordsData[widget.index];
+
 //     // print("DEBUG wordCard${word.image}");
 
-//     double setUpDimensions() {
-//       if (isExpanded && word.targetLang.length < 8) {
-//         return defaultSize * 1.8;
-//       } else if (isExpanded && word.targetLang.length <= 13) {
-//         return defaultSize * 1.8;
-//       } else if (isExpanded && word.targetLang.length > 13) {
-//         return defaultSize;
-//       } else {
-//         return defaultSize * 2;
-//       }
-//     }
-
 //     return ExpandableContainer(
+//       collapseHeight: defaultSize * 9,
+//       expandeHeight: defaultSize * 23,
 //       expanded: isExpanded,
 //       child: GestureDetector(
+//         onLongPress: () {
+//           toggleIsSelected();
+//           setState(() {});
+//         },
 //         onTap: () {
 //           Navigator.push(
 //               context,
@@ -362,8 +361,16 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 //                   }));
 //         },
 //         child: Container(
+//           decoration: BoxDecoration(
+//             border: Border(
+//               bottom: BorderSide(
+//                   color: isExpanded ? Colors.black38 : Colors.transparent),
+//             ),
+//             color: isExpanded
+//                 ? Color(0xFFCFD8DC)
+//                 : isSelected ? Colors.grey[500] : Colors.transparent,
+//           ),
 //           width: SizeConfig.blockSizeHorizontal * 100,
-//           color: kMainColorBackground,
 //           child: Stack(
 //             alignment: Alignment.topLeft,
 //             overflow: Overflow.clip,
@@ -371,8 +378,8 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 //               //Part of speech
 //               AnimatedPositioned(
 //                 top: word.part.partName.length > 1
-//                     ? defaultSize * 2.8
-//                     : defaultSize * 2.5,
+//                     ? defaultSize * 3.5
+//                     : defaultSize * 3.0,
 //                 left: defaultSize,
 //                 duration: Duration(milliseconds: 300),
 //                 child: Container(
@@ -384,7 +391,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 //                     style: TextStyle(
 //                       fontSize: word.part.partName.length > 1
 //                           ? defaultSize * 1.5
-//                           : defaultSize * 2.2,
+//                           : defaultSize * 2.0,
 //                       color: word.part.partColor,
 //                     ),
 //                   ),
@@ -394,37 +401,46 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 //               //Main word container
 //               AnimatedPositioned(
 //                 left: isExpanded ? defaultSize * 3.7 : defaultSize * 6,
-//                 top: defaultSize * 2.7,
+//                 top: defaultSize * 1.7,
 //                 duration: Duration(milliseconds: 300),
 //                 child: Container(
-//                   width: isExpanded ? defaultSize * 13 : defaultSize * 15,
-//                   child: Text(
-//                     word.targetLang, //Main word
-//                     overflow: TextOverflow.ellipsis,
-//                     maxLines: 2,
-//                     style: TextStyle(
-//                         // fontSize: 20.0,
-//                         fontSize: setUpDimensions()),
+//                   width: isExpanded ? defaultSize * 32 : defaultSize * 30,
+//                   height: defaultSize * 3,
+//                   child: FittedBox(
+//                     alignment: Alignment.centerLeft,
+//                     fit: BoxFit.scaleDown,
+//                     child: Text(
+//                       word.targetLang, //Main word
+//                       overflow: TextOverflow.ellipsis,
+//                       style: TextStyle(
+//                           // fontSize: 20.0,
+//                           fontSize: defaultSize * 2),
+//                     ),
 //                   ),
 //                 ),
 //               ),
 //               // Translation word container
 //               AnimatedPositioned(
 //                 curve: Curves.easeIn,
-//                 left: isExpanded ? defaultSize * 3.7 : defaultSize * 22,
-//                 top: isExpanded ? defaultSize * 6.0 : defaultSize * 3,
-//                 duration: Duration(milliseconds: 200),
+//                 left: isExpanded ? defaultSize * 3.7 : defaultSize * 6.0,
+//                 top: defaultSize * 5.0,
+//                 duration: Duration(milliseconds: 300),
 //                 child: Container(
-//                   width: defaultSize * 13.0,
-//                   child: Text(word.ownLang, // Translation
-//                       maxLines: 2,
-//                       style: TextStyle(fontSize: defaultSize * 1.3)),
+//                   height: defaultSize * 3,
+//                   width: isExpanded ? defaultSize * 32 : defaultSize * 30,
+//                   child: FittedBox(
+//                     alignment: Alignment.centerLeft,
+//                     fit: BoxFit.scaleDown,
+//                     child: Text(word.ownLang, // Translation
+//                         maxLines: 2,
+//                         style: TextStyle(fontSize: defaultSize * 1.6)),
+//                   ),
 //                 ),
 //               ),
 //               // Arrow Icon
 //               Positioned(
 //                 left: defaultSize * 36,
-//                 top: defaultSize * 1.3,
+//                 top: defaultSize * 0.9,
 //                 child: RotationTransition(
 //                   turns: rotationAnimation,
 //                   child: Container(
@@ -441,44 +457,38 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 //               // Container with Word2 and Image
 //               Positioned(
 //                   left: defaultSize * 3.7,
-//                   top: 90,
+//                   top: defaultSize * 8.5,
 //                   child: ScaleTransition(
-//                       scale: animation,
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: <Widget>[
-//                           // Word2
-//                           Container(
+//                     scale: animation,
+//                     child:
+//                         // Word2
+//                         Container(
+//                             width: isExpanded
+//                                 ? defaultSize * 32
+//                                 : defaultSize * 30,
+//                             height: defaultSize * 2,
+//                             child: FittedBox(
 //                               alignment: Alignment.centerLeft,
-//                               child: Text(word.secondLang)),
-//                           SizedBox(height: 20),
-//                           // Image
-//                           Container(
-//                             decoration: BoxDecoration(
-//                               borderRadius: BorderRadius.circular(10),
-//                               image: DecorationImage(
-//                                   image: FileImage(word.image),
-//                                   fit: BoxFit.cover),
-//                             ),
-//                             width: 80,
-//                             height: 80,
-//                           )
-//                         ],
-//                       ))),
+//                               fit: BoxFit.scaleDown,
+//                               child: Text(word.secondLang,
+//                                   style:
+//                                       TextStyle(fontSize: defaultSize * 1.6)),
+//                             )),
+//                   )),
 
 //               // Example
 //               Positioned(
-//                 left: defaultSize * 16,
-//                 top: 20,
+//                 left: defaultSize * 3.7,
+//                 top: defaultSize * 12,
 //                 child: ScaleTransition(
 //                   scale: animation,
 //                   child: Container(
 //                     decoration: BoxDecoration(
-//                       borderRadius: BorderRadius.circular(10),
+//                       borderRadius: BorderRadius.circular(defaultSize * 0.5),
 //                       color: Colors.white,
 //                     ),
-//                     width: 180,
-//                     height: 189,
+//                     width: defaultSize * 32,
+//                     height: defaultSize * 10,
 //                     child: Padding(
 //                       padding: const EdgeInsets.all(8.0),
 //                       child: Text(

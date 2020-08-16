@@ -7,17 +7,17 @@ import 'package:words_app/providers/training_matches_provider.dart';
 import 'package:words_app/providers/validation_provider.dart';
 import 'package:words_app/providers/words_provider.dart';
 import 'package:words_app/screens/card_creator_screen//card_creator.dart';
+import 'package:words_app/screens/collections_screen/collections_screen.dart';
 import 'package:words_app/screens/loging_screen/login_screen.dart';
 import 'package:words_app/screens/pair_game_screen/pair_game.dart';
 import 'package:words_app/screens/registration_screen/registration_screen.dart';
-import 'package:words_app/screens/list_collection_screen/words_collections_list_screen.dart';
 import 'package:words_app/screens/review_card_screen/review_card.dart';
 import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
 import 'package:words_app/screens/training_screen/matches.dart';
 import 'package:words_app/screens/welcome_screen/welcom_screen.dart';
-import 'screens/manager_collection/collection_manager.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
 import 'package:words_app/screens/result_screen/result_screen.dart';
+import 'package:words_app/screens/words_screen/words_screen.dart';
 
 // import 'package:hive/hive.dart';
 
@@ -78,13 +78,13 @@ class MyApp extends StatelessWidget {
         ),
         title: 'Word App',
         debugShowCheckedModeBanner: false,
-        initialRoute: WordsCollectionsList.id,
+        initialRoute: CollectionsScreen.id,
         routes: {
           WelcomScreen.id: (_) => WelcomScreen(),
           LoginScreen.id: (_) => LoginScreen(),
           RegistrationScreen.id: (_) => RegistrationScreen(),
-          WordsCollectionsList.id: (_) => WordsCollectionsList(),
-          CollectionManager.id: (_) => CollectionManager(),
+          CollectionsScreen.id: (_) => CollectionsScreen(),
+          WordsScreen.id: (_) => WordsScreen(),
           CardCreator.id: (_) => CardCreator(),
           ReviewCard.id: (_) => ReviewCard(),
           Training.id: (_) => Training(),

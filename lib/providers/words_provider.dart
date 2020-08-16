@@ -180,4 +180,17 @@ class Words with ChangeNotifier {
     words.toggleShowImg();
     notifyListeners();
   }
+
+  bool isEditingMode = false;
+  bool isSelected = false;
+
+  void toggleIsEditingMode() {
+    isEditingMode = !isEditingMode;
+    notifyListeners();
+  }
+
+  void toggleIsSelected() {
+    isSelected = !isSelected;
+    notifyListeners();
+  }
 }
