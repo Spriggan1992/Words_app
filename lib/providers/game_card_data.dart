@@ -15,7 +15,7 @@ class GameCard {
 
 class MyCard {
   String id;
-  bool isDone = false;
+  bool visible = true;
   String word;
   bool isToggled = false;
   Color color;
@@ -24,5 +24,9 @@ class MyCard {
 
   void toggleMyCard() {
     isToggled = !isToggled;
+  }
+
+  void toggleVisibility() {
+    visible = false;
   }
 }

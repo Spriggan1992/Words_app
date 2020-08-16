@@ -64,15 +64,14 @@ class _BodyState extends State<Body> {
       if (chosenPair[0].id == chosenPair[1].id) {
         chosenPair[0].color = Colors.green;
         chosenPair[1].color = Colors.green;
-
-//        cards.remove(chosenPair[0]);
-//        cards.remove(chosenPair[1]);
+        chosenPair[0].toggleVisibility();
+        chosenPair[1].toggleVisibility();
 
         chosenPair = [];
         allDone = allDone + 2;
       }
     }
-    if (cards.isEmpty) {
+    if (cards.length == allDone) {
       getCards();
       allDone = 0;
     }
@@ -118,6 +117,7 @@ class _BodyState extends State<Body> {
                     id: cards[index].id,
                     color: cards[index].color,
                     word: cards[index].word,
+                    visible: cards[index].visible,
                     onTap: () {
                       setState(() {
                         toggleCard(index);
