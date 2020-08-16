@@ -17,13 +17,19 @@ class MyCard {
   String id;
   bool visible = true;
   String word;
+  bool isWrong;
   bool isToggled = false;
-  Color color;
+  Color color = Colors.grey[200];
 
   MyCard({this.id, this.word});
 
   void toggleMyCard() {
     isToggled = !isToggled;
+//    if (isToggled == false) {
+//      color = Colors.grey[200];
+//    } else {
+//      color = Colors.grey;
+//    }
   }
 
   void toggleVisibility() {

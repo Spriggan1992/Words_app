@@ -27,7 +27,9 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation<Color> animation;
   List<MyCard> cards = [];
   List<MyCard> chosenPair = [];
   int toggleCount = 0;
@@ -61,7 +63,9 @@ class _BodyState extends State<Body> {
     cards[index].toggleMyCard();
     cards[index].color = Colors.grey;
     if (chosenPair.length == 2) {
-      if (chosenPair[0].id == chosenPair[1].id) {
+      if (chosenPair[0].id == chosenPair[1].id &&
+          chosenPair[0].word != chosenPair[1].word) {
+//        print(chosenPair[0].word != chosenPair[1].word);
         chosenPair[0].color = Colors.green;
         chosenPair[1].color = Colors.green;
         chosenPair[0].toggleVisibility();
@@ -69,6 +73,18 @@ class _BodyState extends State<Body> {
 
         chosenPair = [];
         allDone = allDone + 2;
+      } else {
+//        print("before 0: ${chosenPair[0].isWrong}");
+        chosenPair[0].isWrong = true;
+        chosenPair[1].isWrong = true;
+        _controller.forward();
+//        print("before 0: ${chosenPair[0].isToggled}");
+//        print("before 1:${chosenPair[1].isToggled}");
+//        chosenPair[0].toggleMyCard();
+//        chosenPair[1].toggleMyCard();
+//        print("AFTER 0: ${chosenPair[0].isToggled}");
+//        print("AFTER 1:${chosenPair[1].isToggled}");
+        chosenPair = [];
       }
     }
     if (cards.length == allDone) {
@@ -81,7 +97,25 @@ class _BodyState extends State<Body> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+    animation = ColorTween(
+      begin: Colors.redAccent,
+      end: Colors.grey[200],
+    ).animate(_controller)
+      ..addListener(() {
+        setState(() {});
+      });
     getCards();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller?.dispose();
+    super.dispose();
   }
 
   @override
@@ -111,20 +145,46 @@ class _BodyState extends State<Body> {
 //                        label: providerData.cards[0].word,
 //                      )
 //                    ],
-                children: List<CustomChip>.generate(
+                children: List<Widget>.generate(
                   cards.length,
-                  (index) => CustomChip(
-                    id: cards[index].id,
-                    color: cards[index].color,
-                    word: cards[index].word,
-                    visible: cards[index].visible,
-                    onTap: () {
-                      setState(() {
-                        toggleCard(index);
-                      });
-                    },
-                    isToggled: cards[index].isToggled,
-                  ),
+                  (index) {
+                    return AnimatedOpacity(
+                      opacity: cards[index].visible ? 1 : 0,
+                      duration: Duration(seconds: 1),
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            toggleCard(index);
+                          });
+                        },
+                        child: Chip(
+                          padding: EdgeInsets.all(10),
+                          label: Text(
+                            cards[index].word,
+                            style: TextStyle(fontSize: 24, color: Colors.black),
+                          ),
+                          backgroundColor: cards[index].isWrong != null
+                              ? animation.value
+                              : cards[index].color,
+                          elevation: 5,
+//                          shadowColor: Colors.black,
+                        ),
+                      ),
+                    );
+
+//                    return CustomChip(
+//                      id: cards[index].id,
+//                      color: cards[index].color,
+//                      word: cards[index].word,
+//                      visible: cards[index].visible,
+//                      onTap: () {
+//                        setState(() {
+//                          toggleCard(index);
+//                        });
+//                      },
+//                      isToggled: cards[index].isToggled,
+//                    );
+                  },
                 ),
               ),
             ),
@@ -150,15 +210,6 @@ class _BodyState extends State<Body> {
                     'Wrong: 8',
                     style: TextStyle(fontSize: widget.defaultSize * 2.4),
                   ),
-                  FlatButton(
-                    color: Colors.pink,
-                    child: Text('GET WORDS'),
-                    onPressed: () {
-                      setState(() {
-                        getCards();
-                      });
-                    },
-                  )
                 ],
               ),
             ),
