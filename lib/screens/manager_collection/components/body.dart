@@ -25,18 +25,16 @@ class Body extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 25.0),
       // Here we render only listView
       child: Consumer<Words>(
-        builder: (context, words, child) {
+        builder: (context, providerData, child) {
           return AnimationLimiter(
             child: ListView.builder(
               // itemExtent: 100,
-              itemCount: words.wordsData.length,
+              itemCount: providerData.wordsData.length,
               // semanticChildCount: 1,
               itemBuilder: (context, index) {
-                final item = words.wordsData[index].targetLang;
-
                 /// Call conformation for removing word from collection
                 void removeWord() {
-                  words.removeWord(words.wordsData[index]);
+                  providerData.removeWord(providerData.wordsData[index]);
                   Navigator.of(context).pop(true);
                 }
 
@@ -54,19 +52,37 @@ class Body extends StatelessWidget {
                         actionPane: SlidableDrawerActionPane(),
                         secondaryActions: <Widget>[
                           IconSlideAction(
-                            caption: 'Edit',
-                            color: Colors.black45,
-                            icon: Icons.edit,
-                            onTap: () => Navigator.pushNamed(
-                              context,
-                              CardCreator.id,
-                              arguments: {
-                                'id': collectionId,
-                                'index': index,
-                                'editMode': true,
-                              },
-                            ),
-                          ),
+                              caption: 'Edit',
+                              color: Colors.black45,
+                              icon: Icons.edit,
+                              onTap: () =>
+                                  // Navigator.pushNamed(
+                                  //   context,
+                                  //   CardCreator.id,
+                                  //   arguments: {
+                                  //     'id': collectionId,
+                                  //     'index': index,
+                                  //     'editMode': true,
+                                  //   },
+                                  // ),
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => CardCreator(
+                                                index: index,
+                                                editMode: true,
+                                                collectionId: collectionId,
+                                                targetWord: providerData
+                                                    .wordsData[index]
+                                                    .targetLang,
+                                                secondWord: providerData
+                                                    .wordsData[index]
+                                                    .secondLang,
+                                                ownWord: providerData
+                                                    .wordsData[index].ownLang,
+                                                thirdWord: providerData
+                                                    .wordsData[index].thirdLang,
+                                              )))),
                           IconSlideAction(
                               caption: 'Delete',
                               color: Colors.red,

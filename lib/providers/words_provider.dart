@@ -114,43 +114,65 @@ class Words with ChangeNotifier {
     DBHelper.delete('words', value.id);
   }
 
-  void toggleWord1(Word words) {
-    words.toggleWord1();
+  void toggleTargetLang(Word words) {
+    words.toggleTargetLang();
 
     notifyListeners();
   }
 
-  void targetLanghandleSubmit(dynamic value, Word words) {
+  void partHandleSubmit(dynamic value, Word words) {
+    words.changePart(value);
+    DBHelper.update('words', {
+      'id': words.id,
+      'partName': words.part.partName,
+      'partColor': words.part.partColor.toString(),
+    });
+    notifyListeners();
+  }
+
+  void targetLangHandleSubmit(dynamic value, Word words) {
     words.changeTargetLang(value);
-    // words.toggleWord1();
+    DBHelper.update('words', {
+      'id': words.id,
+      'targetLang': words.targetLang,
+    });
     notifyListeners();
   }
 
   void secondLangHandleSubmit(dynamic value, Word words) {
     words.changeSecondLang(value);
-    // words.toggleWord2();
+    DBHelper.update('words', {
+      'id': words.id,
+      'secondLang': words.secondLang,
+    });
     notifyListeners();
   }
 
   void thirdLangHandleSubmit(dynamic value, Word words) {
     words.changeThirdLang(value);
-    // words.toggleWord2();
+    DBHelper.update('words', {
+      'id': words.id,
+      'thirdLang': words.thirdLang,
+    });
     notifyListeners();
   }
 
   void ownLangHandleSubmit(dynamic value, Word words) {
     words.changeOwnLang(value);
-    // words.toggleTranslation();
+    DBHelper.update('words', {
+      'id': words.id,
+      'ownLang': words.ownLang,
+    });
     notifyListeners();
   }
 
-  void toggleWord2(Word words) {
-    words.toggleWord2();
+  void toggleSecondLang(Word words) {
+    words.toggleSecondLang();
     notifyListeners();
   }
 
-  void toggleTranslation(Word words) {
-    words.toggleTranslation();
+  void toggleOwnLang(Word words) {
+    words.toggleOwnLang();
     notifyListeners();
   }
 

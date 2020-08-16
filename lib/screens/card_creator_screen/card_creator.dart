@@ -22,6 +22,23 @@ import 'components/reusable_card.dart';
 class CardCreator extends StatefulWidget {
   static const id = 'card_creator';
 
+  CardCreator({
+    this.index,
+    this.editMode,
+    this.collectionId,
+    this.targetWord,
+    this.secondWord,
+    this.ownWord,
+    this.thirdWord,
+  });
+  final int index;
+  final bool editMode;
+  final String collectionId;
+  final String targetWord;
+  final String secondWord;
+  final String ownWord;
+  final String thirdWord;
+
   @override
   _CardCreatorState createState() => _CardCreatorState();
 }
@@ -36,10 +53,10 @@ class _CardCreatorState extends State<CardCreator> {
   bool _thirdLangSelect = false;
 
   //variables to work with card
-  String targetLang = 'sano';
-  String ownLang = 'слово';
-  String secondLang = 'word';
-  String thirdLang = '单词';
+  String targetLang;
+  String ownLang;
+  String secondLang;
+  String thirdLang;
   String example = 'tämä on tarkea sano';
   String exampleTranslations = 'Это важное слово. It is important word';
   String id = Uuid().v4();
@@ -62,8 +79,22 @@ class _CardCreatorState extends State<CardCreator> {
     });
   }
 
+  void setUpWords() {
+    if (widget.editMode == true) {
+      targetLang = widget.targetWord;
+      secondLang = widget.secondWord;
+      thirdLang = widget.thirdWord;
+      ownLang = widget.ownWord;
+      targetLang == null ? targetLang = '' : targetLang = widget.targetWord;
+      secondLang == null ? secondLang = '' : secondLang = widget.secondWord;
+      thirdLang == null ? thirdLang = '' : thirdLang = widget.thirdWord;
+      ownLang == null ? ownLang = '' : ownLang = widget.ownWord;
+    }
+  }
+
   void initState() {
     super.initState();
+    setUpWords();
     setImage();
   }
 
@@ -114,16 +145,16 @@ class _CardCreatorState extends State<CardCreator> {
 
   @override
   Widget build(BuildContext context) {
-    Map args = ModalRoute.of(context).settings.arguments;
-    String collectionId = args['id'];
-    int index = args['index'];
-    final bool editMode = args['editMode'];
+    // Map args = ModalRoute.of(context).settings.arguments;
+    // String collectionId = args['id'];
+    // int index = args['index'];
+    // final bool editMode = args['editMode'];
     SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize;
     final providerData = Provider.of<Words>(context, listen: false);
     return Scaffold(
-      appBar:
-          buildBaseAppBar(providerData, collectionId, context, editMode, index),
+      appBar: buildBaseAppBar(providerData, widget.collectionId, context,
+          widget.editMode, widget.index),
       body: FlipCard(
         //Card key  is used to pass the toggle card method into card
         key: cardKey,
@@ -161,12 +192,14 @@ class _CardCreatorState extends State<CardCreator> {
                           ),
                         ),
                         InnerShadowTextField(
-                          title: editMode
-                              ? providerData.wordsData[index].targetLang
+                          title: widget.editMode
+                              ? providerData.wordsData[widget.index].targetLang
                               : '',
                           hintText: 'word',
                           onChanged: (value) {
                             targetLang = value;
+
+                            // final String targetLang2 = value;
                           },
                           defaultSize: defaultSize,
                           fontSizeMultiplyer: 3.2,
@@ -232,9 +265,9 @@ class _CardCreatorState extends State<CardCreator> {
                           children: <Widget>[
                             // main word text field
                             InnerShadowTextField(
-                              title: editMode
-                                  ? providerData.wordsData[index].ownLang
-                                  : ' ',
+                              title: widget.editMode
+                                  ? providerData.wordsData[widget.index].ownLang
+                                  : '',
                               hintText: 'translation',
                               onChanged: (value) {
                                 ownLang = value;
@@ -243,18 +276,20 @@ class _CardCreatorState extends State<CardCreator> {
                               fontSizeMultiplyer: 3.2,
                             ),
                             InnerShadowTextField(
-                              title: editMode
-                                  ? providerData.wordsData[index].secondLang
-                                  : ' ',
+                              title: widget.editMode
+                                  ? providerData
+                                      .wordsData[widget.index].secondLang
+                                  : '',
                               hintText: '2nd language',
                               onChanged: (value) => secondLang = value,
                               defaultSize: defaultSize,
                               fontSizeMultiplyer: 3.2,
                             ),
                             InnerShadowTextField(
-                              title: editMode
-                                  ? providerData.wordsData[index].thirdLang
-                                  : ' ',
+                              title: widget.editMode
+                                  ? providerData
+                                      .wordsData[widget.index].thirdLang
+                                  : '',
                               hintText: '3rd language',
                               onChanged: (value) => thirdLang = value,
                               defaultSize: defaultSize,
@@ -286,8 +321,13 @@ class _CardCreatorState extends State<CardCreator> {
     );
   }
 
-  BaseAppBar buildBaseAppBar(Words providerData, String collectionId,
-      BuildContext context, bool editMode, int index) {
+  BaseAppBar buildBaseAppBar(
+    Words providerData,
+    String collectionId,
+    BuildContext context,
+    bool editMode,
+    int index,
+  ) {
     return BaseAppBar(
       title: Text('Create your word card'),
       appBar: AppBar(),
@@ -297,7 +337,7 @@ class _CardCreatorState extends State<CardCreator> {
           fillColor: Color(0xffDA627D),
           onPressed: editMode
               ? () {
-                  providerData.targetLanghandleSubmit(
+                  providerData.targetLangHandleSubmit(
                       targetLang, providerData.wordsData[index]);
                   providerData.ownLangHandleSubmit(
                       ownLang, providerData.wordsData[index]);
@@ -305,6 +345,8 @@ class _CardCreatorState extends State<CardCreator> {
                       secondLang, providerData.wordsData[index]);
                   providerData.thirdLangHandleSubmit(
                       thirdLang, providerData.wordsData[index]);
+                  providerData.partHandleSubmit(
+                      part, providerData.wordsData[index]);
                   Navigator.pop(context);
                 }
               : () {

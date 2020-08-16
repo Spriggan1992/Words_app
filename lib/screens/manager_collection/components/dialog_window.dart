@@ -44,12 +44,12 @@ class DialogWindow extends StatelessWidget {
             fontSize: 20,
             isCheckedTitleName: wordsDataIndex.isEditingWord1,
             onPressedEditButton: () {
-              wordsData.toggleWord1(wordsDataIndex);
+              wordsData.toggleTargetLang(wordsDataIndex);
               validation.toggleEditingDoneButton();
             },
             onChange: (value) {
               validation.textValidation(value);
-              wordsData.targetLanghandleSubmit(value, wordsDataIndex);
+              wordsData.targetLangHandleSubmit(value, wordsDataIndex);
             },
           ),
 
@@ -61,7 +61,7 @@ class DialogWindow extends StatelessWidget {
             fontSize: 20,
             isCheckedTitleName: wordsDataIndex.isEditingWord2,
             onPressedEditButton: () {
-              wordsData.toggleWord2(wordsDataIndex);
+              wordsData.toggleSecondLang(wordsDataIndex);
               validation.toggleEditingDoneButton();
             },
             onChange: (value) {
@@ -76,7 +76,7 @@ class DialogWindow extends StatelessWidget {
             fontSize: 20.0,
             isCheckedTitleName: wordsDataIndex.isEditingTranslationTitle,
             onPressedEditButton: () {
-              wordsData.toggleTranslation(wordsDataIndex);
+              wordsData.toggleOwnLang(wordsDataIndex);
               validation.toggleEditingDoneButton();
             },
             onChange: (value) {

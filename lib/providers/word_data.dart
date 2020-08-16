@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:words_app/providers/part_data.dart';
 
@@ -33,15 +32,19 @@ class Word with ChangeNotifier {
   bool isEditingExampleTitle = true;
   bool isEditingShowImg = true;
 
-  void toggleWord1() {
+  void changePart(Part newPart) {
+    part = newPart;
+  }
+
+  void toggleTargetLang() {
     isEditingWord1 = !isEditingWord1;
   }
 
-  void toggleWord2() {
+  void toggleSecondLang() {
     isEditingWord2 = !isEditingWord2;
   }
 
-  void toggleTranslation() {
+  void toggleOwnLang() {
     isEditingTranslationTitle = !isEditingTranslationTitle;
   }
 
@@ -54,10 +57,7 @@ class Word with ChangeNotifier {
   }
 
   void changeSecondLang(String newName) {
-    if (newName.isEmpty) {
-      secondLang = '-';
-    } else
-      secondLang = newName;
+    secondLang = newName;
   }
 
   void changeOwnLang(String newName) {
