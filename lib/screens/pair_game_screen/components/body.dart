@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/components/reusable_card.dart';
+
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/providers/game_card_data.dart';
+
 import 'package:words_app/providers/pair_game_card_provider.dart';
-import 'package:words_app/screens/pair_game_screen/pair_game_engine.dart';
 
-import 'game_card.dart';
-
-GameEngine gameEngine;
+import 'custom_chip.dart';
 
 class Body extends StatefulWidget {
   const Body({
@@ -16,11 +14,13 @@ class Body extends StatefulWidget {
     @required this.defaultSize,
     @required this.blockSizeVertical,
     @required this.blockSizeHorizontal,
+    this.pairGameList,
   }) : super(key: key);
 
   final double defaultSize;
   final double blockSizeVertical;
   final double blockSizeHorizontal;
+  final List<GameCard> pairGameList;
 
   @override
   _BodyState createState() => _BodyState();
@@ -38,10 +38,13 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    var pairGameList =
-        Provider.of<GameCards>(context, listen: false).pairGameList;
+    List<MyCard> cards = [];
+    int toggleCount = 0;
+    List<MyCard> chosenPair = [];
+    int allDone = 0;
+
     List<MyCard> myCards = Provider.of<GameCards>(context).cards;
-//    Provider.of<GameCards>(context, listen: false).getNumberOfCards();
+//
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: widget.defaultSize * 1.6,
@@ -115,41 +118,6 @@ class _BodyState extends State<Body> {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class CustomChip extends StatelessWidget {
-  final String id;
-  final String word;
-  final bool isToggled;
-  final double fontSize;
-  final Function onTap;
-  final Color color;
-  final Color shadowColor;
-  const CustomChip(
-      {this.id,
-      this.word,
-      this.fontSize,
-      this.onTap,
-      this.color,
-      this.isToggled,
-      this.shadowColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Chip(
-        padding: EdgeInsets.all(10),
-        label: Text(
-          word,
-          style: TextStyle(fontSize: 24, color: Colors.black),
-        ),
-        backgroundColor: color,
-        elevation: 5,
-        shadowColor: isToggled ? shadowColor : Colors.black,
       ),
     );
   }

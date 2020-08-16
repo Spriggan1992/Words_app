@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/providers/game_card_data.dart';
 import 'package:words_app/providers/pair_game_card_provider.dart';
 import 'package:words_app/components/base_appbar.dart';
 
@@ -28,16 +29,19 @@ class PairGame extends StatelessWidget {
       body: FutureBuilder(
         future: Provider.of<GameCards>(context, listen: false)
             .fetchWordsFromDB(collectionId),
-        builder: (context, snapshot) =>
-            snapshot.connectionState == ConnectionState.waiting
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Body(
-                    defaultSize: defaultSize,
-                    blockSizeVertical: blockSizeVertical,
-                    blockSizeHorizontal: blockSizeHorizontal,
-                  ),
+        builder: (context, snapshot) {
+          List<GameCard> pairGameList =
+              Provider.of<GameCards>(context).pairGameList;
+          return snapshot.connectionState == ConnectionState.waiting
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Body(
+                  defaultSize: defaultSize,
+                  blockSizeVertical: blockSizeVertical,
+                  blockSizeHorizontal: blockSizeHorizontal,
+                  pairGameList: pairGameList);
+        },
       ),
     );
   }

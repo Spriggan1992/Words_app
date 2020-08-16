@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class GameCard {
   final String id;
   final String targetLang;
@@ -8,5 +10,19 @@ class GameCard {
 
   void choseCard() {
     isChosen = !isChosen;
+  }
+}
+
+class MyCard {
+  String id;
+  bool isDone = false;
+  String word;
+  bool isToggled = false;
+  Color color;
+
+  MyCard({this.id, this.word});
+
+  void toggleMyCard() {
+    isToggled = !isToggled;
   }
 }
