@@ -14,6 +14,7 @@ class Body extends StatefulWidget {
     @required this.defaultSize,
     @required this.blockSizeVertical,
     @required this.blockSizeHorizontal,
+    // here we receive a copy of card with 2 language in it
     this.pairGameList,
   }) : super(key: key);
 
@@ -28,22 +29,64 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   List<MyCard> cards = [];
+  List<MyCard> chosenPair = [];
+  int toggleCount = 0;
 
-//  @override
-//  void initState() {
-//    // TODO: implement initState
-//    super.initState();
-//    Provider.of<GameCards>(context, listen: false).getNumberOfCards();
-//  }
+  int allDone = 0;
+
+  /// method populate [cards] with 4 card pairs or size can be changed
+  void getCards() {
+    GameCard gameCard;
+//    toggleCount = 0;
+    cards = [];
+    for (int i = 0; i <= 3; i++) {
+      try {
+        gameCard = getOneCard(0);
+        cards.add(MyCard(id: gameCard.id, word: gameCard.targetLang));
+        cards.add(MyCard(id: gameCard.id, word: gameCard.ownLang));
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
+  ///method removes item at given index from [_pairGameList] and return one GameCard
+  GameCard getOneCard(int index) {
+    GameCard gameCard = widget.pairGameList.removeAt(index);
+    return gameCard;
+  }
+
+  void toggleCard(int index) {
+    chosenPair.add(cards[index]);
+    cards[index].toggleMyCard();
+    cards[index].color = Colors.grey;
+    if (chosenPair.length == 2) {
+      if (chosenPair[0].id == chosenPair[1].id) {
+        chosenPair[0].color = Colors.green;
+        chosenPair[1].color = Colors.green;
+
+//        cards.remove(chosenPair[0]);
+//        cards.remove(chosenPair[1]);
+
+        chosenPair = [];
+        allDone = allDone + 2;
+      }
+    }
+    if (cards.isEmpty) {
+      getCards();
+      allDone = 0;
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCards();
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<MyCard> cards = [];
-    int toggleCount = 0;
-    List<MyCard> chosenPair = [];
-    int allDone = 0;
-
-    List<MyCard> myCards = Provider.of<GameCards>(context).cards;
 //
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -70,16 +113,17 @@ class _BodyState extends State<Body> {
 //                      )
 //                    ],
                 children: List<CustomChip>.generate(
-                  myCards.length,
+                  cards.length,
                   (index) => CustomChip(
-                    id: myCards[index].id,
-                    color: myCards[index].color,
-                    word: myCards[index].word,
+                    id: cards[index].id,
+                    color: cards[index].color,
+                    word: cards[index].word,
                     onTap: () {
-                      Provider.of<GameCards>(context, listen: false)
-                          .toggleCard(index);
+                      setState(() {
+                        toggleCard(index);
+                      });
                     },
-                    isToggled: myCards[index].isToggled,
+                    isToggled: cards[index].isToggled,
                   ),
                 ),
               ),
@@ -110,7 +154,9 @@ class _BodyState extends State<Body> {
                     color: Colors.pink,
                     child: Text('GET WORDS'),
                     onPressed: () {
-                      Provider.of<GameCards>(context, listen: false).getCards();
+                      setState(() {
+                        getCards();
+                      });
                     },
                   )
                 ],
