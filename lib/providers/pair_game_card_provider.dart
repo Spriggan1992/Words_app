@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:words_app/providers/game_card_data.dart';
+import 'package:words_app/providers/part_data.dart';
 import 'package:words_app/utils/db_helper.dart';
 
 class GameCards extends ChangeNotifier {
@@ -84,19 +85,5 @@ class GameCards extends ChangeNotifier {
   GameCard getOneCard(int index) {
     GameCard gameCard = _pairGameList.removeAt(index);
     return gameCard;
-  }
-}
-
-class MyCard {
-  String id;
-  bool isDone = false;
-  String word;
-  bool isToggled = false;
-  Color color;
-
-  MyCard({this.id, this.word});
-
-  void toggleMyCard() {
-    isToggled = !isToggled;
   }
 }
