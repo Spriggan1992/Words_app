@@ -31,6 +31,8 @@ class Words with ChangeNotifier {
     Part part,
     String example,
     String exampleTranslations,
+    // bool isEditingMode,
+    bool isSelected,
   ) {
     final wordCard = Word(
       id: id,
@@ -42,6 +44,8 @@ class Words with ChangeNotifier {
       example: example,
       exampleTranslations: exampleTranslations,
       part: part,
+      // isEditingMode: false,
+      isSelected: isSelected,
     );
     _wordsData.add(wordCard);
     notifyListeners();
@@ -57,6 +61,7 @@ class Words with ChangeNotifier {
       'image': image.path,
       'example': example,
       'exampleTranslations': exampleTranslations,
+      'isSelected': isSelected,
     });
   }
 
@@ -182,15 +187,69 @@ class Words with ChangeNotifier {
   }
 
   bool isEditingMode = false;
-  bool isSelected = false;
+  // bool isSelected = false;
 
   void toggleIsEditingMode() {
     isEditingMode = !isEditingMode;
     notifyListeners();
   }
 
-  void toggleIsSelected() {
-    isSelected = !isSelected;
+  void toggleisSelectedWord(Word words) {
+    words.toggleIsSelected();
+    // DBHelper.update('words', {
+    //   'id': words.id,
+    //   'isSelected': words.isSelected,
+    // });
+    notifyListeners();
+  }
+
+  List selectedData = [];
+
+  void toogleAllSelectedWords() {
+    var dataList = [];
+    wordsData.forEach((item) => {dataList.add(item.isSelected)});
+    for (int i = 0; i < wordsData.length; i++) {
+      if (dataList.every((element) => element == false)) {
+        wordsData[i].isSelected = true;
+      } else if (dataList.every((element) => element == true)) {
+        wordsData[i].isSelected = false;
+      } else if (dataList.contains(true)) {
+        wordsData[i].isSelected = true;
+      }
+      // DBHelper.update('words', {
+      //   'id': wordsData[i].id,
+      //   'isSelected': wordsData[i].isSelected,
+      // });
+    }
+
+    notifyListeners();
+  }
+
+  void addItemInList() {
+    wordsData.forEach((item) {
+      if (selectedData.contains(item)) {
+        selectedData.remove(item);
+      }
+      if (item.isSelected == true) {
+        selectedData.add(item);
+      }
+    });
+    notifyListeners();
+  }
+
+  void clearSelectedData() {
+    selectedData.clear();
+  }
+
+  void removeSelectedWords() {
+    print(wordsData.length);
+    wordsData.forEach((element) {
+      if (element.isSelected == true) {
+        wordsData.remove(element);
+        DBHelper.delete('words', element.id);
+      }
+    });
+
     notifyListeners();
   }
 }

@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
+import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/screens/pair_game_screen/pair_game.dart';
 import 'package:words_app/screens/training_screen/matches.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
 import 'package:words_app/utils/size_config.dart';
 
-class TrainingManager extends StatelessWidget {
+class TrainingManager extends StatefulWidget {
   static String id = 'training_manager_screen';
+
+  @override
+  _TrainingManagerState createState() => _TrainingManagerState();
+}
+
+class _TrainingManagerState extends State<TrainingManager> {
+  String dropdownValue = 'Filters';
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +24,7 @@ class TrainingManager extends StatelessWidget {
     final defaultSize = SizeConfig.defaultSize;
     Map args = ModalRoute.of(context).settings.arguments;
     String collectionId = args['id'];
+    List selectedWords = args['selectedWords'];
     return Scaffold(
       backgroundColor: Color(0xFFeae2da),
       appBar: BaseAppBar(
@@ -23,6 +32,7 @@ class TrainingManager extends StatelessWidget {
         appBar: AppBar(),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
             child: Row(
@@ -63,6 +73,78 @@ class TrainingManager extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          Container(
+            // color: Colors.grey[200],
+            padding: EdgeInsets.symmetric(horizontal: defaultSize * 3),
+            height: defaultSize * 4,
+            width: SizeConfig.blockSizeHorizontal * 100,
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                // Text('Filters'),
+                DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: Icon(Icons.arrow_drop_down),
+                  iconSize: defaultSize * 3,
+                  onChanged: (String newValue) {
+                    setState(() {
+                      dropdownValue = newValue;
+                    });
+                  },
+                  items: <String>[
+                    'Filters',
+                    'Know',
+                    "Don't know",
+                    'Custom list'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                padding: EdgeInsets.all(defaultSize),
+                margin: EdgeInsets.only(
+                    bottom: defaultSize * 7,
+                    right: defaultSize * 3,
+                    left: defaultSize * 3),
+                child: ListView.builder(
+                    itemCount: selectedWords.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        child: ListTile(
+                          leading: Text(selectedWords[index].part.partName,
+                              style: TextStyle(
+                                  color: selectedWords[index].part.partColor)),
+                          title: Container(
+                              padding: EdgeInsets.only(left: defaultSize * 1),
+                              child:
+                                  Text(selectedWords[index].targetLang ?? '')),
+                          subtitle: Container(
+                              padding: EdgeInsets.only(left: defaultSize * 1),
+                              child: Text(selectedWords[index].ownLang ?? '')),
+                        ),
+                      );
+                    }),
+              ),
+            ),
+          ),
+          ReusableMainButton(
+            titleText: 'Go to Trainig',
+            textColor: Colors.black,
+            backgroundColor: Theme.of(context).accentColor,
+            onPressed: () {},
           ),
         ],
       ),
