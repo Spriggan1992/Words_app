@@ -70,6 +70,7 @@ class _CardCreatorState extends State<CardCreator> {
     Colors.white,
   );
   FocusNode targetLangFocusNode = FocusNode();
+  bool isSelected = false;
 
   setImage() async {
     //image receive File which we ca freely use in our app. Coz word data saves images as File object
@@ -85,10 +86,10 @@ class _CardCreatorState extends State<CardCreator> {
       secondLang = widget.secondWord;
       thirdLang = widget.thirdWord;
       ownLang = widget.ownWord;
-      targetLang == null ? targetLang = '' : targetLang = widget.targetWord;
-      secondLang == null ? secondLang = '' : secondLang = widget.secondWord;
-      thirdLang == null ? thirdLang = '' : thirdLang = widget.thirdWord;
-      ownLang == null ? ownLang = '' : ownLang = widget.ownWord;
+      targetLang == null ? targetLang = ' ' : targetLang = widget.targetWord;
+      secondLang == null ? secondLang = ' ' : secondLang = widget.secondWord;
+      thirdLang == null ? thirdLang = ' ' : thirdLang = widget.thirdWord;
+      ownLang == null ? ownLang = ' ' : ownLang = widget.ownWord;
     }
   }
 
@@ -361,6 +362,7 @@ class _CardCreatorState extends State<CardCreator> {
                     part,
                     example,
                     exampleTranslations,
+                    isSelected,
                   );
                   Navigator.pop(context);
                 },

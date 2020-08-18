@@ -13,9 +13,11 @@ class Word with ChangeNotifier {
     this.image,
     this.example,
     this.exampleTranslations,
-    this.isEditingWord1 = true,
-    this.isEditingWord2 = true,
-    this.isEditingTranslationTitle = true,
+    this.isEditingTargetLang = true,
+    this.isEditingSecondLang = true,
+    this.isEditingOwnLang = true,
+    this.isSelected = false,
+    // this.isEditingMode,
   });
   String id;
   String targetLang;
@@ -26,26 +28,36 @@ class Word with ChangeNotifier {
   File image;
   String example;
   String exampleTranslations;
-  bool isEditingWord1;
-  bool isEditingWord2;
-  bool isEditingTranslationTitle;
+  bool isEditingTargetLang;
+  bool isEditingSecondLang;
+  bool isEditingOwnLang;
   bool isEditingExampleTitle = true;
   bool isEditingShowImg = true;
+  bool isSelected;
+  // bool isEditingMode;
+
+  // void toggleIsEditingMode() {
+  //   isEditingMode = !isEditingMode;
+  // }
+
+  void toggleIsSelected() {
+    isSelected = !isSelected;
+  }
 
   void changePart(Part newPart) {
     part = newPart;
   }
 
   void toggleTargetLang() {
-    isEditingWord1 = !isEditingWord1;
+    isEditingTargetLang = !isEditingTargetLang;
   }
 
   void toggleSecondLang() {
-    isEditingWord2 = !isEditingWord2;
+    isEditingSecondLang = !isEditingSecondLang;
   }
 
   void toggleOwnLang() {
-    isEditingTranslationTitle = !isEditingTranslationTitle;
+    isEditingOwnLang = !isEditingOwnLang;
   }
 
   void toggleShowImg() {
