@@ -17,7 +17,7 @@ class Body extends StatefulWidget {
     @required this.blockSizeVertical,
     @required this.blockSizeHorizontal,
     // here we receive a copy of card with 2 language in it
-    this.pairGameList,
+    @required this.pairGameList,
   }) : super(key: key);
 
   final double defaultSize;
@@ -149,7 +149,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-//
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: widget.defaultSize * 1.6,
