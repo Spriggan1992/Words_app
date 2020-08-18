@@ -49,7 +49,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     GameCard gameCard;
 //    toggleCount = 0;
     cards = [];
-    for (int i = 0; i <= 3; i++) {
+    for (int i = 0; i <= 4; i++) {
       try {
         gameCard = getOneCard(0);
         cards.add(MyCard(id: gameCard.id, word: gameCard.targetLang));
@@ -81,10 +81,12 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
           chosenPair[1].toggleVisibility();
           chosenPair = [];
           allDone = allDone + 2;
-          all = all + 2;
+          all = all + 1;
         } else {
           chosenPair[0].isWrong = true;
           chosenPair[1].isWrong = true;
+
+          //to start animation, and always start it from 0.0 otherwise it crashes.
           _controller.forward(from: 0.0);
         }
       }
@@ -100,7 +102,9 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     }
   }
 
-  void untoggleCards() {
+  /// method resetCardsToggles fires right after animation finishes to clear cards of all toggles
+  /// to reset them also it rises counter of mistakes
+  void resetCardsToggles() {
     chosenPair[0].isWrong = false;
     chosenPair[1].isWrong = false;
     chosenPair[0].toggleMyCard();
@@ -117,7 +121,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     super.initState();
     allPairs = widget.pairGameList.length;
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 400),
       vsync: this,
     );
     animation = ColorTween(begin: Colors.redAccent, end: Colors.grey[200])
@@ -130,10 +134,11 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     //second part of code
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        untoggleCards();
+        resetCardsToggles();
       }
     });
     getCards();
+    cards.shuffle();
   }
 
   @override
@@ -168,7 +173,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                   (index) {
                     return AnimatedOpacity(
                       opacity: cards[index].visible ? 1 : 0,
-                      duration: Duration(seconds: 1),
+                      duration: Duration(milliseconds: 400),
                       child: InkWell(
                         onTap: () {
                           setState(() {
@@ -203,7 +208,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    'All: $all / ${allPairs * 2}',
+                    'All: $all / $allPairs',
                     style: TextStyle(fontSize: widget.defaultSize * 3.2),
                   ),
                   Text(
