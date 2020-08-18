@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,10 +35,13 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   List<MyCard> cards = [];
   List<MyCard> chosenPair = [];
   int toggleCount = 0;
-
+  bool pairIsCorrect = true;
+  // allDone controls when to switch to nex bunch of cards
   int allDone = 0;
 
   /// method populate [cards] with 4 card pairs or size can be changed
+  /// it draws cards from [widget.pairGameList]
+  // TODO: make a check for size of cards sent to the game. should be more than 4
   void getCards() {
     GameCard gameCard;
 //    toggleCount = 0;
@@ -59,38 +64,66 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   }
 
   void toggleCard(int index) {
-    chosenPair.add(cards[index]);
-    cards[index].toggleMyCard();
-    cards[index].color = Colors.grey;
-    if (chosenPair.length == 2) {
-      if (chosenPair[0].id == chosenPair[1].id &&
-          chosenPair[0].word != chosenPair[1].word) {
-//        print(chosenPair[0].word != chosenPair[1].word);
-        chosenPair[0].color = Colors.green;
-        chosenPair[1].color = Colors.green;
-        chosenPair[0].toggleVisibility();
-        chosenPair[1].toggleVisibility();
+    print(
+        'all done: ${allDone}, isToggled: ${cards[index].isToggled}, isWrong: ${cards[index].isWrong}, chosenPair: ${chosenPair.length}');
 
-        chosenPair = [];
-        allDone = allDone + 2;
-      } else {
+    if (!cards[index].isToggled && cards[index].visible) {
+      cards[index].toggleMyCard();
+      cards[index].color = Colors.grey;
+      chosenPair.add(cards[index]);
+      print("inside first if ${chosenPair.length}");
+      if (chosenPair.length == 2) {
+        print("inside second if ${chosenPair.length}");
+        if (chosenPair[0].id == chosenPair[1].id &&
+            chosenPair[0].word != chosenPair[1].word) {
+          print("inside third if ${chosenPair.length}");
+//        print(chosenPair[0].word != chosenPair[1].word);
+          chosenPair[0].color = Colors.green;
+          chosenPair[1].color = Colors.green;
+          chosenPair[0].toggleVisibility();
+          chosenPair[1].toggleVisibility();
+
+          chosenPair = [];
+          allDone = allDone + 2;
+        } else {
 //        print("before 0: ${chosenPair[0].isWrong}");
-        chosenPair[0].isWrong = true;
-        chosenPair[1].isWrong = true;
-        _controller.forward();
-//        print("before 0: ${chosenPair[0].isToggled}");
-//        print("before 1:${chosenPair[1].isToggled}");
-//        chosenPair[0].toggleMyCard();
-//        chosenPair[1].toggleMyCard();
-//        print("AFTER 0: ${chosenPair[0].isToggled}");
-//        print("AFTER 1:${chosenPair[1].isToggled}");
-        chosenPair = [];
+          print("inside else ${chosenPair.length}");
+          chosenPair[0].isWrong = true;
+          chosenPair[1].isWrong = true;
+          _controller.forward(from: 0.0);
+
+//
+
+        }
       }
+    } else {
+      cards[index].toggleMyCard();
+      cards[index].color = Colors.grey[200];
+      chosenPair.remove(cards[index]);
+      print("chosen pair if untoggled: ${chosenPair.length}");
     }
+    print(
+        "${cards[0].isToggled}, ${cards[1].isToggled}, ${cards[2].isToggled}, ${cards[3].isToggled}, ${cards[4].isToggled}, ${cards[5].isToggled}, ${cards[6].isToggled}, ${cards[7].isToggled}");
+    print(
+        "${cards[0].isWrong}, ${cards[1].isWrong}, ${cards[2].isWrong}, ${cards[3].isWrong}, ${cards[4].isWrong}, ${cards[5].isWrong}, ${cards[6].isWrong}, ${cards[7].isWrong} , chosenPair: ${chosenPair.length}");
+    print('---------------------------------------------------------');
+
     if (cards.length == allDone) {
       getCards();
       allDone = 0;
     }
+  }
+
+  void untoggleCards() {
+    chosenPair[0].isWrong = false;
+    chosenPair[1].isWrong = false;
+    chosenPair[0].toggleMyCard();
+    chosenPair[1].toggleMyCard();
+    chosenPair[0].color = Colors.grey[200];
+    chosenPair[1].color = Colors.grey[200];
+    print(
+        "${cards[0].isWrong}, ${cards[1].isWrong}, ${cards[2].isWrong}, ${cards[3].isWrong}, ${cards[4].isWrong}, ${cards[5].isWrong}, ${cards[6].isWrong},  ${cards[7].isWrong}");
+    chosenPair = [];
   }
 
   @override
@@ -98,16 +131,19 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     // TODO: implement initState
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
-    animation = ColorTween(
-      begin: Colors.redAccent,
-      end: Colors.grey[200],
-    ).animate(_controller)
-      ..addListener(() {
-        setState(() {});
-      });
+    animation = ColorTween(begin: Colors.redAccent, end: Colors.grey[200])
+        .animate(_controller)
+          ..addListener(() {
+            setState(() {});
+          });
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        untoggleCards();
+      }
+    });
     getCards();
   }
 
@@ -163,7 +199,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                             cards[index].word,
                             style: TextStyle(fontSize: 24, color: Colors.black),
                           ),
-                          backgroundColor: cards[index].isWrong != null
+                          backgroundColor: cards[index].isWrong == true
                               ? animation.value
                               : cards[index].color,
                           elevation: 5,
