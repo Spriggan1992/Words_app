@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +17,7 @@ class Body extends StatefulWidget {
     @required this.blockSizeVertical,
     @required this.blockSizeHorizontal,
     // here we receive a copy of card with 2 language in it
-    this.pairGameList,
+    @required this.pairGameList,
   }) : super(key: key);
 
   final double defaultSize;
@@ -33,15 +35,21 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   List<MyCard> cards = [];
   List<MyCard> chosenPair = [];
   int toggleCount = 0;
-
+  bool pairIsCorrect = true;
+  // allDone controls when to switch to nex bunch of cards
   int allDone = 0;
+  int all = 0;
+  int mistakes = 0;
+  int allPairs;
 
   /// method populate [cards] with 4 card pairs or size can be changed
+  /// it draws cards from [widget.pairGameList]
+  // TODO: make a check for size of cards sent to the game. should be more than 4
   void getCards() {
     GameCard gameCard;
 //    toggleCount = 0;
     cards = [];
-    for (int i = 0; i <= 3; i++) {
+    for (int i = 0; i <= 4; i++) {
       try {
         gameCard = getOneCard(0);
         cards.add(MyCard(id: gameCard.id, word: gameCard.targetLang));
@@ -59,68 +67,88 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   }
 
   void toggleCard(int index) {
-    chosenPair.add(cards[index]);
-    cards[index].toggleMyCard();
-    cards[index].color = Colors.grey;
-    if (chosenPair.length == 2) {
-      if (chosenPair[0].id == chosenPair[1].id &&
-          chosenPair[0].word != chosenPair[1].word) {
-//        print(chosenPair[0].word != chosenPair[1].word);
-        chosenPair[0].color = Colors.green;
-        chosenPair[1].color = Colors.green;
-        chosenPair[0].toggleVisibility();
-        chosenPair[1].toggleVisibility();
+    if (!cards[index].isToggled && cards[index].visible) {
+      cards[index].toggleMyCard();
+      cards[index].color = Colors.grey;
+      chosenPair.add(cards[index]);
 
-        chosenPair = [];
-        allDone = allDone + 2;
-      } else {
-//        print("before 0: ${chosenPair[0].isWrong}");
-        chosenPair[0].isWrong = true;
-        chosenPair[1].isWrong = true;
-        _controller.forward();
-//        print("before 0: ${chosenPair[0].isToggled}");
-//        print("before 1:${chosenPair[1].isToggled}");
-//        chosenPair[0].toggleMyCard();
-//        chosenPair[1].toggleMyCard();
-//        print("AFTER 0: ${chosenPair[0].isToggled}");
-//        print("AFTER 1:${chosenPair[1].isToggled}");
-        chosenPair = [];
+      if (chosenPair.length == 2) {
+        if (chosenPair[0].id == chosenPair[1].id &&
+            chosenPair[0].word != chosenPair[1].word) {
+          chosenPair[0].color = Colors.green;
+          chosenPair[1].color = Colors.green;
+          chosenPair[0].toggleVisibility();
+          chosenPair[1].toggleVisibility();
+          chosenPair = [];
+          allDone = allDone + 2;
+          all = all + 1;
+        } else {
+          chosenPair[0].isWrong = true;
+          chosenPair[1].isWrong = true;
+
+          //to start animation, and always start it from 0.0 otherwise it crashes.
+          _controller.forward(from: 0.0);
+        }
       }
+    } else {
+      cards[index].toggleMyCard();
+      cards[index].color = Colors.grey[200];
+      chosenPair.remove(cards[index]);
     }
+
     if (cards.length == allDone) {
       getCards();
       allDone = 0;
     }
   }
 
+  /// method resetCardsToggles fires right after animation finishes to clear cards of all toggles
+  /// to reset them also it rises counter of mistakes
+  void resetCardsToggles() {
+    chosenPair[0].isWrong = false;
+    chosenPair[1].isWrong = false;
+    chosenPair[0].toggleMyCard();
+    chosenPair[1].toggleMyCard();
+    chosenPair[0].color = Colors.grey[200];
+    chosenPair[1].color = Colors.grey[200];
+    mistakes += 1;
+    chosenPair = [];
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    allPairs = widget.pairGameList.length;
     _controller = AnimationController(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 400),
       vsync: this,
     );
-    animation = ColorTween(
-      begin: Colors.redAccent,
-      end: Colors.grey[200],
-    ).animate(_controller)
-      ..addListener(() {
-        setState(() {});
-      });
+    animation = ColorTween(begin: Colors.redAccent, end: Colors.grey[200])
+        .animate(_controller)
+          ..addListener(() {
+            setState(() {});
+          });
+
+    //addStatusListener  check when animation is stopped, after that we execute
+    //second part of code
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        resetCardsToggles();
+      }
+    });
     getCards();
+    cards.shuffle();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _controller?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-//
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: widget.defaultSize * 1.6,
@@ -139,18 +167,12 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                 runSpacing: widget.defaultSize,
                 verticalDirection: VerticalDirection.down,
                 alignment: WrapAlignment.center,
-//                    children: [
-//                      CustomChip(
-//                        id: '1',
-//                        label: providerData.cards[0].word,
-//                      )
-//                    ],
                 children: List<Widget>.generate(
                   cards.length,
                   (index) {
                     return AnimatedOpacity(
                       opacity: cards[index].visible ? 1 : 0,
-                      duration: Duration(seconds: 1),
+                      duration: Duration(milliseconds: 400),
                       child: InkWell(
                         onTap: () {
                           setState(() {
@@ -163,27 +185,13 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                             cards[index].word,
                             style: TextStyle(fontSize: 24, color: Colors.black),
                           ),
-                          backgroundColor: cards[index].isWrong != null
+                          backgroundColor: cards[index].isWrong == true
                               ? animation.value
                               : cards[index].color,
                           elevation: 5,
-//                          shadowColor: Colors.black,
                         ),
                       ),
                     );
-
-//                    return CustomChip(
-//                      id: cards[index].id,
-//                      color: cards[index].color,
-//                      word: cards[index].word,
-//                      visible: cards[index].visible,
-//                      onTap: () {
-//                        setState(() {
-//                          toggleCard(index);
-//                        });
-//                      },
-//                      isToggled: cards[index].isToggled,
-//                    );
                   },
                 ),
               ),
@@ -196,19 +204,15 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
             child: Container(
               decoration: innerShadow,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    'All: 8',
-                    style: TextStyle(fontSize: widget.defaultSize * 2.4),
+                    'All: $all / $allPairs',
+                    style: TextStyle(fontSize: widget.defaultSize * 3.2),
                   ),
                   Text(
-                    'Correct: 8',
-                    style: TextStyle(fontSize: widget.defaultSize * 2.4),
-                  ),
-                  Text(
-                    'Wrong: 8',
-                    style: TextStyle(fontSize: widget.defaultSize * 2.4),
+                    'Wrong: $mistakes',
+                    style: TextStyle(fontSize: widget.defaultSize * 3.2),
                   ),
                 ],
               ),
