@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/providers/validation_provider.dart';
-import 'package:words_app/providers/words_provider.dart';
+import 'package:words_app/repositories/validation_provider.dart';
+import 'package:words_app/repositories/words_provider.dart';
 import 'dialog_text_holder_container.dart';
 // import 'package:validators/validators.dart';
 

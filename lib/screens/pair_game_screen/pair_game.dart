@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/providers/game_card_data.dart';
-import 'package:words_app/providers/pair_game_card_provider.dart';
+import 'package:words_app/models/game_card.dart';
+import 'package:words_app/repositories/pair_game_card_provider.dart';
 import 'package:words_app/components/base_appbar.dart';
 
 import 'package:words_app/screens/pair_game_screen/components/body.dart';
 import 'package:words_app/utils/size_config.dart';
 
-import 'components/game_card.dart';
+
 
 class PairGame extends StatelessWidget {
   static const id = 'pair_game';

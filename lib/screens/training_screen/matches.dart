@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/providers/training_matches_provider.dart';
-import 'package:words_app/providers/word_data.dart';
-import 'package:words_app/providers/words_provider.dart';
+import 'package:words_app/repositories/training_matches_provider.dart';
+import 'package:words_app/models/word.dart';
+import 'package:words_app/repositories/words_provider.dart';
 
 class Matches extends StatefulWidget {
   static String id = 'matches_screen';

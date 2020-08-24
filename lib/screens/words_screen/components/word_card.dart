@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/providers/words_provider.dart';
+import 'package:words_app/repositories/words_provider.dart';
 import 'package:words_app/screens/review_card_screen/review_card.dart';
 import 'package:words_app/screens/words_screen/components/dialog_window.dart';
 import 'package:words_app/utils/size_config.dart';

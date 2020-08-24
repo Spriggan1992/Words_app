@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/providers/validation_provider.dart';
+import 'package:words_app/repositories/validation_provider.dart';
 
 class DialogTextHolderContainer extends StatefulWidget {
   DialogTextHolderContainer({

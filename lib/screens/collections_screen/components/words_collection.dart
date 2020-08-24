@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/providers/collections_provider.dart';
+import 'package:words_app/repositories/collections_provider.dart';
 import 'package:words_app/components/my_separator.dart';
 
 import 'btns.dart';

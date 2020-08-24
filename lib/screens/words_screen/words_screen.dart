@@ -7,7 +7,7 @@ import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/helpers/functions.dart';
-import 'package:words_app/providers/words_provider.dart';
+import 'package:words_app/repositories/words_provider.dart';
 import 'package:words_app/screens/card_creator_screen//card_creator.dart';
 import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
 import 'package:words_app/utils/size_config.dart';

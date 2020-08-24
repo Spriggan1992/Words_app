@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
-import 'package:words_app/providers/part_data.dart';
+import 'package:words_app/models/part.dart';
 
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/components/base_appbar.dart';
-import 'package:words_app/providers/words_provider.dart';
+import 'package:words_app/repositories/words_provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/size_config.dart';
 import 'package:words_app/utils/utilities.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/providers/training_matches_data.dart';
+import 'package:words_app/models/training_matches_data.dart';
 
 class TrainingMatches with ChangeNotifier {
   List<MatchesWord> listMatches = [];

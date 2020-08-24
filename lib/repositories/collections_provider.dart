@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/db_helper.dart';
-import '../providers/collection_data.dart';
+import '../models/collection.dart';
 
 class Collections with ChangeNotifier {
-  List<Collection> _wordsCollectionData = [
+  List<Collection> _collections = [
     Collection(title: "nouns", language: 'eng'),
   ];
   //  using spread operator to return copy of our list, to prevent access to original list
   List<Collection> get wordsCollectionData {
-    return [..._wordsCollectionData];
+    return [..._collections];
   }
 
   void addNewCollection(String collectionTitle, String languageTitle) {
@@ -20,7 +20,7 @@ class Collections with ChangeNotifier {
       language: languageTitle,
       showBtns: false,
     );
-    _wordsCollectionData.add(collection);
+    _collections.add(collection);
     notifyListeners();
     //insert into collections table that we created in DBHelper
     DBHelper.insert(
@@ -36,7 +36,7 @@ class Collections with ChangeNotifier {
   ///Fetching data from db  and setting the _wordsCollectionData
   Future<void> fetchAndSetCollection() async {
     final dataList = await DBHelper.getData('collections');
-    _wordsCollectionData = dataList
+    _collections = dataList
         .map(
           (item) => Collection(
             id: item['id'],
@@ -49,7 +49,7 @@ class Collections with ChangeNotifier {
   }
 
   void deleteCollection(Collection collection) {
-    _wordsCollectionData.remove(collection);
+    _collections.remove(collection);
     notifyListeners();
     DBHelper.delete('collections', collection.id);
   }

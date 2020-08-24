@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:words_app/providers/game_card_data.dart';
-import 'package:words_app/providers/part_data.dart';
+import 'package:words_app/models/game_card.dart';
+import 'package:words_app/models/part.dart';
 import 'package:words_app/utils/db_helper.dart';
 
 class GameCards extends ChangeNotifier {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/helpers/functions.dart';
-import 'package:words_app/providers/collections_provider.dart';
+import 'package:words_app/repositories/collections_provider.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:words_app/screens/collections_screen/components/words_collection.dart';
 import 'package:words_app/screens/words_screen/words_screen.dart';
-import '../collections_screen.dart';
+
 import 'list_collection_dialog.dart';
 
 class Body extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:words_app/providers/part_data.dart';
+import 'part.dart';
 
 class Word with ChangeNotifier {
   Word({

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './validation_data.dart';
+import '../models/validation.dart';
 
 class ValidationForm with ChangeNotifier {
   Validation _errorMessage = Validation(null, null);

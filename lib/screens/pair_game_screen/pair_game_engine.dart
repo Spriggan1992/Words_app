@@ -1,5 +1,5 @@
-import 'package:words_app/providers/game_card_data.dart';
-import 'package:words_app/providers/pair_game_card_provider.dart';
+import 'package:words_app/models/game_card.dart';
+import 'package:words_app/repositories/pair_game_card_provider.dart';
 
 class GameEngine {
   bool isFinished = false;

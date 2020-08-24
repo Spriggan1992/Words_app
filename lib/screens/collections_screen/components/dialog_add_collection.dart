@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
-import 'package:words_app/providers/collections_provider.dart';
+import 'package:words_app/repositories/collections_provider.dart';
 
 class DialogAddCollection extends StatefulWidget {
   const DialogAddCollection({

@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/providers/collections_provider.dart';
-import 'package:words_app/providers/pair_game_card_provider.dart';
-import 'package:words_app/providers/training_matches_provider.dart';
-import 'package:words_app/providers/validation_provider.dart';
-import 'package:words_app/providers/words_provider.dart';
-import 'package:words_app/screens/card_creator_screen//card_creator.dart';
-import 'package:words_app/screens/collections_screen/collections_screen.dart';
-import 'package:words_app/screens/loging_screen/login_screen.dart';
-import 'package:words_app/screens/pair_game_screen/pair_game.dart';
-import 'package:words_app/screens/registration_screen/registration_screen.dart';
-import 'package:words_app/screens/review_card_screen/review_card.dart';
-import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
-import 'package:words_app/screens/training_screen/matches.dart';
-import 'package:words_app/screens/welcome_screen/welcom_screen.dart';
-import 'package:words_app/screens/training_screen/training_screen.dart';
-import 'package:words_app/screens/result_screen/result_screen.dart';
-import 'package:words_app/screens/words_screen/words_screen.dart';
+
+import 'repositories/collections_provider.dart';
+import 'repositories/pair_game_card_provider.dart';
+import 'repositories/training_matches_provider.dart';
+import 'repositories/validation_provider.dart';
+import 'repositories/words_provider.dart';
+import 'screens/card_creator_screen//card_creator.dart';
+import 'screens/collections_screen/collections_screen.dart';
+import 'screens/loging_screen/login_screen.dart';
+import 'screens/pair_game_screen/pair_game.dart';
+import 'screens/registration_screen/registration_screen.dart';
+import 'screens/result_screen/result_screen.dart';
+import 'screens/review_card_screen/review_card.dart';
+import 'screens/training_manager_screen/training_manager_screen.dart';
+import 'screens/training_screen/matches.dart';
+import 'screens/training_screen/training_screen.dart';
+import 'screens/welcome_screen/welcom_screen.dart';
+import 'screens/words_screen/words_screen.dart';
 
 // import 'package:hive/hive.dart';
 

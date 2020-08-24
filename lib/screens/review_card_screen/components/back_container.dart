@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/constants/constants.dart';
-import 'package:words_app/providers/words_provider.dart';
+import 'package:words_app/repositories/words_provider.dart';
 
 import 'package:words_app/utils/size_config.dart';
 

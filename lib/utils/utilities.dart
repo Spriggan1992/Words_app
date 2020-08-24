@@ -1,7 +1,8 @@
 import 'dart:io';
-import 'package:path_provider/path_provider.dart' as syspaths;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart' as syspaths;
 
 class Utilities {
   ///This method is returning [Color] object which previously was stored in String.
