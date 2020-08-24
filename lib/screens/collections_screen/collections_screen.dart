@@ -8,7 +8,7 @@ import 'package:words_app/components/base_bottom_appbar.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
 
 import 'components/body.dart';
-import 'components/body2.dart';
+
 import 'components/dialog_add_collection.dart';
 
 /// [CollectionsScreen] responsible for showing all collections  created by user
