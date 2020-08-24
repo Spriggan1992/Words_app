@@ -4,10 +4,9 @@ import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/collection.dart';
 import 'package:words_app/repositories/collections_repository.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:words_app/screens/collections_screen/components/words_collection.dart';
+import 'package:words_app/screens/collections_screen/components/collection_card.dart';
 import 'package:words_app/screens/words_screen/words_screen.dart';
-
-import 'list_collection_dialog.dart';
+import 'collection_edit_dialog.dart';
 
 class Body extends StatefulWidget {
   final List<Collection> collections;
@@ -64,6 +63,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    // print(widget.collections);
     return AnimationLimiter(
       child: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
@@ -92,7 +92,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                   child: ScaleAnimation(
                     // scale: 0.5,
                     child: FadeInAnimation(
-                      child: WordsCollection(
+                      child: CollectionCard(
                         collections: widget.collections,
                         runAnimation: () {
                           // providerData.toggleBtns();
@@ -116,7 +116,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                         },
 
                         /// Show dialog with add collection
-                        showEditDialog: () {
+                        showEditDialog: ( Collection collection) {
                           showGeneralDialog(
                               barrierColor: Color(0xff906c7a).withOpacity(0.9),
                               transitionBuilder: (context, a1, a2, widget) {
@@ -133,8 +133,10 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                         backgroundColor: Colors.transparent,
                                         content: StatefulBuilder(
                                             builder: (context, setState) {
-                                          return CollectionsDialog(
+                                              
+                                          return CollectionsEditDialog(
                                             index: index,
+                                            collection: collection,
                                             // Save form
                                             onSaveForm: () {
                                               // providerData

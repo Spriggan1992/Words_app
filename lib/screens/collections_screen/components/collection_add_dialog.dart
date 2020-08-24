@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/bloc/collections/collections_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/repositories/collections_repository.dart';
@@ -16,8 +18,8 @@ class DialogAddCollection extends StatefulWidget {
 class _DialogAddCollectionState extends State<DialogAddCollection> {
   FocusNode myFocusNodeCollectionName;
   FocusNode myFocusNodeLanguage;
-  String titleCollectionHolder;
-  String titleLanguageHolder;
+  String collectionTitle;
+  String collectionLanguage;
   bool is2ndLanguage = false;
   bool is3ndLanguage = false;
   double heightCollectionName = 0;
@@ -103,8 +105,8 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                     labelText: 'Collection name',
                     isDense: true),
                 onChanged: (value) {
-                  titleCollectionHolder = value;
-                  if (titleCollectionHolder.length > 0) {
+                  collectionTitle = value;
+                  if (collectionTitle.length > 0) {
                     isTextCollectionNameFiledEmpty = false;
                   } else {
                     isTextCollectionNameFiledEmpty = true;
@@ -132,8 +134,8 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                     labelText: 'Language',
                     isDense: true),
                 onChanged: (value) {
-                  titleLanguageHolder = value;
-                  if (titleCollectionHolder.length > 0) {
+                  collectionLanguage = value;
+                  if (collectionTitle.length > 0) {
                     isLanguageTextFileEmpty = false;
                   } else {
                     isLanguageTextFileEmpty = true;
@@ -154,9 +156,9 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                 child: Text('CREATE COLLECTION',
                     style: TextStyle(color: Colors.white)),
                 onPressed: () {
-                  Provider.of<CollectionsRepository>(context, listen: false)
-                      .addNewCollection(
-                          titleCollectionHolder, titleLanguageHolder);
+                  BlocProvider.of<CollectionsBloc>(context)
+                      .add(CollectionsAdded(language: collectionLanguage, title: collectionTitle));
+
                   Navigator.pop(context);
                 })
           ],

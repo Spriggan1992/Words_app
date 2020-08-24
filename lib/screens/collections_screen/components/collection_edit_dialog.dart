@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/components/custom_round_btn.dart';
+import 'package:words_app/models/collection.dart';
 import 'package:words_app/repositories/collections_repository.dart';
 import 'package:words_app/components/my_separator.dart';
 import 'package:words_app/screens/collections_screen/components/text_holder.dart';
 
-class CollectionsDialog extends StatelessWidget {
-  const CollectionsDialog({
+class CollectionsEditDialog extends StatelessWidget {
+  const CollectionsEditDialog({
     this.index,
     this.onSubmitTitleField,
     this.onSaveForm,
     this.onSubmitLanguageField,
+    this.collection,
     Key key,
   }) : super(key: key);
 
@@ -19,12 +21,12 @@ class CollectionsDialog extends StatelessWidget {
   final Function onSubmitTitleField;
   final Function onSaveForm;
   final Function onSubmitLanguageField;
+  final Collection collection;
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    final providerData = Provider.of<CollectionsRepository>(context, listen: false)
-        .wordsCollectionData[index];
+
     return Container(
       height: 340,
       width: 80,
@@ -55,7 +57,7 @@ class CollectionsDialog extends StatelessWidget {
                       // textInputAction: TextInputAction.done,
                       decoration: InputDecoration(border: InputBorder.none),
                       controller:
-                          TextEditingController(text: providerData.title),
+                          TextEditingController(text: collection.title),
                       onChanged: onSubmitTitleField),
                 ),
                 Flexible(child: SizedBox(height: 10)),
@@ -74,7 +76,7 @@ class CollectionsDialog extends StatelessWidget {
                   child: TextField(
                       style: TextStyle(fontSize: 25, color: Color(0xFF34c7b3)),
                       controller:
-                          TextEditingController(text: providerData.language),
+                          TextEditingController(text: collection.language),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(border: InputBorder.none),
                       onChanged: onSubmitLanguageField),

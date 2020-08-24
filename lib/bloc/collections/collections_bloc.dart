@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+
 import 'package:words_app/models/collection.dart';
 import 'package:words_app/repositories/collections_repository.dart';
 
@@ -25,8 +26,6 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
       yield* _mapCollectionsUpdatedToState(event);
     } else if (event is CollectionsDeleted) {
       yield* _mapCollectionsDeletedToState(event);
-    } else if (event is CollectionsCurrent) {
-      yield* _mapCollectionsGetCurrentToState();
     }
   }
 
@@ -39,23 +38,42 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     }
   }
 
-  Stream<CollectionsState> _mapCollectionsGetCurrentToState() async* {
-    final collections = (state as CollectionsSuccess).collections;
-    yield CollectionsSuccess(collections);
-  }
-
   Stream<CollectionsState> _mapCollectionsAddedToState(
       CollectionsAdded event) async* {
-    try {} catch (_) {}
+    try {
+      final collection = await collectionsRepository.addNewCollection(
+          event.title, event.language);
+      List<Collection> collections =
+          List.from((state as CollectionsSuccess).collections)..add(collection);
+      yield CollectionsSuccess(collections);
+    } catch (_) {
+      yield CollectionsFailure();
+    }
   }
 
   Stream<CollectionsState> _mapCollectionsUpdatedToState(
       CollectionsUpdated event) async* {
-    try {} catch (_) {}
+    final updatedCollection = (state as CollectionsSuccess)
+        .collections
+        .map((collection) => collection.id == event.collection.id
+            ? event.collection
+            : collection)
+        .toList();
+    yield CollectionsSuccess(updatedCollection);
   }
 
   Stream<CollectionsState> _mapCollectionsDeletedToState(
       CollectionsDeleted event) async* {
-    try {} catch (_) {}
+    try {
+      final updatedCollection = (state as CollectionsSuccess)
+          .collections
+          .where((collection) => collection.id != event.id)
+          .toList();
+      yield CollectionsSuccess(updatedCollection);
+
+      collectionsRepository.deleteCollection(event.id);
+    } catch (_) {
+      yield CollectionsFailure();
+    }
   }
 }

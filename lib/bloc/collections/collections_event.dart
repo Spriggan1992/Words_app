@@ -10,28 +10,29 @@ abstract class CollectionsEvent extends Equatable {
 class CollectionsLoaded extends CollectionsEvent {}
 
 class CollectionsAdded extends CollectionsEvent {
-  final Collection collection;
+  final String title;
+  final String language;
 
-  CollectionsAdded(this.collection);
+  CollectionsAdded({this.title, this.language});
 
-  List<Object> get props => [collection];
+  List<Object> get props => [title, language];
 }
 
 class CollectionsUpdated extends CollectionsEvent {
   final Collection collection;
-  CollectionsUpdated(this.collection);
+  CollectionsUpdated({this.collection});
 
   @override
   List<Object> get props => [collection];
 }
 
 class CollectionsDeleted extends CollectionsEvent {
-  final Collection collection;
+  final String id;
 
-  CollectionsDeleted(this.collection);
+  CollectionsDeleted({this.id});
 
   @override
-  List<Object> get props => [collection];
+  List<Object> get props => [id];
 }
 
 class CollectionsCurrent extends CollectionsEvent {

@@ -12,16 +12,17 @@ class CollectionsRepository with ChangeNotifier {
     return [..._collections];
   }
 
-  void addNewCollection(String collectionTitle, String languageTitle) {
+  Future<Collection> addNewCollection(
+      String collectionTitle, String languageTitle) async {
     final collection = Collection(
       // Creating object here for later adding it to _wordsCollectionData
       id: Uuid().v4(), //create Id for collection
       title: collectionTitle,
       language: languageTitle,
       showBtns: false,
+      isEditingBtns: true,
     );
-    _collections.add(collection);
-    notifyListeners();
+
     //insert into collections table that we created in DBHelper
     DBHelper.insert(
       'collections',
@@ -31,6 +32,26 @@ class CollectionsRepository with ChangeNotifier {
         'language': collection.language,
       },
     );
+    return collection;
+    // void addNewCollection(String collectionTitle, String languageTitle) {
+    //   final collection = Collection(
+    //     // Creating object here for later adding it to _wordsCollectionData
+    //     id: Uuid().v4(), //create Id for collection
+    //     title: collectionTitle,
+    //     language: languageTitle,
+    //     showBtns: false,
+    //   );
+    //   _collections.add(collection);
+    //   notifyListeners();
+    //   //insert into collections table that we created in DBHelper
+    //   DBHelper.insert(
+    //     'collections',
+    //     {
+    //       'id': collection.id,
+    //       'title': collection.title,
+    //       'language': collection.language,
+    //     },
+    //   );
   }
 
   ///Fetching data from db  and setting the _collections
@@ -39,25 +60,24 @@ class CollectionsRepository with ChangeNotifier {
     _collections = dataList
         .map(
           (item) => Collection(
-            id: item['id'],
-            title: item['title'],
-            language: item['language'],
-          ),
+              id: item['id'],
+              title: item['title'],
+              language: item['language'],
+              isEditingBtns: true,
+              showBtns: false),
         )
         .toList();
     return _collections;
   }
 
-  void deleteCollection(Collection collection) {
-    _collections.remove(collection);
-    notifyListeners();
-    DBHelper.delete('collections', collection.id);
+  void deleteCollection(String id) {
+    DBHelper.delete('collections', id);
   }
 
 // we utilize DBHelper method insert,  which can also modify data if it finds this entry in db
   //TODO: think of making two methods below  into one method with
   void handleSubmitEditTitle(dynamic value, Collection collection) {
-    collection.changeCollectionTitle(value);
+    // collection.changeCollectionTitle(value);
 
     notifyListeners();
     DBHelper.update(
@@ -71,7 +91,7 @@ class CollectionsRepository with ChangeNotifier {
   }
 
   void handleSubmitEditLanguageTitle(dynamic value, Collection collection) {
-    collection.changeLanguageTitle(value);
+    // collection.changeLanguageTitle(value);
     notifyListeners();
 
     // we utilize DBHelper method insert,  which can also modify data if it finds this entry in db
@@ -88,7 +108,7 @@ class CollectionsRepository with ChangeNotifier {
   /// toggle [showBtns] in path: [providers\collection_data.dart]
   void toggleBtns() {
     for (int i = 0; i < wordsCollectionData.length; i++) {
-      wordsCollectionData[i].toggleShowBtns();
+      // wordsCollectionData[i].toggleShowBtns();
 
       notifyListeners();
     }

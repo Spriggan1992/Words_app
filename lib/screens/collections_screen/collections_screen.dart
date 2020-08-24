@@ -9,7 +9,7 @@ import 'package:words_app/components/reusable_float_action_button.dart';
 
 import 'components/body.dart';
 
-import 'components/dialog_add_collection.dart';
+import 'components/collection_add_dialog.dart';
 
 /// [CollectionsScreen] responsible for showing all collections  created by user
 /// it is separated into components for better modularity

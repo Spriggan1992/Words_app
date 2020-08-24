@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:words_app/bloc/collections/collections_bloc.dart';
 
 import 'package:words_app/models/collection.dart';
 
 import 'package:words_app/components/my_separator.dart';
 
+import 'btns.dart';
 import 'text_holder.dart';
 
-class WordsCollection extends StatelessWidget {
-  WordsCollection({
+class CollectionCard extends StatelessWidget {
+  CollectionCard({
     this.goToManagerCollections,
     this.onSubmitTitleField,
     this.onChanged,
@@ -39,7 +42,12 @@ class WordsCollection extends StatelessWidget {
         onTap: () {
           // goToManagerCollections(providerData.id, providerData.title);
         },
-        onLongPress: runAnimation,
+        onLongPress: () {
+          BlocProvider.of<CollectionsBloc>(context)
+            ..add(CollectionsUpdated(
+                collection: collections[index].copyWith(
+                    isEditingBtns: !collections[index].isEditingBtns)));
+        },
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Stack(
@@ -115,42 +123,45 @@ class WordsCollection extends StatelessWidget {
                   ),
                 ),
               ),
+              collections[index].isEditingBtns
+                  ? Positioned(
+                      top: -1,
+                      left: 75,
+                      child: AnimatedBuilder(
+                        animation: rotateAnimation,
+                        builder: (context, child) {
+                          return Transform.rotate(
+                            angle: rotateAnimation.value,
+                            child: child,
+                          );
+                        },
+                        child: Row(
+                          children: <Widget>[
+                            // Edit btn
+                            Btns(
+                              backgroundColor: Colors.white,
+                              icon: Icons.edit,
+                              color: Colors.black54,
+                              onPress: () => showEditDialog(collections[index]),
+                            ),
+
+                            Btns(
+                              backgroundColor: Colors.white,
+                              icon: Icons.delete,
+                              color: Colors.black54,
+                              onPress: () {
+                                BlocProvider.of<CollectionsBloc>(context)
+                                  ..add(CollectionsDeleted(
+                                      id: collections[index].id));
+                              },
+                            ),
+                            SizedBox(width: 5),
+                          ],
+                        ),
+                      ))
+                  : Container()
             ],
           ),
         ));
   }
-
-// data.isEditingBtns
-//                   ? Positioned(
-//                       top: -1,
-//                       left: 75,
-//                       child: AnimatedBuilder(
-//                         animation: rotateAnimation,
-//                         builder: (context, child) {
-//                           return Transform.rotate(
-//                             angle: rotateAnimation.value,
-//                             child: child,
-//                           );
-//                         },
-//                         child: Row(
-//                           children: <Widget>[
-//                             // Edit btn
-//                             Btns(
-//                               backgroundColor: Colors.white,
-//                               icon: Icons.edit,
-//                               color: Colors.black54,
-//                               onPress: showEditDialog,
-//                             ),
-
-//                             Btns(
-//                               backgroundColor: Colors.white,
-//                               icon: Icons.delete,
-//                               color: Colors.black54,
-//                               onPress: deleteCollection,
-//                             ),
-//                             SizedBox(width: 5),
-//                           ],
-//                         ),
-//                       ))
-//                   : Container()
 }
