@@ -31,7 +31,8 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   AnimationController _controller;
-  Animation<Color> animation;
+  Animation<Color> animateColor;
+  Animation<Opacity> animateOpacity;
   List<MyCard> cards = [];
   List<MyCard> chosenPair = [];
   int toggleCount = 0;
@@ -47,7 +48,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   // TODO: make a check for size of cards sent to the game. should be more than 4
   void getCards() {
     GameCard gameCard;
-//    toggleCount = 0;
     cards = [];
     for (int i = 0; i <= 4; i++) {
       try {
@@ -124,7 +124,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
       duration: const Duration(milliseconds: 400),
       vsync: this,
     );
-    animation = ColorTween(begin: Colors.redAccent, end: Colors.grey[200])
+    animateColor = ColorTween(begin: Colors.redAccent, end: Colors.grey[200])
         .animate(_controller)
           ..addListener(() {
             setState(() {});
@@ -186,7 +186,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                             style: TextStyle(fontSize: 24, color: Colors.black),
                           ),
                           backgroundColor: cards[index].isWrong == true
-                              ? animation.value
+                              ? animateColor.value
                               : cards[index].color,
                           elevation: 5,
                         ),
