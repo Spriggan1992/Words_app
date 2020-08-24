@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/bloc/collections/collections_bloc.dart';
 
-import 'repositories/collections_provider.dart';
+import 'repositories/collections_repository.dart';
 import 'repositories/pair_game_card_provider.dart';
 import 'repositories/training_matches_provider.dart';
 import 'repositories/validation_provider.dart';
@@ -22,7 +24,15 @@ import 'screens/words_screen/words_screen.dart';
 
 // import 'package:hive/hive.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(BlocProvider(
+      create: (context) {
+        return CollectionsBloc(
+          collectionsRepository:  CollectionsRepository(
+          ),
+        )..add(CollectionsLoaded());
+      },
+      child: MyApp(),
+    ),);
 
 class MyApp extends StatelessWidget {
   @override
@@ -32,9 +42,9 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => Collections(),
-        ),
+        // ChangeNotifierProvider(
+        //   create: (_) => CollectionsRepository(),
+        // ),
         ChangeNotifierProvider(
           create: (_) => Words(),
         ),

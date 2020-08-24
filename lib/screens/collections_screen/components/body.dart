@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/helpers/functions.dart';
-import 'package:words_app/repositories/collections_provider.dart';
+import 'package:words_app/models/collection.dart';
+import 'package:words_app/repositories/collections_repository.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:words_app/screens/collections_screen/components/words_collection.dart';
 import 'package:words_app/screens/words_screen/words_screen.dart';
@@ -9,8 +10,10 @@ import 'package:words_app/screens/words_screen/words_screen.dart';
 import 'list_collection_dialog.dart';
 
 class Body extends StatefulWidget {
+  final List<Collection> collections;
+
   const Body({
-    Key key,
+    Key key, this.collections,
   }) : super(key: key);
 
   @override
@@ -67,20 +70,20 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
         child: CustomScrollView(
           slivers: <Widget>[
             // Provider data, here
-            Consumer<Collections>(builder: (context, providerData, child) {
-              return SliverGrid(
+           
+              SliverGrid(
                 delegate: SliverChildBuilderDelegate((context, index) {
                   /// Delete collection
                   void removeCollection() {
-                    providerData.deleteCollection(
-                        providerData.wordsCollectionData[index]);
+                    // providerData.deleteCollection(
+                    //     providerData.wordsCollectionData[index]);
                     Navigator.of(context).pop(true);
                   }
 
                   String handleSubmitTitle;
                   String handleSubmitLanguage;
-                  final wordsCollectionData =
-                      providerData.wordsCollectionData[index];
+                  // final wordsCollectionData =
+                  //     providerData.wordsCollectionData[index];
                   return AnimationConfiguration.staggeredGrid(
                     columnCount: 3,
                     position: index,
@@ -91,7 +94,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                         child: WordsCollection(
                           runAnimation: () {
                             // providerData.toggleBtns();
-                            providerData.runAnimation(_controller);
+                            // providerData.runAnimation(_controller);
                           },
                           rotateAnimation: rotateAnimation,
                           index: index,
@@ -109,7 +112,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                   'id': collectionId,
                                   'title': title
                                 });
-                            providerData.checkIsEditingBtns(_controller);
+                            // providerData.checkIsEditingBtns(_controller);
                             setState(() {});
                           },
 
@@ -136,14 +139,14 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                               index: index,
                                               // Save form
                                               onSaveForm: () {
-                                                providerData
-                                                    .handleSubmitEditTitle(
-                                                        handleSubmitTitle,
-                                                        wordsCollectionData);
-                                                providerData
-                                                    .handleSubmitEditLanguageTitle(
-                                                        handleSubmitLanguage,
-                                                        wordsCollectionData);
+                                                // providerData
+                                                //     .handleSubmitEditTitle(
+                                                //         handleSubmitTitle,
+                                                //         wordsCollectionData);
+                                                // providerData
+                                                //     .handleSubmitEditLanguageTitle(
+                                                //         handleSubmitLanguage,
+                                                //         wordsCollectionData);
                                                 Navigator.pop(context);
                                               },
                                               onSubmitLanguageField: (value) {
@@ -170,15 +173,15 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                       ),
                     ),
                   );
-                }, childCount: providerData.wordsCollectionData.length),
+                }, childCount: widget.collections.length),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 0.65,
                   crossAxisCount: 3,
                   mainAxisSpacing: 1,
                   crossAxisSpacing: 3,
                 ),
-              );
-            })
+              
+            )
           ],
         ),
       ),

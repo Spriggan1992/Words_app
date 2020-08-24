@@ -3,7 +3,7 @@ import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/db_helper.dart';
 import '../models/collection.dart';
 
-class Collections with ChangeNotifier {
+class CollectionsRepository with ChangeNotifier {
   List<Collection> _collections = [
     Collection(title: "nouns", language: 'eng'),
   ];
@@ -33,8 +33,8 @@ class Collections with ChangeNotifier {
     );
   }
 
-  ///Fetching data from db  and setting the _wordsCollectionData
-  Future<void> fetchAndSetCollection() async {
+  ///Fetching data from db  and setting the _collections
+  Future<List<Collection>> fetchAndSetCollection() async {
     final dataList = await DBHelper.getData('collections');
     _collections = dataList
         .map(
@@ -45,7 +45,7 @@ class Collections with ChangeNotifier {
           ),
         )
         .toList();
-    notifyListeners();
+    return _collections;
   }
 
   void deleteCollection(Collection collection) {

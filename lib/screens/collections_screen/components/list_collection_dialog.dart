@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/components/custom_round_btn.dart';
-import 'package:words_app/repositories/collections_provider.dart';
+import 'package:words_app/repositories/collections_repository.dart';
 import 'package:words_app/components/my_separator.dart';
 import 'package:words_app/screens/collections_screen/components/text_holder.dart';
 
@@ -23,7 +23,7 @@ class CollectionsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    final providerData = Provider.of<Collections>(context, listen: false)
+    final providerData = Provider.of<CollectionsRepository>(context, listen: false)
         .wordsCollectionData[index];
     return Container(
       height: 340,

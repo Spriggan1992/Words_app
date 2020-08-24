@@ -7,12 +7,13 @@ abstract class CollectionsState extends Equatable {
   List<Object> get props => [];
 }
 
-class CollectionsInitial extends CollectionsState {}
+class CollectionsLoading extends CollectionsState {}
 
-class CollectionsLoaded extends CollectionsState {
+class CollectionsSuccess extends CollectionsState {
   final List<Collection> collections;
 
-  CollectionsLoaded([this.collections = const []]);
+  // CollectionsSuccess([this.collections = const []]);
+  CollectionsSuccess(this.collections );
 
   @override
   List<Object> get props => [collections];

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:words_app/bloc/collections/collections_bloc.dart';
+
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/base_bottom_appbar.dart';
 
 import 'package:words_app/components/reusable_float_action_button.dart';
-import 'package:words_app/repositories/collections_provider.dart';
 
 import 'components/body.dart';
+import 'components/body2.dart';
 import 'components/dialog_add_collection.dart';
 
 /// [CollectionsScreen] responsible for showing all collections  created by user
@@ -16,41 +18,40 @@ class CollectionsScreen extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return SafeArea(
-      top: false,
-      child: Scaffold(
-        appBar: BaseAppBar(
-          title: Text('words_collection'),
-          appBar: AppBar(),
-        ),
-        floatingActionButton: ReusableFloatActionButton(
-          onPressed: () {
-            buildShowGeneralDialog(
-              context,
-            );
-          },
-        ),
-        bottomNavigationBar: BaseBottomAppBar(
-          child1: Container(),
-          child2: Container(),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: FutureBuilder(
-          future: Provider.of<Collections>(context, listen: false)
-              .fetchAndSetCollection(),
-          builder: (context, snapshot) =>
-              snapshot.connectionState == ConnectionState.waiting
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : GestureDetector(
-                      onTap: () {
-                        FocusScope.of(context).unfocus();
-                      },
-                      child: Body(),
-                    ),
-        ),
-      ),
-    );
+        top: false,
+        child: Scaffold(
+          appBar: BaseAppBar(
+            title: Text('words_collection'),
+            appBar: AppBar(),
+          ),
+          floatingActionButton: ReusableFloatActionButton(
+            onPressed: () {
+              buildShowGeneralDialog(
+                context,
+              );
+            },
+          ),
+          bottomNavigationBar: BaseBottomAppBar(
+            child1: Container(),
+            child2: Container(),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          body: BlocBuilder<CollectionsBloc, CollectionsState>(
+              builder: (context, state) {
+            if (state is CollectionsLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is CollectionsSuccess) {
+              return Body(
+                collections: state.collections,
+              );
+            } else {
+              Text('Somthing went wrong.....');
+            }
+          }),
+        ));
   }
 
   Future buildShowGeneralDialog(BuildContext context) {
