@@ -7,6 +7,7 @@ import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/collection.dart';
 
 import 'package:words_app/components/my_separator.dart';
+import 'package:words_app/screens/words_screen/words_screen.dart';
 
 import 'btns.dart';
 import 'text_holder.dart';
@@ -27,6 +28,10 @@ class CollectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, WordsScreen.id,
+            arguments: {'id': collections[index].id});
+      },
       onLongPress: () {
         BlocProvider.of<CollectionsBloc>(context).add(CollectionsToggleAll());
       },
