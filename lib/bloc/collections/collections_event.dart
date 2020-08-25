@@ -45,10 +45,10 @@ class CollectionsDeleted extends CollectionsEvent {
   List<Object> get props => [id];
 }
 
-class CollectionsCurrent extends CollectionsEvent {
+class CollectionsSetToFalse extends CollectionsEvent {
   // final Collection collection;
 
-  // CollectionsCurrent(this.collection);
+  // CollectionsSetToFalse(this.collection);
 
   // @override
   // List<Object> get props => [collection];

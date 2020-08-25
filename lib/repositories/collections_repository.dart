@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/db_helper.dart';
 import '../models/collection.dart';
 
-class CollectionsRepository with ChangeNotifier {
+class CollectionsRepository {
+  
   List<Collection> _collections = [
     Collection(title: "nouns", language: 'eng'),
   ];
@@ -45,7 +45,7 @@ class CollectionsRepository with ChangeNotifier {
               id: item['id'],
               title: item['title'],
               language: item['language'],
-              isEditingBtns: true,
+              isEditingBtns: false,
               showBtns: false),
         )
         .toList();

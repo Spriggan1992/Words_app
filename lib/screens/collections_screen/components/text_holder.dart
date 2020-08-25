@@ -22,8 +22,12 @@ class TextHolder extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(text: titleName, style: TextStyle(fontSize: fontSize1)),
           TextSpan(
-              text: titleNameValue,
-              style: TextStyle(fontSize: fontSize2, color: Color(0xFF34c7b3))),
+            text: titleNameValue,
+            style: TextStyle(
+              fontSize: fontSize2,
+              color: Color(0xFF34c7b3),
+            ),
+          ),
         ],
       ),
     );

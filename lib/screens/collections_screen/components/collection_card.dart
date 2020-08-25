@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/collections/collections_bloc.dart';
+import 'package:words_app/helpers/functions.dart';
 
 import 'package:words_app/models/collection.dart';
 
@@ -9,32 +10,78 @@ import 'package:words_app/components/my_separator.dart';
 import 'btns.dart';
 import 'text_holder.dart';
 
-class CollectionCard extends StatelessWidget {
+class CollectionCard extends StatefulWidget {
   CollectionCard({
     this.goToManagerCollections,
-    this.onSubmitTitleField,
-    this.onChanged,
-    this.deleteCollection,
     this.index,
-    this.onSaveForm,
-    this.onSubmitLanguageField,
-    this.rotateAnimation,
-    this.runAnimation,
     this.showEditDialog,
     this.collections,
   });
 
   final Function goToManagerCollections;
-  final Function onSubmitTitleField;
-  final Function onChanged;
-  final Function deleteCollection;
-  final Function onSubmitLanguageField;
   final int index;
   final List<Collection> collections;
-  final Function onSaveForm;
-  final Animation rotateAnimation;
-  final Function runAnimation;
   final Function showEditDialog;
+
+  @override
+  _CollectionCardState createState() => _CollectionCardState();
+}
+
+class _CollectionCardState extends State<CollectionCard>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation rotateAnimation;
+
+  static final tweenSequence = TweenSequence(<TweenSequenceItem<double>>[
+    TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 0.0, end: 0.2)
+            .chain(CurveTween(curve: Curves.easeIn)),
+        weight: 2),
+    TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 0.0, end: -0.2)
+            .chain(CurveTween(curve: Curves.easeInOut)),
+        weight: 2),
+    TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 0.0, end: 0.2)
+            .chain(CurveTween(curve: Curves.easeIn)),
+        weight: 2),
+    TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 0.0, end: -0.2)
+            .chain(CurveTween(curve: Curves.easeInOut)),
+        weight: 2),
+    TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 0.0, end: 0.0)
+            .chain(CurveTween(curve: Curves.easeInOut)),
+        weight: 92)
+  ]);
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 3000));
+    rotateAnimation = tweenSequence.animate(_controller);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(CollectionCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    runAnimation();
+  }
+
+  void runAnimation() {
+    if (widget.collections[widget.index].isEditingBtns) {
+      _controller.repeat(reverse: true);
+    } else {
+      _controller.reset();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +90,8 @@ class CollectionCard extends StatelessWidget {
         // goToManagerCollections(providerData.id, providerData.title);
       },
       onLongPress: () {
-        BlocProvider.of<CollectionsBloc>(context)..add(CollectionsToggleAll());
+        BlocProvider.of<CollectionsBloc>(context).add(CollectionsToggleAll());
+        runAnimation();
       },
       child: Padding(
         padding: const EdgeInsets.only(top: 20),
@@ -78,7 +126,7 @@ class CollectionCard extends StatelessWidget {
                             padding: const EdgeInsets.only(
                                 top: 1, right: 1, bottom: 1, left: 1),
                             child: Text(
-                              collections[index].title ?? ' ',
+                              widget.collections[widget.index].title ?? ' ',
                               style: TextStyle(
                                   fontSize: 20.0, color: Colors.black),
                             ),
@@ -96,7 +144,8 @@ class CollectionCard extends StatelessWidget {
                       SizedBox(height: 5.0),
                       FittedBox(
                         child: TextHolder(
-                          titleNameValue: collections[index].language ?? ' ',
+                          titleNameValue:
+                              widget.collections[widget.index].language ?? ' ',
                           fontSize1: 9.0,
                           fontSize2: 15.0,
                         ),
@@ -120,7 +169,7 @@ class CollectionCard extends StatelessWidget {
                 ),
               ),
             ),
-            collections[index].isEditingBtns
+            widget.collections[widget.index].isEditingBtns
                 ? Positioned(
                     top: -1,
                     left: 75,
@@ -136,20 +185,28 @@ class CollectionCard extends StatelessWidget {
                         children: <Widget>[
                           // Edit btn
                           Btns(
-                            backgroundColor: Colors.white,
-                            icon: Icons.edit,
-                            color: Colors.black54,
-                            onPress: () => showEditDialog(collections[index]),
-                          ),
+                              backgroundColor: Colors.white,
+                              icon: Icons.edit,
+                              color: Colors.black54,
+                              onPress: () {
+                                BlocProvider.of<CollectionsBloc>(context)
+                                    .add(CollectionsToggleAll());
+                                _controller.reset();
+                                widget.showEditDialog(
+                                    widget.collections[widget.index]);
+                              }),
 
                           Btns(
                             backgroundColor: Colors.white,
                             icon: Icons.delete,
                             color: Colors.black54,
                             onPress: () {
-                              BlocProvider.of<CollectionsBloc>(context)
-                                ..add(CollectionsDeleted(
-                                    id: collections[index].id));
+                              deleteConfirmation(context, () {
+                                BlocProvider.of<CollectionsBloc>(context)
+                                  ..add(CollectionsDeleted(
+                                      id: widget.collections[widget.index].id));
+                                Navigator.pop(context);
+                              }, 'Do you want to delete your collection?');
                             },
                           ),
                           SizedBox(width: 5),

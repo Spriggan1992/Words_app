@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
+
 import 'package:words_app/bloc/collections/collections_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
-import 'package:words_app/repositories/collections_repository.dart';
 
 class DialogAddCollection extends StatefulWidget {
   const DialogAddCollection({
@@ -20,8 +19,6 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
   FocusNode myFocusNodeLanguage;
   String collectionTitle;
   String collectionLanguage;
-  bool is2ndLanguage = false;
-  bool is3ndLanguage = false;
   double heightCollectionName = 0;
   double heightLanguage = 1.2;
   bool isTextCollectionNameFiledEmpty = true;
@@ -156,8 +153,10 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                 child: Text('CREATE COLLECTION',
                     style: TextStyle(color: Colors.white)),
                 onPressed: () {
-                  BlocProvider.of<CollectionsBloc>(context)
-                      .add(CollectionsAdded(language: collectionLanguage, title: collectionTitle));
+                  BlocProvider.of<CollectionsBloc>(context).add(
+                      CollectionsAdded(
+                          language: collectionLanguage,
+                          title: collectionTitle));
 
                   Navigator.pop(context);
                 })

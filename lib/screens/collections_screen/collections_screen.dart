@@ -44,8 +44,13 @@ class CollectionsScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else if (state is CollectionsSuccess) {
-              return Body(
-                collections: state.collections,
+              return GestureDetector(
+                onTap: () {
+                  BlocProvider.of<CollectionsBloc>(context).add(CollectionsSetToFalse());
+                },
+                child: Body(
+                  collections: state.collections,
+                ),
               );
             } else {
               Text('Somthing went wrong.....');

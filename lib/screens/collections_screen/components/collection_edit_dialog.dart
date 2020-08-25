@@ -17,9 +17,6 @@ class CollectionsEditDialog extends StatelessWidget {
   }) : super(key: key);
 
   final int index;
-
-  // final String onSubmitTitleField;
-  // final String onSubmitLanguageField;
   final Function onSaveForm;
   final Collection collection;
 
@@ -55,7 +52,6 @@ class CollectionsEditDialog extends StatelessWidget {
                       expands: false,
                       style: TextStyle(fontSize: 25),
                       textAlign: TextAlign.center,
-                      // textInputAction: TextInputAction.done,
                       decoration: InputDecoration(border: InputBorder.none),
                       controller: TextEditingController(text: collection.title),
                       onChanged: (value) {
@@ -134,11 +130,10 @@ class CollectionsEditDialog extends StatelessWidget {
                               title: onSubmitTitleField,
                               language: onSubmitLanguageField),
                         );
-                        Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                 ),
 
-                // SizedBox(width: 5.0),
                 // Close btn
                 CustomRoundBtn(
                   fillColor: Color(0xff450920),
