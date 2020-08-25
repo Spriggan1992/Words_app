@@ -4,11 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/bloc/collections/collections_bloc.dart';
 
+import 'bloc/words/words_bloc.dart';
 import 'repositories/collections_repository.dart';
 import 'repositories/pair_game_card_provider.dart';
 import 'repositories/training_matches_provider.dart';
 import 'repositories/validation_provider.dart';
-import 'repositories/words_provider.dart';
+import 'repositories/words_repository.dart';
 import 'screens/card_creator_screen//card_creator.dart';
 import 'screens/collections_screen/collections_screen.dart';
 import 'screens/loging_screen/login_screen.dart';
@@ -24,15 +25,32 @@ import 'screens/words_screen/words_screen.dart';
 
 // import 'package:hive/hive.dart';
 
-void main() => runApp(BlocProvider(
-      create: (context) {
-        return CollectionsBloc(
-          collectionsRepository:  CollectionsRepository(
-          ),
-        )..add(CollectionsLoaded());
-      },
-      child: MyApp(),
-    ),);
+void main() => runApp(MultiBlocProvider(providers: [
+      BlocProvider<CollectionsBloc>(
+        create: (context) {
+          return CollectionsBloc(
+            collectionsRepository: CollectionsRepository(),
+          )..add(CollectionsLoaded());
+        },
+      ),
+      BlocProvider<WordsBloc>(
+        create: (context) {
+          return WordsBloc(
+            wordsRepository: WordsRepository(),
+          );
+        },
+      )
+    ], child: MyApp())
+
+        // BlocProvider(
+        //   create: (context) {
+        //     return CollectionsBloc(
+        //       collectionsRepository: CollectionsRepository(),
+        //     )..add(CollectionsLoaded());
+        //   },
+        //
+        // ),
+        );
 
 class MyApp extends StatelessWidget {
   @override
@@ -46,7 +64,7 @@ class MyApp extends StatelessWidget {
         //   create: (_) => CollectionsRepository(),
         // ),
         ChangeNotifierProvider(
-          create: (_) => Words(),
+          create: (_) => WordsRepository(),
         ),
         ChangeNotifierProvider(
           create: (_) => ValidationForm(),

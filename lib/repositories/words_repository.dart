@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -9,15 +7,15 @@ import 'package:words_app/models/part.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/utils/utilities.dart';
 
-class Words with ChangeNotifier {
-  List<Word> _wordsData = [];
+class WordsRepository with ChangeNotifier {
+  List<Word> _words = [];
 
   List<Word> get wordsData {
-    return [..._wordsData];
+    return [..._words];
   }
 
   Word findById(id) {
-    return _wordsData.firstWhere((wordId) => wordId.id == id);
+    return _words.firstWhere((wordId) => wordId.id == id);
   }
 
   //Card Creator
@@ -49,7 +47,7 @@ class Words with ChangeNotifier {
       // isEditingMode: false,
       isSelected: isSelected,
     );
-    _wordsData.add(wordCard);
+    _words.add(wordCard);
     notifyListeners();
     DBHelper.insert('words', {
       'collectionId': collectionId,
@@ -90,11 +88,11 @@ class Words with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchAndSetWords(String collectionId) async {
+  Future<List<Word>> fetchAndSetWords(String collectionId) async {
     final dataList =
         await DBHelper.getData('words', collectionId: collectionId);
 //    print('DEBUG fetchAndSetWords ${dataList}');
-    _wordsData = dataList.map((item) {
+    _words = dataList.map((item) {
 //      print(item['partColor']);
       Word word = Word(
         id: item['id'],
@@ -116,7 +114,7 @@ class Words with ChangeNotifier {
   }
 
   void removeWord(value) {
-    _wordsData.remove(value);
+    _words.remove(value);
     notifyListeners();
     DBHelper.delete('words', value.id);
   }

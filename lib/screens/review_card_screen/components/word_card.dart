@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/words_provider.dart';
+import 'package:words_app/repositories/words_repository.dart';
 import 'package:words_app/utils/size_config.dart';
 
 import 'title_text_holder_container.dart';
@@ -28,7 +28,8 @@ class WordCard extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.width;
     double defaultSize = SizeConfig.defaultSize;
-    final wordsData = Provider.of<Words>(context, listen: false).wordsData;
+    final wordsData =
+        Provider.of<WordsRepository>(context, listen: false).wordsData;
     return Container(
         padding: EdgeInsets.only(
           right: defaultSize * 3,

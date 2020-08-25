@@ -9,7 +9,7 @@ import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/part.dart';
 import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/words_provider.dart';
+import 'package:words_app/repositories/words_repository.dart';
 import 'package:words_app/screens/review_card_screen/components/back_container.dart';
 import 'package:words_app/screens/review_card_screen/components/word_card.dart';
 import 'package:words_app/screens/training_screen/matches.dart';
@@ -67,7 +67,8 @@ class _ReviewCardState extends State<ReviewCard>
     SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize;
 
-    final wordsData = Provider.of<Words>(context, listen: false).wordsData;
+    final wordsData =
+        Provider.of<WordsRepository>(context, listen: false).wordsData;
     return Scaffold(
       appBar: BaseAppBar(
         title: Text("Collection's name"),

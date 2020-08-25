@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/base_bottom_appbar.dart';
 import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/helpers/functions.dart';
-import 'package:words_app/repositories/words_provider.dart';
+import 'package:words_app/repositories/words_repository.dart';
 import 'package:words_app/screens/card_creator_screen//card_creator.dart';
 import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
 import 'package:words_app/utils/size_config.dart';
@@ -26,7 +28,7 @@ class _WordsScreenState extends State<WordsScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final providerData = Provider.of<Words>(context, listen: false);
+    final providerData = Provider.of<WordsRepository>(context, listen: false);
     Map args = ModalRoute.of(context).settings.arguments;
     String collectionId = args['id'];
     String collectionTitle = args['title'];
@@ -86,7 +88,7 @@ class _WordsScreenState extends State<WordsScreen> {
                 : IconButton(
                     icon: Icon(Icons.refresh),
                     onPressed: () async {
-                      await Provider.of<Words>(context, listen: false)
+                      await Provider.of<WordsRepository>(context, listen: false)
                           .populateList(collectionId);
                     },
                   )
@@ -142,97 +144,98 @@ class _WordsScreenState extends State<WordsScreen> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: FutureBuilder(
-          future: Provider.of<Words>(context, listen: false)
-              .fetchAndSetWords(collectionId),
-          builder: (context, snapshot) => snapshot.connectionState ==
-                  ConnectionState.waiting
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Container(
+        body: BlocBuilder<WordsBloc, WordsState>(
+          builder: (context, state) {
+            if (state is WordsLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is WordsSuccess) {
+              return Container(
                   padding: EdgeInsets.only(bottom: 25.0),
                   // Here we render only listView
-                  child: Consumer<Words>(
-                    builder: (context, providerData, child) {
-                      return ListView.builder(
-                        // itemExtent: 100,
-                        itemCount: providerData.wordsData.length,
-                        // semanticChildCount: 1,
-                        itemBuilder: (context, index) {
-                          /// Call conformation for removing word from collection
-                          void removeWord() {
-                            setState(() {
-                              providerData
-                                  .removeWord(providerData.wordsData[index]);
-                              Navigator.of(context).pop(true);
-                            });
-                          }
+                  child: ListView.builder(
+                    // itemExtent: 100,
+                    itemCount: state.words.length,
+                    // semanticChildCount: 1,
+                    itemBuilder: (context, index) {
+                      /// Call conformation for removing word from collection
+                      // void removeWord() {
+                      //   setState(() {
+                      //     providerData
+                      //         .removeWord(providerData.wordsData[index]);
+                      //     Navigator.of(context).pop(true);
+                      //   });
+                      // }
 
-                          return Slidable(
-                            enabled: providerData.isEditingMode ? false : true,
+                      return Slidable(
+                        enabled: providerData.isEditingMode ? false : true,
 
-                            /// WORD CARD
-                            child: WordCard(
-                              toggleIsSelection: () {
-                                setState(() {
-                                  providerData.isEditingMode = true;
-                                });
-                              },
-                              index: index,
-                              selectedData: selectedData,
-                            ),
-                            actionPane: SlidableDrawerActionPane(),
-                            secondaryActions: <Widget>[
-                              IconSlideAction(
-                                  caption: 'Edit',
-                                  color: Colors.black45,
-                                  icon: Icons.edit,
-                                  onTap: () =>
-                                      // Navigator.pushNamed(
-                                      //   context,
-                                      //   CardCreator.id,
-                                      //   arguments: {
-                                      //     'id': collectionId,
-                                      //     'index': index,
-                                      //     'editMode': true,
-                                      //   },
-                                      // ),
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => CardCreator(
-                                                    index: index,
-                                                    editMode: true,
-                                                    collectionId: collectionId,
-                                                    targetWord: providerData
-                                                        .wordsData[index]
-                                                        .targetLang,
-                                                    secondWord: providerData
-                                                        .wordsData[index]
-                                                        .secondLang,
-                                                    ownWord: providerData
-                                                        .wordsData[index]
-                                                        .ownLang,
-                                                    thirdWord: providerData
-                                                        .wordsData[index]
-                                                        .thirdLang,
-                                                  )))),
-                              IconSlideAction(
-                                  caption: 'Delete',
-                                  color: Colors.red,
-                                  icon: Icons.delete,
-                                  onTap: () => deleteConfirmation(
-                                      context,
-                                      removeWord,
-                                      'Do you want to delete this word?')),
-                            ],
-                          );
-                        },
+                        /// WORD CARD
+                        child: WordCard(
+                          toggleIsSelection: () {
+                            // setState(() {
+                            //   providerData.isEditingMode = true;
+                            // });
+                          },
+                          index: index,
+                          selectedData: state.words,
+                        ),
+                        actionPane: SlidableDrawerActionPane(),
+                        secondaryActions: <Widget>[
+                          IconSlideAction(
+                              caption: 'Edit',
+                              color: Colors.black45,
+                              icon: Icons.edit,
+                              onTap: () {}
+                              // Navigator.pushNamed(
+                              //   context,
+                              //   CardCreator.id,
+                              //   arguments: {
+                              //     'id': collectionId,
+                              //     'index': index,
+                              //     'editMode': true,
+                              //   },
+                              // ),
+                              //     Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => CardCreator(
+                              //       index: index,
+                              //       editMode: true,
+                              //       collectionId: collectionId,
+                              //       targetWord:
+                              //           providerData.wordsData[index].targetLang,
+                              //       secondWord:
+                              //           providerData.wordsData[index].secondLang,
+                              //       ownWord:
+                              //           providerData.wordsData[index].ownLang,
+                              //       thirdWord:
+                              //           providerData.wordsData[index].thirdLang,
+                              //     ),
+                              //   ),
+                              // ),
+
+                              ),
+                          IconSlideAction(
+                            caption: 'Delete',
+                            color: Colors.red,
+                            icon: Icons.delete,
+                            // onTap:
+                            // () => deleteConfirmation(
+                            //     context,
+                            //     removeWord,
+                            //     'Do you want to delete this word?'),
+                          )
+                        ],
                       );
                     },
-                  ),
-                ),
+                  ));
+            } else {
+              Text('Somthing went wrong....');
+            }
+          },
         ),
       ),
     );

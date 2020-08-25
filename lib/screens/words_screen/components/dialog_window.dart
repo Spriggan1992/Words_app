@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/repositories/validation_provider.dart';
-import 'package:words_app/repositories/words_provider.dart';
+import 'package:words_app/repositories/words_repository.dart';
 import 'dialog_text_holder_container.dart';
 // import 'package:validators/validators.dart';
 
@@ -14,8 +14,8 @@ class DialogWindow extends StatelessWidget {
   Widget build(BuildContext context) {
     // return Consumer<Words>(builder: (context, providerData, child) {
     final wordsDataIndex =
-        Provider.of<Words>(context, listen: false).wordsData[index];
-    final wordsData = Provider.of<Words>(context, listen: false);
+        Provider.of<WordsRepository>(context, listen: false).wordsData[index];
+    final wordsData = Provider.of<WordsRepository>(context, listen: false);
     final validation = Provider.of<ValidationForm>(context);
     return Container(
       height: 400.0,

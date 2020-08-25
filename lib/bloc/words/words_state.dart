@@ -7,4 +7,14 @@ abstract class WordsState extends Equatable {
   List<Object> get props => [];
 }
 
-class WordsInitial extends WordsState {}
+class WordsLoading extends WordsState {}
+
+class WordsSuccess extends WordsState {
+  final List <Word> words;
+  WordsSuccess([this.words = const []]);
+
+  List<Object> get props => [words];
+  
+}
+
+class WordsFailure extends WordsState {}

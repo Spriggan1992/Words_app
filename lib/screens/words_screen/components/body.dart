@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
 // import 'package:words_app/helpers/functions.dart';
-// import 'package:words_app/providers/words_provider.dart';
+// import 'package:words_app/providers/words_repository.dart';
 // import 'package:words_app/screens/card_creator_screen/card_creator.dart';
 
 // import 'package:words_app/screens/review_card_screen/review_card.dart';
@@ -109,7 +109,7 @@
 // // import 'package:flutter/material.dart';
 // // import 'package:provider/provider.dart';
 // // import 'package:words_app/helpers/functions.dart';
-// // import 'package:words_app/providers/words_provider.dart';
+// // import 'package:words_app/providers/words_repository.dart';
 // // import 'package:words_app/screens/card_creator_screen/card_creator.dart';
 // // import 'package:words_app/screens/manager_collection/components/word_card.dart';
 

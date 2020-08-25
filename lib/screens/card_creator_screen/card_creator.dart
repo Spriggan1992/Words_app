@@ -10,7 +10,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/components/base_appbar.dart';
-import 'package:words_app/repositories/words_provider.dart';
+import 'package:words_app/repositories/words_repository.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/size_config.dart';
 import 'package:words_app/utils/utilities.dart';
@@ -152,7 +152,7 @@ class _CardCreatorState extends State<CardCreator> {
     // final bool editMode = args['editMode'];
     SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize;
-    final providerData = Provider.of<Words>(context, listen: false);
+    final providerData = Provider.of<WordsRepository>(context, listen: false);
     return Scaffold(
       appBar: buildBaseAppBar(providerData, widget.collectionId, context,
           widget.editMode, widget.index),
@@ -323,7 +323,7 @@ class _CardCreatorState extends State<CardCreator> {
   }
 
   BaseAppBar buildBaseAppBar(
-    Words providerData,
+    WordsRepository providerData,
     String collectionId,
     BuildContext context,
     bool editMode,

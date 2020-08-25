@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/animations/shake_animation.dart';
 import 'package:words_app/bloc/collections/collections_bloc.dart';
+import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/helpers/functions.dart';
 
 import 'package:words_app/models/collection.dart';
@@ -31,6 +32,8 @@ class CollectionCard extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, WordsScreen.id,
             arguments: {'id': collections[index].id});
+        BlocProvider.of<WordsBloc>(context)
+          ..add(WordsLoaded(collections[index].id));
       },
       onLongPress: () {
         BlocProvider.of<CollectionsBloc>(context).add(CollectionsToggleAll());

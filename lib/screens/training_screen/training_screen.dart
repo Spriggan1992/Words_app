@@ -4,10 +4,9 @@ import 'package:words_app/components/base_bottom_appbar.dart';
 import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/words_provider.dart';
+import 'package:words_app/repositories/words_repository.dart';
 import 'package:provider/provider.dart';
-import "dart:math";
-import 'dart:collection';
+
 
 class Training extends StatefulWidget {
   static String id = 'training_screen';
@@ -48,7 +47,8 @@ class _TrainingState extends State<Training> {
   void getData(List data) {}
 
   void createData() {
-    final providerData = Provider.of<Words>(context, listen: false).wordsData;
+    final providerData =
+        Provider.of<WordsRepository>(context, listen: false).wordsData;
     targetWords = [...providerData];
     targetWords.shuffle();
     ownLanguageWords = [...providerData];
@@ -236,7 +236,7 @@ List<Widget> deck(List<Word> targetWords, removieItem, ownLanguageWords,
 // import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 // import 'package:words_app/constants/constants.dart';
 // import 'package:words_app/providers/word_data.dart';
-// import 'package:words_app/providers/words_provider.dart';
+// import 'package:words_app/providers/words_repository.dart';
 // import 'package:provider/provider.dart';
 // import "dart:math";
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/repositories/collections_repository.dart';
 
 void deleteConfirmation(BuildContext context, Function remover, String title) {
   showGeneralDialog(
