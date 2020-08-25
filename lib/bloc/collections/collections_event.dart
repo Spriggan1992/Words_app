@@ -26,6 +26,16 @@ class CollectionsToggleAll extends CollectionsEvent {
   List<Object> get props => [collection];
 }
 
+class CollectionsUpdated extends CollectionsEvent {
+  final String title;
+  final String language;
+  final String id;
+  CollectionsUpdated({this.id, this.title, this.language});
+
+  @override
+  List<Object> get props => [title, language];
+}
+
 class CollectionsDeleted extends CollectionsEvent {
   final String id;
 

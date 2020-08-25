@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:words_app/bloc/collections/collections_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/models/collection.dart';
-import 'package:words_app/repositories/collections_repository.dart';
+
 import 'package:words_app/components/my_separator.dart';
 import 'package:words_app/screens/collections_screen/components/text_holder.dart';
 
 class CollectionsEditDialog extends StatelessWidget {
   const CollectionsEditDialog({
     this.index,
-    this.onSubmitTitleField,
     this.onSaveForm,
-    this.onSubmitLanguageField,
     this.collection,
     Key key,
   }) : super(key: key);
 
   final int index;
 
-  final Function onSubmitTitleField;
+  // final String onSubmitTitleField;
+  // final String onSubmitLanguageField;
   final Function onSaveForm;
-  final Function onSubmitLanguageField;
   final Collection collection;
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
+    String onSubmitTitleField;
+    String onSubmitLanguageField;
     return Container(
       height: 340,
       width: 80,
@@ -56,9 +57,10 @@ class CollectionsEditDialog extends StatelessWidget {
                       textAlign: TextAlign.center,
                       // textInputAction: TextInputAction.done,
                       decoration: InputDecoration(border: InputBorder.none),
-                      controller:
-                          TextEditingController(text: collection.title),
-                      onChanged: onSubmitTitleField),
+                      controller: TextEditingController(text: collection.title),
+                      onChanged: (value) {
+                        onSubmitTitleField = value;
+                      }),
                 ),
                 Flexible(child: SizedBox(height: 10)),
                 Flexible(
@@ -79,7 +81,9 @@ class CollectionsEditDialog extends StatelessWidget {
                           TextEditingController(text: collection.language),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(border: InputBorder.none),
-                      onChanged: onSubmitLanguageField),
+                      onChanged: (value) {
+                        onSubmitLanguageField = value;
+                      }),
                 ),
                 Flexible(child: SizedBox(height: 10.0)),
                 // Words Text Holder
@@ -122,7 +126,16 @@ class CollectionsEditDialog extends StatelessWidget {
                 CustomRoundBtn(
                   icon: Icons.check,
                   fillColor: Color(0xffDA627D),
-                  onPressed: onSaveForm,
+                  // onPressed: onSaveForm,
+                  onPressed: () {
+                    context.bloc<CollectionsBloc>().add(
+                          CollectionsUpdated(
+                              id: collection.id,
+                              title: onSubmitTitleField,
+                              language: onSubmitLanguageField),
+                        );
+                        Navigator.pop(context);
+                  },
                 ),
 
                 // SizedBox(width: 5.0),

@@ -24,6 +24,8 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
       yield* _mapCollectionsAddedToState(event);
     } else if (event is CollectionsToggleAll) {
       yield* _mapCollectionsToggleAllToState(event);
+    } else if (event is CollectionsUpdated) {
+      yield* _mapCollectionsUpdateToState(event);
     } else if (event is CollectionsDeleted) {
       yield* _mapCollectionsDeletedToState(event);
     }
@@ -61,6 +63,32 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
         .map((collection) => collection.copyWith(isEditingBtns: !allToggled))
         .toList();
     yield CollectionsSuccess(updatedCollection);
+  }
+
+  Stream<CollectionsState> _mapCollectionsUpdateToState(
+      CollectionsUpdated event) async* {
+    try {
+      final updatedCollections =
+          (state as CollectionsSuccess).collections.map((collection) {
+        return collection.id == event.id
+            ? collection.copyWith(
+                id: collection.id,
+                isEditingBtns: collection.isEditingBtns,
+                title: event.title,
+                language: event.language,
+                showBtns: collection.showBtns)
+            : collection;
+      }).toList();
+      await collectionsRepository.updateCollection(data: {
+        'id': event.id,
+        'title': event.title,
+        'language': event.language,
+      });
+
+      yield CollectionsSuccess(updatedCollections);
+    } catch (_) {
+
+    }
   }
 
   Stream<CollectionsState> _mapCollectionsDeletedToState(

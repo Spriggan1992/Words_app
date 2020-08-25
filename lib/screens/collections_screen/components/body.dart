@@ -116,7 +116,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                         },
 
                         /// Show dialog with add collection
-                        showEditDialog: ( Collection collection) {
+                        showEditDialog: (Collection collection) {
                           showGeneralDialog(
                               barrierColor: Color(0xff906c7a).withOpacity(0.9),
                               transitionBuilder: (context, a1, a2, widget) {
@@ -133,7 +133,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                         backgroundColor: Colors.transparent,
                                         content: StatefulBuilder(
                                             builder: (context, setState) {
-                                              
                                           return CollectionsEditDialog(
                                             index: index,
                                             collection: collection,
@@ -147,15 +146,10 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                               //     .handleSubmitEditLanguageTitle(
                                               //         handleSubmitLanguage,
                                               //         wordsCollectionData);
-                                              Navigator.pop(context);
+                                              
                                             },
-                                            onSubmitLanguageField: (value) {
-                                              handleSubmitLanguage = value;
-                                            },
+
                                             // Takes value from [TextField], and stored it in handleSubmiteText
-                                            onSubmitTitleField: (value) {
-                                              handleSubmitTitle = value;
-                                            },
                                           );
                                         }),
                                       ),

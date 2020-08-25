@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/db_helper.dart';
 import '../models/collection.dart';
@@ -33,25 +34,6 @@ class CollectionsRepository with ChangeNotifier {
       },
     );
     return collection;
-    // void addNewCollection(String collectionTitle, String languageTitle) {
-    //   final collection = Collection(
-    //     // Creating object here for later adding it to _wordsCollectionData
-    //     id: Uuid().v4(), //create Id for collection
-    //     title: collectionTitle,
-    //     language: languageTitle,
-    //     showBtns: false,
-    //   );
-    //   _collections.add(collection);
-    //   notifyListeners();
-    //   //insert into collections table that we created in DBHelper
-    //   DBHelper.insert(
-    //     'collections',
-    //     {
-    //       'id': collection.id,
-    //       'title': collection.title,
-    //       'language': collection.language,
-    //     },
-    //   );
   }
 
   ///Fetching data from db  and setting the _collections
@@ -74,66 +56,24 @@ class CollectionsRepository with ChangeNotifier {
     DBHelper.delete('collections', id);
   }
 
-// we utilize DBHelper method insert,  which can also modify data if it finds this entry in db
-  //TODO: think of making two methods below  into one method with
-  void handleSubmitEditTitle(dynamic value, Collection collection) {
-    // collection.changeCollectionTitle(value);
-
-    notifyListeners();
-    DBHelper.update(
+  ///update [Collection] by ID receiving <Map>[data]
+  Future<void> updateCollection({Map<String, Object> data}) async {
+    final db = await DBHelper.database();
+    db.update(
       'collections',
-      {
-        'id': collection.id,
-        'title': collection.title,
-        'language': collection.language,
-      },
+      data,
+      where: 'id = ?',
+      whereArgs: [data['id']],
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  void handleSubmitEditLanguageTitle(dynamic value, Collection collection) {
-    // collection.changeLanguageTitle(value);
-    notifyListeners();
-
-    // we utilize DBHelper method insert,  which can also modify data if it finds this entry in db
-    DBHelper.update(
-      'collections',
-      {
-        'id': collection.id,
-        'title': collection.title,
-        'language': collection.language,
-      },
-    );
-  }
-
-  /// toggle [showBtns] in path: [providers\collection_data.dart]
-  void toggleBtns() {
-    for (int i = 0; i < wordsCollectionData.length; i++) {
-      // wordsCollectionData[i].toggleShowBtns();
-
-      notifyListeners();
-    }
-  }
-
-  bool isEditingBtns = false;
-  void toggleIsEditingBtns() {
-    isEditingBtns = !isEditingBtns;
-    notifyListeners();
-  }
-
-  void checkIsEditingBtns(AnimationController controller) {
-    if (isEditingBtns == true) {
-      isEditingBtns = false;
-      controller.reset();
-    }
-    notifyListeners();
-  }
-
-  void runAnimation(AnimationController controller) {
-    toggleIsEditingBtns();
-    if (isEditingBtns) {
-      controller.repeat(reverse: true);
-    } else {
-      controller.reset();
-    }
-  }
+  // void runAnimation(AnimationController controller) {
+  //   toggleIsEditingBtns();
+  //   if (isEditingBtns) {
+  //     controller.repeat(reverse: true);
+  //   } else {
+  //     controller.reset();
+  //   }
+  // }
 }
