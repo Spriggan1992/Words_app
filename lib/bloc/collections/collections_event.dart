@@ -18,9 +18,9 @@ class CollectionsAdded extends CollectionsEvent {
   List<Object> get props => [title, language];
 }
 
-class CollectionsUpdated extends CollectionsEvent {
+class CollectionsToggleAll extends CollectionsEvent {
   final Collection collection;
-  CollectionsUpdated({this.collection});
+  CollectionsToggleAll({this.collection});
 
   @override
   List<Object> get props => [collection];

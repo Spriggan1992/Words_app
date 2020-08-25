@@ -20,7 +20,7 @@ class CollectionsRepository with ChangeNotifier {
       title: collectionTitle,
       language: languageTitle,
       showBtns: false,
-      isEditingBtns: true,
+      isEditingBtns: false,
     );
 
     //insert into collections table that we created in DBHelper

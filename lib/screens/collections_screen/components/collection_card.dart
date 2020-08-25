@@ -44,9 +44,7 @@ class CollectionCard extends StatelessWidget {
         },
         onLongPress: () {
           BlocProvider.of<CollectionsBloc>(context)
-            ..add(CollectionsUpdated(
-                collection: collections[index].copyWith(
-                    isEditingBtns: !collections[index].isEditingBtns)));
+            ..add(CollectionsToggleAll());
         },
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
