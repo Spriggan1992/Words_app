@@ -110,7 +110,7 @@ class WordsRepository with ChangeNotifier {
       return word;
     }).toList();
 
-    notifyListeners();
+    return _words;
   }
 
   void removeWord(value) {

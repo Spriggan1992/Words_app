@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/words_repository.dart';
 import 'package:words_app/screens/review_card_screen/review_card.dart';
 import 'package:words_app/screens/words_screen/components/dialog_window.dart';
@@ -12,11 +13,12 @@ class WordCard extends StatefulWidget {
     this.index,
     this.toggleIsSelection,
     this.selectedData,
+    this.word,
   });
   final index;
   final Function toggleIsSelection;
   final List selectedData;
-
+  final Word word;
   @override
   _WordCardState createState() => _WordCardState();
 }
@@ -64,8 +66,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
     final defaultSize = SizeConfig.defaultSize;
 
     /// Receiving word data from[ word_data provider], using index to extract single item from array
-    final word = Provider.of<WordsRepository>(context, listen: false)
-        .wordsData[widget.index];
+    final word = widget.selectedData[widget.index];
     final providerData = Provider.of<WordsRepository>(context, listen: false);
     return ExpandableContainer(
       collapseHeight: defaultSize * 9,

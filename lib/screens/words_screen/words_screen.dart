@@ -173,6 +173,7 @@ class _WordsScreenState extends State<WordsScreen> {
                         enabled: providerData.isEditingMode ? false : true,
 
                         /// WORD CARD
+                        // child: Text(state.words[index].targetLang),
                         child: WordCard(
                           toggleIsSelection: () {
                             // setState(() {
@@ -181,7 +182,8 @@ class _WordsScreenState extends State<WordsScreen> {
                           },
                           index: index,
                           selectedData: state.words,
-                        ),
+                          word: state.words[index],
+                        ), //
                         actionPane: SlidableDrawerActionPane(),
                         secondaryActions: <Widget>[
                           IconSlideAction(
