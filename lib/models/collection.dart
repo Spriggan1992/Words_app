@@ -17,7 +17,7 @@ class Collection extends Equatable {
   final String language;
   final bool showBtns;
   final bool isEditingBtns;
-  final List<Word> collection;
+  List<Word> collection;
   final bool isEditingMode;
 
   @override

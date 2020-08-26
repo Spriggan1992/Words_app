@@ -20,42 +20,37 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (event is WordsLoaded) {
       yield* _mapWordsLoadedToState(event);
     } else if (event is WordsToggleEditMode) {
-      yield* _mapWordsToggleEditModeToState(event);
+      yield* _mapWordsToggleEditModeToState();
     }
   }
 
   Stream<WordsState> _mapWordsLoadedToState(WordsLoaded event) async* {
     // print(event.id);
     try {
-      var words = await wordsRepository.fetchAndSetWords(event.words.id);
+      final words = await wordsRepository.fetchAndSetWords(event.id);
 
-      collection = collection.copyWith(
-        id: event.words.id,
-        isEditingMode: event.words.isEditingMode,
-        title: event.words.title,
-        language: event.words.language,
-        collection: words,
-      );
+      // collection = collection.copyWith(
+      //   id: event.words.id,
+      //   isEditingMode: event.words.isEditingMode,
+      //   title: event.words.title,
+      //   language: event.words.language,
+      //   collection: words,
 
-      
       // print(words);
-      yield WordsSuccess(collection);
+      yield WordsSuccess(words: words);
     } catch (_) {
       yield WordsFailure();
     }
   }
 
-  Stream<WordsState> _mapWordsToggleEditModeToState(
-      WordsToggleEditMode event) async* {
+  Stream<WordsState> _mapWordsToggleEditModeToState() async* {
     try {
       // final toggle = ((state as WordsSuccess).words.isEditingMode);
-      final updatedWords = (state as WordsSuccess).words.copyWith(
-            isEditingMode: !event.isEditingMode,
-          );
-      print(updatedWords.collection);
+      final updatedWords = !(state as WordsSuccess).isEditingMode;
+
       // print(
       // "Printing _mapWordsToggleEditModeToState ${updatedWords.collection[1].id == null} ");
-      yield WordsSuccess(updatedWords);
+      yield WordsSuccess(isEditingMode: updatedWords);
     } catch (_) {
       yield WordsFailure();
     }

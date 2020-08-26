@@ -8,11 +8,11 @@ abstract class WordsEvent extends Equatable {
 }
 
 class WordsLoaded extends WordsEvent {
-  final Collection words;
+  final String id;
 
-  WordsLoaded(this.words);
+  WordsLoaded(this.id);
 
-  List<Object> get props => [words];
+  List<Object> get props => [id];
 }
 
 class WordsAdded extends WordsEvent {}
@@ -20,11 +20,11 @@ class WordsAdded extends WordsEvent {}
 class WordsDeleted extends WordsEvent {}
 
 class WordsToggleEditMode extends WordsEvent {
-  final bool isEditingMode;
+  // final bool isEditingMode;
 
-  WordsToggleEditMode(this.isEditingMode);
+  // WordsToggleEditMode(this.isEditingMode);
 
-  List<Object> get props => [isEditingMode];
+  // List<Object> get props => [isEditingMode];
 }
 
 class WordsToggledAll extends WordsEvent {}

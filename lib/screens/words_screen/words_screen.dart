@@ -108,7 +108,7 @@ class _WordsScreenState extends State<WordsScreen> {
                       children: <Widget>[
                         Align(
                           child: Text(
-                            "${state.words.title}",
+                            "$collectionTitle",
                             style: TextStyle(
                               fontSize: 20,
                               color: Theme.of(context).accentColor,
@@ -138,7 +138,7 @@ class _WordsScreenState extends State<WordsScreen> {
                         // Here we render only listView
                         child: ListView.builder(
                           // itemExtent: 100,
-                          itemCount: state.words.collection.length,
+                          itemCount: state.words.length,
                           // semanticChildCount: 1,
                           itemBuilder: (context, index) {
                             /// Call conformation for removing word from collection
@@ -157,15 +157,15 @@ class _WordsScreenState extends State<WordsScreen> {
                               /// WORD CARD
                               // child: Text(state.words[index].targetLang),
                               child: WordCard(
-                                collection: state.words,
+                                isEditingMode: state.isEditingMode,
                                 toggleIsSelection: () {
                                   // setState(() {
                                   //   providerData.isEditingMode = true;
                                   // });
                                 },
                                 index: index,
-                                selectedData: state.words.collection,
-                                word: state.words.collection[index],
+                                selectedData: state.words,
+                                word: state.words[index],
                               ), //
                               actionPane: SlidableDrawerActionPane(),
                               secondaryActions: <Widget>[

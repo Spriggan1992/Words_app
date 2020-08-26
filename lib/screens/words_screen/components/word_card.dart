@@ -21,7 +21,9 @@ class WordCard extends StatefulWidget {
     this.selectedData,
     this.collection,
     this.word,
+    this.isEditingMode,
   });
+  final bool isEditingMode;
   final index;
   final Function toggleIsSelection;
   final List selectedData;
@@ -83,10 +85,10 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
       expanded: isExpanded,
       child: GestureDetector(
         // onLongPress: providerData.isEditingMode
-        onLongPress: widget.collection.isEditingMode
+        onLongPress: widget.isEditingMode
             ? () {}
             : () {
-                BlocProvider.of<WordsBloc>(context).add(WordsToggleEditMode(widget.collection.isEditingMode));
+                BlocProvider.of<WordsBloc>(context).add(WordsToggleEditMode());
                 // widget.toggleIsSelection();
                 // Timer(
                 //   Duration(milliseconds: 10),
@@ -99,7 +101,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                 // );
               },
         // onTap: providerData.isEditingMode
-        onTap: widget.collection.isEditingMode
+        onTap: widget.isEditingMode
             ? () {
                 // providerData
                 //     .toggleisSelectedWord(providerData.wordsData[widget.index]);
@@ -215,7 +217,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                 ),
               ),
               // Arrow Icon
-              false
+              widget.isEditingMode
                   // providerData.isEditingMode
                   ? Container()
                   : Positioned(

@@ -10,9 +10,10 @@ abstract class WordsState extends Equatable {
 class WordsLoading extends WordsState {}
 
 class WordsSuccess extends WordsState {
-  final Collection words;
+  final bool isEditingMode;
+  final List<Word> words;
   // final List <Word> words;
-  WordsSuccess([this.words]);
+  WordsSuccess({this.words = const [], this.isEditingMode = false});
 
   List<Object> get props => [words];
 }
