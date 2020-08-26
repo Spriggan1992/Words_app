@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/animations/shake_animation.dart';
+import 'package:words_app/bloc/words/words_bloc.dart';
+import 'package:words_app/models/collection.dart';
 
 import '../../../models/word.dart';
 import '../../../repositories/words_repository.dart';
@@ -16,12 +19,14 @@ class WordCard extends StatefulWidget {
     this.index,
     this.toggleIsSelection,
     this.selectedData,
+    this.collection,
     this.word,
   });
   final index;
   final Function toggleIsSelection;
   final List selectedData;
   final Word word;
+  final Collection collection;
   @override
   _WordCardState createState() => _WordCardState();
 }
@@ -78,22 +83,23 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
       expanded: isExpanded,
       child: GestureDetector(
         // onLongPress: providerData.isEditingMode
-        onLongPress: false
+        onLongPress: widget.collection.isEditingMode
             ? () {}
             : () {
-                widget.toggleIsSelection();
-                Timer(
-                  Duration(milliseconds: 10),
-                  () {
-                    // providerData.toggleisSelectedWord(
-                    //     providerData.wordsData[widget.index]);
-                    // providerData.addItemInList();
-                    // print(providerData.selectedData.length);
-                  },
-                );
+                BlocProvider.of<WordsBloc>(context).add(WordsToggleEditMode(widget.collection.isEditingMode));
+                // widget.toggleIsSelection();
+                // Timer(
+                //   Duration(milliseconds: 10),
+                //   () {
+                //     // providerData.toggleisSelectedWord(
+                //     //     providerData.wordsData[widget.index]);
+                //     // providerData.addItemInList();
+                //     // print(providerData.selectedData.length);
+                //   },
+                // );
               },
         // onTap: providerData.isEditingMode
-        onTap: false
+        onTap: widget.collection.isEditingMode
             ? () {
                 // providerData
                 //     .toggleisSelectedWord(providerData.wordsData[widget.index]);
@@ -101,27 +107,27 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                 // print(providerData.selectedData.length);
               }
             : () {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        ReviewCard(index: widget.index),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      var begin = 0.0;
-                      var end = 1.0;
-                      var curve = Curves.ease;
+                // Navigator.push(
+                //   context,
+                //   PageRouteBuilder(
+                //     pageBuilder: (context, animation, secondaryAnimation) =>
+                //         ReviewCard(index: widget.index),
+                //     transitionsBuilder:
+                //         (context, animation, secondaryAnimation, child) {
+                //       var begin = 0.0;
+                //       var end = 1.0;
+                //       var curve = Curves.ease;
 
-                      var tween = Tween(begin: begin, end: end)
-                          .chain(CurveTween(curve: curve));
-                      return ScaleTransition(
-                        scale: animation.drive(tween),
-                        alignment: Alignment.center,
-                        child: child,
-                      );
-                    },
-                  ),
-                );
+                //       var tween = Tween(begin: begin, end: end)
+                //           .chain(CurveTween(curve: curve));
+                //       return ScaleTransition(
+                //         scale: animation.drive(tween),
+                //         alignment: Alignment.center,
+                //         child: child,
+                //       );
+                //     },
+                //   ),
+                // );
               },
         child: Container(
           decoration: BoxDecoration(

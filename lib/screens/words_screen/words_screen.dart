@@ -40,17 +40,19 @@ class _WordsScreenState extends State<WordsScreen> {
         // Use future builder because when using fetch data it returns future
         floatingActionButton: ReusableFloatActionButton(
           onPressed: () {
-            setState(() {});
-            providerData.isEditingMode = false;
-            providerData.clearSelectedData();
+            // setState(() {});
+            // providerData.isEditingMode = false;
+            // providerData.clearSelectedData();
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CardCreator(
-                          editMode: false,
-                          collectionId: collectionId,
-                          index: 0,
-                        )));
+              context,
+              MaterialPageRoute(
+                builder: (context) => CardCreator(
+                  editMode: false,
+                  collectionId: collectionId,
+                  index: 0,
+                ),
+              ),
+            );
           },
           // Navigator.pushNamed(context, CardCreator.id,
           //     arguments: {'id': collectionId, 'editMode': false}),
@@ -79,7 +81,7 @@ class _WordsScreenState extends State<WordsScreen> {
                               ? providerData.wordsData
                               : providerData.selectedData
                         });
-                    providerData.isEditingMode = false;
+                    // providerData.isEditingMode = false;
                     setState(() {});
                   }),
             ],
@@ -149,12 +151,13 @@ class _WordsScreenState extends State<WordsScreen> {
                             // }
 
                             return Slidable(
-                              enabled:
-                                  providerData.isEditingMode ? false : true,
+                              // enabled:
+                              //     providerData.isEditingMode ? false : true,
 
                               /// WORD CARD
                               // child: Text(state.words[index].targetLang),
                               child: WordCard(
+                                collection: state.words,
                                 toggleIsSelection: () {
                                   // setState(() {
                                   //   providerData.isEditingMode = true;

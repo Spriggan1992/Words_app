@@ -17,7 +17,7 @@ class Collection extends Equatable {
   final String language;
   final bool showBtns;
   final bool isEditingBtns;
-  List<Word> collection;
+  final List<Word> collection;
   final bool isEditingMode;
 
   @override
@@ -31,6 +31,7 @@ class Collection extends Equatable {
     bool showBtns,
     bool isEditingBtns,
     bool isEditingMode,
+    List<Word> collection,
   }) {
     return Collection(
       id: id ?? this.id,
@@ -39,6 +40,7 @@ class Collection extends Equatable {
       showBtns: showBtns ?? this.showBtns,
       isEditingBtns: isEditingBtns ?? this.isEditingBtns,
       isEditingMode: isEditingMode ?? this.isEditingMode,
+      collection: collection ?? this.collection,
     );
   }
 

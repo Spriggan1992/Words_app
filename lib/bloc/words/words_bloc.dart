@@ -13,40 +13,53 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
   WordsBloc({this.wordsRepository}) : super(WordsLoading());
 
   final WordsRepository wordsRepository;
-
+  Collection collection;
   Stream<WordsState> mapEventToState(
     WordsEvent event,
   ) async* {
     if (event is WordsLoaded) {
       yield* _mapWordsLoadedToState(event);
+    } else if (event is WordsToggleEditMode) {
+      yield* _mapWordsToggleEditModeToState(event);
     }
-    //   else if (event is WordsAdded) {
-    //     yield* _mapWordsAddedToState();
-    //  }
   }
 
   Stream<WordsState> _mapWordsLoadedToState(WordsLoaded event) async* {
     // print(event.id);
     try {
-       var words = event.words;
-        words.collection = await wordsRepository.fetchAndSetWords(event.words.id);
+      var words = await wordsRepository.fetchAndSetWords(event.words.id);
+
+      collection = collection.copyWith(
+        id: event.words.id,
+        isEditingMode: event.words.isEditingMode,
+        title: event.words.title,
+        language: event.words.language,
+        collection: words,
+      );
+
+      
       // print(words);
-      yield WordsSuccess(words);
+      yield WordsSuccess(collection);
     } catch (_) {
       yield WordsFailure();
     }
   }
 
-  // Stream<WordsState> _mapWordsToggleEditToState(WordsLoaded event) async* {
-  //   // print(event.id);
-  //   try {
-  //     final words = await wordsRepository.fetchAndSetWords(event.words.id);
-  //     // print(words);
-  //     yield WordsSuccess(words);
-  //   } catch (_) {
-  //     yield WordsFailure();
-  //   }
-  // }
+  Stream<WordsState> _mapWordsToggleEditModeToState(
+      WordsToggleEditMode event) async* {
+    try {
+      // final toggle = ((state as WordsSuccess).words.isEditingMode);
+      final updatedWords = (state as WordsSuccess).words.copyWith(
+            isEditingMode: !event.isEditingMode,
+          );
+      print(updatedWords.collection);
+      // print(
+      // "Printing _mapWordsToggleEditModeToState ${updatedWords.collection[1].id == null} ");
+      yield WordsSuccess(updatedWords);
+    } catch (_) {
+      yield WordsFailure();
+    }
+  }
 
 // Stream<WordsState> _mapWordsAddedToState(
 //       ) async* {
