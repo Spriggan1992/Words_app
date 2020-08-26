@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:words_app/models/collection.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/words_repository.dart';
 
@@ -27,13 +28,25 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
   Stream<WordsState> _mapWordsLoadedToState(WordsLoaded event) async* {
     // print(event.id);
     try {
-      final words = await wordsRepository.fetchAndSetWords(event.id);
-      print(words);
+       var words = event.words;
+        words.collection = await wordsRepository.fetchAndSetWords(event.words.id);
+      // print(words);
       yield WordsSuccess(words);
     } catch (_) {
       yield WordsFailure();
     }
   }
+
+  // Stream<WordsState> _mapWordsToggleEditToState(WordsLoaded event) async* {
+  //   // print(event.id);
+  //   try {
+  //     final words = await wordsRepository.fetchAndSetWords(event.words.id);
+  //     // print(words);
+  //     yield WordsSuccess(words);
+  //   } catch (_) {
+  //     yield WordsFailure();
+  //   }
+  // }
 
 // Stream<WordsState> _mapWordsAddedToState(
 //       ) async* {

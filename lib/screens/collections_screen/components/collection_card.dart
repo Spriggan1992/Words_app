@@ -33,7 +33,7 @@ class CollectionCard extends StatelessWidget {
         Navigator.pushNamed(context, WordsScreen.id,
             arguments: {'id': collections[index].id});
         BlocProvider.of<WordsBloc>(context)
-          ..add(WordsLoaded(collections[index].id));
+          ..add(WordsLoaded(collections[index]));
       },
       onLongPress: () {
         BlocProvider.of<CollectionsBloc>(context).add(CollectionsToggleAll());

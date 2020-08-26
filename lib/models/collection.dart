@@ -1,13 +1,15 @@
 import 'package:equatable/equatable.dart';
+import 'package:words_app/models/word.dart';
 
-
- class Collection extends Equatable {
+class Collection extends Equatable {
   Collection(
-      {this.title,
+      {this.collection,
+      this.title,
       this.language,
       this.id,
       this.showBtns = false,
-      this.isEditingBtns});
+      this.isEditingBtns,
+      this.isEditingMode = false});
   //id for DB
 
   final String id;
@@ -15,10 +17,12 @@ import 'package:equatable/equatable.dart';
   final String language;
   final bool showBtns;
   final bool isEditingBtns;
+  List<Word> collection;
+  final bool isEditingMode;
 
   @override
-  
-  List<Object> get props => [id, title, language, showBtns, isEditingBtns];
+  List<Object> get props =>
+      [id, title, language, showBtns, isEditingBtns, collection, isEditingMode];
 
   Collection copyWith({
     String id,
@@ -26,6 +30,7 @@ import 'package:equatable/equatable.dart';
     String language,
     bool showBtns,
     bool isEditingBtns,
+    bool isEditingMode,
   }) {
     return Collection(
       id: id ?? this.id,
@@ -33,6 +38,7 @@ import 'package:equatable/equatable.dart';
       language: language ?? this.language,
       showBtns: showBtns ?? this.showBtns,
       isEditingBtns: isEditingBtns ?? this.isEditingBtns,
+      isEditingMode: isEditingMode ?? this.isEditingMode,
     );
   }
 

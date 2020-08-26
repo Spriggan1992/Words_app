@@ -8,11 +8,11 @@ abstract class WordsEvent extends Equatable {
 }
 
 class WordsLoaded extends WordsEvent {
-  final String id;
+  final Collection words;
 
-  WordsLoaded(this.id);
+  WordsLoaded(this.words);
 
-  List<Object> get props => [id];
+  List<Object> get props => [words];
 }
 
 class WordsAdded extends WordsEvent {}
