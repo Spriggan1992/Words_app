@@ -8,6 +8,7 @@ import 'package:words_app/components/base_bottom_appbar.dart';
 import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
+import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/repositories/words_repository.dart';
 import 'package:words_app/screens/card_creator_screen//card_creator.dart';
@@ -97,11 +98,13 @@ class _WordsScreenState extends State<WordsScreen> {
               );
             }
             if (state is WordsSuccess) {
-              return Column(
+              return BlocBuilder<WordsCubit, bool>(
+                builder: (context, isEditingMode) {
+                  return Column(
                 children: [
                   /// Fake Appbar
                   Container(
-                    color: state.isEditMode
+                    color: isEditingMode
                         ? Colors.grey[500]
                         : Theme.of(context).primaryColor,
                     width: SizeConfig.blockSizeHorizontal * 100,
@@ -110,7 +113,7 @@ class _WordsScreenState extends State<WordsScreen> {
                       alignment: Alignment.centerRight,
                       children: <Widget>[
                         Align(
-                          child: state.isEditMode
+                          child: isEditingMode
                               ? Text('')
                               : Text(
                                   "$collectionTitle",
@@ -121,7 +124,7 @@ class _WordsScreenState extends State<WordsScreen> {
                                   ),
                                 ),
                         ),
-                        state.isEditMode
+                        isEditingMode
                             ? Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
@@ -204,7 +207,7 @@ class _WordsScreenState extends State<WordsScreen> {
                               /// WORD CARD
                               // child: Text(state.words[index].targetLang),
                               child: WordCard(
-                                isEditingMode: state.isEditMode,
+                                isEditingMode: isEditingMode,
                                 // isEditingMode: state.isEditMode,
                                 toggleIsSelection: () {
                                   // setState(() {
@@ -267,6 +270,8 @@ class _WordsScreenState extends State<WordsScreen> {
                         )),
                   ),
                 ],
+              );
+                },
               );
             } else {
               Text('Somthing went wrong....');

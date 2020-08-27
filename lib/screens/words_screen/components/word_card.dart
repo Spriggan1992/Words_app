@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/animations/shake_animation.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
+import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/models/collection.dart';
 
 import '../../../models/word.dart';
@@ -90,7 +91,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
             //     ? () {}
             //     :
             () {
-          BlocProvider.of<WordsBloc>(context).add(WordsToggleEditMode());
+          BlocProvider.of<WordsCubit>(context).toggleEditMode();
           // widget.toggleIsSelection();
           // Timer(
           //   Duration(milliseconds: 10),

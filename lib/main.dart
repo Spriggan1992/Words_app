@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/bloc/collections/collections_bloc.dart';
+import 'package:words_app/cubit/words/words_cubit.dart';
 
 import 'bloc/words/words_bloc.dart';
 import 'repositories/collections_repository.dart';
@@ -39,7 +40,12 @@ void main() => runApp(MultiBlocProvider(providers: [
             wordsRepository: WordsRepository(),
           );
         },
-      )
+      ),
+      BlocProvider<WordsCubit>(
+        create: (context) {
+          return WordsCubit();
+        },
+      ),
     ], child: MyApp())
 
         // BlocProvider(

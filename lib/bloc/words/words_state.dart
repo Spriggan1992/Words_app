@@ -24,13 +24,12 @@ class WordsLoading extends WordsState {}
 
 class WordsSuccess extends WordsState {
   final List<Word> words;
-  final bool isEditMode;
-  WordsSuccess({this.words, this.isEditMode = false});
-  // final List <Word> words;
+  WordsSuccess({this.words});
+ 
 
 
 
-  List<Object> get props => [words, isEditMode];
+  List<Object> get props => [words];
 }
 
 class WordsFailure extends WordsState {}

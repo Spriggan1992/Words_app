@@ -20,12 +20,4 @@ class WordsAdded extends WordsEvent {}
 
 class WordsDeleted extends WordsEvent {}
 
-class WordsToggleEditMode extends WordsEvent {
-  // final bool isEdit;
-
-  // WordsToggleEditMode({this.isEdit});
-
-  // List<Object> get props => [isEdit];
-}
-
 class WordsToggledAll extends WordsEvent {}

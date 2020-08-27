@@ -19,8 +19,6 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
   ) async* {
     if (event is WordsLoaded) {
       yield* _mapWordsLoadedToState(event);
-    } else if (event is WordsToggleEditMode) {
-      yield* _mapWordsToggleEditModeToState();
     }
   }
 
@@ -28,19 +26,6 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     try {
       final words = await wordsRepository.fetchAndSetWords(event.id);
       yield WordsSuccess(words: words);
-    } catch (_) {
-      yield WordsFailure();
-    }
-  }
-
-  Stream<WordsState> _mapWordsToggleEditModeToState() async* {
-    try {
-      final List<Word> words = List.from((state as WordsSuccess).words);
-      final isEditing = (state as WordsSuccess).isEditMode;
-
-      yield WordsSuccess(words: words, isEditMode: !isEditing);
-
-      print(isEditing);
     } catch (_) {
       yield WordsFailure();
     }
