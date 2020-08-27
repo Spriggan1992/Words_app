@@ -35,11 +35,10 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
 
   Stream<WordsState> _mapWordsToggleEditModeToState() async* {
     try {
-      final data = (state as WordsSuccess).isEditMode;
-      final words = (state as WordsSuccess).words;
-      final isEditing =
-          (state as WordsSuccess).copyWith(words: words, isEditMode: !data);
-      yield WordsSuccess();
+      final List<Word> words = List.from((state as WordsSuccess).words);
+      final isEditing = (state as WordsSuccess).isEditMode;
+
+      yield WordsSuccess(words: words, isEditMode: !isEditing);
 
       print(isEditing);
     } catch (_) {

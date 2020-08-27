@@ -25,13 +25,10 @@ class WordsLoading extends WordsState {}
 class WordsSuccess extends WordsState {
   final List<Word> words;
   final bool isEditMode;
-  WordsSuccess({this.words, this.isEditMode});
+  WordsSuccess({this.words, this.isEditMode = false});
   // final List <Word> words;
 
-  WordsSuccess copyWith({List<Word> words, bool isEditMode}) {
-    return WordsSuccess(
-        words: words ?? this.words, isEditMode: isEditMode ?? this.isEditMode);
-  }
+
 
   List<Object> get props => [words, isEditMode];
 }
