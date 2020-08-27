@@ -142,8 +142,7 @@ class _WordsScreenState extends State<WordsScreen> {
               // }
 
               return Slidable(
-                // enabled:
-                //     providerData.isEditingMode ? false : true,
+                enabled: isEditingMode ? false : true,
 
                 /// WORD CARD
                 // child: Text(state.words[index].targetLang),
@@ -199,11 +198,11 @@ class _WordsScreenState extends State<WordsScreen> {
                     caption: 'Delete',
                     color: Colors.red,
                     icon: Icons.delete,
-                    // onTap:
-                    // () => deleteConfirmation(
-                    //     context,
-                    //     removeWord,
-                    //     'Do you want to delete this word?'),
+                    onTap: () => deleteConfirmation(context, () {
+                      BlocProvider.of<WordsBloc>(context)
+                          .add(WordsDeleted(word: state.words[index]));
+                      Navigator.pop(context);
+                    }, 'Do you want to delete this word?'),
                   )
                 ],
               );
@@ -265,7 +264,7 @@ class _WordsScreenState extends State<WordsScreen> {
                     // ),
                     IconButton(
                         onPressed: () {
-                         BlocProvider.of<WordsCubit>(context).toggleEditMode();
+                          BlocProvider.of<WordsCubit>(context).toggleEditMode();
                         },
                         icon: Icon(Icons.close)),
                   ],

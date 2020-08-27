@@ -29,6 +29,9 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (event is WordsDeletedSelectedAll) {
       yield* _mapWordsDeletedSelectedAllToState();
     }
+    if (event is WordsDeleted) {
+      yield* _mapWordsDeletedToState(event);
+    }
   }
 
   Stream<WordsState> _mapWordsLoadedToState(WordsLoaded event) async* {
@@ -78,6 +81,18 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
       });
 
       yield WordsSuccess(words: updateWords);
+    } catch (_) {
+      yield WordsFailure();
+    }
+  }
+
+  Stream<WordsState> _mapWordsDeletedToState(WordsDeleted event) async* {
+    try {
+      final List<Word> updateWords = List.from((state as WordsSuccess)
+          .words
+          .where((word) => word.id != event.word.id));
+      yield WordsSuccess(words: updateWords);
+      wordsRepository.removeWord(event.word);
     } catch (_) {
       yield WordsFailure();
     }

@@ -18,8 +18,6 @@ class WordsLoaded extends WordsEvent {
 
 class WordsAdded extends WordsEvent {}
 
-class WordsDeleted extends WordsEvent {}
-
 class WordsSelected extends WordsEvent {
   final Word word;
 
@@ -28,5 +26,12 @@ class WordsSelected extends WordsEvent {
 }
 
 class WordsSelectedAll extends WordsEvent {}
+
+class WordsDeleted extends WordsEvent {
+  final Word word;
+
+  WordsDeleted({this.word});
+  List<Object> get props => [word];
+}
 
 class WordsDeletedSelectedAll extends WordsEvent {}
