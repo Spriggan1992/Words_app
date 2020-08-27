@@ -20,4 +20,13 @@ class WordsAdded extends WordsEvent {}
 
 class WordsDeleted extends WordsEvent {}
 
-class WordsToggledAll extends WordsEvent {}
+class WordsSelected extends WordsEvent {
+  final Word word;
+
+  WordsSelected({this.word});
+  List<Object> get props => [word];
+}
+
+class WordsSelectedAll extends WordsEvent {}
+
+class WordsDeletedSelectedAll extends WordsEvent {}

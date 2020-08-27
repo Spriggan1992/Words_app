@@ -20,12 +20,64 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (event is WordsLoaded) {
       yield* _mapWordsLoadedToState(event);
     }
+    if (event is WordsSelected) {
+      yield* _mapWordsSelectedToState(event);
+    }
+    if (event is WordsSelectedAll) {
+      yield* _mapWordsSelectedAllToState();
+    }
+    if (event is WordsDeletedSelectedAll) {
+      yield* _mapWordsDeletedSelectedAllToState();
+    }
   }
 
   Stream<WordsState> _mapWordsLoadedToState(WordsLoaded event) async* {
     try {
       final words = await wordsRepository.fetchAndSetWords(event.id);
       yield WordsSuccess(words: words);
+    } catch (_) {
+      yield WordsFailure();
+    }
+  }
+
+  Stream<WordsState> _mapWordsSelectedToState(WordsSelected event) async* {
+    try {
+      final words = (state as WordsSuccess).words.map((word) {
+        return word.id == event.word.id
+            ? word.copyWith(isSelected: !event.word.isSelected)
+            : word;
+      }).toList();
+      yield WordsSuccess(words: words);
+    } catch (_) {
+      yield WordsFailure();
+    }
+  }
+
+  Stream<WordsState> _mapWordsSelectedAllToState() async* {
+    try {
+      final select = (state as WordsSuccess).words.every((word) {
+        return word.isSelected;
+      });
+      print(select);
+      final List<Word> updateWords = (state as WordsSuccess)
+          .words
+          .map((word) => word.copyWith(isSelected: !select))
+          .toList();
+      yield WordsSuccess(words: updateWords);
+    } catch (_) {
+      yield WordsFailure();
+    }
+  }
+
+  Stream<WordsState> _mapWordsDeletedSelectedAllToState() async* {
+    try {
+      final List<Word> updateWords = List.from((state as WordsSuccess).words);
+      updateWords.removeWhere((word) {
+        if (word.isSelected) wordsRepository.removeWord(word);
+        return word.isSelected;
+      });
+
+      yield WordsSuccess(words: updateWords);
     } catch (_) {
       yield WordsFailure();
     }

@@ -118,78 +118,77 @@ class WordsRepository with ChangeNotifier {
     return newValue;
   }
 
-  void removeWord(value) {
-    _words.remove(value);
-    notifyListeners();
-    DBHelper.delete('words', value.id);
+  void removeWord(Word word) {
+    
+    DBHelper.delete('words', word.id);
   }
 
-  void toggleTargetLang(Word words) {
-    words.toggleTargetLang();
+  // void toggleTargetLang(Word words) {
+  //   words.toggleTargetLang();
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 
-  void partHandleSubmit(dynamic value, Word words) {
-    words.changePart(value);
-    DBHelper.update('words', {
-      'id': words.id,
-      'partName': words.part.partName,
-      'partColor': words.part.partColor.toString(),
-    });
-    notifyListeners();
-  }
+  // void partHandleSubmit(dynamic value, Word words) {
+  //   words.changePart(value);
+  //   DBHelper.update('words', {
+  //     'id': words.id,
+  //     'partName': words.part.partName,
+  //     'partColor': words.part.partColor.toString(),
+  //   });
+  //   notifyListeners();
+  // }
 
-  void targetLangHandleSubmit(dynamic value, Word words) {
-    words.changeTargetLang(value);
-    DBHelper.update('words', {
-      'id': words.id,
-      'targetLang': words.targetLang,
-    });
-    notifyListeners();
-  }
+  // void targetLangHandleSubmit(dynamic value, Word words) {
+  //   words.changeTargetLang(value);
+  //   DBHelper.update('words', {
+  //     'id': words.id,
+  //     'targetLang': words.targetLang,
+  //   });
+  //   notifyListeners();
+  // }
 
-  void secondLangHandleSubmit(dynamic value, Word words) {
-    words.changeSecondLang(value);
-    DBHelper.update('words', {
-      'id': words.id,
-      'secondLang': words.secondLang,
-    });
-    notifyListeners();
-  }
+  // void secondLangHandleSubmit(dynamic value, Word words) {
+  //   words.changeSecondLang(value);
+  //   DBHelper.update('words', {
+  //     'id': words.id,
+  //     'secondLang': words.secondLang,
+  //   });
+  //   notifyListeners();
+  // }
 
-  void thirdLangHandleSubmit(dynamic value, Word words) {
-    words.changeThirdLang(value);
-    DBHelper.update('words', {
-      'id': words.id,
-      'thirdLang': words.thirdLang,
-    });
-    notifyListeners();
-  }
+  // void thirdLangHandleSubmit(dynamic value, Word words) {
+  //   words.changeThirdLang(value);
+  //   DBHelper.update('words', {
+  //     'id': words.id,
+  //     'thirdLang': words.thirdLang,
+  //   });
+  //   notifyListeners();
+  // }
 
-  void ownLangHandleSubmit(dynamic value, Word words) {
-    words.changeOwnLang(value);
-    DBHelper.update('words', {
-      'id': words.id,
-      'ownLang': words.ownLang,
-    });
-    notifyListeners();
-  }
+  // void ownLangHandleSubmit(dynamic value, Word words) {
+  //   words.changeOwnLang(value);
+  //   DBHelper.update('words', {
+  //     'id': words.id,
+  //     'ownLang': words.ownLang,
+  //   });
+  //   notifyListeners();
+  // }
 
-  void toggleSecondLang(Word words) {
-    words.toggleSecondLang();
-    notifyListeners();
-  }
+  // void toggleSecondLang(Word words) {
+  //   words.toggleSecondLang();
+  //   notifyListeners();
+  // }
 
-  void toggleOwnLang(Word words) {
-    words.toggleOwnLang();
-    notifyListeners();
-  }
+  // void toggleOwnLang(Word words) {
+  //   words.toggleOwnLang();
+  //   notifyListeners();
+  // }
 
-  void toggleShowImgInWordsProvider(Word words) {
-    words.toggleShowImg();
-    notifyListeners();
-  }
+  // void toggleShowImgInWordsProvider(Word words) {
+  //   words.toggleShowImg();
+  //   notifyListeners();
+  // }
 
   bool isEditingMode = false;
   // bool isSelected = false;
@@ -199,36 +198,32 @@ class WordsRepository with ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleisSelectedWord(Word words) {
-    words.toggleIsSelected();
-    // DBHelper.update('words', {
-    //   'id': words.id,
-    //   'isSelected': words.isSelected,
-    // });
-    notifyListeners();
-  }
+  // void toggleisSelectedWord(Word words) {
+  //   words.toggleIsSelected();
+  //   // DBHelper.update('words', {
+  //   //   'id': words.id,
+  //   //   'isSelected': words.isSelected,
+  //   // });
+  //   notifyListeners();
+  // }
 
   List selectedData = [];
 
-  void toogleAllSelectedWords() {
-    var dataList = [];
-    wordsData.forEach((item) => {dataList.add(item.isSelected)});
-    for (int i = 0; i < wordsData.length; i++) {
-      if (dataList.every((element) => element == false)) {
-        wordsData[i].isSelected = true;
-      } else if (dataList.every((element) => element == true)) {
-        wordsData[i].isSelected = false;
-      } else if (dataList.contains(true)) {
-        wordsData[i].isSelected = true;
-      }
-      // DBHelper.update('words', {
-      //   'id': wordsData[i].id,
-      //   'isSelected': wordsData[i].isSelected,
-      // });
-    }
+  // void toogleAllSelectedWords(List<Word> words) {
+  //   var dataList = [];
+  //   words.forEach((item) => {dataList.add(item.isSelected)});
+  //   for (int i = 0; i < words.length; i++) {
+  //     if (dataList.every((element) => element == false)) {
+  //      words[i].isSelected = true;
+  //     } else if (dataList.every((element) => element == true)) {
+  //       wordsData[i].isSelected = false;
+  //     } else if (dataList.contains(true)) {
+  //       wordsData[i].isSelected = true;
+  //     }
+  //   }
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 
   void addItemInList() {
     wordsData.forEach((item) {

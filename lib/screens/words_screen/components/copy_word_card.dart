@@ -76,20 +76,20 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
         onLongPress: providerData.isEditingMode
             ? () {}
             : () {
-                widget.toggleIsSelection();
-                Timer(Duration(milliseconds: 100), () {
-                  providerData.toggleisSelectedWord(
-                      providerData.wordsData[widget.index]);
-                  providerData.addItemInList();
-                  print(providerData.selectedData.length);
-                });
+                // widget.toggleIsSelection();
+                // Timer(Duration(milliseconds: 100), () {
+                //   providerData.toggleisSelectedWord(
+                //       providerData.wordsData[widget.index]);
+                //   providerData.addItemInList();
+                //   print(providerData.selectedData.length);
+                // });
               },
         onTap: providerData.isEditingMode
             ? () {
-                providerData
-                    .toggleisSelectedWord(providerData.wordsData[widget.index]);
-                providerData.addItemInList();
-                print(providerData.selectedData.length);
+                // providerData
+                //     .toggleisSelectedWord(providerData.wordsData[widget.index]);
+                // providerData.addItemInList();
+                // print(providerData.selectedData.length);
               }
             : () {
                 Navigator.push(

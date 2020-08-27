@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'part.dart';
 
-class Word with ChangeNotifier {
+// ignore: must_be_immutable
+class Word extends Equatable with ChangeNotifier {
   Word({
     this.id,
     this.targetLang,
@@ -19,64 +21,105 @@ class Word with ChangeNotifier {
     this.isSelected = false,
     // this.isEditingMode,
   });
-  String id;
-  String targetLang;
-  String ownLang;
-  String secondLang;
-  String thirdLang;
-  Part part;
-  File image;
-  String example;
-  String exampleTranslations;
-  bool isEditingTargetLang;
-  bool isEditingSecondLang;
-  bool isEditingOwnLang;
-  bool isEditingExampleTitle = true;
-  bool isEditingShowImg = true;
-  bool isSelected;
+  final String id;
+  final String targetLang;
+  final String ownLang;
+  final String secondLang;
+  final String thirdLang;
+  final Part part;
+  final File image;
+  final String example;
+  final String exampleTranslations;
+  final bool isEditingTargetLang;
+  final bool isEditingSecondLang;
+  final bool isEditingOwnLang;
+  final bool isEditingExampleTitle = true;
+  final bool isEditingShowImg = true;
+  final bool isSelected;
   // bool isEditingMode;
 
   // void toggleIsEditingMode() {
   //   isEditingMode = !isEditingMode;
   // }
 
-  void toggleIsSelected() {
-    isSelected = !isSelected;
+  Word copyWith({
+    String id,
+    String targetLang,
+    String ownLang,
+    String secondLang,
+    String thirdLang,
+    Part part,
+    File image,
+    String example,
+    String exampleTranslations,
+    bool isSelected,
+  }) {
+    return Word(
+        id: id ?? this.id,
+        targetLang: targetLang ?? this.targetLang,
+        secondLang: secondLang ?? this.secondLang,
+        thirdLang: thirdLang ?? this.thirdLang,
+        ownLang: ownLang ?? this.ownLang,
+        part: part ?? this.part,
+        image: image ?? this.image,
+        example: example ?? this.example,
+        exampleTranslations: exampleTranslations ?? this.exampleTranslations,
+        isSelected: isSelected ?? this.isSelected);
+
+    
   }
 
-  void changePart(Part newPart) {
-    part = newPart;
-  }
+  @override
+  
+  List<Object> get props => [
+        targetLang,
+        ownLang,
+        secondLang,
+        thirdLang,
+        part,
+        image,
+        example,
+        exampleTranslations,
+        isSelected
+      ];
 
-  void toggleTargetLang() {
-    isEditingTargetLang = !isEditingTargetLang;
-  }
+      // void toggleIsSelected() {
+    //   isSelected = !isSelected;
+    // }
 
-  void toggleSecondLang() {
-    isEditingSecondLang = !isEditingSecondLang;
-  }
+    // void changePart(Part newPart) {
+    //   part = newPart;
+    // }
 
-  void toggleOwnLang() {
-    isEditingOwnLang = !isEditingOwnLang;
-  }
+    // void toggleTargetLang() {
+    //   isEditingTargetLang = !isEditingTargetLang;
+    // }
 
-  void toggleShowImg() {
-    isEditingShowImg = !isEditingShowImg;
-  }
+    // void toggleSecondLang() {
+    //   isEditingSecondLang = !isEditingSecondLang;
+    // }
 
-  void changeTargetLang(String newName) {
-    targetLang = newName;
-  }
+    // void toggleOwnLang() {
+    //   isEditingOwnLang = !isEditingOwnLang;
+    // }
 
-  void changeSecondLang(String newName) {
-    secondLang = newName;
-  }
+    // void toggleShowImg() {
+    //   isEditingShowImg = !isEditingShowImg;
+    // }
 
-  void changeOwnLang(String newName) {
-    ownLang = newName;
-  }
+    // void changeTargetLang(String newName) {
+    //   targetLang = newName;
+    // }
 
-  void changeThirdLang(String newName) {
-    thirdLang = newName;
-  }
+    // void changeSecondLang(String newName) {
+    //   secondLang = newName;
+    // }
+
+    // void changeOwnLang(String newName) {
+    //   ownLang = newName;
+    // }
+
+    // void changeThirdLang(String newName) {
+    //   thirdLang = newName;
+    // }
 }

@@ -338,16 +338,16 @@ class _CardCreatorState extends State<CardCreator> {
           fillColor: Color(0xffDA627D),
           onPressed: editMode
               ? () {
-                  providerData.targetLangHandleSubmit(
-                      targetLang, providerData.wordsData[index]);
-                  providerData.ownLangHandleSubmit(
-                      ownLang, providerData.wordsData[index]);
-                  providerData.secondLangHandleSubmit(
-                      secondLang, providerData.wordsData[index]);
-                  providerData.thirdLangHandleSubmit(
-                      thirdLang, providerData.wordsData[index]);
-                  providerData.partHandleSubmit(
-                      part, providerData.wordsData[index]);
+                  // providerData.targetLangHandleSubmit(
+                  //     targetLang, providerData.wordsData[index]);
+                  // providerData.ownLangHandleSubmit(
+                  //     ownLang, providerData.wordsData[index]);
+                  // providerData.secondLangHandleSubmit(
+                  //     secondLang, providerData.wordsData[index]);
+                  // providerData.thirdLangHandleSubmit(
+                  //     thirdLang, providerData.wordsData[index]);
+                  // providerData.partHandleSubmit(
+                  //     part, providerData.wordsData[index]);
                   Navigator.pop(context);
                 }
               : () {

@@ -44,12 +44,12 @@ class DialogWindow extends StatelessWidget {
             fontSize: 20,
             isCheckedTitleName: wordsDataIndex.isEditingTargetLang,
             onPressedEditButton: () {
-              wordsData.toggleTargetLang(wordsDataIndex);
-              validation.toggleEditingDoneButton();
+              // wordsData.toggleTargetLang(wordsDataIndex);
+              // validation.toggleEditingDoneButton();
             },
             onChange: (value) {
-              validation.textValidation(value);
-              wordsData.targetLangHandleSubmit(value, wordsDataIndex);
+              // validation.textValidation(value);
+              // wordsData.targetLangHandleSubmit(value, wordsDataIndex);
             },
           ),
 
@@ -61,11 +61,11 @@ class DialogWindow extends StatelessWidget {
             fontSize: 20,
             isCheckedTitleName: wordsDataIndex.isEditingSecondLang,
             onPressedEditButton: () {
-              wordsData.toggleSecondLang(wordsDataIndex);
+              // wordsData.toggleSecondLang(wordsDataIndex);
               validation.toggleEditingDoneButton();
             },
             onChange: (value) {
-              wordsData.secondLangHandleSubmit(value, wordsDataIndex);
+              // wordsData.secondLangHandleSubmit(value, wordsDataIndex);
             },
           ),
           SizedBox(height: 10.0),
@@ -76,12 +76,12 @@ class DialogWindow extends StatelessWidget {
             fontSize: 20.0,
             isCheckedTitleName: wordsDataIndex.isEditingOwnLang,
             onPressedEditButton: () {
-              wordsData.toggleOwnLang(wordsDataIndex);
-              validation.toggleEditingDoneButton();
+              // wordsData.toggleOwnLang(wordsDataIndex);
+              // validation.toggleEditingDoneButton();
             },
             onChange: (value) {
-              validation.textValidation(value);
-              wordsData.ownLangHandleSubmit(value, wordsDataIndex);
+              // validation.textValidation(value);
+              // wordsData.ownLangHandleSubmit(value, wordsDataIndex);
             },
           ),
         ],

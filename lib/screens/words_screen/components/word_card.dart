@@ -86,30 +86,19 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
       expanded: isExpanded,
       child: GestureDetector(
         // onLongPress: providerData.isEditingMode
-        onLongPress:
-            // widget.isEditingMode
-            //     ? () {}
-            //     :
-            () {
-          BlocProvider.of<WordsCubit>(context).toggleEditMode();
-          // widget.toggleIsSelection();
-          // Timer(
-          //   Duration(milliseconds: 10),
-          //   () {
-          //     // providerData.toggleisSelectedWord(
-          //     //     providerData.wordsData[widget.index]);
-          //     // providerData.addItemInList();
-          //     // print(providerData.selectedData.length);
-          //   },
-          // );
-        },
+        onLongPress: widget.isEditingMode
+            ? () {}
+            : () {
+                BlocProvider.of<WordsCubit>(context).toggleEditMode();
+                BlocProvider.of<WordsBloc>(context)
+                    .add(WordsSelected(word: word));
+              
+              },
         // onTap: providerData.isEditingMode
         onTap: widget.isEditingMode
             ? () {
-                // providerData
-                //     .toggleisSelectedWord(providerData.wordsData[widget.index]);
-                // providerData.addItemInList();
-                // print(providerData.selectedData.length);
+                  BlocProvider.of<WordsBloc>(context)
+                    .add(WordsSelected(word: word));
               }
             : () {
                 // Navigator.push(
@@ -140,13 +129,12 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
               bottom: BorderSide(
                   color: isExpanded ? Colors.black26 : Colors.transparent),
             ),
-
-            color: isExpanded ? Color(0xFFCFD8DC) : Colors.transparent,
-            // color: isExpanded
-            //     ? Color(0xFFCFD8DC)
-            //     : providerData.wordsData[widget.index].isSelected
-            //         ? Colors.grey[400]
-            //         : Colors.transparent,
+            //change color inside expanded container
+            // color: isExpanded ? Color(0xFFCFD8DC) : Colors.transparent,
+            // T
+            color: isExpanded
+                ? Color(0xFFCFD8DC)
+                : word.isSelected ? Colors.grey[400] : Colors.transparent,
           ),
           width: SizeConfig.blockSizeHorizontal * 100,
           child: Stack(

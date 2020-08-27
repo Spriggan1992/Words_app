@@ -102,14 +102,15 @@ class _WordsScreenState extends State<WordsScreen> {
               return BlocBuilder<WordsCubit, bool>(
                 builder: (context, isEditingMode) {
                   return Column(
-                children: [
-                  /// Fake Appbar
-                   buildAppBar(isEditingMode, context, collectionTitle, providerData, collectionId),
+                    children: [
+                      /// Fake Appbar
+                      buildAppBar(isEditingMode, context, collectionTitle,
+                          providerData, collectionId),
 
-                  /// List words
-                  buildListView(state, isEditingMode),
-                ],
-              );
+                      /// List words
+                      buildListView(state, isEditingMode),
+                    ],
+                  );
                 },
               );
             } else {
@@ -123,178 +124,164 @@ class _WordsScreenState extends State<WordsScreen> {
 
   Expanded buildListView(WordsSuccess state, bool isEditingMode) {
     return Expanded(
-                  child: Container(
-                      padding: EdgeInsets.only(bottom: 25.0),
-                      // Here we render only listView
-                      child: ListView.builder(
-                        // itemExtent: 100,
-                        itemCount: state.words.length,
-                        // semanticChildCount: 1,
-                        itemBuilder: (context, index) {
-                          /// Call conformation for removing word from collection
-                          // void removeWord() {
-                          //   setState(() {
-                          //     providerData
-                          //         .removeWord(providerData.wordsData[index]);
-                          //     Navigator.of(context).pop(true);
-                          //   });
-                          // }
+      child: Container(
+          padding: EdgeInsets.only(bottom: 25.0),
+          // Here we render only listView
+          child: ListView.builder(
+            // itemExtent: 100,
+            itemCount: state.words.length,
+            // semanticChildCount: 1,
+            itemBuilder: (context, index) {
+              /// Call conformation for removing word from collection
+              // void removeWord() {
+              //   setState(() {
+              //     providerData
+              //         .removeWord(providerData.wordsData[index]);
+              //     Navigator.of(context).pop(true);
+              //   });
+              // }
 
-                          return Slidable(
-                            // enabled:
-                            //     providerData.isEditingMode ? false : true,
+              return Slidable(
+                // enabled:
+                //     providerData.isEditingMode ? false : true,
 
-                            /// WORD CARD
-                            // child: Text(state.words[index].targetLang),
-                            child: WordCard(
-                              isEditingMode: isEditingMode,
-                              // isEditingMode: state.isEditMode,
-                              toggleIsSelection: () {
-                                // setState(() {
-                                //   providerData.isEditingMode = true;
-                                // });
-                              },
-                              index: index,
-                              selectedData: state.words,
-                              word: state.words[index],
-                            ), //
-                            actionPane: SlidableDrawerActionPane(),
-                            secondaryActions: <Widget>[
-                              IconSlideAction(
-                                  caption: 'Edit',
-                                  color: Colors.black45,
-                                  icon: Icons.edit,
-                                  onTap: () {}
-                                  // Navigator.pushNamed(
-                                  //   context,
-                                  //   CardCreator.id,
-                                  //   arguments: {
-                                  //     'id': collectionId,
-                                  //     'index': index,
-                                  //     'editMode': true,
-                                  //   },
-                                  // ),
-                                  //     Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => CardCreator(
-                                  //       index: index,
-                                  //       editMode: true,
-                                  //       collectionId: collectionId,
-                                  //       targetWord:
-                                  //           providerData.wordsData[index].targetLang,
-                                  //       secondWord:
-                                  //           providerData.wordsData[index].secondLang,
-                                  //       ownWord:
-                                  //           providerData.wordsData[index].ownLang,
-                                  //       thirdWord:
-                                  //           providerData.wordsData[index].thirdLang,
-                                  //     ),
-                                  //   ),
-                                  // ),
+                /// WORD CARD
+                // child: Text(state.words[index].targetLang),
+                child: WordCard(
+                  isEditingMode: isEditingMode,
+                  // isEditingMode: state.isEditMode,
+                  toggleIsSelection: () {
+                    // setState(() {
+                    //   providerData.isEditingMode = true;
+                    // });
+                  },
+                  index: index,
+                  selectedData: state.words,
+                  word: state.words[index],
+                ), //
+                actionPane: SlidableDrawerActionPane(),
+                secondaryActions: <Widget>[
+                  IconSlideAction(
+                      caption: 'Edit',
+                      color: Colors.black45,
+                      icon: Icons.edit,
+                      onTap: () {}
+                      // Navigator.pushNamed(
+                      //   context,
+                      //   CardCreator.id,
+                      //   arguments: {
+                      //     'id': collectionId,
+                      //     'index': index,
+                      //     'editMode': true,
+                      //   },
+                      // ),
+                      //     Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => CardCreator(
+                      //       index: index,
+                      //       editMode: true,
+                      //       collectionId: collectionId,
+                      //       targetWord:
+                      //           providerData.wordsData[index].targetLang,
+                      //       secondWord:
+                      //           providerData.wordsData[index].secondLang,
+                      //       ownWord:
+                      //           providerData.wordsData[index].ownLang,
+                      //       thirdWord:
+                      //           providerData.wordsData[index].thirdLang,
+                      //     ),
+                      //   ),
+                      // ),
 
-                                  ),
-                              IconSlideAction(
-                                caption: 'Delete',
-                                color: Colors.red,
-                                icon: Icons.delete,
-                                // onTap:
-                                // () => deleteConfirmation(
-                                //     context,
-                                //     removeWord,
-                                //     'Do you want to delete this word?'),
-                              )
-                            ],
-                          );
-                        },
-                      )),
-                );
+                      ),
+                  IconSlideAction(
+                    caption: 'Delete',
+                    color: Colors.red,
+                    icon: Icons.delete,
+                    // onTap:
+                    // () => deleteConfirmation(
+                    //     context,
+                    //     removeWord,
+                    //     'Do you want to delete this word?'),
+                  )
+                ],
+              );
+            },
+          )),
+    );
   }
 
   Container buildAppBar(
-    bool isEditingMode, 
-    BuildContext context, 
-    String collectionTitle, 
-    WordsRepository providerData, 
+    bool isEditingMode,
+    BuildContext context,
+    String collectionTitle,
+    WordsRepository providerData,
     String collectionId,
-    ) {
+  ) {
     return Container(
-                  color: isEditingMode
-                      ? Colors.grey[500]
-                      : Theme.of(context).primaryColor,
-                  width: SizeConfig.blockSizeHorizontal * 100,
-                  height: SizeConfig.defaultSize * 6,
-                  child: Stack(
-                    alignment: Alignment.centerRight,
-                    children: <Widget>[
-                      Align(
-                        child: isEditingMode
-                            ? Text('')
-                            : Text(
-                                "$collectionTitle",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Theme.of(context).accentColor,
-                                  fontFamily: 'Anybody',
-                                ),
-                              ),
-                      ),
-                      isEditingMode
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      providerData.toogleAllSelectedWords();
-                                      providerData.addItemInList();
-                                      print(providerData.selectedData.length);
-                                    },
-                                    icon: Icon(Icons.select_all)),
-                                // Stack(
-                                //   alignment: Alignment.topRight,
-                                //   children: [
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {});
-                                      providerData.removeSelectedWords();
-                                      providerData.clearSelectedData();
-                                    },
-                                    icon: Icon(Icons.delete)),
-                                //     Positioned(
-                                //       child: Text(
-                                //           providerData.selectedData.length.toString()),
-                                //     ),
-                                //   ],
-                                // ),
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {});
-                                      for (int i = 0;
-                                          i < providerData.wordsData.length;
-                                          i++) {
-                                        providerData.wordsData[i].isSelected =
-                                            false;
-                                      }
-                                      providerData.isEditingMode = false;
-                                      providerData.clearSelectedData();
-                                    },
-                                    icon: Icon(Icons.close)),
-                              ],
-                            )
-                          : IconButton(
-                              icon: Icon(
-                                Icons.refresh,
-                                color: Colors.white,
-                              ),
-                              onPressed: () async {
-                                await Provider.of<WordsRepository>(context,
-                                        listen: false)
-                                    .populateList(collectionId);
-                              },
-                            )
-                    ],
+      color: isEditingMode ? Colors.grey[500] : Theme.of(context).primaryColor,
+      width: SizeConfig.blockSizeHorizontal * 100,
+      height: SizeConfig.defaultSize * 6,
+      child: Stack(
+        alignment: Alignment.centerRight,
+        children: <Widget>[
+          Align(
+            child: isEditingMode
+                ? Text('')
+                : Text(
+                    "$collectionTitle",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Theme.of(context).accentColor,
+                      fontFamily: 'Anybody',
+                    ),
                   ),
-                );
+          ),
+          isEditingMode
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          BlocProvider.of<WordsBloc>(context)
+                              .add(WordsSelectedAll());
+                        },
+                        icon: Icon(Icons.select_all)),
+                    // Stack(
+                    //   alignment: Alignment.topRight,
+                    //   children: [
+                    IconButton(
+                        onPressed: () {
+                          BlocProvider.of<WordsBloc>(context)
+                              .add(WordsDeletedSelectedAll());
+                        },
+                        icon: Icon(Icons.delete)),
+                    //     Positioned(
+                    //       child: Text(
+                    //           providerData.selectedData.length.toString()),
+                    //     ),
+                    //   ],
+                    // ),
+                    IconButton(
+                        onPressed: () {
+                         BlocProvider.of<WordsCubit>(context).toggleEditMode();
+                        },
+                        icon: Icon(Icons.close)),
+                  ],
+                )
+              : IconButton(
+                  icon: Icon(
+                    Icons.refresh,
+                    color: Colors.white,
+                  ),
+                  onPressed: () async {
+                    await Provider.of<WordsRepository>(context, listen: false)
+                        .populateList(collectionId);
+                  },
+                )
+        ],
+      ),
+    );
   }
 }
-
