@@ -40,7 +40,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
   Animation<double> animation;
   Animation rotationAnimation;
   bool isExpanded = false;
-
+  bool isEditMode = false;
   @override
   void initState() {
     super.initState();
@@ -85,21 +85,23 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
       expanded: isExpanded,
       child: GestureDetector(
         // onLongPress: providerData.isEditingMode
-        onLongPress: widget.isEditingMode
-            ? () {}
-            : () {
-                BlocProvider.of<WordsBloc>(context).add(WordsToggleEditMode());
-                // widget.toggleIsSelection();
-                // Timer(
-                //   Duration(milliseconds: 10),
-                //   () {
-                //     // providerData.toggleisSelectedWord(
-                //     //     providerData.wordsData[widget.index]);
-                //     // providerData.addItemInList();
-                //     // print(providerData.selectedData.length);
-                //   },
-                // );
-              },
+        onLongPress:
+            // widget.isEditingMode
+            //     ? () {}
+            //     :
+            () {
+          BlocProvider.of<WordsBloc>(context).add(WordsToggleEditMode());
+          // widget.toggleIsSelection();
+          // Timer(
+          //   Duration(milliseconds: 10),
+          //   () {
+          //     // providerData.toggleisSelectedWord(
+          //     //     providerData.wordsData[widget.index]);
+          //     // providerData.addItemInList();
+          //     // print(providerData.selectedData.length);
+          //   },
+          // );
+        },
         // onTap: providerData.isEditingMode
         onTap: widget.isEditingMode
             ? () {
@@ -159,7 +161,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                 duration: Duration(milliseconds: 300),
                 child: Container(
                   // width: isExpanded ? defaultSize : defaultSize * 4,
-                  width: false ? defaultSize : defaultSize * 4,
+                  width: isExpanded ? defaultSize : defaultSize * 4,
                   height: defaultSize * 8,
                   child: Text(
                     word.part.partName,

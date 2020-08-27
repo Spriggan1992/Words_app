@@ -113,6 +113,11 @@ class WordsRepository with ChangeNotifier {
     return _words;
   }
 
+  Future<bool> toggleIsEditMode(bool value) async {
+    bool newValue = value ? true : false;
+    return newValue;
+  }
+
   void removeWord(value) {
     _words.remove(value);
     notifyListeners();

@@ -87,6 +87,7 @@ class _WordsScreenState extends State<WordsScreen> {
             ],
           ),
         ),
+
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: BlocBuilder<WordsBloc, WordsState>(
           builder: (context, state) {
@@ -100,33 +101,79 @@ class _WordsScreenState extends State<WordsScreen> {
                 children: [
                   /// Fake Appbar
                   Container(
-                    color: Theme.of(context).primaryColor,
+                    color: state.isEditMode
+                        ? Colors.grey[500]
+                        : Theme.of(context).primaryColor,
                     width: SizeConfig.blockSizeHorizontal * 100,
                     height: SizeConfig.defaultSize * 6,
                     child: Stack(
                       alignment: Alignment.centerRight,
                       children: <Widget>[
                         Align(
-                          child: Text(
-                            "$collectionTitle",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Theme.of(context).accentColor,
-                              fontFamily: 'Anybody',
-                            ),
-                          ),
+                          child: state.isEditMode
+                              ? Text('')
+                              : Text(
+                                  "$collectionTitle",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Theme.of(context).accentColor,
+                                    fontFamily: 'Anybody',
+                                  ),
+                                ),
                         ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.refresh,
-                            color: Colors.white,
-                          ),
-                          onPressed: () async {
-                            await Provider.of<WordsRepository>(context,
-                                    listen: false)
-                                .populateList(collectionId);
-                          },
-                        )
+                        state.isEditMode
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        providerData.toogleAllSelectedWords();
+                                        providerData.addItemInList();
+                                        print(providerData.selectedData.length);
+                                      },
+                                      icon: Icon(Icons.select_all)),
+                                  // Stack(
+                                  //   alignment: Alignment.topRight,
+                                  //   children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {});
+                                        providerData.removeSelectedWords();
+                                        providerData.clearSelectedData();
+                                      },
+                                      icon: Icon(Icons.delete)),
+                                  //     Positioned(
+                                  //       child: Text(
+                                  //           providerData.selectedData.length.toString()),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {});
+                                        for (int i = 0;
+                                            i < providerData.wordsData.length;
+                                            i++) {
+                                          providerData.wordsData[i].isSelected =
+                                              false;
+                                        }
+                                        providerData.isEditingMode = false;
+                                        providerData.clearSelectedData();
+                                      },
+                                      icon: Icon(Icons.close)),
+                                ],
+                              )
+                            : IconButton(
+                                icon: Icon(
+                                  Icons.refresh,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () async {
+                                  await Provider.of<WordsRepository>(context,
+                                          listen: false)
+                                      .populateList(collectionId);
+                                },
+                              )
                       ],
                     ),
                   ),
@@ -157,7 +204,8 @@ class _WordsScreenState extends State<WordsScreen> {
                               /// WORD CARD
                               // child: Text(state.words[index].targetLang),
                               child: WordCard(
-                                isEditingMode: state.isEditingMode,
+                                isEditingMode: state.isEditMode,
+                                // isEditingMode: state.isEditMode,
                                 toggleIsSelection: () {
                                   // setState(() {
                                   //   providerData.isEditingMode = true;
