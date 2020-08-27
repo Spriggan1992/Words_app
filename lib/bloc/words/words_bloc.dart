@@ -50,7 +50,9 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
             ? word.copyWith(isSelected: !event.word.isSelected)
             : word;
       }).toList();
-      yield WordsSuccess(words: words);
+      final List<Word> selectedData = List.from(
+          (state as WordsSuccess).words.where((word) => word.isSelected));
+      yield WordsSuccess(words: words, selectedData: selectedData);
     } catch (_) {
       yield WordsFailure();
     }
@@ -61,12 +63,14 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
       final select = (state as WordsSuccess).words.every((word) {
         return word.isSelected;
       });
-      print(select);
+
       final List<Word> updateWords = (state as WordsSuccess)
           .words
           .map((word) => word.copyWith(isSelected: !select))
           .toList();
-      yield WordsSuccess(words: updateWords);
+      final List<Word> selectedData = List.from(
+          (state as WordsSuccess).words.where((word) => !word.isSelected));
+      yield WordsSuccess(words: updateWords, selectedData: selectedData);
     } catch (_) {
       yield WordsFailure();
     }
@@ -74,11 +78,15 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
 
   Stream<WordsState> _mapWordsDeletedSelectedAllToState() async* {
     try {
-      final List<Word> updateWords = List.from((state as WordsSuccess).words);
-      updateWords.removeWhere((word) {
+      final List<Word> updateWords =
+          List.from((state as WordsSuccess).words.where((word) {
         if (word.isSelected) wordsRepository.removeWord(word);
-        return word.isSelected;
-      });
+        return !word.isSelected;
+      }));
+      // updateWords.removeWhere((word) {
+      //   if (word.isSelected) wordsRepository.removeWord(word);
+      //   return word.isSelected;
+      // });
 
       yield WordsSuccess(words: updateWords);
     } catch (_) {

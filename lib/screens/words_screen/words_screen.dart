@@ -10,6 +10,7 @@ import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/helpers/functions.dart';
+import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/words_repository.dart';
 import 'package:words_app/screens/card_creator_screen//card_creator.dart';
 import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
@@ -105,7 +106,7 @@ class _WordsScreenState extends State<WordsScreen> {
                     children: [
                       /// Fake Appbar
                       buildAppBar(isEditingMode, context, collectionTitle,
-                          providerData, collectionId),
+                          providerData, collectionId, state.selectedData),
 
                       /// List words
                       buildListView(state, isEditingMode),
@@ -217,6 +218,7 @@ class _WordsScreenState extends State<WordsScreen> {
     String collectionTitle,
     WordsRepository providerData,
     String collectionId,
+    List<Word> selectedData,
   ) {
     return Container(
       color: isEditingMode ? Colors.grey[500] : Theme.of(context).primaryColor,
@@ -247,21 +249,22 @@ class _WordsScreenState extends State<WordsScreen> {
                               .add(WordsSelectedAll());
                         },
                         icon: Icon(Icons.select_all)),
-                    // Stack(
-                    //   alignment: Alignment.topRight,
-                    //   children: [
-                    IconButton(
-                        onPressed: () {
-                          BlocProvider.of<WordsBloc>(context)
-                              .add(WordsDeletedSelectedAll());
-                        },
-                        icon: Icon(Icons.delete)),
-                    //     Positioned(
-                    //       child: Text(
-                    //           providerData.selectedData.length.toString()),
-                    //     ),
-                    //   ],
-                    // ),
+                    Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              BlocProvider.of<WordsBloc>(context)
+                                  .add(WordsDeletedSelectedAll());
+                            },
+                            icon: Icon(Icons.delete)),
+                        Positioned(
+                          child: Text(
+                              // providerData.selectedData.length.toString(),
+                              "${selectedData?.length ?? 0}"),
+                        ),
+                      ],
+                    ),
                     IconButton(
                         onPressed: () {
                           BlocProvider.of<WordsCubit>(context).toggleEditMode();
