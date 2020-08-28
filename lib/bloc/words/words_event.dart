@@ -18,14 +18,14 @@ class WordsLoaded extends WordsEvent {
 
 class WordsAdded extends WordsEvent {}
 
-class WordsSelected extends WordsEvent {
+class WordsToggled extends WordsEvent {
   final Word word;
 
-  WordsSelected({this.word});
+  WordsToggled({this.word});
   List<Object> get props => [word];
 }
 
-class WordsSelectedAll extends WordsEvent {}
+class WordsToggledAll extends WordsEvent {}
 
 class WordsDeleted extends WordsEvent {
   final Word word;
@@ -36,11 +36,13 @@ class WordsDeleted extends WordsEvent {
 
 class WordsDeletedSelectedAll extends WordsEvent {}
 
-class WordsAddSelectedAll extends WordsEvent {}
+class WordsAddSelectedAllToSelectedList extends WordsEvent {}
 
-class WordsAddToSelectedData extends WordsEvent {
+class WordsAddToSelectedList extends WordsEvent {
   final Word word;
 
-  WordsAddToSelectedData({this.word});
+  WordsAddToSelectedList({this.word});
   List<Object> get props => [word];
 }
+
+class WordsTurnOffIsEditingMode extends WordsEvent {}

@@ -38,13 +38,8 @@ class _WordsScreenState extends State<WordsScreen> {
       top: true,
       child: Scaffold(
         backgroundColor: Color(0xFFeae2da),
-
-        // Use future builder because when using fetch data it returns future
         floatingActionButton: ReusableFloatActionButton(
           onPressed: () {
-            // setState(() {});
-            // providerData.isEditingMode = false;
-            // providerData.clearSelectedData();
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -59,7 +54,6 @@ class _WordsScreenState extends State<WordsScreen> {
           // Navigator.pushNamed(context, CardCreator.id,
           //     arguments: {'id': collectionId, 'editMode': false}),
         ),
-
         bottomNavigationBar: BaseBottomAppBar(
           child1: ReusableBottomIconBtn(
             icons: Icons.keyboard_arrow_left,
@@ -83,13 +77,12 @@ class _WordsScreenState extends State<WordsScreen> {
                               ? providerData.wordsData
                               : providerData.selectedData
                         });
-                    // providerData.isEditingMode = false;
+
                     setState(() {});
                   }),
             ],
           ),
         ),
-
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: BlocBuilder<WordsBloc, WordsState>(
           builder: (context, state) {
@@ -133,15 +126,6 @@ class _WordsScreenState extends State<WordsScreen> {
             itemCount: state.words.length,
             // semanticChildCount: 1,
             itemBuilder: (context, index) {
-              /// Call conformation for removing word from collection
-              // void removeWord() {
-              //   setState(() {
-              //     providerData
-              //         .removeWord(providerData.wordsData[index]);
-              //     Navigator.of(context).pop(true);
-              //   });
-              // }
-
               return Slidable(
                 enabled: isEditingMode ? false : true,
 
@@ -149,12 +133,6 @@ class _WordsScreenState extends State<WordsScreen> {
                 // child: Text(state.words[index].targetLang),
                 child: WordCard(
                   isEditingMode: isEditingMode,
-                  // isEditingMode: state.isEditMode,
-                  toggleIsSelection: () {
-                    // setState(() {
-                    //   providerData.isEditingMode = true;
-                    // });
-                  },
                   index: index,
                   selectedList: state.selectedList,
                   word: state.words[index],
@@ -245,8 +223,10 @@ class _WordsScreenState extends State<WordsScreen> {
                   children: [
                     IconButton(
                         onPressed: () {
-                          context.bloc<WordsBloc>().add(WordsSelectedAll());
-                          context.bloc<WordsBloc>().add(WordsAddSelectedAll());
+                          context.bloc<WordsBloc>().add(WordsToggledAll());
+                          context
+                              .bloc<WordsBloc>()
+                              .add(WordsAddSelectedAllToSelectedList());
                         },
                         icon: Icon(Icons.select_all)),
                     Stack(
@@ -267,7 +247,10 @@ class _WordsScreenState extends State<WordsScreen> {
                     ),
                     IconButton(
                         onPressed: () {
-                          BlocProvider.of<WordsCubit>(context).toggleEditMode();
+                          context.bloc<WordsCubit>().toggleEditMode();
+                          context
+                              .bloc<WordsBloc>()
+                              .add(WordsTurnOffIsEditingMode());
                         },
                         icon: Icon(Icons.close)),
                   ],

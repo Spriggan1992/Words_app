@@ -19,11 +19,11 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (event is WordsLoaded) {
       yield* _mapWordsLoadedToState(event);
     }
-    if (event is WordsSelected) {
-      yield* _mapWordsSelectedToState(event);
+    if (event is WordsToggled) {
+      yield* _mapWordsToggeldToState(event);
     }
-    if (event is WordsSelectedAll) {
-      yield* _mapWordsSelectedAllToState();
+    if (event is WordsToggledAll) {
+      yield* _mapWordsToggledAllToState();
     }
     if (event is WordsDeletedSelectedAll) {
       yield* _mapWordsDeletedSelectedAllToState();
@@ -31,14 +31,18 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (event is WordsDeleted) {
       yield* _mapWordsDeletedToState(event);
     }
-    if (event is WordsAddToSelectedData) {
-      yield* _mapWordsAddToSelectedDataToState(event);
+    if (event is WordsAddToSelectedList) {
+      yield* _mapWordsAddToSelectedListToState(event);
     }
-    if (event is WordsAddSelectedAll) {
-      yield* _mapWordsAddSelectedAllToState();
+    if (event is WordsAddSelectedAllToSelectedList) {
+      yield* _mapWordsAddSelectedAllToSelectedListToState();
+    }
+    if (event is WordsTurnOffIsEditingMode) {
+      yield* _mapWordsTurnOffIsEditingModeToState();
     }
   }
 
+  /// Fetch data from db through repository
   Stream<WordsState> _mapWordsLoadedToState(WordsLoaded event) async* {
     try {
       final words = await wordsRepository.fetchAndSetWords(event.id);
@@ -48,7 +52,8 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     }
   }
 
-  Stream<WordsState> _mapWordsSelectedToState(WordsSelected event) async* {
+  /// This method is responsible for toggle  a word, and change color of selected word
+  Stream<WordsState> _mapWordsToggeldToState(WordsToggled event) async* {
     try {
       final words = (state as WordsSuccess).words.map((word) {
         return word.id == event.word.id
@@ -62,22 +67,8 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     }
   }
 
-  Stream<WordsState> _mapWordsAddToSelectedDataToState(
-      WordsAddToSelectedData event) async* {
-    try {
-      final List<Word> updatedWords = List.from((state as WordsSuccess).words);
-
-      final List<Word> updatedSelectedList = List.from(
-          (state as WordsSuccess).words.where((word) => word.isSelected));
-
-      yield WordsSuccess(
-          words: updatedWords, selectedList: updatedSelectedList);
-    } catch (_) {
-      yield WordsFailure();
-    }
-  }
-
-  Stream<WordsState> _mapWordsSelectedAllToState() async* {
+  /// This method is responsible for toggle all words, and change color of selected words
+  Stream<WordsState> _mapWordsToggledAllToState() async* {
     try {
       final select = (state as WordsSuccess).words.every((word) {
         return word.isSelected;
@@ -94,7 +85,24 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     }
   }
 
-  Stream<WordsState> _mapWordsAddSelectedAllToState() async* {
+  /// This method is responsible for adding word which has a condition [words.isSelected == true] to separate [selectedList]
+  Stream<WordsState> _mapWordsAddToSelectedListToState(
+      WordsAddToSelectedList event) async* {
+    try {
+      final List<Word> updatedWords = List.from((state as WordsSuccess).words);
+
+      final List<Word> updatedSelectedList = List.from(
+          (state as WordsSuccess).words.where((word) => word.isSelected));
+
+      yield WordsSuccess(
+          words: updatedWords, selectedList: updatedSelectedList);
+    } catch (_) {
+      yield WordsFailure();
+    }
+  }
+
+  /// This method is responsible for adding all words which has a condition [words.isSelected == true] to separate [selectedList]
+  Stream<WordsState> _mapWordsAddSelectedAllToSelectedListToState() async* {
     try {
       final List<Word> updateWords = List.from((state as WordsSuccess).words);
 
@@ -107,6 +115,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     }
   }
 
+  /// This method is responsible for deleting   words which has a condition [words.isSelected == true] from UI and DB
   Stream<WordsState> _mapWordsDeletedSelectedAllToState() async* {
     try {
       final List<Word> updateWords =
@@ -125,6 +134,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     }
   }
 
+  /// This method is responsible for deleting [Word] on dismissable swipe, from UI and DB
   Stream<WordsState> _mapWordsDeletedToState(WordsDeleted event) async* {
     try {
       final List<Word> updateWords = List.from((state as WordsSuccess)
@@ -132,6 +142,19 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
           .where((word) => word.id != event.word.id));
       yield WordsSuccess(words: updateWords);
       wordsRepository.removeWord(event.word);
+    } catch (_) {
+      yield WordsFailure();
+    }
+  }
+
+  Stream<WordsState> _mapWordsTurnOffIsEditingModeToState() async* {
+    try {
+      final List<Word> updatedSelectedList = [];
+      final List<Word> updateWords = List.from((state as WordsSuccess)
+          .words
+          .map((word) => word.copyWith(isSelected: false)));
+
+      yield WordsSuccess(words: updateWords, selectedList: updatedSelectedList);
     } catch (_) {
       yield WordsFailure();
     }

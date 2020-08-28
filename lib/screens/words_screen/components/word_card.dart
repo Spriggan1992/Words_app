@@ -90,19 +90,19 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
             ? () {}
             : () {
                 BlocProvider.of<WordsCubit>(context).toggleEditMode();
-                context.bloc<WordsBloc>().add(WordsSelected(word: word));
+                context.bloc<WordsBloc>().add(WordsToggled(word: word));
 
                 context
                     .bloc<WordsBloc>()
-                    .add(WordsAddToSelectedData(word: word));
+                    .add(WordsAddToSelectedList(word: word));
               },
         // onTap: providerData.isEditingMode
         onTap: widget.isEditingMode
             ? () {
                 BlocProvider.of<WordsBloc>(context)
-                    .add(WordsSelected(word: word));
+                    .add(WordsToggled(word: word));
                 BlocProvider.of<WordsBloc>(context)
-                    .add(WordsAddToSelectedData(word: word));
+                    .add(WordsAddToSelectedList(word: word));
               }
             : () {
                 // Navigator.push(
