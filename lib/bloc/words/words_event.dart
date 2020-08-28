@@ -36,6 +36,8 @@ class WordsDeleted extends WordsEvent {
 
 class WordsDeletedSelectedAll extends WordsEvent {}
 
+class WordsAddSelectedAll extends WordsEvent {}
+
 class WordsAddToSelectedData extends WordsEvent {
   final Word word;
 

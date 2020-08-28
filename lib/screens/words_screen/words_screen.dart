@@ -245,8 +245,8 @@ class _WordsScreenState extends State<WordsScreen> {
                   children: [
                     IconButton(
                         onPressed: () {
-                          BlocProvider.of<WordsBloc>(context)
-                              .add(WordsSelectedAll());
+                          context.bloc<WordsBloc>().add(WordsSelectedAll());
+                          context.bloc<WordsBloc>().add(WordsAddSelectedAll());
                         },
                         icon: Icon(Icons.select_all)),
                     Stack(

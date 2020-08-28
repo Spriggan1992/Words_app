@@ -89,16 +89,12 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
         onLongPress: widget.isEditingMode
             ? () {}
             : () {
-                final blocData = BlocProvider.of<WordsBloc>(context);
                 BlocProvider.of<WordsCubit>(context).toggleEditMode();
-
                 context.bloc<WordsBloc>().add(WordsSelected(word: word));
 
                 context
                     .bloc<WordsBloc>()
                     .add(WordsAddToSelectedData(word: word));
-                print(widget.selectedList.length);
-                blocData.close();
               },
         // onTap: providerData.isEditingMode
         onTap: widget.isEditingMode
@@ -107,9 +103,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                     .add(WordsSelected(word: word));
                 BlocProvider.of<WordsBloc>(context)
                     .add(WordsAddToSelectedData(word: word));
-
-                print(widget.selectedList);
-                print(widget.selectedList.length);
               }
             : () {
                 // Navigator.push(

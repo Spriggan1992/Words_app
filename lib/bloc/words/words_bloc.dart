@@ -34,6 +34,9 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (event is WordsAddToSelectedData) {
       yield* _mapWordsAddToSelectedDataToState(event);
     }
+    if (event is WordsAddSelectedAll) {
+      yield* _mapWordsAddSelectedAllToState();
+    }
   }
 
   Stream<WordsState> _mapWordsLoadedToState(WordsLoaded event) async* {
@@ -53,20 +56,6 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
             : word;
       }).toList();
 
-      // // (state as WordsSuccess).words.where((word) => word.isSelected);
-      // final List<Word> selectedData = (state as WordsSuccess).words;
-      // List<Word> updateSelectedData = [];
-      // selectedData.forEach((item) {
-      //   if (updateSelectedData.contains(item)) {
-      //     updateSelectedData.remove(item);
-      //   }
-      //   if (item.isSelected == true) {
-      //     updateSelectedData.add(item);
-      //   }
-      // });
-      // final List<Word> selectedData = List.from(
-      //     (state as WordsSuccess).words.where((word) => word.isSelected));
-      // await Future<void>.delayed(const Duration(milliseconds: 100));
       yield WordsSuccess(words: words);
     } catch (_) {
       yield WordsFailure();
@@ -78,9 +67,11 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     try {
       final List<Word> updatedWords = List.from((state as WordsSuccess).words);
 
-      final List<Word> selectedData = List.from(
+      final List<Word> updatedSelectedList = List.from(
           (state as WordsSuccess).words.where((word) => word.isSelected));
-      yield WordsSuccess(words: updatedWords, selectedData: selectedData);
+
+      yield WordsSuccess(
+          words: updatedWords, selectedList: updatedSelectedList);
     } catch (_) {
       yield WordsFailure();
     }
@@ -96,9 +87,21 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
           .words
           .map((word) => word.copyWith(isSelected: !select))
           .toList();
-      final List<Word> selectedData = List.from(
-          (state as WordsSuccess).words.where((word) => !word.isSelected));
-      yield WordsSuccess(words: updateWords, selectedData: selectedData);
+
+      yield WordsSuccess(words: updateWords);
+    } catch (_) {
+      yield WordsFailure();
+    }
+  }
+
+  Stream<WordsState> _mapWordsAddSelectedAllToState() async* {
+    try {
+      final List<Word> updateWords = List.from((state as WordsSuccess).words);
+
+      final List<Word> updatedSelectedList = List.from(
+          (state as WordsSuccess).words.where((word) => word.isSelected));
+
+      yield WordsSuccess(words: updateWords, selectedList: updatedSelectedList);
     } catch (_) {
       yield WordsFailure();
     }
