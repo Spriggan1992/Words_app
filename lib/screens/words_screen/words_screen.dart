@@ -6,6 +6,7 @@ import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/base_bottom_appbar.dart';
 import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
+import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
@@ -38,52 +39,6 @@ class _WordsScreenState extends State<WordsScreen> {
       top: true,
       child: Scaffold(
         backgroundColor: Color(0xFFeae2da),
-        floatingActionButton: ReusableFloatActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CardCreator(
-                  editMode: false,
-                  collectionId: collectionId,
-                  index: 0,
-                ),
-              ),
-            );
-          },
-          // Navigator.pushNamed(context, CardCreator.id,
-          //     arguments: {'id': collectionId, 'editMode': false}),
-        ),
-        bottomNavigationBar: BaseBottomAppBar(
-          child1: ReusableBottomIconBtn(
-            icons: Icons.keyboard_arrow_left,
-            color: kMainColorBackground,
-            onPress: () {
-              Navigator.pop(context);
-              providerData.isEditingMode = false;
-              providerData.clearSelectedData();
-            },
-          ),
-          child2: Row(
-            children: [
-              ReusableBottomIconBtn(
-                  icons: Icons.fitness_center,
-                  color: kMainColorBackground,
-                  onPress: () {
-                    Navigator.pushNamed(context, TrainingManager.id,
-                        arguments: {
-                          'id': collectionId,
-                          'selectedWords': providerData.selectedData.isEmpty
-                              ? providerData.wordsData
-                              : providerData.selectedData
-                        });
-
-                    setState(() {});
-                  }),
-            ],
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: BlocBuilder<WordsBloc, WordsState>(
           builder: (context, state) {
             if (state is WordsLoading) {
@@ -96,13 +51,21 @@ class _WordsScreenState extends State<WordsScreen> {
               return BlocBuilder<WordsCubit, bool>(
                 builder: (context, isEditingMode) {
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       /// Fake Appbar
                       buildAppBar(isEditingMode, context, collectionTitle,
-                          providerData, collectionId, state.selectedList),
+                          providerData, collectionId, state),
 
                       /// List words
                       buildListView(state, isEditingMode),
+
+                      ReusableMainButton(
+                        titleText: 'Add Word',
+                        textColor: Colors.white,
+                        backgroundColor: Theme.of(context).accentColor,
+                        onPressed: () {},
+                      ),
                     ],
                   );
                 },
@@ -130,7 +93,7 @@ class _WordsScreenState extends State<WordsScreen> {
                 enabled: isEditingMode ? false : true,
 
                 /// WORD CARD
-                // child: Text(state.words[index].targetLang),
+
                 child: WordCard(
                   isEditingMode: isEditingMode,
                   index: index,
@@ -196,7 +159,7 @@ class _WordsScreenState extends State<WordsScreen> {
     String collectionTitle,
     WordsRepository providerData,
     String collectionId,
-    List<Word> selectedData,
+    WordsSuccess state,
   ) {
     return Container(
       color: isEditingMode ? Colors.grey[500] : Theme.of(context).primaryColor,
@@ -239,9 +202,21 @@ class _WordsScreenState extends State<WordsScreen> {
                             },
                             icon: Icon(Icons.delete)),
                         Positioned(
-                          child: Text(
-                              // providerData.selectedData.length.toString(),
-                              "${selectedData?.length ?? 0}"),
+                          child: Text("${state.selectedList?.length ?? 0}"),
+                        ),
+                      ],
+                    ),
+                    Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              BlocProvider.of<WordsBloc>(context)
+                                  .add(WordsDeletedSelectedAll());
+                            },
+                            icon: Icon(Icons.fitness_center)),
+                        Positioned(
+                          child: Text("${state.selectedList?.length ?? 0}"),
                         ),
                       ],
                     ),
@@ -255,15 +230,39 @@ class _WordsScreenState extends State<WordsScreen> {
                         icon: Icon(Icons.close)),
                   ],
                 )
-              : IconButton(
-                  icon: Icon(
-                    Icons.refresh,
-                    color: Colors.white,
-                  ),
-                  onPressed: () async {
-                    await Provider.of<WordsRepository>(context, listen: false)
-                        .populateList(collectionId);
-                  },
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              BlocProvider.of<WordsBloc>(context)
+                                  .add(WordsDeletedSelectedAll());
+                            },
+                            icon: Icon(
+                              Icons.fitness_center,
+                              color: Colors.white,
+                            )),
+                        Positioned(
+                          child: Text("${state.words?.length ?? 0}",
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.refresh,
+                        color: Colors.white,
+                      ),
+                      onPressed: () async {
+                        await Provider.of<WordsRepository>(context,
+                                listen: false)
+                            .populateList(collectionId);
+                      },
+                    ),
+                  ],
                 )
         ],
       ),
