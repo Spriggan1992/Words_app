@@ -106,7 +106,7 @@ class _WordsScreenState extends State<WordsScreen> {
                     children: [
                       /// Fake Appbar
                       buildAppBar(isEditingMode, context, collectionTitle,
-                          providerData, collectionId, state.selectedData),
+                          providerData, collectionId, state.selectedList),
 
                       /// List words
                       buildListView(state, isEditingMode),
@@ -156,7 +156,7 @@ class _WordsScreenState extends State<WordsScreen> {
                     // });
                   },
                   index: index,
-                  selectedData: state.words,
+                  selectedList: state.selectedList,
                   word: state.words[index],
                 ), //
                 actionPane: SlidableDrawerActionPane(),

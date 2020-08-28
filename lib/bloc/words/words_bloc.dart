@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,6 +31,9 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (event is WordsDeleted) {
       yield* _mapWordsDeletedToState(event);
     }
+    if (event is WordsAddToSelectedData) {
+      yield* _mapWordsAddToSelectedDataToState(event);
+    }
   }
 
   Stream<WordsState> _mapWordsLoadedToState(WordsLoaded event) async* {
@@ -50,9 +52,35 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
             ? word.copyWith(isSelected: !event.word.isSelected)
             : word;
       }).toList();
+
+      // // (state as WordsSuccess).words.where((word) => word.isSelected);
+      // final List<Word> selectedData = (state as WordsSuccess).words;
+      // List<Word> updateSelectedData = [];
+      // selectedData.forEach((item) {
+      //   if (updateSelectedData.contains(item)) {
+      //     updateSelectedData.remove(item);
+      //   }
+      //   if (item.isSelected == true) {
+      //     updateSelectedData.add(item);
+      //   }
+      // });
+      // final List<Word> selectedData = List.from(
+      //     (state as WordsSuccess).words.where((word) => word.isSelected));
+      // await Future<void>.delayed(const Duration(milliseconds: 100));
+      yield WordsSuccess(words: words);
+    } catch (_) {
+      yield WordsFailure();
+    }
+  }
+
+  Stream<WordsState> _mapWordsAddToSelectedDataToState(
+      WordsAddToSelectedData event) async* {
+    try {
+      final List<Word> updatedWords = List.from((state as WordsSuccess).words);
+
       final List<Word> selectedData = List.from(
           (state as WordsSuccess).words.where((word) => word.isSelected));
-      yield WordsSuccess(words: words, selectedData: selectedData);
+      yield WordsSuccess(words: updatedWords, selectedData: selectedData);
     } catch (_) {
       yield WordsFailure();
     }

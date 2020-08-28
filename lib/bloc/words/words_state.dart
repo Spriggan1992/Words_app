@@ -24,13 +24,23 @@ class WordsLoading extends WordsState {}
 
 class WordsSuccess extends WordsState {
   final List<Word> words;
-  final List<Word> selectedData;
+  final List<Word> selectedList;
   WordsSuccess({
     this.words,
-    this.selectedData,
+    this.selectedList,
   });
 
-  List<Object> get props => [words, selectedData];
+  List<Object> get props => [words, selectedList];
 }
+// class WordsSuccess extends WordsState {
+//   final List<Word> words;
+//   final List<Word> selectedData;
+//   WordsSuccess({
+//     this.words,
+//     this.selectedData,
+//   });
+
+//   List<Object> get props => [words, selectedData];
+// }
 
 class WordsFailure extends WordsState {}

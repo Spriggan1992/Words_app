@@ -35,3 +35,10 @@ class WordsDeleted extends WordsEvent {
 }
 
 class WordsDeletedSelectedAll extends WordsEvent {}
+
+class WordsAddToSelectedData extends WordsEvent {
+  final Word word;
+
+  WordsAddToSelectedData({this.word});
+  List<Object> get props => [word];
+}

@@ -65,12 +65,9 @@ class Word extends Equatable with ChangeNotifier {
         example: example ?? this.example,
         exampleTranslations: exampleTranslations ?? this.exampleTranslations,
         isSelected: isSelected ?? this.isSelected);
-
-    
   }
 
   @override
-  
   List<Object> get props => [
         targetLang,
         ownLang,
@@ -83,43 +80,45 @@ class Word extends Equatable with ChangeNotifier {
         isSelected
       ];
 
-      // void toggleIsSelected() {
-    //   isSelected = !isSelected;
-    // }
+  List<Word> toList() {}
 
-    // void changePart(Part newPart) {
-    //   part = newPart;
-    // }
+  // void toggleIsSelected() {
+  //   isSelected = !isSelected;
+  // }
 
-    // void toggleTargetLang() {
-    //   isEditingTargetLang = !isEditingTargetLang;
-    // }
+  // void changePart(Part newPart) {
+  //   part = newPart;
+  // }
 
-    // void toggleSecondLang() {
-    //   isEditingSecondLang = !isEditingSecondLang;
-    // }
+  // void toggleTargetLang() {
+  //   isEditingTargetLang = !isEditingTargetLang;
+  // }
 
-    // void toggleOwnLang() {
-    //   isEditingOwnLang = !isEditingOwnLang;
-    // }
+  // void toggleSecondLang() {
+  //   isEditingSecondLang = !isEditingSecondLang;
+  // }
 
-    // void toggleShowImg() {
-    //   isEditingShowImg = !isEditingShowImg;
-    // }
+  // void toggleOwnLang() {
+  //   isEditingOwnLang = !isEditingOwnLang;
+  // }
 
-    // void changeTargetLang(String newName) {
-    //   targetLang = newName;
-    // }
+  // void toggleShowImg() {
+  //   isEditingShowImg = !isEditingShowImg;
+  // }
 
-    // void changeSecondLang(String newName) {
-    //   secondLang = newName;
-    // }
+  // void changeTargetLang(String newName) {
+  //   targetLang = newName;
+  // }
 
-    // void changeOwnLang(String newName) {
-    //   ownLang = newName;
-    // }
+  // void changeSecondLang(String newName) {
+  //   secondLang = newName;
+  // }
 
-    // void changeThirdLang(String newName) {
-    //   thirdLang = newName;
-    // }
+  // void changeOwnLang(String newName) {
+  //   ownLang = newName;
+  // }
+
+  // void changeThirdLang(String newName) {
+  //   thirdLang = newName;
+  // }
 }
