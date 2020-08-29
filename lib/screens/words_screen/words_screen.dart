@@ -196,10 +196,11 @@ class _WordsScreenState extends State<WordsScreen> {
                       alignment: Alignment.topRight,
                       children: [
                         IconButton(
-                            onPressed: () {
-                              BlocProvider.of<WordsBloc>(context)
-                                  .add(WordsDeletedSelectedAll());
-                            },
+                            onPressed: () => deleteConfirmation(context, () {
+                                  BlocProvider.of<WordsBloc>(context)
+                                      .add(WordsDeletedSelectedAll());
+                                  Navigator.pop(context);
+                                }, 'Do you want to delete this word?'),
                             icon: Icon(Icons.delete)),
                         Positioned(
                           child: Text("${state.selectedList?.length ?? 0}"),
