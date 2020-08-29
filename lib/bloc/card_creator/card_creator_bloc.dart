@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/words_repository.dart';
 
@@ -9,8 +9,13 @@ part 'card_creator_event.dart';
 part 'card_creator_state.dart';
 
 class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
-  CardCreatorBloc({this.wordsRepository}) : super(CardCreatorLoading());
+  CardCreatorBloc({
+    this.wordsRepository,
+  }) : super(CardCreatorLoading());
+
   final WordsRepository wordsRepository;
+  // final WordsBloc wordsBloc;
+
   @override
   Stream<CardCreatorState> mapEventToState(
     CardCreatorEvent event,

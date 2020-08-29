@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
+import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/part.dart';
@@ -346,6 +347,7 @@ class _CardCreatorState extends State<CardCreator> {
             context
                 .bloc<CardCreatorBloc>()
                 .add(CardCreatorAddWord(word: newWord));
+            context.bloc<WordsBloc>().add(WordsLoaded());
             Navigator.pop(context);
           },
         ),
