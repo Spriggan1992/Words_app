@@ -24,20 +24,8 @@ class CardCreator extends StatefulWidget {
 
   CardCreator({
     this.index,
-    this.editMode,
-    this.collectionId,
-    this.targetWord,
-    this.secondWord,
-    this.ownWord,
-    this.thirdWord,
   });
   final int index;
-  final bool editMode;
-  final String collectionId;
-  final String targetWord;
-  final String secondWord;
-  final String ownWord;
-  final String thirdWord;
 
   @override
   _CardCreatorState createState() => _CardCreatorState();
@@ -80,22 +68,22 @@ class _CardCreatorState extends State<CardCreator> {
     });
   }
 
-  void setUpWords() {
-    if (widget.editMode == true) {
-      targetLang = widget.targetWord;
-      secondLang = widget.secondWord;
-      thirdLang = widget.thirdWord;
-      ownLang = widget.ownWord;
-      targetLang == null ? targetLang = ' ' : targetLang = widget.targetWord;
-      secondLang == null ? secondLang = ' ' : secondLang = widget.secondWord;
-      thirdLang == null ? thirdLang = ' ' : thirdLang = widget.thirdWord;
-      ownLang == null ? ownLang = ' ' : ownLang = widget.ownWord;
-    }
-  }
+  // void setUpWords() {
+  //   if (widget.editMode == true) {
+  //     targetLang = widget.targetWord;
+  //     secondLang = widget.secondWord;
+  //     thirdLang = widget.thirdWord;
+  //     ownLang = widget.ownWord;
+  //     targetLang == null ? targetLang = ' ' : targetLang = widget.targetWord;
+  //     secondLang == null ? secondLang = ' ' : secondLang = widget.secondWord;
+  //     thirdLang == null ? thirdLang = ' ' : thirdLang = widget.thirdWord;
+  //     ownLang == null ? ownLang = ' ' : ownLang = widget.ownWord;
+  //   }
+  // }
 
   void initState() {
     super.initState();
-    setUpWords();
+    // setUpWords();
     setImage();
   }
 
@@ -154,8 +142,7 @@ class _CardCreatorState extends State<CardCreator> {
     double defaultSize = SizeConfig.defaultSize;
     final providerData = Provider.of<WordsRepository>(context, listen: false);
     return Scaffold(
-      appBar: buildBaseAppBar(providerData, widget.collectionId, context,
-          widget.editMode, widget.index),
+      appBar: buildBaseAppBar(providerData, '2', context, widget.index),
       body: FlipCard(
         //Card key  is used to pass the toggle card method into card
         key: cardKey,
@@ -193,9 +180,7 @@ class _CardCreatorState extends State<CardCreator> {
                           ),
                         ),
                         InnerShadowTextField(
-                          title: widget.editMode
-                              ? providerData.wordsData[widget.index].targetLang
-                              : '',
+                          title: '',
                           hintText: 'word',
                           onChanged: (value) {
                             targetLang = value;
@@ -266,9 +251,7 @@ class _CardCreatorState extends State<CardCreator> {
                           children: <Widget>[
                             // main word text field
                             InnerShadowTextField(
-                              title: widget.editMode
-                                  ? providerData.wordsData[widget.index].ownLang
-                                  : '',
+                              title: '',
                               hintText: 'translation',
                               onChanged: (value) {
                                 ownLang = value;
@@ -277,20 +260,14 @@ class _CardCreatorState extends State<CardCreator> {
                               fontSizeMultiplyer: 3.2,
                             ),
                             InnerShadowTextField(
-                              title: widget.editMode
-                                  ? providerData
-                                      .wordsData[widget.index].secondLang
-                                  : '',
+                              title: '',
                               hintText: '2nd language',
                               onChanged: (value) => secondLang = value,
                               defaultSize: defaultSize,
                               fontSizeMultiplyer: 3.2,
                             ),
                             InnerShadowTextField(
-                              title: widget.editMode
-                                  ? providerData
-                                      .wordsData[widget.index].thirdLang
-                                  : '',
+                              title: '',
                               hintText: '3rd language',
                               onChanged: (value) => thirdLang = value,
                               defaultSize: defaultSize,
@@ -326,7 +303,6 @@ class _CardCreatorState extends State<CardCreator> {
     WordsRepository providerData,
     String collectionId,
     BuildContext context,
-    bool editMode,
     int index,
   ) {
     return BaseAppBar(
@@ -336,36 +312,22 @@ class _CardCreatorState extends State<CardCreator> {
         CustomRoundBtn(
           icon: Icons.check,
           fillColor: Color(0xffDA627D),
-          onPressed: editMode
-              ? () {
-                  // providerData.targetLangHandleSubmit(
-                  //     targetLang, providerData.wordsData[index]);
-                  // providerData.ownLangHandleSubmit(
-                  //     ownLang, providerData.wordsData[index]);
-                  // providerData.secondLangHandleSubmit(
-                  //     secondLang, providerData.wordsData[index]);
-                  // providerData.thirdLangHandleSubmit(
-                  //     thirdLang, providerData.wordsData[index]);
-                  // providerData.partHandleSubmit(
-                  //     part, providerData.wordsData[index]);
-                  Navigator.pop(context);
-                }
-              : () {
-                  providerData.addNewWordCard(
-                    collectionId,
-                    id,
-                    targetLang,
-                    ownLang,
-                    secondLang,
-                    thirdLang,
-                    image ?? defaultImage,
-                    part,
-                    example,
-                    exampleTranslations,
-                    isSelected,
-                  );
-                  Navigator.pop(context);
-                },
+          onPressed: () {
+            providerData.addNewWordCard(
+              collectionId,
+              id,
+              targetLang,
+              ownLang,
+              secondLang,
+              thirdLang,
+              image ?? defaultImage,
+              part,
+              example,
+              exampleTranslations,
+              isSelected,
+            );
+            Navigator.pop(context);
+          },
         ),
 
         CustomRoundBtn(

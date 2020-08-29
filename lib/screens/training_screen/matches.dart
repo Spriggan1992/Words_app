@@ -105,7 +105,7 @@ class _MatchesState extends State<Matches> with TickerProviderStateMixin {
 
   void getDataFromProvider() {
     final providerData =
-        Provider.of<WordsRepository>(context, listen: false).wordsData;
+        Provider.of<WordsRepository>(context, listen: false).words;
     providerData.shuffle();
     initialData = [...providerData];
     // initialData = [...widget.dataWord];

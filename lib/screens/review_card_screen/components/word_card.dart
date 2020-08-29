@@ -29,7 +29,7 @@ class WordCard extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.width;
     double defaultSize = SizeConfig.defaultSize;
     final wordsData =
-        Provider.of<WordsRepository>(context, listen: false).wordsData;
+        Provider.of<WordsRepository>(context, listen: false).words;
     return Container(
         padding: EdgeInsets.only(
           right: defaultSize * 3,

@@ -120,7 +120,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
             ),
             color: isExpanded
                 ? Color(0xFFCFD8DC)
-                : providerData.wordsData[widget.index].isSelected
+                : providerData.words[widget.index].isSelected
                     ? Colors.grey[400]
                     : Colors.transparent,
           ),

@@ -68,7 +68,7 @@ class _ReviewCardState extends State<ReviewCard>
     double defaultSize = SizeConfig.defaultSize;
 
     final wordsData =
-        Provider.of<WordsRepository>(context, listen: false).wordsData;
+        Provider.of<WordsRepository>(context, listen: false).words;
     return Scaffold(
       appBar: BaseAppBar(
         title: Text("Collection's name"),

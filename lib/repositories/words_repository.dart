@@ -10,7 +10,7 @@ import 'package:words_app/utils/utilities.dart';
 class WordsRepository with ChangeNotifier {
   List<Word> _words = [];
 
-  List<Word> get wordsData {
+  List<Word> get words {
     return [..._words];
   }
 
@@ -35,6 +35,7 @@ class WordsRepository with ChangeNotifier {
     bool isSelected,
   ) {
     final wordCard = Word(
+      collectionId: collectionId,
       id: id,
       targetLang: targetLang,
       ownLang: ownLang,
@@ -95,6 +96,7 @@ class WordsRepository with ChangeNotifier {
     _words = dataList.map((item) {
 //      print(item['partColor']);
       Word word = Word(
+        collectionId: item['collectionId'],
         id: item['id'],
         targetLang: item['targetLang'],
         ownLang: item['ownLang'],
@@ -119,7 +121,6 @@ class WordsRepository with ChangeNotifier {
   }
 
   void removeWord(Word word) {
-    
     DBHelper.delete('words', word.id);
   }
 
@@ -226,7 +227,7 @@ class WordsRepository with ChangeNotifier {
   // }
 
   void addItemInList() {
-    wordsData.forEach((item) {
+    words.forEach((item) {
       if (selectedData.contains(item)) {
         selectedData.remove(item);
       }
@@ -242,10 +243,10 @@ class WordsRepository with ChangeNotifier {
   }
 
   void removeSelectedWords() {
-    print(wordsData.length);
-    wordsData.forEach((element) {
+    print(words.length);
+    words.forEach((element) {
       if (element.isSelected == true) {
-        wordsData.remove(element);
+        words.remove(element);
         DBHelper.delete('words', element.id);
       }
     });

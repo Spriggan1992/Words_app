@@ -17,7 +17,7 @@ class BackContainer extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.width;
     final wordsData =
-        Provider.of<WordsRepository>(context, listen: false).wordsData;
+        Provider.of<WordsRepository>(context, listen: false).words;
 
     return Container(
         padding: EdgeInsets.only(

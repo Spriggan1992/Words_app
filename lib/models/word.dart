@@ -6,6 +6,7 @@ import 'part.dart';
 // ignore: must_be_immutable
 class Word extends Equatable with ChangeNotifier {
   Word({
+    this.collectionId,
     this.id,
     this.targetLang,
     this.secondLang,
@@ -21,6 +22,7 @@ class Word extends Equatable with ChangeNotifier {
     this.isSelected = false,
     // this.isEditingMode,
   });
+  final String collectionId;
   final String id;
   final String targetLang;
   final String ownLang;
@@ -43,6 +45,7 @@ class Word extends Equatable with ChangeNotifier {
   // }
 
   Word copyWith({
+    String collectionId,
     String id,
     String targetLang,
     String ownLang,
@@ -64,7 +67,8 @@ class Word extends Equatable with ChangeNotifier {
         image: image ?? this.image,
         example: example ?? this.example,
         exampleTranslations: exampleTranslations ?? this.exampleTranslations,
-        isSelected: isSelected ?? this.isSelected);
+        isSelected: isSelected ?? this.isSelected,
+        collectionId: collectionId ?? this.collectionId);
   }
 
   @override
@@ -77,7 +81,8 @@ class Word extends Equatable with ChangeNotifier {
         image,
         example,
         exampleTranslations,
-        isSelected
+        isSelected,
+        collectionId,
       ];
 
   List<Word> toList() {}

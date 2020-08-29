@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
-import 'package:words_app/components/base_appbar.dart';
-import 'package:words_app/components/base_bottom_appbar.dart';
-import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
+
 import 'package:words_app/components/reusable_main_button.dart';
-import 'package:words_app/constants/constants.dart';
-import 'package:words_app/components/reusable_float_action_button.dart';
+
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/word.dart';
+
 import 'package:words_app/repositories/words_repository.dart';
-import 'package:words_app/screens/card_creator_screen//card_creator.dart';
-import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
+import 'package:words_app/screens/card_creator_screen/card_creator.dart';
+
 import 'package:words_app/utils/size_config.dart';
 import 'components/word_card.dart';
 
@@ -64,7 +63,13 @@ class _WordsScreenState extends State<WordsScreen> {
                         titleText: 'Add Word',
                         textColor: Colors.white,
                         backgroundColor: Theme.of(context).accentColor,
-                        onPressed: () {},
+                        onPressed: () {
+                          ///TODO:  pass the word or Id
+                          // context
+                          //     .bloc<CardCreatorBloc>()
+                          //     .add(CardCreatorLoaded(id: collectionId));
+                          Navigator.pushNamed(context, CardCreator.id);
+                        },
                       ),
                     ],
                   );

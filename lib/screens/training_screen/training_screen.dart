@@ -7,7 +7,6 @@ import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/words_repository.dart';
 import 'package:provider/provider.dart';
 
-
 class Training extends StatefulWidget {
   static String id = 'training_screen';
   Training({this.dataWord});
@@ -48,7 +47,7 @@ class _TrainingState extends State<Training> {
 
   void createData() {
     final providerData =
-        Provider.of<WordsRepository>(context, listen: false).wordsData;
+        Provider.of<WordsRepository>(context, listen: false).words;
     targetWords = [...providerData];
     targetWords.shuffle();
     ownLanguageWords = [...providerData];

@@ -14,7 +14,7 @@ class DialogWindow extends StatelessWidget {
   Widget build(BuildContext context) {
     // return Consumer<Words>(builder: (context, providerData, child) {
     final wordsDataIndex =
-        Provider.of<WordsRepository>(context, listen: false).wordsData[index];
+        Provider.of<WordsRepository>(context, listen: false).words[index];
     final wordsData = Provider.of<WordsRepository>(context, listen: false);
     final validation = Provider.of<ValidationForm>(context);
     return Container(
