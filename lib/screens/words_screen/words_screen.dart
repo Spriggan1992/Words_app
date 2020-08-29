@@ -65,9 +65,9 @@ class _WordsScreenState extends State<WordsScreen> {
                         backgroundColor: Theme.of(context).accentColor,
                         onPressed: () {
                           ///TODO:  pass the word or Id
-                          // context
-                          //     .bloc<CardCreatorBloc>()
-                          //     .add(CardCreatorLoaded(id: collectionId));
+                          context
+                              .bloc<CardCreatorBloc>()
+                              .add(CardCreatorLoaded(id: collectionId));
                           Navigator.pushNamed(context, CardCreator.id);
                         },
                       ),

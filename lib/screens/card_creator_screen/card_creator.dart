@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/part.dart';
@@ -10,6 +12,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/components/base_appbar.dart';
+import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/words_repository.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/size_config.dart';
@@ -41,10 +44,10 @@ class _CardCreatorState extends State<CardCreator> {
   bool _thirdLangSelect = false;
 
   //variables to work with card
-  String targetLang;
-  String ownLang;
-  String secondLang;
-  String thirdLang;
+  String targetLang = '1';
+  String ownLang = '1';
+  String secondLang = '1';
+  String thirdLang = '1';
   String example = 'tämä on tarkea sano';
   String exampleTranslations = 'Это важное слово. It is important word';
   String id = Uuid().v4();
@@ -141,167 +144,179 @@ class _CardCreatorState extends State<CardCreator> {
     SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize;
     final providerData = Provider.of<WordsRepository>(context, listen: false);
-    return Scaffold(
-      appBar: buildBaseAppBar(providerData, '2', context, widget.index),
-      body: FlipCard(
-        //Card key  is used to pass the toggle card method into card
-        key: cardKey,
-        direction: FlipDirection.HORIZONTAL,
-        speed: 500,
+    return BlocBuilder<CardCreatorBloc, CardCreatorState>(
+      builder: (context, state) {
+        if (state is CardCreatorLoading) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (state is CardCreatorSuccess) {
+          return Scaffold(
+            appBar: buildBaseAppBar(providerData, context, widget.index),
+            body: FlipCard(
+              //Card key  is used to pass the toggle card method into card
+              key: cardKey,
+              direction: FlipDirection.HORIZONTAL,
+              speed: 500,
 
-        front: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: defaultSize * 2, vertical: defaultSize * 1.6),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                WordCard(
-                  color: part.partColor,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: defaultSize * 2.4,
-                        right: defaultSize * 2.4,
-                        top: defaultSize * 2,
-                        bottom: defaultSize * 2),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          height: defaultSize * 4,
-                          child: SingleChildScrollView(
-                            child: CustomRadio(
-                              getPart: (value) => part.partName = value,
-                              getColor: _getColor,
-                              defaultSize: defaultSize,
-                            ),
-                          ),
-                        ),
-                        InnerShadowTextField(
-                          title: '',
-                          hintText: 'word',
-                          onChanged: (value) {
-                            targetLang = value;
-
-                            // final String targetLang2 = value;
-                          },
-                          defaultSize: defaultSize,
-                          fontSizeMultiplyer: 3.2,
-                        ),
-                        Container(
-                          width: defaultSize * 23,
-                          height: defaultSize * 23,
-                          decoration: innerShadow,
-                          child: image == null
-                              ? IconButton(
-                                  onPressed: () => getImageFile(
-                                    ImageSource.camera,
-                                  ),
-                                  icon: Icon(
-                                    Icons.photo_camera,
-                                    size: 48,
-                                  ),
-                                  color: Color(0xFFDA627D),
-                                )
-                              : ClipRRect(
-                                  borderRadius: BorderRadius.circular(14),
-                                  child: Image.file(
-                                    image,
-                                    fit: BoxFit.cover,
+              front: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: defaultSize * 2, vertical: defaultSize * 1.6),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      WordCard(
+                        color: part.partColor,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: defaultSize * 2.4,
+                              right: defaultSize * 2.4,
+                              top: defaultSize * 2,
+                              bottom: defaultSize * 2),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                height: defaultSize * 4,
+                                child: SingleChildScrollView(
+                                  child: CustomRadio(
+                                    getPart: (value) => part.partName = value,
+                                    getColor: _getColor,
+                                    defaultSize: defaultSize,
                                   ),
                                 ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: SizeConfig.blockSizeVertical * 5,
-                  ),
-                ),
-                InnerShadowTextField(
-                  maxLines: SizeConfig.blockSizeVertical > 7 ? 6 : 5,
-                  defaultSize: defaultSize,
-                  hintText: 'example',
-                  fontSizeMultiplyer: 2.4,
-                  onChanged: (value) => example = value,
-                ),
-              ],
-            ),
-          ),
-        ),
-        back: SingleChildScrollView(
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-            child: Column(
-              children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    WordCard(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            // main word text field
-                            InnerShadowTextField(
-                              title: '',
-                              hintText: 'translation',
-                              onChanged: (value) {
-                                ownLang = value;
-                              },
-                              defaultSize: defaultSize,
-                              fontSizeMultiplyer: 3.2,
-                            ),
-                            InnerShadowTextField(
-                              title: '',
-                              hintText: '2nd language',
-                              onChanged: (value) => secondLang = value,
-                              defaultSize: defaultSize,
-                              fontSizeMultiplyer: 3.2,
-                            ),
-                            InnerShadowTextField(
-                              title: '',
-                              hintText: '3rd language',
-                              onChanged: (value) => thirdLang = value,
-                              defaultSize: defaultSize,
-                              fontSizeMultiplyer: 3.2,
-                            ),
-                          ],
+                              ),
+                              InnerShadowTextField(
+                                title: '',
+                                hintText: 'word',
+                                onChanged: (value) {
+                                  targetLang = value;
+
+                                  // final String targetLang2 = value;
+                                },
+                                defaultSize: defaultSize,
+                                fontSizeMultiplyer: 3.2,
+                              ),
+                              Container(
+                                width: defaultSize * 23,
+                                height: defaultSize * 23,
+                                decoration: innerShadow,
+                                child: image == null
+                                    ? IconButton(
+                                        onPressed: () => getImageFile(
+                                          ImageSource.camera,
+                                        ),
+                                        icon: Icon(
+                                          Icons.photo_camera,
+                                          size: 48,
+                                        ),
+                                        color: Color(0xFFDA627D),
+                                      )
+                                    : ClipRRect(
+                                        borderRadius: BorderRadius.circular(14),
+                                        child: Image.file(
+                                          image,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: SizeConfig.blockSizeVertical * 5,
+                        ),
+                      ),
+                      InnerShadowTextField(
+                        maxLines: SizeConfig.blockSizeVertical > 7 ? 6 : 5,
+                        defaultSize: defaultSize,
+                        hintText: 'example',
+                        fontSizeMultiplyer: 2.4,
+                        onChanged: (value) => example = value,
+                      ),
+                    ],
+                  ),
                 ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                      minHeight: SizeConfig.blockSizeVertical * 5),
+              ),
+              back: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0, vertical: 16.0),
+                  child: Column(
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          WordCard(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 10),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  // main word text field
+                                  InnerShadowTextField(
+                                    title: '',
+                                    hintText: 'translation',
+                                    onChanged: (value) {
+                                      ownLang = value;
+                                    },
+                                    defaultSize: defaultSize,
+                                    fontSizeMultiplyer: 3.2,
+                                  ),
+                                  InnerShadowTextField(
+                                    title: '',
+                                    hintText: '2nd language',
+                                    onChanged: (value) => secondLang = value,
+                                    defaultSize: defaultSize,
+                                    fontSizeMultiplyer: 3.2,
+                                  ),
+                                  InnerShadowTextField(
+                                    title: '',
+                                    hintText: '3rd language',
+                                    onChanged: (value) => thirdLang = value,
+                                    defaultSize: defaultSize,
+                                    fontSizeMultiplyer: 3.2,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                            minHeight: SizeConfig.blockSizeVertical * 5),
+                      ),
+                      //Text area with Five line to enter the comments or examples
+                      InnerShadowTextField(
+                        maxLines: SizeConfig.blockSizeVertical > 7.5 ? 6 : 5,
+                        hintText: 'example',
+                        onChanged: (value) => exampleTranslations = value,
+                        defaultSize: defaultSize,
+                        fontSizeMultiplyer: 2.4,
+                      ),
+                    ],
+                  ),
                 ),
-                //Text area with Five line to enter the comments or examples
-                InnerShadowTextField(
-                  maxLines: SizeConfig.blockSizeVertical > 7.5 ? 6 : 5,
-                  hintText: 'example',
-                  onChanged: (value) => exampleTranslations = value,
-                  defaultSize: defaultSize,
-                  fontSizeMultiplyer: 2.4,
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
+          );
+        }
+        if (state is CardCreatorFailure) {
+          return Center(child: Text('Somthing went wrong.....'));
+        }
+      },
     );
   }
 
   BaseAppBar buildBaseAppBar(
     WordsRepository providerData,
-    String collectionId,
     BuildContext context,
     int index,
   ) {
@@ -313,19 +328,24 @@ class _CardCreatorState extends State<CardCreator> {
           icon: Icons.check,
           fillColor: Color(0xffDA627D),
           onPressed: () {
-            providerData.addNewWordCard(
-              collectionId,
-              id,
-              targetLang,
-              ownLang,
-              secondLang,
-              thirdLang,
-              image ?? defaultImage,
-              part,
-              example,
-              exampleTranslations,
-              isSelected,
+            print(targetLang);
+
+            var newWord = Word(
+              id: id,
+              targetLang: targetLang,
+              ownLang: ownLang,
+              secondLang: secondLang,
+              thirdLang: thirdLang,
+              image: image ?? defaultImage,
+              part: part,
+              example: example,
+              exampleTranslations: exampleTranslations,
+              isSelected: isSelected,
             );
+
+            context
+                .bloc<CardCreatorBloc>()
+                .add(CardCreatorAddWord(word: newWord));
             Navigator.pop(context);
           },
         ),

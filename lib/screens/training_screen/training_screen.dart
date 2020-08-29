@@ -196,7 +196,7 @@ List<Widget> deck(List<Word> targetWords, removieItem, ownLanguageWords,
         child: Dismissible(
           onDismissed: (DismissDirection derection) {
             if (derection == DismissDirection.startToEnd) {
-              if (targetWords.last.id == ownLanguageWords.last.id) {
+              if (targetWords.last.id == ownLanguageWords.last.word) {
                 toogleAnswerCorrect();
               } else {
                 toogleAnswerWrong();
@@ -204,7 +204,7 @@ List<Widget> deck(List<Word> targetWords, removieItem, ownLanguageWords,
               removieItem(targetWords[i]);
             }
             if (derection == DismissDirection.endToStart) {
-              if (targetWords.last.id == ownLanguageWords.last.id) {
+              if (targetWords.last.id == ownLanguageWords.last.word) {
                 toogleAnswerWrong();
               } else {
                 toogleAnswerCorrect();

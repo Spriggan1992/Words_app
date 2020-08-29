@@ -20,49 +20,20 @@ class WordsRepository with ChangeNotifier {
 
   //Card Creator
 
-  void addNewWordCard(
-    String collectionId,
-    String id,
-    String targetLang,
-    String ownLang,
-    String secondLang,
-    String thirdLang,
-    File image,
-    Part part,
-    String example,
-    String exampleTranslations,
-    // bool isEditingMode,
-    bool isSelected,
-  ) {
-    final wordCard = Word(
-      collectionId: collectionId,
-      id: id,
-      targetLang: targetLang,
-      ownLang: ownLang,
-      secondLang: secondLang,
-      thirdLang: thirdLang,
-      image: image,
-      example: example,
-      exampleTranslations: exampleTranslations,
-      part: part,
-      // isEditingMode: false,
-      isSelected: isSelected,
-    );
-    _words.add(wordCard);
-    notifyListeners();
+  Future<void> addNewWord(Word word) async {
+    print('${word.collectionId},${word.id},${word.targetLang}}');
     DBHelper.insert('words', {
-      'collectionId': collectionId,
-      'id': id,
-      'targetLang': targetLang,
-      'ownLang': ownLang,
-      'secondLang': secondLang,
-      'thirdLang': thirdLang,
-      'partName': part.partName,
-      'partColor': part.partColor.toString(),
-      'image': image.path,
-      'example': example,
-      'exampleTranslations': exampleTranslations,
-      'isSelected': isSelected,
+      'collectionId': word.collectionId,
+      'id': word.id,
+      'targetLang': word.targetLang,
+      'ownLang': word.ownLang,
+      'secondLang': word.secondLang,
+      'thirdLang': word.thirdLang,
+      'partName': word.part.partName,
+      'partColor': word.part.partColor.toString(),
+      'image': word.image.path,
+      'example': word.example,
+      'exampleTranslations': word.exampleTranslations,
     });
   }
 
