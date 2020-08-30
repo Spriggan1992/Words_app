@@ -40,6 +40,9 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (event is WordsTurnOffIsEditingMode) {
       yield* _mapWordsTurnOffIsEditingModeToState();
     }
+    if (event is WordsUpdatedWord) {
+      yield* _mapWordsUpdatedWordToState(event);
+    }
   }
 
   /// Fetch data from db through repository
@@ -155,6 +158,52 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
           .map((word) => word.copyWith(isSelected: false)));
 
       yield WordsSuccess(words: updateWords, selectedList: updatedSelectedList);
+    } catch (_) {
+      yield WordsFailure();
+    }
+  }
+
+  Stream<WordsState> _mapWordsUpdatedWordToState(
+      WordsUpdatedWord event) async* {
+    try {
+      final updatedWord = (state as WordsSuccess).words.map((word) {
+        print("from IF ${event.word.id}");
+
+        if (word.id == event.word.id) {
+          wordsRepository.updateWord(
+            data: {
+              'collectionId': event.word.collectionId,
+              'id': event.word.id,
+              'targetLang': event.word.targetLang,
+              'ownLang': event.word.ownLang,
+              'secondLang': event.word.secondLang,
+              'thirdLang': event.word.thirdLang,
+              'partName': event.word.part.partName,
+              'partColor': event.word.part.partColor.toString(),
+              'image': event.word.image.path,
+              'example': event.word.example,
+              'exampleTranslations': event.word.exampleTranslations,
+            },
+          );
+        }
+
+        return word.id == event.word.id
+            ? word.copyWith(
+                collectionId: word.collectionId,
+                id: event.word.id,
+                example: event.word.example,
+                isSelected: false,
+                exampleTranslations: event.word.exampleTranslations,
+                image: event.word.image,
+                ownLang: event.word.ownLang,
+                part: event.word.part,
+                secondLang: event.word.secondLang,
+                targetLang: event.word.targetLang,
+                thirdLang: event.word.thirdLang)
+            : word;
+      }).toList();
+      // print(event.word.collectionId);
+      yield WordsSuccess(words: updatedWord);
     } catch (_) {
       yield WordsFailure();
     }

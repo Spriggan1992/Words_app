@@ -13,7 +13,7 @@ class CardCreatorSuccess extends CardCreatorState {
   final Word word;
 
   CardCreatorSuccess({this.word});
-  List<Object> get props => [];
+  List<Object> get props => [word];
 }
 
 class CardCreatorFailure extends CardCreatorState {}

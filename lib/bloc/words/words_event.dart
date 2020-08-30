@@ -46,3 +46,10 @@ class WordsAddToSelectedList extends WordsEvent {
 }
 
 class WordsTurnOffIsEditingMode extends WordsEvent {}
+
+class WordsUpdatedWord extends WordsEvent {
+  final Word word;
+
+  WordsUpdatedWord({this.word});
+  List<Object> get props => [word];
+}

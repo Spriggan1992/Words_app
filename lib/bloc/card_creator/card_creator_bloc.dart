@@ -14,7 +14,6 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
   }) : super(CardCreatorLoading());
 
   final WordsRepository wordsRepository;
-  // final WordsBloc wordsBloc;
 
   @override
   Stream<CardCreatorState> mapEventToState(
@@ -26,25 +25,33 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
     if (event is CardCreatorAddWord) {
       yield* _mapCardCreatorAddedWordToState(event);
     }
-    // if (event is CardCreatorEditWord) {
-    //   yield* _mapCardCreatorEditWordToState(event);
-    // }
+    if (event is CardCreatorEditWord) {
+      yield* _mapCardCreatorEditWordToState(event);
+    }
   }
 
   Stream<CardCreatorState> _mapCardCreatorLoadedToState(
       CardCreatorLoaded event) async* {
     try {
+      // final words = await wordsRepository.fetchAndSetWords(event.id);
       yield CardCreatorSuccess(word: Word(collectionId: event.id));
     } catch (_) {
       yield CardCreatorFailure();
     }
   }
+  // Stream<CardCreatorState> _mapCardCreatorLoadedToState(
+  //     CardCreatorLoaded event) async* {
+  //   try {
+  //     yield CardCreatorSuccess(word: Word(collectionId: event.id));
+  //   } catch (_) {
+  //     yield CardCreatorFailure();
+  //   }
+  // }
 
   Stream<CardCreatorState> _mapCardCreatorAddedWordToState(
       CardCreatorAddWord event) async* {
     try {
       final word = event.word;
-
       final updatedWord = (state as CardCreatorSuccess).word.copyWith(
           collectionId: word.collectionId,
           id: word.id,
@@ -58,6 +65,29 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
           targetLang: word.targetLang,
           thirdLang: word.thirdLang);
       await wordsRepository.addNewWord(updatedWord);
+      yield CardCreatorSuccess(word: updatedWord);
+    } catch (_) {
+      yield CardCreatorFailure();
+    }
+  }
+
+  Stream<CardCreatorState> _mapCardCreatorEditWordToState(
+      CardCreatorEditWord event) async* {
+    try {
+      final word = event.word;
+      final updatedWord = (state as CardCreatorSuccess).word.copyWith(
+          collectionId: word.collectionId,
+          id: word.id,
+          example: word.example,
+          isSelected: false,
+          exampleTranslations: word.exampleTranslations,
+          image: word.image,
+          ownLang: word.ownLang,
+          part: word.part,
+          secondLang: word.secondLang,
+          targetLang: word.targetLang,
+          thirdLang: word.thirdLang);
+
       yield CardCreatorSuccess(word: updatedWord);
     } catch (_) {
       yield CardCreatorFailure();

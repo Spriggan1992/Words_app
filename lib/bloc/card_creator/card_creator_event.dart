@@ -22,4 +22,9 @@ class CardCreatorAddWord extends CardCreatorEvent {
   List<Object> get props => [word];
 }
 
-class CardCreatorEditWord extends CardCreatorEvent {}
+class CardCreatorEditWord extends CardCreatorEvent {
+  final Word word;
+
+  CardCreatorEditWord({this.word});
+  List<Object> get props => [word];
+}

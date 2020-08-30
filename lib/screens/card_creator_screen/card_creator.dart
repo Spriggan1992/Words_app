@@ -45,13 +45,13 @@ class _CardCreatorState extends State<CardCreator> {
   bool _thirdLangSelect = false;
 
   //variables to work with card
-  String targetLang = '1';
+  String targetLang;
   String ownLang = '1';
   String secondLang = '1';
   String thirdLang = '1';
   String example = 'tämä on tarkea sano';
   String exampleTranslations = 'Это важное слово. It is important word';
-  String id = Uuid().v4();
+  String id;
   File image;
   // this variable will be created when state initiate
   File defaultImage;
@@ -138,10 +138,10 @@ class _CardCreatorState extends State<CardCreator> {
 
   @override
   Widget build(BuildContext context) {
-    // Map args = ModalRoute.of(context).settings.arguments;
+    Map args = ModalRoute.of(context).settings.arguments;
     // String collectionId = args['id'];
-    // int index = args['index'];
-    // final bool editMode = args['editMode'];
+    final Word word = args['word'] ?? Word();
+    final bool isEditingMode = args['isEditingMode'];
     SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize;
     final providerData = Provider.of<WordsRepository>(context, listen: false);
@@ -151,8 +151,10 @@ class _CardCreatorState extends State<CardCreator> {
           return Center(child: CircularProgressIndicator());
         }
         if (state is CardCreatorSuccess) {
+          print(state.word.targetLang);
           return Scaffold(
-            appBar: buildBaseAppBar(providerData, context, widget.index),
+            appBar: buildBaseAppBar(
+                providerData, context, widget.index, isEditingMode),
             body: FlipCard(
               //Card key  is used to pass the toggle card method into card
               key: cardKey,
@@ -190,7 +192,8 @@ class _CardCreatorState extends State<CardCreator> {
                                 ),
                               ),
                               InnerShadowTextField(
-                                title: '',
+                                title:
+                                    isEditingMode ? state.word.targetLang : ' ',
                                 hintText: 'word',
                                 onChanged: (value) {
                                   targetLang = value;
@@ -260,9 +263,9 @@ class _CardCreatorState extends State<CardCreator> {
                                     MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  // main word text field
+                                  /// [ownLang] text field
                                   InnerShadowTextField(
-                                    title: '',
+                                    title: ' ',
                                     hintText: 'translation',
                                     onChanged: (value) {
                                       ownLang = value;
@@ -320,6 +323,7 @@ class _CardCreatorState extends State<CardCreator> {
     WordsRepository providerData,
     BuildContext context,
     int index,
+    bool isEditingMode,
   ) {
     return BaseAppBar(
       title: Text('Create your word card'),
@@ -329,10 +333,10 @@ class _CardCreatorState extends State<CardCreator> {
           icon: Icons.check,
           fillColor: Color(0xffDA627D),
           onPressed: () {
-            print(targetLang);
+            print("from costom round button $targetLang");
 
             var newWord = Word(
-              id: id,
+              id: isEditingMode ? id : Uuid().v4(),
               targetLang: targetLang,
               ownLang: ownLang,
               secondLang: secondLang,
@@ -343,10 +347,12 @@ class _CardCreatorState extends State<CardCreator> {
               exampleTranslations: exampleTranslations,
               isSelected: isSelected,
             );
+            isEditingMode
+                ? context.bloc<WordsBloc>().add(WordsUpdatedWord(word: newWord))
+                : context
+                    .bloc<CardCreatorBloc>()
+                    .add(CardCreatorAddWord(word: newWord));
 
-            context
-                .bloc<CardCreatorBloc>()
-                .add(CardCreatorAddWord(word: newWord));
             context.bloc<WordsBloc>().add(WordsLoaded());
             Navigator.pop(context);
           },

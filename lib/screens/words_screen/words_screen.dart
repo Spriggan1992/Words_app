@@ -57,7 +57,7 @@ class _WordsScreenState extends State<WordsScreen> {
                           providerData, collectionId, state),
 
                       /// List words
-                      buildListView(state, isEditingMode),
+                      buildListView(state, isEditingMode, collectionId),
 
                       ReusableMainButton(
                         titleText: 'Add Word',
@@ -68,7 +68,10 @@ class _WordsScreenState extends State<WordsScreen> {
                           context
                               .bloc<CardCreatorBloc>()
                               .add(CardCreatorLoaded(id: collectionId));
-                          Navigator.pushNamed(context, CardCreator.id);
+                          Navigator.pushNamed(context, CardCreator.id,
+                              arguments: {
+                                'isEditingMode': false,
+                              });
                         },
                       ),
                     ],
@@ -84,7 +87,8 @@ class _WordsScreenState extends State<WordsScreen> {
     );
   }
 
-  Expanded buildListView(WordsSuccess state, bool isEditingMode) {
+  Expanded buildListView(
+      WordsSuccess state, bool isEditingMode, String collectionId) {
     return Expanded(
       child: Container(
           padding: EdgeInsets.only(bottom: 25.0),
@@ -111,42 +115,26 @@ class _WordsScreenState extends State<WordsScreen> {
                       caption: 'Edit',
                       color: Colors.black45,
                       icon: Icons.edit,
-                      onTap: () {}
-                      // Navigator.pushNamed(
-                      //   context,
-                      //   CardCreator.id,
-                      //   arguments: {
-                      //     'id': collectionId,
-                      //     'index': index,
-                      //     'editMode': true,
-                      //   },
-                      // ),
-                      //     Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => CardCreator(
-                      //       index: index,
-                      //       editMode: true,
-                      //       collectionId: collectionId,
-                      //       targetWord:
-                      //           providerData.wordsData[index].targetLang,
-                      //       secondWord:
-                      //           providerData.wordsData[index].secondLang,
-                      //       ownWord:
-                      //           providerData.wordsData[index].ownLang,
-                      //       thirdWord:
-                      //           providerData.wordsData[index].thirdLang,
-                      //     ),
-                      //   ),
-                      // ),
-
-                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, CardCreator.id,
+                            arguments: {
+                              'isEditingMode': true,
+                              'word': state.words[index]
+                            });
+                        context
+                            .bloc<CardCreatorBloc>()
+                            .add(CardCreatorLoaded(id: collectionId));
+                        // context
+                        //     .bloc<CardCreatorBloc>()
+                        //     .add(CardCreatorEditWord(word: state.words[index]));
+                      }),
                   IconSlideAction(
                     caption: 'Delete',
                     color: Colors.red,
                     icon: Icons.delete,
                     onTap: () => deleteConfirmation(context, () {
-                      BlocProvider.of<WordsBloc>(context)
+                      context
+                          .bloc<WordsBloc>()
                           .add(WordsDeleted(word: state.words[index]));
                       Navigator.pop(context);
                     }, 'Do you want to delete this word?'),

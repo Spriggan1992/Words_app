@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 import 'package:words_app/utils/DummyData.dart';
 import 'package:words_app/utils/db_helper.dart';
@@ -84,6 +84,18 @@ class WordsRepository with ChangeNotifier {
     }).toList();
 
     return _words;
+  }
+
+  ///update [Word] by ID receiving <Map>[data]
+  Future<void> updateWord({Map<String, Object> data}) async {
+    final db = await DBHelper.database();
+    db.update(
+      'words',
+      data,
+      where: 'id = ?',
+      whereArgs: [data['id']],
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   Future<bool> toggleIsEditMode(bool value) async {
