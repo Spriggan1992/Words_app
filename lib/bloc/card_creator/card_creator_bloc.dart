@@ -25,16 +25,18 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
     if (event is CardCreatorAddWord) {
       yield* _mapCardCreatorAddedWordToState(event);
     }
-    if (event is CardCreatorEditWord) {
-      yield* _mapCardCreatorEditWordToState(event);
-    }
+    // if (event is CardCreatorEditWord) {
+    //   yield* _mapCardCreatorEditWordToState(event);
+    // }
   }
 
   Stream<CardCreatorState> _mapCardCreatorLoadedToState(
       CardCreatorLoaded event) async* {
     try {
-      // final words = await wordsRepository.fetchAndSetWords(event.id);
-      yield CardCreatorSuccess(word: Word(collectionId: event.id));
+      final words = await wordsRepository.fetchAndSetWords(event.id);
+
+      yield CardCreatorSuccess(
+          word: Word(collectionId: event.id), words: words);
     } catch (_) {
       yield CardCreatorFailure();
     }
@@ -51,46 +53,66 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
   Stream<CardCreatorState> _mapCardCreatorAddedWordToState(
       CardCreatorAddWord event) async* {
     try {
-      final word = event.word;
+      final eventWord = event.word;
+      // final updatedWord = (state as CardCreatorSuccess)
+      //     .words
+      //     .firstWhere((word) => word.id == event.word.id)
+      //     .copyWith(
+      //         collectionId: eventWord.collectionId,
+      //         id: eventWord.id,
+      //         example: eventWord.example,
+      //         isSelected: false,
+      //         exampleTranslations: eventWord.exampleTranslations,
+      //         image: eventWord.image,
+      //         ownLang: eventWord.ownLang,
+      //         part: eventWord.part,
+      //         secondLang: eventWord.secondLang,
+      //         targetLang: eventWord.targetLang,
+      //         thirdLang: eventWord.thirdLang);
+      // final updatedList = (state as CardCreatorSuccess)
+      //     .words
+      //     .map((word) => word.id == event.word.id ? word = updatedWord : word);
+
       final updatedWord = (state as CardCreatorSuccess).word.copyWith(
-          collectionId: word.collectionId,
-          id: word.id,
-          example: word.example,
+          collectionId: eventWord.collectionId,
+          id: eventWord.id,
+          example: eventWord.example,
           isSelected: false,
-          exampleTranslations: word.exampleTranslations,
-          image: word.image,
-          ownLang: word.ownLang,
-          part: word.part,
-          secondLang: word.secondLang,
-          targetLang: word.targetLang,
-          thirdLang: word.thirdLang);
+          exampleTranslations: eventWord.exampleTranslations,
+          image: eventWord.image,
+          ownLang: eventWord.ownLang,
+          part: eventWord.part,
+          secondLang: eventWord.secondLang,
+          targetLang: eventWord.targetLang,
+          thirdLang: eventWord.thirdLang);
       await wordsRepository.addNewWord(updatedWord);
-      yield CardCreatorSuccess(word: updatedWord);
-    } catch (_) {
-      yield CardCreatorFailure();
-    }
-  }
-
-  Stream<CardCreatorState> _mapCardCreatorEditWordToState(
-      CardCreatorEditWord event) async* {
-    try {
-      final word = event.word;
-      final updatedWord = (state as CardCreatorSuccess).word.copyWith(
-          collectionId: word.collectionId,
-          id: word.id,
-          example: word.example,
-          isSelected: false,
-          exampleTranslations: word.exampleTranslations,
-          image: word.image,
-          ownLang: word.ownLang,
-          part: word.part,
-          secondLang: word.secondLang,
-          targetLang: word.targetLang,
-          thirdLang: word.thirdLang);
 
       yield CardCreatorSuccess(word: updatedWord);
     } catch (_) {
       yield CardCreatorFailure();
     }
   }
+
+  // Stream<CardCreatorState> _mapCardCreatorEditWordToState(
+  //     CardCreatorEditWord event) async* {
+  //   try {
+  //     final word = event.word;
+  //     final updatedWord = (state as CardCreatorSuccess).word.copyWith(
+  //         collectionId: word.collectionId,
+  //         id: word.id,
+  //         example: word.example,
+  //         isSelected: false,
+  //         exampleTranslations: word.exampleTranslations,
+  //         image: word.image,
+  //         ownLang: word.ownLang,
+  //         part: word.part,
+  //         secondLang: word.secondLang,
+  //         targetLang: word.targetLang,
+  //         thirdLang: word.thirdLang);
+
+  //     yield CardCreatorSuccess(word: updatedWord);
+  //   } catch (_) {
+  //     yield CardCreatorFailure();
+  //   }
+  // }
 }

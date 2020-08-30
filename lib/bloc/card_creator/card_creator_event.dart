@@ -9,10 +9,12 @@ abstract class CardCreatorEvent extends Equatable {
 
 class CardCreatorLoaded extends CardCreatorEvent {
   final String id;
+  final Word word;
+  final List<Word> words;
 
-  CardCreatorLoaded({this.id});
+  CardCreatorLoaded({this.id, this.word, this.words});
 
-  List<Object> get props => [id];
+  List<Object> get props => [id, word, words];
 }
 
 class CardCreatorAddWord extends CardCreatorEvent {

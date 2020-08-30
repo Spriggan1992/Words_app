@@ -65,9 +65,11 @@ class _WordsScreenState extends State<WordsScreen> {
                         backgroundColor: Theme.of(context).accentColor,
                         onPressed: () {
                           ///TODO:  pass the word or Id
-                          context
-                              .bloc<CardCreatorBloc>()
-                              .add(CardCreatorLoaded(id: collectionId));
+                          // context
+                          //     .bloc<WordsBloc>()
+                          //     .add(WordsLoaded(id: collectionId));
+                          // context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
+                          //     id: collectionId, words: state.words));
                           Navigator.pushNamed(context, CardCreator.id,
                               arguments: {
                                 'isEditingMode': false,
@@ -121,9 +123,10 @@ class _WordsScreenState extends State<WordsScreen> {
                               'isEditingMode': true,
                               'word': state.words[index]
                             });
-                        context
-                            .bloc<CardCreatorBloc>()
-                            .add(CardCreatorLoaded(id: collectionId));
+                        context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
+                            id: collectionId,
+                            word: state.words[index],
+                            words: state.words));
                         // context
                         //     .bloc<CardCreatorBloc>()
                         //     .add(CardCreatorEditWord(word: state.words[index]));

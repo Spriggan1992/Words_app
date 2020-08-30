@@ -16,8 +16,6 @@ class WordsLoaded extends WordsEvent {
   List<Object> get props => [id, isEdit];
 }
 
-class WordsAdded extends WordsEvent {}
-
 class WordsToggled extends WordsEvent {
   final Word word;
 
@@ -51,5 +49,12 @@ class WordsUpdatedWord extends WordsEvent {
   final Word word;
 
   WordsUpdatedWord({this.word});
+  List<Object> get props => [word];
+}
+
+class WordsAdded extends WordsEvent {
+  final Word word;
+
+  WordsAdded({this.word});
   List<Object> get props => [word];
 }

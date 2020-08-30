@@ -43,6 +43,9 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (event is WordsUpdatedWord) {
       yield* _mapWordsUpdatedWordToState(event);
     }
+    if (event is WordsAdded) {
+      yield* _mapWordsAddedToState(event);
+    }
   }
 
   /// Fetch data from db through repository
@@ -208,4 +211,39 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
       yield WordsFailure();
     }
   }
+
+  Stream<WordsState> _mapWordsAddedToState(WordsAdded event) async* {
+    if (state is WordsSuccess) {
+      final List<Word> updatedWord = List.from((state as WordsSuccess).words)
+        ..add(event.word);
+      yield WordsSuccess(words: updatedWord);
+      await wordsRepository.addNewWord(event.word);
+    }
+  }
+  //   try {
+  //     final eventWord = event.word;
+  //     final updatedWord = (state as WordsSuccess)
+  //         .words
+  //         .firstWhere((word) => word.id == event.word.id)
+  //         .copyWith(
+  //             collectionId: eventWord.collectionId,
+  //             id: eventWord.id,
+  //             example: eventWord.example,
+  //             isSelected: false,
+  //             exampleTranslations: eventWord.exampleTranslations,
+  //             image: eventWord.image,
+  //             ownLang: eventWord.ownLang,
+  //             part: eventWord.part,
+  //             secondLang: eventWord.secondLang,
+  //             targetLang: eventWord.targetLang,
+  //             thirdLang: eventWord.thirdLang);
+  //     final updatedList = (state as WordsSuccess)
+  //         .words
+  //         .map((word) => word.id == event.word.id ? word = updatedWord : word);
+  //     await wordsRepository.addNewWord(updatedWord);
+  //     yield WordsSuccess(words: updatedList);
+  //   } catch (_) {
+  //     yield WordsFailure();
+  //   }
+  // }
 }
