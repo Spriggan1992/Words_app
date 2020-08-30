@@ -55,25 +55,25 @@ class _CardCreatorState extends State<CardCreator> {
   FocusNode targetLangFocusNode = FocusNode();
   bool isSelected = false;
 
-  setImage() async {
-    //image receive File which we ca freely use in our app. Coz word data saves images as File object
-    final image = await Utilities.assetToFile('images/noimage.png');
-    setState(() {
-      defaultImage = image;
-    });
-  }
+  // setImage() async {
+  //   //image receive File which we ca freely use in our app. Coz word data saves images as File object
+  //   final image = await Utilities.assetToFile('images/noimage.png');
+  //   setState(() {
+  //     defaultImage = image;
+  //   });
+  // }
 
-  void initState() {
-    super.initState();
-    setImage();
-  }
+  // void initState() {
+  //   super.initState();
+  //   setImage();
+  // }
 
-  @override
-  void dispose() {
-    // Clean up the focus node when the Form is disposed.
-    super.dispose();
-    targetLangFocusNode.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // Clean up the focus node when the Form is disposed.
+  //   super.dispose();
+  //   targetLangFocusNode.dispose();
+  // }
 
   //method to work with camera
   getImageFile(ImageSource source) async {

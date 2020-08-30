@@ -32,7 +32,7 @@ class WordsRepository with ChangeNotifier {
       'thirdLang': word.thirdLang,
       'partName': word.part.partName,
       'partColor': word.part.partColor.toString(),
-      'image': word.image.path,
+      'image': word.image?.path ?? '',
       'example': word.example,
       'exampleTranslations': word.exampleTranslations,
     });
