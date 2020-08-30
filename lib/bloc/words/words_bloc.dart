@@ -153,6 +153,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     }
   }
 
+  /// This method is responsible for untoggle all selected words
   Stream<WordsState> _mapWordsTurnOffIsEditingModeToState() async* {
     try {
       final List<Word> updatedSelectedList = [];
@@ -166,12 +167,13 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     }
   }
 
+  /// This method is responsible for editing [Word] on dismissable swipe, edit button
+  ///, and save it to UI wordsList  and DB
   Stream<WordsState> _mapWordsUpdatedWordToState(
       WordsUpdatedWord event) async* {
     try {
       final updatedWord = (state as WordsSuccess).words.map((word) {
         print("from IF ${event.word.id}");
-
         if (word.id == event.word.id) {
           wordsRepository.updateWord(
             data: {
@@ -205,13 +207,13 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
                 thirdLang: event.word.thirdLang)
             : word;
       }).toList();
-      // print(event.word.collectionId);
       yield WordsSuccess(words: updatedWord);
     } catch (_) {
       yield WordsFailure();
     }
   }
 
+  /// This method is responsible for adding [Word] on preees of bottom Add Word buttton, edit button , to UI and DB
   Stream<WordsState> _mapWordsAddedToState(WordsAdded event) async* {
     if (state is WordsSuccess) {
       final List<Word> updatedWord = List.from((state as WordsSuccess).words)
@@ -220,30 +222,4 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
       await wordsRepository.addNewWord(event.word);
     }
   }
-  //   try {
-  //     final eventWord = event.word;
-  //     final updatedWord = (state as WordsSuccess)
-  //         .words
-  //         .firstWhere((word) => word.id == event.word.id)
-  //         .copyWith(
-  //             collectionId: eventWord.collectionId,
-  //             id: eventWord.id,
-  //             example: eventWord.example,
-  //             isSelected: false,
-  //             exampleTranslations: eventWord.exampleTranslations,
-  //             image: eventWord.image,
-  //             ownLang: eventWord.ownLang,
-  //             part: eventWord.part,
-  //             secondLang: eventWord.secondLang,
-  //             targetLang: eventWord.targetLang,
-  //             thirdLang: eventWord.thirdLang);
-  //     final updatedList = (state as WordsSuccess)
-  //         .words
-  //         .map((word) => word.id == event.word.id ? word = updatedWord : word);
-  //     await wordsRepository.addNewWord(updatedWord);
-  //     yield WordsSuccess(words: updatedList);
-  //   } catch (_) {
-  //     yield WordsFailure();
-  //   }
-  // }
 }

@@ -1,12 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/part.dart';
-
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -26,11 +24,6 @@ import 'components/reusable_card.dart';
 class CardCreator extends StatefulWidget {
   static const id = 'card_creator';
 
-  CardCreator({
-    this.index,
-  });
-  final int index;
-
   @override
   _CardCreatorState createState() => _CardCreatorState();
 }
@@ -41,17 +34,15 @@ class _CardCreatorState extends State<CardCreator> {
   //to store image locally
   //get access to camera or gallery
   final picker = ImagePicker();
-  bool _secondLangSelect = false;
-  bool _thirdLangSelect = false;
 
   //variables to work with card
   String targetLang;
-  String ownLang = '1';
-  String secondLang = '1';
-  String thirdLang = '1';
+  String ownLang;
+  String secondLang;
+  String thirdLang;
   String example = 'tämä on tarkea sano';
   String exampleTranslations = 'Это важное слово. It is important word';
-  String id = '1';
+  // String id;
   File image;
   // this variable will be created when state initiate
   File defaultImage;
@@ -72,22 +63,8 @@ class _CardCreatorState extends State<CardCreator> {
     });
   }
 
-  // void setUpWords() {
-  //   if (widget.editMode == true) {
-  //     targetLang = widget.targetWord;
-  //     secondLang = widget.secondWord;
-  //     thirdLang = widget.thirdWord;
-  //     ownLang = widget.ownWord;
-  //     targetLang == null ? targetLang = ' ' : targetLang = widget.targetWord;
-  //     secondLang == null ? secondLang = ' ' : secondLang = widget.secondWord;
-  //     thirdLang == null ? thirdLang = ' ' : thirdLang = widget.thirdWord;
-  //     ownLang == null ? ownLang = ' ' : ownLang = widget.ownWord;
-  //   }
-  // }
-
   void initState() {
     super.initState();
-    // setUpWords();
     setImage();
   }
 
@@ -122,7 +99,6 @@ class _CardCreatorState extends State<CardCreator> {
       image = croppedFile;
     });
     //   //    Compress the image, not working currently
-
     //  var result = await FlutterImageCompress.compressAndGetFile(
     //    croppedFile.absolute.path,
     //    "${croppedFile.path}1",
@@ -139,15 +115,21 @@ class _CardCreatorState extends State<CardCreator> {
   @override
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context).settings.arguments;
-    // String collectionId = args['id'];
+
+    /// Pass [Word] from path[words_screen] for passing it to the controllers for text
     final Word word = args['word'] ?? Word();
+
+    /// To allow card_creator to be used on add word and on edit word event
     final bool isEditingMode = args['isEditingMode'];
+    final String id = word.id;
+    final String collectionId = args['collectionId'];
     SizeConfig().init(context);
+
     double defaultSize = SizeConfig.defaultSize;
     final providerData = Provider.of<WordsRepository>(context, listen: false);
     return Scaffold(
-      appBar:
-          buildBaseAppBar(providerData, context, widget.index, isEditingMode),
+      appBar: buildBaseAppBar(
+          providerData, context, isEditingMode, id, collectionId),
       body: FlipCard(
         //Card key  is used to pass the toggle card method into card
         key: cardKey,
@@ -160,7 +142,6 @@ class _CardCreatorState extends State<CardCreator> {
                 horizontal: defaultSize * 2, vertical: defaultSize * 1.6),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 WordCard(
                   color: part.partColor,
@@ -189,8 +170,6 @@ class _CardCreatorState extends State<CardCreator> {
                           hintText: 'word',
                           onChanged: (value) {
                             targetLang = value;
-
-                            // final String targetLang2 = value;
                           },
                           defaultSize: defaultSize,
                           fontSizeMultiplyer: 3.2,
@@ -230,6 +209,7 @@ class _CardCreatorState extends State<CardCreator> {
                 InnerShadowTextField(
                   maxLines: SizeConfig.blockSizeVertical > 7 ? 6 : 5,
                   defaultSize: defaultSize,
+                  title: isEditingMode ? word.example : ' ',
                   hintText: 'example',
                   fontSizeMultiplyer: 2.4,
                   onChanged: (value) => example = value,
@@ -256,7 +236,7 @@ class _CardCreatorState extends State<CardCreator> {
                           children: <Widget>[
                             /// [ownLang] text field
                             InnerShadowTextField(
-                              title: ' ',
+                              title: isEditingMode ? word.ownLang : ' ',
                               hintText: 'translation',
                               onChanged: (value) {
                                 ownLang = value;
@@ -265,14 +245,14 @@ class _CardCreatorState extends State<CardCreator> {
                               fontSizeMultiplyer: 3.2,
                             ),
                             InnerShadowTextField(
-                              title: '',
+                              title: isEditingMode ? word.secondLang : ' ',
                               hintText: '2nd language',
                               onChanged: (value) => secondLang = value,
                               defaultSize: defaultSize,
                               fontSizeMultiplyer: 3.2,
                             ),
                             InnerShadowTextField(
-                              title: '',
+                              title: isEditingMode ? word.thirdLang : ' ',
                               hintText: '3rd language',
                               onChanged: (value) => thirdLang = value,
                               defaultSize: defaultSize,
@@ -291,6 +271,7 @@ class _CardCreatorState extends State<CardCreator> {
                 //Text area with Five line to enter the comments or examples
                 InnerShadowTextField(
                   maxLines: SizeConfig.blockSizeVertical > 7.5 ? 6 : 5,
+                  title: isEditingMode ? word.exampleTranslations : ' ',
                   hintText: 'example',
                   onChanged: (value) => exampleTranslations = value,
                   defaultSize: defaultSize,
@@ -307,8 +288,9 @@ class _CardCreatorState extends State<CardCreator> {
   BaseAppBar buildBaseAppBar(
     WordsRepository providerData,
     BuildContext context,
-    int index,
     bool isEditingMode,
+    String id,
+    String collectionId,
   ) {
     return BaseAppBar(
       title: Text('Create your word card'),
@@ -318,9 +300,8 @@ class _CardCreatorState extends State<CardCreator> {
           icon: Icons.check,
           fillColor: Color(0xffDA627D),
           onPressed: () {
-            print("from costom round button $ownLang");
-
             var newWord = Word(
+              collectionId: collectionId,
               id: isEditingMode ? id : Uuid().v4(),
               targetLang: targetLang,
               ownLang: ownLang,
@@ -336,19 +317,14 @@ class _CardCreatorState extends State<CardCreator> {
                 ? context.bloc<WordsBloc>().add(WordsUpdatedWord(word: newWord))
                 : context.bloc<WordsBloc>().add(WordsAdded(word: newWord));
 
-            // context.bloc<WordsBloc>().add(WordsLoaded());
-
             Navigator.pop(context);
           },
         ),
-
         CustomRoundBtn(
           icon: Icons.close,
           onPressed: () => Navigator.of(context).pop(),
           color: Theme.of(context).primaryColor,
         ),
-
-//   dismiss button pop the context back to list of words
       ],
     );
   }

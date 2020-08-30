@@ -21,7 +21,8 @@ class WordsRepository with ChangeNotifier {
   //Card Creator
 
   Future<void> addNewWord(Word word) async {
-    print('${word.collectionId},${word.id},${word.targetLang}}');
+    print("Print from AddNEwWord ${word.id}");
+
     DBHelper.insert('words', {
       'collectionId': word.collectionId,
       'id': word.id,

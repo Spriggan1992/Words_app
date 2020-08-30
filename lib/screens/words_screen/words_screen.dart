@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
+
 import 'package:words_app/bloc/words/words_bloc.dart';
 
 import 'package:words_app/components/reusable_main_button.dart';
@@ -64,15 +64,10 @@ class _WordsScreenState extends State<WordsScreen> {
                         textColor: Colors.white,
                         backgroundColor: Theme.of(context).accentColor,
                         onPressed: () {
-                          ///TODO:  pass the word or Id
-                          // context
-                          //     .bloc<WordsBloc>()
-                          //     .add(WordsLoaded(id: collectionId));
-                          // context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
-                          //     id: collectionId, words: state.words));
                           Navigator.pushNamed(context, CardCreator.id,
                               arguments: {
                                 'isEditingMode': false,
+                                'collectionId': collectionId
                               });
                         },
                       ),
@@ -121,15 +116,9 @@ class _WordsScreenState extends State<WordsScreen> {
                         Navigator.pushNamed(context, CardCreator.id,
                             arguments: {
                               'isEditingMode': true,
-                              'word': state.words[index]
+                              'word': state.words[index],
+                              'collectionId': collectionId
                             });
-                        context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
-                            id: collectionId,
-                            word: state.words[index],
-                            words: state.words));
-                        // context
-                        //     .bloc<CardCreatorBloc>()
-                        //     .add(CardCreatorEditWord(word: state.words[index]));
                       }),
                   IconSlideAction(
                     caption: 'Delete',
