@@ -170,7 +170,7 @@ class _CardCreatorState extends State<CardCreator> {
                               ),
                             ),
                             InnerShadowTextField(
-                              title: isEditingMode ? word.targetLang : ' ',
+                              title: isEditingMode ? word.targetLang : '',
                               hintText: 'word',
                               onChanged: (value) {
                                 targetLang = value;
@@ -179,40 +179,53 @@ class _CardCreatorState extends State<CardCreator> {
                               fontSizeMultiplyer: 3.2,
                             ),
                             BlocBuilder<ImageCubit, ImageState>(
-                              builder: (context, state) {
+                              builder: (context, imageState) {
                                 return Container(
-                                  width: defaultSize * 23,
-                                  height: defaultSize * 23,
-                                  decoration: innerShadow,
-                                  child: word.image == null
-                                      ? IconButton(
-                                          onPressed: () => context
-                                              .bloc<ImageCubit>()
-                                              .getImageFile(),
-                                          icon: Icon(
-                                            Icons.photo_camera,
-                                            size: 48,
-                                          ),
-                                          color: Color(0xFFDA627D),
-                                        )
-                                      : isEditingMode
-                                          ? ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(14),
-                                              child: Image.file(
-                                                word.image,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            )
-                                          : ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(14),
-                                              child: Image.file(
-                                                state.image,
-                                                fit: BoxFit.cover,
-                                              ),
+                                    width: defaultSize * 23,
+                                    height: defaultSize * 23,
+                                    decoration: innerShadow,
+                                    // child:
+                                    //     buildImageContainer(isEditingMode, word, imageState)
+
+                                    child: word.image == null
+                                        ? IconButton(
+                                            onPressed: () {
+                                              context
+                                                  .bloc<ImageCubit>()
+                                                  .getImageFile();
+                                              image = imageState.image;
+                                              context
+                                                  .bloc<ImageCubit>()
+                                                  .rebuild(image);
+                                            },
+                                            icon: Icon(
+                                              Icons.photo_camera,
+                                              size: 48,
                                             ),
-                                );
+                                            color: Color(0xFFDA627D),
+                                          )
+                                        :
+                                        // isEditingMode
+                                        //     ?
+                                        ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(14),
+                                            child: word.image.path == ''
+                                                ? Text('fuck')
+                                                : Image.file(
+                                                    word.image,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                          )
+                                    // : ClipRRect(
+                                    //     borderRadius:
+                                    //         BorderRadius.circular(14),
+                                    //     child: Image.file(
+                                    //       imageState.image,
+                                    //       fit: BoxFit.cover,
+                                    //     ),
+                                    //   ),
+                                    );
                               },
                             )
                           ],
@@ -303,6 +316,37 @@ class _CardCreatorState extends State<CardCreator> {
         ),
       ),
     );
+  }
+
+  Widget buildImageContainer(
+      bool isEditingMode, Word word, ImageState imageState) {
+    if (isEditingMode) {
+      if (word.image.path == '') {
+        return IconButton(
+          onPressed: () => context.bloc<ImageCubit>().getImageFile(),
+          icon: Icon(
+            Icons.photo_camera,
+            size: 48,
+          ),
+          color: Color(0xFFDA627D),
+        );
+      } else {
+        return GestureDetector(
+          onTap: () {
+            context.bloc<ImageCubit>().getImageFile();
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: Image.file(
+              word.image,
+              fit: BoxFit.cover,
+            ),
+          ),
+        );
+      }
+    } else {
+      return (Text('FUCK'));
+    }
   }
 
   BaseAppBar buildBaseAppBar(

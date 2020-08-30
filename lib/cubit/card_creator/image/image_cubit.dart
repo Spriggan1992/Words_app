@@ -30,6 +30,11 @@ class ImageCubit extends Cubit<ImageState> {
     );
     emit(ImageState(image: croppedFile));
   }
+
+  Future<void> rebuild(File image) async {
+    await Future<void>.delayed(const Duration(seconds: 1));
+    emit(ImageState(image: image));
+  }
 }
 // import 'dart:io';
 
