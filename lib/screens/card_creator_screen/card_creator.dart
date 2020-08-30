@@ -264,9 +264,9 @@ class _CardCreatorState extends State<CardCreator> {
                     ),
                   ],
                 ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                      minHeight: SizeConfig.blockSizeVertical * 5),
+
+                SizedBox(
+                  height: SizeConfig.blockSizeVertical * 5,
                 ),
                 //Text area with Five line to enter the comments or examples
                 InnerShadowTextField(

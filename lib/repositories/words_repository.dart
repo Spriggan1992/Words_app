@@ -87,9 +87,33 @@ class WordsRepository with ChangeNotifier {
     return _words;
   }
 
+  // ///update [Word] by ID receiving <Map>[data]
+  // Future<void> updateWord({Map<String, Object> data}) async {
+  //   final db = await DBHelper.database();
+  //   db.update(
+  //     'words',
+  //     data,
+  //     where: 'id = ?',
+  //     whereArgs: [data['id']],
+  //     conflictAlgorithm: ConflictAlgorithm.replace,
+  //   );
+  // }
   ///update [Word] by ID receiving <Map>[data]
-  Future<void> updateWord({Map<String, Object> data}) async {
+  Future<void> updateWord({Word word}) async {
     final db = await DBHelper.database();
+    Map<String, Object> data = {
+      'collectionId': word.collectionId,
+      'id': word.id,
+      'targetLang': word.targetLang,
+      'ownLang': word.ownLang,
+      'secondLang': word.secondLang,
+      'thirdLang': word.thirdLang,
+      'partName': word.part.partName,
+      'partColor': word.part.partColor.toString(),
+      'image': word.image.path,
+      'example': word.example,
+      'exampleTranslations': word.exampleTranslations,
+    };
     db.update(
       'words',
       data,

@@ -175,21 +175,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
       final updatedWord = (state as WordsSuccess).words.map((word) {
         print("from IF ${event.word.id}");
         if (word.id == event.word.id) {
-          wordsRepository.updateWord(
-            data: {
-              'collectionId': event.word.collectionId,
-              'id': event.word.id,
-              'targetLang': event.word.targetLang,
-              'ownLang': event.word.ownLang,
-              'secondLang': event.word.secondLang,
-              'thirdLang': event.word.thirdLang,
-              'partName': event.word.part.partName,
-              'partColor': event.word.part.partColor.toString(),
-              'image': event.word.image.path,
-              'example': event.word.example,
-              'exampleTranslations': event.word.exampleTranslations,
-            },
-          );
+          wordsRepository.updateWord(word: event.word);
         }
 
         return word.id == event.word.id

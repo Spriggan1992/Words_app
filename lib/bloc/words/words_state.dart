@@ -17,15 +17,5 @@ class WordsSuccess extends WordsState {
 
   List<Object> get props => [words, selectedList];
 }
-// class WordsSuccess extends WordsState {
-//   final List<Word> words;
-//   final List<Word> selectedData;
-//   WordsSuccess({
-//     this.words,
-//     this.selectedData,
-//   });
-
-//   List<Object> get props => [words, selectedData];
-// }
 
 class WordsFailure extends WordsState {}
