@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
+import 'package:words_app/cubit/card_creator/part_color_cubit.dart';
 import 'package:words_app/models/part.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
@@ -106,12 +107,6 @@ class _CardCreatorState extends State<CardCreator> {
     //  );
   }
 
-  _getColor(Color color) {
-    setState(() {
-      part.partColor = color;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context).settings.arguments;
@@ -143,63 +138,73 @@ class _CardCreatorState extends State<CardCreator> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                WordCard(
-                  color: part.partColor,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: defaultSize * 2.4,
-                        right: defaultSize * 2.4,
-                        top: defaultSize * 2,
-                        bottom: defaultSize * 2),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          height: defaultSize * 4,
-                          child: SingleChildScrollView(
-                            child: CustomRadio(
-                              getPart: (value) => part.partName = value,
-                              getColor: _getColor,
-                              defaultSize: defaultSize,
-                            ),
-                          ),
-                        ),
-                        InnerShadowTextField(
-                          title: isEditingMode ? word.targetLang : ' ',
-                          hintText: 'word',
-                          onChanged: (value) {
-                            targetLang = value;
-                          },
-                          defaultSize: defaultSize,
-                          fontSizeMultiplyer: 3.2,
-                        ),
-                        Container(
-                          width: defaultSize * 23,
-                          height: defaultSize * 23,
-                          decoration: innerShadow,
-                          child: image == null
-                              ? IconButton(
-                                  onPressed: () => getImageFile(
-                                    ImageSource.camera,
-                                  ),
-                                  icon: Icon(
-                                    Icons.photo_camera,
-                                    size: 48,
-                                  ),
-                                  color: Color(0xFFDA627D),
-                                )
-                              : ClipRRect(
-                                  borderRadius: BorderRadius.circular(14),
-                                  child: Image.file(
-                                    image,
-                                    fit: BoxFit.cover,
-                                  ),
+                BlocBuilder<PartColorCubit, PartColorState>(
+                  builder: (context, state) {
+                    return WordCard(
+                      //receive data
+                      color: state.color,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: defaultSize * 2.4,
+                            right: defaultSize * 2.4,
+                            top: defaultSize * 2,
+                            bottom: defaultSize * 2),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              height: defaultSize * 4,
+                              child: SingleChildScrollView(
+                                child: CustomRadio(
+                                  getPart: (value) => part.partName = value,
+                                  getColor: (color) {
+                                    part.partColor = color;
+                                    context
+                                        .bloc<PartColorCubit>()
+                                        .changeColor(part.partColor);
+                                  },
+                                  defaultSize: defaultSize,
                                 ),
-                        )
-                      ],
-                    ),
-                  ),
+                              ),
+                            ),
+                            InnerShadowTextField(
+                              title: isEditingMode ? word.targetLang : ' ',
+                              hintText: 'word',
+                              onChanged: (value) {
+                                targetLang = value;
+                              },
+                              defaultSize: defaultSize,
+                              fontSizeMultiplyer: 3.2,
+                            ),
+                            Container(
+                              width: defaultSize * 23,
+                              height: defaultSize * 23,
+                              decoration: innerShadow,
+                              child: image == null
+                                  ? IconButton(
+                                      onPressed: () => getImageFile(
+                                        ImageSource.camera,
+                                      ),
+                                      icon: Icon(
+                                        Icons.photo_camera,
+                                        size: 48,
+                                      ),
+                                      color: Color(0xFFDA627D),
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(14),
+                                      child: Image.file(
+                                        image,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 ConstrainedBox(
                   constraints: BoxConstraints(

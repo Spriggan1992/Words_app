@@ -35,27 +35,28 @@ class CustomRadioState extends State<CustomRadio> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: List.generate(
-          radioButtonList.length,
-          (index) => InkWell(
-                //highlightColor: Colors.red,
+        radioButtonList.length,
+        (index) => InkWell(
+          //highlightColor: Colors.red,
 //            splashColor: mintColor,
-                radius: 30,
-                onTap: () {
-                  setState(
-                    () {
-                      radioButtonList
-                          .forEach((element) => element.isSelected = false);
-                      radioButtonList[index].isSelected = true;
-                      widget.getPart(radioButtonList[index].buttonText);
-                      widget.getColor(radioButtonList[index].color);
-                    },
-                  );
-                },
-                child: new RadioItem(
-                  radioButtonList[index],
-                  defaultSize: widget.defaultSize,
-                ),
-              )),
+          radius: 30,
+          onTap: () {
+            setState(
+              () {
+                radioButtonList
+                    .forEach((element) => element.isSelected = false);
+                radioButtonList[index].isSelected = true;
+                widget.getPart(radioButtonList[index].buttonText);
+                widget.getColor(radioButtonList[index].color);
+              },
+            );
+          },
+          child: new RadioItem(
+            radioButtonList[index],
+            defaultSize: widget.defaultSize,
+          ),
+        ),
+      ),
     );
   }
 }
