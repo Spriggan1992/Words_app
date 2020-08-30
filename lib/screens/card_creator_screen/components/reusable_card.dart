@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/utils/size_config.dart';
 
-class WordCard extends StatelessWidget {
-  const WordCard({
+class ReusableCard extends StatelessWidget {
+  const ReusableCard({
     Key key,
     this.child,
     this.color,

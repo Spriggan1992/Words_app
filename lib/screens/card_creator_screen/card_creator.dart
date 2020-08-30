@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
-import 'package:words_app/cubit/card_creator/part_color_cubit.dart';
+import 'package:words_app/cubit/card_creator/image/image_cubit.dart';
+import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
 import 'package:words_app/models/part.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
@@ -140,7 +141,7 @@ class _CardCreatorState extends State<CardCreator> {
               children: <Widget>[
                 BlocBuilder<PartColorCubit, PartColorState>(
                   builder: (context, state) {
-                    return WordCard(
+                    return ReusableCard(
                       //receive data
                       color: state.color,
                       child: Padding(
@@ -177,28 +178,42 @@ class _CardCreatorState extends State<CardCreator> {
                               defaultSize: defaultSize,
                               fontSizeMultiplyer: 3.2,
                             ),
-                            Container(
-                              width: defaultSize * 23,
-                              height: defaultSize * 23,
-                              decoration: innerShadow,
-                              child: image == null
-                                  ? IconButton(
-                                      onPressed: () => getImageFile(
-                                        ImageSource.camera,
-                                      ),
-                                      icon: Icon(
-                                        Icons.photo_camera,
-                                        size: 48,
-                                      ),
-                                      color: Color(0xFFDA627D),
-                                    )
-                                  : ClipRRect(
-                                      borderRadius: BorderRadius.circular(14),
-                                      child: Image.file(
-                                        image,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                            BlocBuilder<ImageCubit, ImageState>(
+                              builder: (context, state) {
+                                return Container(
+                                  width: defaultSize * 23,
+                                  height: defaultSize * 23,
+                                  decoration: innerShadow,
+                                  child: word.image == null
+                                      ? IconButton(
+                                          onPressed: () => context
+                                              .bloc<ImageCubit>()
+                                              .getImageFile(),
+                                          icon: Icon(
+                                            Icons.photo_camera,
+                                            size: 48,
+                                          ),
+                                          color: Color(0xFFDA627D),
+                                        )
+                                      : isEditingMode
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                              child: Image.file(
+                                                word.image,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            )
+                                          : ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                              child: Image.file(
+                                                state.image,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                );
+                              },
                             )
                           ],
                         ),
@@ -231,7 +246,7 @@ class _CardCreatorState extends State<CardCreator> {
               children: <Widget>[
                 Stack(
                   children: <Widget>[
-                    WordCard(
+                    ReusableCard(
                       child: Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 24, vertical: 10),

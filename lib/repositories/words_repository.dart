@@ -21,7 +21,7 @@ class WordsRepository with ChangeNotifier {
   //Card Creator
 
   Future<void> addNewWord(Word word) async {
-    print("Print from AddNEwWord ${word.id}");
+    // print("Print from AddNEwWord ${word.id}");
 
     DBHelper.insert('words', {
       'collectionId': word.collectionId,
@@ -66,6 +66,8 @@ class WordsRepository with ChangeNotifier {
         await DBHelper.getData('words', collectionId: collectionId);
 //    print('DEBUG fetchAndSetWords ${dataList}');
     _words = dataList.map((item) {
+      // print(
+      //     "FROM WORDS REPOSITORY IMAGE PATH: ${File(item['image'])}");
 //      print(item['partColor']);
       Word word = Word(
         collectionId: item['collectionId'],

@@ -14,7 +14,7 @@ class WordsSuccess extends WordsState {
   final List<Word> selectedList;
 
   WordsSuccess({this.words, this.selectedList});
-
+  @override
   List<Object> get props => [words, selectedList];
 }
 
