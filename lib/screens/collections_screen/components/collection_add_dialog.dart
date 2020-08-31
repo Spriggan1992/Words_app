@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:words_app/bloc/collections/collections_bloc.dart';
+import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/screens/words_screen/words_screen.dart';
@@ -156,10 +157,16 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
               child: Text('CREATE COLLECTION',
                   style: TextStyle(color: Colors.white)),
               onPressed: () {
-                BlocProvider.of<CollectionsBloc>(context).add(CollectionsAdded(
-                    language: collectionLanguage,
-                    title: collectionTitle,
-                    collectionId: collectionId));
+                context.bloc<CollectionsBloc>().add(
+                      CollectionsAdded(
+                        language: collectionLanguage,
+                        title: collectionTitle,
+                        collectionId: collectionId,
+                      ),
+                    );
+                context.bloc<CollectionsBloc>().add(CollectionsLoaded());
+                context.bloc<WordsBloc>().add(WordsLoaded(id: collectionId));
+
                 Navigator.pushNamed(
                   context,
                   WordsScreen.id,
@@ -168,7 +175,6 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                     'title': collectionTitle,
                   },
                 );
-                // Navigator.pop(context);
               },
             )
           ],

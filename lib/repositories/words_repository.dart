@@ -24,7 +24,7 @@ class WordsRepository with ChangeNotifier {
 
   Future<void> addNewWord(Word word) async {
     // print("Print from AddNEwWord ${word.id}");
-
+    print('PRINT FROM Words_repository:  ${word.collectionId}');
     DBHelper.insert('words', {
       'collectionId': word.collectionId,
       'id': word.id,
@@ -136,7 +136,7 @@ class WordsRepository with ChangeNotifier {
     DBHelper.delete('words', word.id);
   }
 
-  Future<dynamic>getImageFile() async {
+  Future<dynamic> getImageFile() async {
     final picker = ImagePicker();
     PickedFile imageFile =
         await picker.getImage(source: ImageSource.camera, maxWidth: 600);

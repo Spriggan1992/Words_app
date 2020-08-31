@@ -65,6 +65,8 @@ class _ReviewCardState extends State<ReviewCard>
 
   @override
   Widget build(BuildContext context) {
+    print("FROM REVIEW CARD: ${widget.words[widget.index].ownLang}");
+
     SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize;
     final wordsData =

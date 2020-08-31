@@ -66,6 +66,7 @@ class CardCreator extends StatelessWidget {
     final providerData = Provider.of<WordsRepository>(context, listen: false);
     return BlocBuilder<CardCreatorBloc, CardCreatorState>(
       builder: (context, state) {
+        print("FROM CARD CREATOR BLOCBUILDER: ${isEditingMode}");
         if (state is CardCreatorLoading) {
           return Center(child: CircularProgressIndicator());
         }
@@ -271,6 +272,7 @@ class CardCreator extends StatelessWidget {
     Word word,
     CardCreatorSuccess state,
   ) {
+    print('FROM buildBAseAppBar : ${collectionId}');
     return BaseAppBar(
       title: Text('Create your word card'),
       appBar: AppBar(),
@@ -293,9 +295,11 @@ class CardCreator extends StatelessWidget {
                   exampleTranslations ?? word.exampleTranslations,
               isSelected: isSelected,
             );
+            print("FROM ON PRESS IN BASE APPBAR : ${newWord.collectionId}");
             isEditingMode
                 ? context.bloc<WordsBloc>().add(WordsUpdatedWord(word: newWord))
                 : context.bloc<WordsBloc>().add(WordsAdded(word: newWord));
+            context.bloc<WordsBloc>().add(WordsLoaded(id: collectionId));
 
             Navigator.pop(context);
           },

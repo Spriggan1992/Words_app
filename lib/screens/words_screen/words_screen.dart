@@ -15,6 +15,7 @@ import 'package:words_app/models/word.dart';
 
 import 'package:words_app/repositories/words_repository.dart';
 import 'package:words_app/screens/card_creator_screen/card_creator.dart';
+import 'package:words_app/screens/collections_screen/collections_screen.dart';
 
 import 'package:words_app/utils/size_config.dart';
 import 'components/word_card.dart';
@@ -33,7 +34,7 @@ class WordsScreen extends StatelessWidget {
     return WillPopScope(
       /// Overriding Back navigation logic --> exit from EditMode
       onWillPop: () async {
-        Navigator.pop(context);
+        Navigator.pushNamed(context, CollectionsScreen.id);
         context.bloc<WordsCubit>().toggleEditModeToFalse();
         context.bloc<WordsBloc>().add(WordsTurnOffIsEditingMode());
         return true;
@@ -76,12 +77,15 @@ class WordsScreen extends StatelessWidget {
                                     CardCreator.id,
                                     arguments: {
                                       'isEditingMode': false,
-                                      'collectionId': collectionId
+                                      'collectionId': collectionId,
                                     },
                                   );
                                   context.bloc<CardCreatorBloc>().add(
                                       CardCreatorLoaded(
                                           word: Word(), isEditingMode: false));
+                                  // context
+                                  //     .bloc<WordsBloc>()
+                                  //     .add(WordsLoaded(id: collectionId));
                                 },
                         ),
                       ],

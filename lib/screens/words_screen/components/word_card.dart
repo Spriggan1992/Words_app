@@ -102,10 +102,13 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
         // onTap: providerData.isEditingMode
         onTap: widget.isEditingMode
             ? () {
-                BlocProvider.of<WordsBloc>(context)
-                    .add(WordsToggled(word: word));
-                BlocProvider.of<WordsBloc>(context)
+                context.bloc<WordsBloc>().add(WordsToggled(word: word));
+                context
+                    .bloc<WordsBloc>()
                     .add(WordsAddToSelectedList(word: word));
+                // context
+                //     .bloc<WordsBloc>()
+                //     .add(WordsLoaded(id: widget.collection.id));
               }
             : () {
                 Navigator.push(
