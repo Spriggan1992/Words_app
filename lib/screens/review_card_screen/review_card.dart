@@ -17,8 +17,9 @@ import 'package:words_app/utils/size_config.dart';
 
 class ReviewCard extends StatefulWidget {
   static String id = 'review_card_screen';
-  ReviewCard({this.index});
+  ReviewCard({this.index, this.words});
   final int index;
+  final List<Word> words;
 
   @override
   _ReviewCardState createState() => _ReviewCardState();
@@ -66,9 +67,9 @@ class _ReviewCardState extends State<ReviewCard>
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize;
-
     final wordsData =
         Provider.of<WordsRepository>(context, listen: false).words;
+
     return Scaffold(
       appBar: BaseAppBar(
         title: Text("Collection's name"),
@@ -98,7 +99,7 @@ class _ReviewCardState extends State<ReviewCard>
                   },
                   controller: _pageController,
                   physics: ClampingScrollPhysics(),
-                  itemCount: wordsData.length,
+                  itemCount: widget.words.length,
                   itemBuilder: (context, index) {
                     return AnimatedBuilder(
                         animation: _pageController,
@@ -126,12 +127,16 @@ class _ReviewCardState extends State<ReviewCard>
                                     direction: FlipDirection.HORIZONTAL,
                                     speed: 400,
                                     front: WordCard(
+                                        word: widget.words[index],
                                         side: 'front',
                                         index: index,
-                                        part: wordsData[index].part.partColor),
+                                        part:
+                                            widget.words[index].part.partColor),
                                     back: WordCard(
+                                        word: widget.words[index],
                                         index: index,
-                                        part: wordsData[index].part.partColor),
+                                        part:
+                                            widget.words[index].part.partColor),
                                   )
                                 ],
                               ),

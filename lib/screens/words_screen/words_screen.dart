@@ -19,14 +19,9 @@ import 'package:words_app/screens/card_creator_screen/card_creator.dart';
 import 'package:words_app/utils/size_config.dart';
 import 'components/word_card.dart';
 
-class WordsScreen extends StatefulWidget {
+class WordsScreen extends StatelessWidget {
   static String id = 'collection_manager_screen';
 
-  @override
-  _WordsScreenState createState() => _WordsScreenState();
-}
-
-class _WordsScreenState extends State<WordsScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -36,9 +31,10 @@ class _WordsScreenState extends State<WordsScreen> {
     String collectionTitle = args['title'];
 
     return WillPopScope(
+      /// Overriding Back navigation logic --> exit from EditMode
       onWillPop: () async {
         Navigator.pop(context);
-        context.bloc<WordsCubit>().toggleEditMode();
+        context.bloc<WordsCubit>().toggleEditModeToFalse();
         context.bloc<WordsBloc>().add(WordsTurnOffIsEditingMode());
       },
       child: SafeArea(
@@ -122,6 +118,7 @@ class _WordsScreenState extends State<WordsScreen> {
                 index: index,
                 selectedList: state.selectedList,
                 word: state.words[index],
+                words: state.words,
               ), //
               actionPane: SlidableDrawerActionPane(),
               secondaryActions: <Widget>[

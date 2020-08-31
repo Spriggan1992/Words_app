@@ -23,6 +23,7 @@ class WordCard extends StatefulWidget {
     this.collection,
     this.word,
     this.isEditingMode,
+    this.words,
   });
   final bool isEditingMode;
   final index;
@@ -30,6 +31,8 @@ class WordCard extends StatefulWidget {
   final List selectedList;
   final Word word;
   final Collection collection;
+  final List<Word> words;
+
   @override
   _WordCardState createState() => _WordCardState();
 }
@@ -105,27 +108,30 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                     .add(WordsAddToSelectedList(word: word));
               }
             : () {
-                // Navigator.push(
-                //   context,
-                //   PageRouteBuilder(
-                //     pageBuilder: (context, animation, secondaryAnimation) =>
-                //         ReviewCard(index: widget.index),
-                //     transitionsBuilder:
-                //         (context, animation, secondaryAnimation, child) {
-                //       var begin = 0.0;
-                //       var end = 1.0;
-                //       var curve = Curves.ease;
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        ReviewCard(
+                      index: widget.index,
+                      words: widget.words,
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      var begin = 0.0;
+                      var end = 1.0;
+                      var curve = Curves.ease;
 
-                //       var tween = Tween(begin: begin, end: end)
-                //           .chain(CurveTween(curve: curve));
-                //       return ScaleTransition(
-                //         scale: animation.drive(tween),
-                //         alignment: Alignment.center,
-                //         child: child,
-                //       );
-                //     },
-                //   ),
-                // );
+                      var tween = Tween(begin: begin, end: end)
+                          .chain(CurveTween(curve: curve));
+                      return ScaleTransition(
+                        scale: animation.drive(tween),
+                        alignment: Alignment.center,
+                        child: child,
+                      );
+                    },
+                  ),
+                );
               },
         child: Container(
           decoration: BoxDecoration(

@@ -7,12 +7,10 @@ class TitleTextHolderContainer extends StatelessWidget {
     Key key,
     @required this.defaultSize,
     @required this.wordHolder,
-    @required this.index,
   }) : super(key: key);
 
   final double defaultSize;
   final String wordHolder;
-  final int index;
 
   @override
   Widget build(BuildContext context) {

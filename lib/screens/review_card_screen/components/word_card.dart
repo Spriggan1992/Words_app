@@ -10,6 +10,7 @@ import 'title_text_holder_container.dart';
 class WordCard extends StatelessWidget {
   const WordCard({
     Key key,
+    this.word,
     this.index,
     this.part,
     this.side,
@@ -19,6 +20,7 @@ class WordCard extends StatelessWidget {
   final int index;
   final Color part;
   final String side;
+  final Word word;
   // final String targetLang;
   // final String secondLang;
   // final String thirdLang;
@@ -30,6 +32,7 @@ class WordCard extends StatelessWidget {
     double defaultSize = SizeConfig.defaultSize;
     final wordsData =
         Provider.of<WordsRepository>(context, listen: false).words;
+
     return Container(
         padding: EdgeInsets.only(
           right: defaultSize * 3,
@@ -77,21 +80,24 @@ class WordCard extends StatelessWidget {
                       ? Column(
                           children: [
                             TitleTextHolderContainer(
-                                defaultSize: defaultSize,
-                                wordHolder: wordsData[index].targetLang,
-                                index: index),
+                              defaultSize: defaultSize,
+                              wordHolder: word.targetLang ?? '',
+                            ),
                             SizedBox(height: defaultSize * 4),
                             Container(
                               margin: EdgeInsets.only(bottom: defaultSize * 1),
                               width: defaultSize * 20,
                               height: defaultSize * 20,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
-                                  image: FileImage(wordsData[index].image),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                              decoration: word.image.path == '' ||
+                                      word.image == null
+                                  ? BoxDecoration()
+                                  : BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: DecorationImage(
+                                        image: FileImage(word.image),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                             )
                           ],
                         )
@@ -101,19 +107,19 @@ class WordCard extends StatelessWidget {
                           child: Column(
                             children: [
                               TitleTextHolderContainer(
-                                  defaultSize: defaultSize,
-                                  wordHolder: wordsData[index].secondLang,
-                                  index: index),
+                                defaultSize: defaultSize,
+                                wordHolder: word.secondLang ?? ' ',
+                              ),
                               SizedBox(height: defaultSize * 5),
                               TitleTextHolderContainer(
-                                  defaultSize: defaultSize,
-                                  wordHolder: wordsData[index].thirdLang,
-                                  index: index),
+                                defaultSize: defaultSize,
+                                wordHolder: word.thirdLang ?? ' ',
+                              ),
                               SizedBox(height: defaultSize * 5),
                               TitleTextHolderContainer(
-                                  defaultSize: defaultSize,
-                                  wordHolder: wordsData[index].ownLang,
-                                  index: index)
+                                defaultSize: defaultSize,
+                                wordHolder: word.ownLang ?? ' ',
+                              )
                             ],
                           ),
                         )
@@ -130,9 +136,9 @@ class WordCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     side == 'front'
-                        ? Text(wordsData[index].example,
+                        ? Text(word.example ?? ' ',
                             style: TextStyle(fontSize: 20))
-                        : Text(wordsData[index].exampleTranslations,
+                        : Text(word.exampleTranslations ?? ' ',
                             style: TextStyle(fontSize: 20))
                   ],
                 ),
