@@ -35,60 +35,67 @@ class _WordsScreenState extends State<WordsScreen> {
     String collectionId = args['id'];
     String collectionTitle = args['title'];
 
-    return SafeArea(
-      // Exclude top from SafeArea
-      top: true,
-      child: Scaffold(
-        backgroundColor: Color(0xFFeae2da),
-        body: BlocBuilder<WordsBloc, WordsState>(
-          builder: (context, state) {
-            if (state is WordsLoading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is WordsSuccess) {
-              /// Use cubit to switch editing mode(For selecting words);
-              return BlocBuilder<WordsCubit, bool>(
-                builder: (context, isEditingMode) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      /// Fake Appbar
-                      buildAppBar(isEditingMode, context, collectionTitle,
-                          providerData, collectionId, state),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context);
+        context.bloc<WordsCubit>().toggleEditMode();
+        context.bloc<WordsBloc>().add(WordsTurnOffIsEditingMode());
+      },
+      child: SafeArea(
+        // Exclude top from SafeArea
+        top: true,
+        child: Scaffold(
+          backgroundColor: Color(0xFFeae2da),
+          body: BlocBuilder<WordsBloc, WordsState>(
+            builder: (context, state) {
+              if (state is WordsLoading) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is WordsSuccess) {
+                /// Use cubit to switch editing mode(For selecting words);
+                return BlocBuilder<WordsCubit, bool>(
+                  builder: (context, isEditingMode) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        /// Fake Appbar
+                        buildAppBar(isEditingMode, context, collectionTitle,
+                            providerData, collectionId, state),
 
-                      /// List words
-                      buildListView(state, isEditingMode, collectionId),
+                        /// List words
+                        buildListView(state, isEditingMode, collectionId),
 
-                      ReusableMainButton(
-                        titleText: 'Add Word',
-                        textColor: Colors.white,
-                        backgroundColor: Theme.of(context).accentColor,
-                        onPressed: isEditingMode
-                            ? () {}
-                            : () {
-                                Navigator.pushNamed(
-                                  context,
-                                  CardCreator.id,
-                                  arguments: {
-                                    'isEditingMode': false,
-                                    'collectionId': collectionId
-                                  },
-                                );
-                                context.bloc<CardCreatorBloc>().add(
-                                    CardCreatorLoaded(
-                                        word: Word(), isEditingMode: false));
-                              },
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else {
-              Text('Somthing went wrong....');
-            }
-          },
+                        ReusableMainButton(
+                          titleText: 'Add Word',
+                          textColor: Colors.white,
+                          backgroundColor: Theme.of(context).accentColor,
+                          onPressed: isEditingMode
+                              ? () {}
+                              : () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    CardCreator.id,
+                                    arguments: {
+                                      'isEditingMode': false,
+                                      'collectionId': collectionId
+                                    },
+                                  );
+                                  context.bloc<CardCreatorBloc>().add(
+                                      CardCreatorLoaded(
+                                          word: Word(), isEditingMode: false));
+                                },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else {
+                Text('Somthing went wrong....');
+              }
+            },
+          ),
         ),
       ),
     );
@@ -189,6 +196,13 @@ class _WordsScreenState extends State<WordsScreen> {
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                      child: Text("${state.selectedList?.length ?? 0}",
+                          style: TextStyle(
+                              fontSize: SizeConfig.defaultSize * 1.8)),
+                    ),
+                    Spacer(),
                     IconButton(
                         onPressed: () {
                           context.bloc<WordsBloc>().add(WordsToggledAll());
@@ -197,35 +211,35 @@ class _WordsScreenState extends State<WordsScreen> {
                               .add(WordsAddSelectedAllToSelectedList());
                         },
                         icon: Icon(Icons.select_all)),
-                    Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        IconButton(
-                            onPressed: () => deleteConfirmation(context, () {
-                                  BlocProvider.of<WordsBloc>(context)
-                                      .add(WordsDeletedSelectedAll());
-                                  Navigator.pop(context);
-                                }, 'Do you want to delete this word?'),
-                            icon: Icon(Icons.delete)),
-                        Positioned(
-                          child: Text("${state.selectedList?.length ?? 0}"),
-                        ),
-                      ],
-                    ),
-                    Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        IconButton(
-                            onPressed: () {
+                    // Stack(
+                    //   alignment: Alignment.topRight,
+                    //   children: [
+                    IconButton(
+                        onPressed: () => deleteConfirmation(context, () {
                               BlocProvider.of<WordsBloc>(context)
                                   .add(WordsDeletedSelectedAll());
-                            },
-                            icon: Icon(Icons.fitness_center)),
-                        Positioned(
-                          child: Text("${state.selectedList?.length ?? 0}"),
-                        ),
-                      ],
-                    ),
+                              Navigator.pop(context);
+                            }, 'Do you want to delete this word?'),
+                        icon: Icon(Icons.delete)),
+                    //   Positioned(
+                    //     child: Text("${state.selectedList?.length ?? 0}"),
+                    //   ),
+                    // ],
+                    // ),
+                    // Stack(
+                    //   alignment: Alignment.topRight,
+                    //   children: [
+                    IconButton(
+                        onPressed: () {
+                          BlocProvider.of<WordsBloc>(context)
+                              .add(WordsDeletedSelectedAll());
+                        },
+                        icon: Icon(Icons.fitness_center)),
+                    // Positioned(
+                    //   child: Text("${state.selectedList?.length ?? 0}"),
+                    // ),
+                    // ],
+                    // ),
                     IconButton(
                         onPressed: () {
                           context.bloc<WordsCubit>().toggleEditMode();

@@ -23,14 +23,9 @@ import 'components/custom_radio.dart';
 
 import 'components/reusable_card.dart';
 
-class CardCreator extends StatefulWidget {
+class CardCreator extends StatelessWidget {
   static const id = 'card_creator';
 
-  @override
-  _CardCreatorState createState() => _CardCreatorState();
-}
-
-class _CardCreatorState extends State<CardCreator> {
   //Global key for Flip card
   // GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
@@ -152,7 +147,20 @@ class _CardCreatorState extends State<CardCreator> {
                                             borderRadius:
                                                 BorderRadius.circular(14),
                                             child: state.image.path == ''
-                                                ? Text('fuck')
+                                                ? IconButton(
+                                                    onPressed: () {
+                                                      context
+                                                          .bloc<
+                                                              CardCreatorBloc>()
+                                                          .add(
+                                                              CardCreatorUpdateImage());
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.photo_camera,
+                                                      size: 48,
+                                                    ),
+                                                    color: Color(0xFFDA627D),
+                                                  )
                                                 : Image.file(
                                                     state.image,
                                                     fit: BoxFit.cover,
