@@ -5,7 +5,7 @@ import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
-import 'package:words_app/cubit/card_creator/image/image_cubit.dart';
+
 import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
 import 'package:words_app/models/part.dart';
 import 'package:flip_card/flip_card.dart';
@@ -184,38 +184,34 @@ class _CardCreatorState extends State<CardCreator> {
                                     defaultSize: defaultSize,
                                     fontSizeMultiplyer: 3.2,
                                   ),
-                                  BlocBuilder<ImageCubit, ImageState>(
-                                    builder: (context, imageState) {
-                                      return Container(
-                                        width: defaultSize * 23,
-                                        height: defaultSize * 23,
-                                        decoration: innerShadow,
-                                        child: state.image == null
-                                            ? IconButton(
-                                                onPressed: () {
-                                                  context
-                                                      .bloc<CardCreatorBloc>()
-                                                      .add(
-                                                          CardCreatorUpdateImage());
-                                                },
-                                                icon: Icon(
-                                                  Icons.photo_camera,
-                                                  size: 48,
-                                                ),
-                                                color: Color(0xFFDA627D),
-                                              )
-                                            : ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(14),
-                                                child: state.image.path == ''
-                                                    ? Text('fuck')
-                                                    : Image.file(
-                                                        state.image,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                              ),
-                                      );
-                                    },
+                                  Container(
+                                    width: defaultSize * 23,
+                                    height: defaultSize * 23,
+                                    decoration: innerShadow,
+                                    child: state.image == null
+                                        ? IconButton(
+                                            onPressed: () {
+                                              context
+                                                  .bloc<CardCreatorBloc>()
+                                                  .add(
+                                                      CardCreatorUpdateImage());
+                                            },
+                                            icon: Icon(
+                                              Icons.photo_camera,
+                                              size: 48,
+                                            ),
+                                            color: Color(0xFFDA627D),
+                                          )
+                                        : ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(14),
+                                            child: state.image.path == ''
+                                                ? Text('fuck')
+                                                : Image.file(
+                                                    state.image,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                          ),
                                   )
                                 ],
                               ),

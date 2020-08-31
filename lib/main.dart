@@ -7,7 +7,6 @@ import 'package:words_app/cubit/words/words_cubit.dart';
 
 import 'bloc/card_creator/card_creator_bloc.dart';
 import 'bloc/words/words_bloc.dart';
-import 'cubit/card_creator/image/image_cubit.dart';
 import 'cubit/card_creator/part_color/part_color_cubit.dart';
 import 'repositories/collections_repository.dart';
 import 'repositories/pair_game_card_provider.dart';
@@ -59,11 +58,6 @@ void main() => runApp(MultiBlocProvider(providers: [
       BlocProvider<PartColorCubit>(
         create: (context) {
           return PartColorCubit();
-        },
-      ),
-      BlocProvider<ImageCubit>(
-        create: (context) {
-          return ImageCubit();
         },
       ),
     ], child: MyApp())
