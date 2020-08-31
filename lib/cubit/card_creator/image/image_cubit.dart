@@ -9,9 +9,7 @@ import 'package:words_app/repositories/words_repository.dart';
 part 'image_state.dart';
 
 class ImageCubit extends Cubit<ImageState> {
-  ImageCubit(this.wordsRepository) : super(ImageState());
-
-  WordsRepository wordsRepository;
+  ImageCubit() : super(ImageState());
 
   void getImageFile() async {
     final picker = ImagePicker();

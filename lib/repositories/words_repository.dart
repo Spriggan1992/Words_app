@@ -136,7 +136,7 @@ class WordsRepository with ChangeNotifier {
     DBHelper.delete('words', word.id);
   }
 
-  getImageFile() async {
+  Future<dynamic>getImageFile() async {
     final picker = ImagePicker();
     PickedFile imageFile =
         await picker.getImage(source: ImageSource.camera, maxWidth: 600);

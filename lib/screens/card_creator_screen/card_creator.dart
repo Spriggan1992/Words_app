@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
@@ -17,7 +18,6 @@ import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/words_repository.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/size_config.dart';
-import 'package:words_app/utils/utilities.dart';
 import 'components/InnerShadowTextField.dart';
 import 'components/custom_radio.dart';
 
@@ -123,231 +123,194 @@ class _CardCreatorState extends State<CardCreator> {
 
     double defaultSize = SizeConfig.defaultSize;
     final providerData = Provider.of<WordsRepository>(context, listen: false);
-    return Scaffold(
-      appBar: buildBaseAppBar(
-          providerData, context, isEditingMode, id, collectionId),
-      body: FlipCard(
-        //Card key  is used to pass the toggle card method into card
-        key: cardKey,
-        direction: FlipDirection.HORIZONTAL,
-        speed: 500,
+    return BlocBuilder<CardCreatorBloc, CardCreatorState>(
+      builder: (context, state) {
+        if (state is CardCreatorLoading) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (state is CardCreatorSuccess) {
+          return Scaffold(
+            appBar: buildBaseAppBar(providerData, context, isEditingMode, id,
+                collectionId, word, state),
+            body: FlipCard(
+              //Card key  is used to pass the toggle card method into card
+              key: cardKey,
+              direction: FlipDirection.HORIZONTAL,
+              speed: 500,
 
-        front: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: defaultSize * 2, vertical: defaultSize * 1.6),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                BlocBuilder<PartColorCubit, PartColorState>(
-                  builder: (context, state) {
-                    return ReusableCard(
-                      //receive data
-                      color: state.color,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: defaultSize * 2.4,
-                            right: defaultSize * 2.4,
-                            top: defaultSize * 2,
-                            bottom: defaultSize * 2),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              height: defaultSize * 4,
-                              child: SingleChildScrollView(
-                                child: CustomRadio(
-                                  getPart: (value) => part.partName = value,
-                                  getColor: (color) {
-                                    part.partColor = color;
-                                    context
-                                        .bloc<PartColorCubit>()
-                                        .changeColor(part.partColor);
-                                  },
-                                  defaultSize: defaultSize,
-                                ),
+              front: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: defaultSize * 2, vertical: defaultSize * 1.6),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      BlocBuilder<PartColorCubit, PartColorState>(
+                        builder: (context, partColorState) {
+                          return ReusableCard(
+                            //receive data
+                            color: partColorState.color,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: defaultSize * 2.4,
+                                  right: defaultSize * 2.4,
+                                  top: defaultSize * 2,
+                                  bottom: defaultSize * 2),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    height: defaultSize * 4,
+                                    child: SingleChildScrollView(
+                                      child: CustomRadio(
+                                        getPart: (value) =>
+                                            part.partName = value,
+                                        getColor: (color) {
+                                          part.partColor = color;
+                                          context
+                                              .bloc<PartColorCubit>()
+                                              .changeColor(part.partColor);
+                                        },
+                                        defaultSize: defaultSize,
+                                      ),
+                                    ),
+                                  ),
+                                  InnerShadowTextField(
+                                    title: isEditingMode ? word.targetLang : '',
+                                    hintText: 'word',
+                                    onChanged: (value) => targetLang = value,
+                                    defaultSize: defaultSize,
+                                    fontSizeMultiplyer: 3.2,
+                                  ),
+                                  BlocBuilder<ImageCubit, ImageState>(
+                                    builder: (context, imageState) {
+                                      return Container(
+                                        width: defaultSize * 23,
+                                        height: defaultSize * 23,
+                                        decoration: innerShadow,
+                                        child: state.image == null
+                                            ? IconButton(
+                                                onPressed: () {
+                                                  context
+                                                      .bloc<CardCreatorBloc>()
+                                                      .add(
+                                                          CardCreatorUpdateImage());
+                                                },
+                                                icon: Icon(
+                                                  Icons.photo_camera,
+                                                  size: 48,
+                                                ),
+                                                color: Color(0xFFDA627D),
+                                              )
+                                            : ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(14),
+                                                child: state.image.path == ''
+                                                    ? Text('fuck')
+                                                    : Image.file(
+                                                        state.image,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                              ),
+                                      );
+                                    },
+                                  )
+                                ],
                               ),
                             ),
-                            InnerShadowTextField(
-                              title: isEditingMode ? word.targetLang : '',
-                              hintText: 'word',
-                              onChanged: (value) {
-                                targetLang = value;
-                              },
-                              defaultSize: defaultSize,
-                              fontSizeMultiplyer: 3.2,
-                            ),
-                            BlocBuilder<ImageCubit, ImageState>(
-                              builder: (context, imageState) {
-                                return Container(
-                                    width: defaultSize * 23,
-                                    height: defaultSize * 23,
-                                    decoration: innerShadow,
-                                    // child:
-                                    //     buildImageContainer(isEditingMode, word, imageState)
-
-                                    child: word.image == null
-                                        ? IconButton(
-                                            onPressed: () {
-                                              context
-                                                  .bloc<ImageCubit>()
-                                                  .getImageFile();
-
-                                              image = imageState.image;
-                                              context
-                                                  .bloc<ImageCubit>()
-                                                  .rebuild(image);
-                                            },
-                                            icon: Icon(
-                                              Icons.photo_camera,
-                                              size: 48,
-                                            ),
-                                            color: Color(0xFFDA627D),
-                                          )
-                                        :
-                                        // isEditingMode
-                                        //     ?
-                                        ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(14),
-                                            child: word.image.path == ''
-                                                ? Text('fuck')
-                                                : Image.file(
-                                                    word.image,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                          )
-                                    // : ClipRRect(
-                                    //     borderRadius:
-                                    //         BorderRadius.circular(14),
-                                    //     child: Image.file(
-                                    //       imageState.image,
-                                    //       fit: BoxFit.cover,
-                                    //     ),
-                                    //   ),
-                                    );
-                              },
-                            )
-                          ],
+                          );
+                        },
+                      ),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: SizeConfig.blockSizeVertical * 5,
                         ),
                       ),
-                    );
-                  },
-                ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: SizeConfig.blockSizeVertical * 5,
+                      InnerShadowTextField(
+                        maxLines: SizeConfig.blockSizeVertical > 7 ? 6 : 5,
+                        defaultSize: defaultSize,
+                        title: isEditingMode ? word.example : ' ',
+                        hintText: 'example',
+                        fontSizeMultiplyer: 2.4,
+                        onChanged: (value) => example = value,
+                      ),
+                    ],
                   ),
                 ),
-                InnerShadowTextField(
-                  maxLines: SizeConfig.blockSizeVertical > 7 ? 6 : 5,
-                  defaultSize: defaultSize,
-                  title: isEditingMode ? word.example : ' ',
-                  hintText: 'example',
-                  fontSizeMultiplyer: 2.4,
-                  onChanged: (value) => example = value,
-                ),
-              ],
-            ),
-          ),
-        ),
-        back: SingleChildScrollView(
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-            child: Column(
-              children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    ReusableCard(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            /// [ownLang] text field
-                            InnerShadowTextField(
-                              title: isEditingMode ? word.ownLang : ' ',
-                              hintText: 'translation',
-                              onChanged: (value) {
-                                ownLang = value;
-                              },
-                              defaultSize: defaultSize,
-                              fontSizeMultiplyer: 3.2,
+              ),
+              back: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0, vertical: 16.0),
+                  child: Column(
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          ReusableCard(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 10),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  /// [ownLang] text field
+                                  InnerShadowTextField(
+                                    title: isEditingMode ? word.ownLang : ' ',
+                                    hintText: 'translation',
+                                    onChanged: (value) => ownLang = value,
+                                    defaultSize: defaultSize,
+                                    fontSizeMultiplyer: 3.2,
+                                  ),
+                                  InnerShadowTextField(
+                                    title:
+                                        isEditingMode ? word.secondLang : ' ',
+                                    hintText: '2nd language',
+                                    onChanged: (value) => secondLang = value,
+                                    defaultSize: defaultSize,
+                                    fontSizeMultiplyer: 3.2,
+                                  ),
+                                  InnerShadowTextField(
+                                    title: isEditingMode ? word.thirdLang : ' ',
+                                    hintText: '3rd language',
+                                    onChanged: (value) => thirdLang = value,
+                                    defaultSize: defaultSize,
+                                    fontSizeMultiplyer: 3.2,
+                                  ),
+                                ],
+                              ),
                             ),
-                            InnerShadowTextField(
-                              title: isEditingMode ? word.secondLang : ' ',
-                              hintText: '2nd language',
-                              onChanged: (value) => secondLang = value,
-                              defaultSize: defaultSize,
-                              fontSizeMultiplyer: 3.2,
-                            ),
-                            InnerShadowTextField(
-                              title: isEditingMode ? word.thirdLang : ' ',
-                              hintText: '3rd language',
-                              onChanged: (value) => thirdLang = value,
-                              defaultSize: defaultSize,
-                              fontSizeMultiplyer: 3.2,
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
 
-                SizedBox(
-                  height: SizeConfig.blockSizeVertical * 5,
+                      SizedBox(
+                        height: SizeConfig.blockSizeVertical * 5,
+                      ),
+                      //Text area with Five line to enter the comments or examples
+                      InnerShadowTextField(
+                        maxLines: SizeConfig.blockSizeVertical > 7.5 ? 6 : 5,
+                        title: isEditingMode ? word.exampleTranslations : ' ',
+                        hintText: 'example',
+                        onChanged: (value) => exampleTranslations = value,
+                        defaultSize: defaultSize,
+                        fontSizeMultiplyer: 2.4,
+                      ),
+                    ],
+                  ),
                 ),
-                //Text area with Five line to enter the comments or examples
-                InnerShadowTextField(
-                  maxLines: SizeConfig.blockSizeVertical > 7.5 ? 6 : 5,
-                  title: isEditingMode ? word.exampleTranslations : ' ',
-                  hintText: 'example',
-                  onChanged: (value) => exampleTranslations = value,
-                  defaultSize: defaultSize,
-                  fontSizeMultiplyer: 2.4,
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
+          );
+        }
+        if (state is CardCreatorFailure) {
+          return Text('Somthing went wrong....');
+        }
+      },
     );
-  }
-
-  Widget buildImageContainer(
-      bool isEditingMode, Word word, ImageState imageState) {
-    if (isEditingMode) {
-      if (word.image.path == '') {
-        return IconButton(
-          onPressed: () => context.bloc<ImageCubit>().getImageFile(),
-          icon: Icon(
-            Icons.photo_camera,
-            size: 48,
-          ),
-          color: Color(0xFFDA627D),
-        );
-      } else {
-        return GestureDetector(
-          onTap: () {
-            context.bloc<ImageCubit>().getImageFile();
-          },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(14),
-            child: Image.file(
-              word.image,
-              fit: BoxFit.cover,
-            ),
-          ),
-        );
-      }
-    } else {
-      return (Text('FUCK'));
-    }
   }
 
   BaseAppBar buildBaseAppBar(
@@ -356,6 +319,8 @@ class _CardCreatorState extends State<CardCreator> {
     bool isEditingMode,
     String id,
     String collectionId,
+    Word word,
+    CardCreatorSuccess state,
   ) {
     return BaseAppBar(
       title: Text('Create your word card'),
@@ -368,14 +333,15 @@ class _CardCreatorState extends State<CardCreator> {
             var newWord = Word(
               collectionId: collectionId,
               id: isEditingMode ? id : Uuid().v4(),
-              targetLang: targetLang,
-              ownLang: ownLang,
-              secondLang: secondLang,
-              thirdLang: thirdLang,
-              image: image ?? defaultImage,
-              part: part,
-              example: example,
-              exampleTranslations: exampleTranslations,
+              targetLang: targetLang ?? word.targetLang,
+              ownLang: ownLang ?? word.ownLang,
+              secondLang: secondLang ?? word.secondLang,
+              thirdLang: thirdLang ?? word.thirdLang,
+              image: state.image ?? defaultImage,
+              part: part ?? word.part,
+              example: example ?? word.example,
+              exampleTranslations:
+                  exampleTranslations ?? word.exampleTranslations,
               isSelected: isSelected,
             );
             isEditingMode

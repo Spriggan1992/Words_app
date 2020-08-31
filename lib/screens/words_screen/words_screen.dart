@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 
 import 'package:words_app/bloc/words/words_bloc.dart';
 
@@ -70,6 +71,8 @@ class _WordsScreenState extends State<WordsScreen> {
                                 'isEditingMode': false,
                                 'collectionId': collectionId
                               });
+                          context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
+                              word: Word(), isEditingMode: false));
                         },
                       ),
                     ],
@@ -123,6 +126,8 @@ class _WordsScreenState extends State<WordsScreen> {
                         context
                             .bloc<PartColorCubit>()
                             .changeColor(state.words[index].part.partColor);
+                        context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
+                            word: state.words[index], isEditingMode: true));
                       }),
                   IconSlideAction(
                     caption: 'Delete',
