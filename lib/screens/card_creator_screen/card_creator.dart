@@ -10,7 +10,7 @@ import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
 import 'package:words_app/models/part.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/components/base_appbar.dart';
@@ -32,10 +32,7 @@ class CardCreator extends StatefulWidget {
 
 class _CardCreatorState extends State<CardCreator> {
   //Global key for Flip card
-  GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
-  //to store image locally
-  //get access to camera or gallery
-  final picker = ImagePicker();
+  // GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
   //variables to work with card
   String targetLang;
@@ -44,11 +41,11 @@ class _CardCreatorState extends State<CardCreator> {
   String thirdLang;
   String example = 'tämä on tarkea sano';
   String exampleTranslations = 'Это важное слово. It is important word';
-  // String id;
+
   File image;
   // this variable will be created when state initiate
   File defaultImage;
-  String temp = 'fuck';
+
   String dropdownValue = 'One';
   Part part = Part(
     'n',
@@ -56,57 +53,6 @@ class _CardCreatorState extends State<CardCreator> {
   );
   FocusNode targetLangFocusNode = FocusNode();
   bool isSelected = false;
-
-  // setImage() async {
-  //   //image receive File which we ca freely use in our app. Coz word data saves images as File object
-  //   final image = await Utilities.assetToFile('images/noimage.png');
-  //   setState(() {
-  //     defaultImage = image;
-  //   });
-  // }
-
-  // void initState() {
-  //   super.initState();
-  //   setImage();
-  // }
-
-  // @override
-  // void dispose() {
-  //   // Clean up the focus node when the Form is disposed.
-  //   super.dispose();
-  //   targetLangFocusNode.dispose();
-  // }
-
-  //method to work with camera
-  getImageFile(ImageSource source) async {
-    PickedFile imageFile =
-        await picker.getImage(source: ImageSource.camera, maxWidth: 600);
-//    final imageFile2 = await assetToFile('images/noimages.png');
-//    print(imageFile2.path);
-    //This check is needed if we didn't take a picture  and used back button in camera;
-
-    if (imageFile == null) {
-      return;
-    }
-
-    //Call imageCropper module and crop the image. I has different looks on Android and IOS
-    File croppedFile = await ImageCropper.cropImage(
-      sourcePath: imageFile.path,
-      maxWidth: 600,
-      maxHeight: 600,
-    );
-    //TODO: find compression method for File
-
-    setState(() {
-      image = croppedFile;
-    });
-    //   //    Compress the image, not working currently
-    //  var result = await FlutterImageCompress.compressAndGetFile(
-    //    croppedFile.absolute.path,
-    //    "${croppedFile.path}1",
-    //    quality: 88,
-    //  );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +80,7 @@ class _CardCreatorState extends State<CardCreator> {
                 collectionId, word, state),
             body: FlipCard(
               //Card key  is used to pass the toggle card method into card
-              key: cardKey,
+              // key: cardKey,
               direction: FlipDirection.HORIZONTAL,
               speed: 500,
 
@@ -227,7 +173,7 @@ class _CardCreatorState extends State<CardCreator> {
                       InnerShadowTextField(
                         maxLines: SizeConfig.blockSizeVertical > 7 ? 6 : 5,
                         defaultSize: defaultSize,
-                        title: isEditingMode ? word.example : ' ',
+                        title: isEditingMode ? word.example : '',
                         hintText: 'example',
                         fontSizeMultiplyer: 2.4,
                         onChanged: (value) => example = value,
@@ -255,22 +201,21 @@ class _CardCreatorState extends State<CardCreator> {
                                 children: <Widget>[
                                   /// [ownLang] text field
                                   InnerShadowTextField(
-                                    title: isEditingMode ? word.ownLang : ' ',
+                                    title: isEditingMode ? word.ownLang : '',
                                     hintText: 'translation',
                                     onChanged: (value) => ownLang = value,
                                     defaultSize: defaultSize,
                                     fontSizeMultiplyer: 3.2,
                                   ),
                                   InnerShadowTextField(
-                                    title:
-                                        isEditingMode ? word.secondLang : ' ',
+                                    title: isEditingMode ? word.secondLang : '',
                                     hintText: '2nd language',
                                     onChanged: (value) => secondLang = value,
                                     defaultSize: defaultSize,
                                     fontSizeMultiplyer: 3.2,
                                   ),
                                   InnerShadowTextField(
-                                    title: isEditingMode ? word.thirdLang : ' ',
+                                    title: isEditingMode ? word.thirdLang : '',
                                     hintText: '3rd language',
                                     onChanged: (value) => thirdLang = value,
                                     defaultSize: defaultSize,

@@ -65,15 +65,21 @@ class _WordsScreenState extends State<WordsScreen> {
                         titleText: 'Add Word',
                         textColor: Colors.white,
                         backgroundColor: Theme.of(context).accentColor,
-                        onPressed: () {
-                          Navigator.pushNamed(context, CardCreator.id,
-                              arguments: {
-                                'isEditingMode': false,
-                                'collectionId': collectionId
-                              });
-                          context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
-                              word: Word(), isEditingMode: false));
-                        },
+                        onPressed: isEditingMode
+                            ? () {}
+                            : () {
+                                Navigator.pushNamed(
+                                  context,
+                                  CardCreator.id,
+                                  arguments: {
+                                    'isEditingMode': false,
+                                    'collectionId': collectionId
+                                  },
+                                );
+                                context.bloc<CardCreatorBloc>().add(
+                                    CardCreatorLoaded(
+                                        word: Word(), isEditingMode: false));
+                              },
                       ),
                     ],
                   );
@@ -92,58 +98,63 @@ class _WordsScreenState extends State<WordsScreen> {
       WordsSuccess state, bool isEditingMode, String collectionId) {
     return Expanded(
       child: Container(
-          padding: EdgeInsets.only(bottom: 25.0),
-          // Here we render only listView
-          child: ListView.builder(
-            // itemExtent: 100,
-            itemCount: state.words.length,
-            // semanticChildCount: 1,
-            itemBuilder: (context, index) {
-              return Slidable(
-                enabled: isEditingMode ? false : true,
+        padding: EdgeInsets.only(bottom: 25.0),
+        // Here we render only listView
+        child: ListView.builder(
+          // itemExtent: 100,
+          itemCount: state.words.length,
+          // semanticChildCount: 1,
+          itemBuilder: (context, index) {
+            return Slidable(
+              enabled: isEditingMode ? false : true,
 
-                /// WORD CARD
+              /// WORD CARD
 
-                child: WordCard(
-                  isEditingMode: isEditingMode,
-                  index: index,
-                  selectedList: state.selectedList,
-                  word: state.words[index],
-                ), //
-                actionPane: SlidableDrawerActionPane(),
-                secondaryActions: <Widget>[
-                  IconSlideAction(
-                      caption: 'Edit',
-                      color: Colors.black45,
-                      icon: Icons.edit,
-                      onTap: () {
-                        Navigator.pushNamed(context, CardCreator.id,
-                            arguments: {
-                              'isEditingMode': true,
-                              'word': state.words[index],
-                              'collectionId': collectionId
-                            });
-                        context
-                            .bloc<PartColorCubit>()
-                            .changeColor(state.words[index].part.partColor);
-                        context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
-                            word: state.words[index], isEditingMode: true));
-                      }),
-                  IconSlideAction(
-                    caption: 'Delete',
-                    color: Colors.red,
-                    icon: Icons.delete,
-                    onTap: () => deleteConfirmation(context, () {
-                      context
-                          .bloc<WordsBloc>()
-                          .add(WordsDeleted(word: state.words[index]));
-                      Navigator.pop(context);
-                    }, 'Do you want to delete this word?'),
-                  )
-                ],
-              );
-            },
-          )),
+              child: WordCard(
+                isEditingMode: isEditingMode,
+                index: index,
+                selectedList: state.selectedList,
+                word: state.words[index],
+              ), //
+              actionPane: SlidableDrawerActionPane(),
+              secondaryActions: <Widget>[
+                IconSlideAction(
+                  caption: 'Edit',
+                  color: Colors.black45,
+                  icon: Icons.edit,
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      CardCreator.id,
+                      arguments: {
+                        'isEditingMode': true,
+                        'word': state.words[index],
+                        'collectionId': collectionId
+                      },
+                    );
+                    context
+                        .bloc<PartColorCubit>()
+                        .changeColor(state.words[index].part.partColor);
+                    context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
+                        word: state.words[index], isEditingMode: true));
+                  },
+                ),
+                IconSlideAction(
+                  caption: 'Delete',
+                  color: Colors.red,
+                  icon: Icons.delete,
+                  onTap: () => deleteConfirmation(context, () {
+                    context
+                        .bloc<WordsBloc>()
+                        .add(WordsDeleted(word: state.words[index]));
+                    Navigator.pop(context);
+                  }, 'Do you want to delete this word?'),
+                )
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 
@@ -166,7 +177,7 @@ class _WordsScreenState extends State<WordsScreen> {
             child: isEditingMode
                 ? Text('')
                 : Text(
-                    "$collectionTitle",
+                    "${collectionTitle ?? ''}",
                     style: TextStyle(
                       fontSize: 20,
                       color: Theme.of(context).accentColor,
