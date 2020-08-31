@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/collections/collections_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
+import 'package:words_app/screens/words_screen/words_screen.dart';
 
 class DialogAddCollection extends StatefulWidget {
   const DialogAddCollection({
@@ -157,8 +158,11 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                       CollectionsAdded(
                           language: collectionLanguage,
                           title: collectionTitle));
-
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, WordsScreen.id, arguments: {
+                    // 'id': collections[index].id,
+                    // 'title': collections[index].title
+                  });
+                  // Navigator.pop(context);
                 })
           ],
         ));

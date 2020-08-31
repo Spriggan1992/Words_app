@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import '../../../helpers/functions.dart';
 import '../../../models/collection.dart';
 import '../../words_screen/words_screen.dart';
 import 'collection_card.dart';
@@ -25,15 +24,6 @@ class Body extends StatelessWidget {
           slivers: <Widget>[
             SliverGrid(
               delegate: SliverChildBuilderDelegate((context, index) {
-                /// Delete collection
-                void removeCollection() {
-                  // providerData.deleteCollection(
-                  //     providerData.wordsCollectionData[index]);
-                  Navigator.of(context).pop(true);
-                }
-
-                // final wordsCollectionData =
-                //     providerData.wordsCollectionData[index];
                 return AnimationConfiguration.staggeredGrid(
                   columnCount: 3,
                   position: index,

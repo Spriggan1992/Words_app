@@ -30,14 +30,21 @@ class CollectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, WordsScreen.id, arguments: {
-          'id': collections[index].id,
-          'title': collections[index].title
-        });
-        BlocProvider.of<WordsBloc>(context)
-          ..add(WordsLoaded(
-            id: collections[index].id,
-          ));
+        Navigator.pushNamed(
+          context,
+          WordsScreen.id,
+          arguments: {
+            'id': collections[index].id,
+            'title': collections[index].title
+          },
+        );
+        context.bloc<CollectionsBloc>().add(CollectionsSetToFalse());
+        context.bloc<WordsBloc>()
+          ..add(
+            WordsLoaded(
+              id: collections[index].id,
+            ),
+          );
       },
       onLongPress: () {
         BlocProvider.of<CollectionsBloc>(context).add(CollectionsToggleAll());

@@ -6,6 +6,7 @@ import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/base_bottom_appbar.dart';
 
 import 'package:words_app/components/reusable_float_action_button.dart';
+import 'package:words_app/components/reusable_main_button.dart';
 
 import 'components/body.dart';
 
@@ -24,19 +25,19 @@ class CollectionsScreen extends StatelessWidget {
             title: Text('words_collection'),
             appBar: AppBar(),
           ),
-          floatingActionButton: ReusableFloatActionButton(
-            onPressed: () {
-              buildShowGeneralDialog(
-                context,
-              );
-            },
-          ),
-          bottomNavigationBar: BaseBottomAppBar(
-            child1: Container(),
-            child2: Container(),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          // floatingActionButton: ReusableFloatActionButton(
+          //   onPressed: () {
+          //     buildShowGeneralDialog(
+          //       context,
+          //     );
+          //   },
+          // ),
+          // bottomNavigationBar: BaseBottomAppBar(
+          //   child1: Container(),
+          //   child2: Container(),
+          // ),
+          // floatingActionButtonLocation:
+          //     FloatingActionButtonLocation.centerDocked,
           body: BlocBuilder<CollectionsBloc, CollectionsState>(
               builder: (context, state) {
             if (state is CollectionsLoading) {
@@ -46,10 +47,26 @@ class CollectionsScreen extends StatelessWidget {
             } else if (state is CollectionsSuccess) {
               return GestureDetector(
                 onTap: () {
-                  BlocProvider.of<CollectionsBloc>(context).add(CollectionsSetToFalse());
+                  BlocProvider.of<CollectionsBloc>(context)
+                      .add(CollectionsSetToFalse());
                 },
-                child: Body(
-                  collections: state.collections,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: Body(
+                        collections: state.collections,
+                      ),
+                    ),
+                    ReusableMainButton(
+                      titleText: 'Add Collection',
+                      textColor: Colors.white,
+                      backgroundColor: Theme.of(context).accentColor,
+                      onPressed: () {
+                        buildShowGeneralDialog(context, state);
+                      },
+                    )
+                  ],
                 ),
               );
             } else {
@@ -59,7 +76,8 @@ class CollectionsScreen extends StatelessWidget {
         ));
   }
 
-  Future buildShowGeneralDialog(BuildContext context) {
+  Future buildShowGeneralDialog(
+      BuildContext context, CollectionsSuccess state) {
     return showGeneralDialog(
       barrierColor: Color(0xff906c7a),
       transitionBuilder: (context, a1, a2, widget) {
@@ -72,7 +90,7 @@ class CollectionsScreen extends StatelessWidget {
               shape:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
               content: StatefulBuilder(builder: (context, setState) {
-                return DialogAddCollection();
+                return DialogAddCollection(state: state);
               }),
             ),
           ),
