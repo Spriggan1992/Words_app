@@ -193,6 +193,7 @@ class _CardCreatorState extends State<CardCreator> {
                                               context
                                                   .bloc<ImageCubit>()
                                                   .getImageFile();
+
                                               image = imageState.image;
                                               context
                                                   .bloc<ImageCubit>()

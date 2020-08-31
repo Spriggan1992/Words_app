@@ -4,11 +4,14 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:words_app/repositories/words_repository.dart';
 
 part 'image_state.dart';
 
 class ImageCubit extends Cubit<ImageState> {
-  ImageCubit() : super(ImageState());
+  ImageCubit(this.wordsRepository) : super(ImageState());
+
+  WordsRepository wordsRepository;
 
   void getImageFile() async {
     final picker = ImagePicker();
@@ -31,8 +34,7 @@ class ImageCubit extends Cubit<ImageState> {
     emit(ImageState(image: croppedFile));
   }
 
-  Future<void> rebuild(File image) async {
-    await Future<void>.delayed(const Duration(seconds: 1));
+  void rebuild(File image) {
     emit(ImageState(image: image));
   }
 }

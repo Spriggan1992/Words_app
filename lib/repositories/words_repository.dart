@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 import 'package:words_app/utils/DummyData.dart';
@@ -132,6 +134,27 @@ class WordsRepository with ChangeNotifier {
 
   void removeWord(Word word) {
     DBHelper.delete('words', word.id);
+  }
+
+  getImageFile() async {
+    final picker = ImagePicker();
+    PickedFile imageFile =
+        await picker.getImage(source: ImageSource.camera, maxWidth: 600);
+//    final imageFile2 = await assetToFile('images/noimages.png');
+//    print(imageFile2.path);
+    //This check is needed if we didn't take a picture  and used back button in camera;
+
+    if (imageFile == null) {
+      return;
+    }
+
+    //Call imageCropper module and crop the image. I has different looks on Android and IOS
+    File croppedFile = await ImageCropper.cropImage(
+      sourcePath: imageFile.path,
+      maxWidth: 600,
+      maxHeight: 600,
+    );
+    return croppedFile;
   }
 
   // void toggleTargetLang(Word words) {
