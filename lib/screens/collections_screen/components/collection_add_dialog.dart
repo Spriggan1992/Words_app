@@ -164,7 +164,7 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                   context,
                   WordsScreen.id,
                   arguments: {
-                    'id': collectionTitle,
+                    'id': collectionId,
                     'title': collectionTitle,
                   },
                 );
