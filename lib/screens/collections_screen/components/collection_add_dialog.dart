@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 import 'package:words_app/bloc/collections/collections_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
@@ -24,6 +25,7 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
   double heightLanguage = 1.2;
   bool isTextCollectionNameFiledEmpty = true;
   bool isLanguageTextFileEmpty = true;
+  String collectionId = Uuid().v4();
 
   @override
   void initState() {
@@ -145,25 +147,30 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
 
             /// Create collection Btn
             RaisedButton(
-                highlightElevation: 5,
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                padding: EdgeInsets.all(0),
-                color: Color(0xffDA627D),
-                child: Text('CREATE COLLECTION',
-                    style: TextStyle(color: Colors.white)),
-                onPressed: () {
-                  BlocProvider.of<CollectionsBloc>(context).add(
-                      CollectionsAdded(
-                          language: collectionLanguage,
-                          title: collectionTitle));
-                  Navigator.pushNamed(context, WordsScreen.id, arguments: {
-                    // 'id': collections[index].id,
-                    // 'title': collections[index].title
-                  });
-                  // Navigator.pop(context);
-                })
+              highlightElevation: 5,
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              padding: EdgeInsets.all(0),
+              color: Color(0xffDA627D),
+              child: Text('CREATE COLLECTION',
+                  style: TextStyle(color: Colors.white)),
+              onPressed: () {
+                BlocProvider.of<CollectionsBloc>(context).add(CollectionsAdded(
+                    language: collectionLanguage,
+                    title: collectionTitle,
+                    collectionId: collectionId));
+                Navigator.pushNamed(
+                  context,
+                  WordsScreen.id,
+                  arguments: {
+                    'id': collectionTitle,
+                    'title': collectionTitle,
+                  },
+                );
+                // Navigator.pop(context);
+              },
+            )
           ],
         ));
   }

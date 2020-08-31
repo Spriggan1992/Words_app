@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/collections/collections_bloc.dart';
 
 import 'package:words_app/components/base_appbar.dart';
-import 'package:words_app/components/base_bottom_appbar.dart';
 
-import 'package:words_app/components/reusable_float_action_button.dart';
 import 'package:words_app/components/reusable_main_button.dart';
 
 import 'components/body.dart';
@@ -19,65 +17,49 @@ class CollectionsScreen extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return SafeArea(
-        top: false,
-        child: Scaffold(
-          appBar: BaseAppBar(
-            title: Text('words_collection'),
-            appBar: AppBar(),
-          ),
-          // floatingActionButton: ReusableFloatActionButton(
-          //   onPressed: () {
-          //     buildShowGeneralDialog(
-          //       context,
-          //     );
-          //   },
-          // ),
-          // bottomNavigationBar: BaseBottomAppBar(
-          //   child1: Container(),
-          //   child2: Container(),
-          // ),
-          // floatingActionButtonLocation:
-          //     FloatingActionButtonLocation.centerDocked,
-          body: BlocBuilder<CollectionsBloc, CollectionsState>(
-              builder: (context, state) {
+      top: false,
+      child: Scaffold(
+        appBar: BaseAppBar(
+          title: Text('words_collection'),
+          appBar: AppBar(),
+        ),
+        body: BlocBuilder<CollectionsBloc, CollectionsState>(
+          builder: (context, state) {
             if (state is CollectionsLoading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
             } else if (state is CollectionsSuccess) {
-              return GestureDetector(
-                onTap: () {
-                  BlocProvider.of<CollectionsBloc>(context)
-                      .add(CollectionsSetToFalse());
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Body(
-                        collections: state.collections,
-                      ),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Body(
+                      collections: state.collections,
                     ),
-                    ReusableMainButton(
-                      titleText: 'Add Collection',
-                      textColor: Colors.white,
-                      backgroundColor: Theme.of(context).accentColor,
-                      onPressed: () {
-                        buildShowGeneralDialog(context, state);
-                      },
-                    )
-                  ],
-                ),
+                  ),
+                  ReusableMainButton(
+                    titleText: 'Add Collection',
+                    textColor: Colors.white,
+                    backgroundColor: Theme.of(context).accentColor,
+                    onPressed: () {
+                      buildShowGeneralDialog(
+                        context,
+                      );
+                    },
+                  )
+                ],
               );
             } else {
-              Text('Somthing went wrong.....');
+              return Text('Somthing went wrong.....');
             }
-          }),
-        ));
+          },
+        ),
+      ),
+    );
   }
 
-  Future buildShowGeneralDialog(
-      BuildContext context, CollectionsSuccess state) {
+  Future buildShowGeneralDialog(BuildContext context) {
     return showGeneralDialog(
       barrierColor: Color(0xff906c7a),
       transitionBuilder: (context, a1, a2, widget) {
@@ -90,7 +72,7 @@ class CollectionsScreen extends StatelessWidget {
               shape:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
               content: StatefulBuilder(builder: (context, setState) {
-                return DialogAddCollection(state: state);
+                return DialogAddCollection();
               }),
             ),
           ),
@@ -100,8 +82,9 @@ class CollectionsScreen extends StatelessWidget {
       barrierDismissible: false,
       barrierLabel: '',
       context: context,
-      // ignore: missing_return
-      pageBuilder: (context, animation1, animation2) {},
+      pageBuilder: (context, animation1, animation2) {
+        return;
+      },
     );
   }
 }

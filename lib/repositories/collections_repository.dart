@@ -4,7 +4,6 @@ import 'package:words_app/utils/db_helper.dart';
 import '../models/collection.dart';
 
 class CollectionsRepository {
-  
   List<Collection> _collections = [
     Collection(title: "nouns", language: 'eng'),
   ];
@@ -14,7 +13,7 @@ class CollectionsRepository {
   }
 
   Future<Collection> addNewCollection(
-      String collectionTitle, String languageTitle) async {
+      String collectionTitle, String languageTitle, String collectionId) async {
     final collection = Collection(
       // Creating object here for later adding it to _wordsCollectionData
       id: Uuid().v4(), //create Id for collection

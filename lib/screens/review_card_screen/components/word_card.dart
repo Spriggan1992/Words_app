@@ -27,11 +27,7 @@ class WordCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.width;
     double defaultSize = SizeConfig.defaultSize;
-    final wordsData =
-        Provider.of<WordsRepository>(context, listen: false).words;
 
     return Container(
         padding: EdgeInsets.only(
@@ -81,7 +77,7 @@ class WordCard extends StatelessWidget {
                           children: [
                             TitleTextHolderContainer(
                               defaultSize: defaultSize,
-                              wordHolder: word.targetLang ?? '',
+                              wordHolder: word.targetLang ?? '...',
                             ),
                             SizedBox(height: defaultSize * 4),
                             Container(
@@ -108,17 +104,17 @@ class WordCard extends StatelessWidget {
                             children: [
                               TitleTextHolderContainer(
                                 defaultSize: defaultSize,
-                                wordHolder: word.secondLang ?? ' ',
+                                wordHolder: word.secondLang ?? '...',
                               ),
                               SizedBox(height: defaultSize * 5),
                               TitleTextHolderContainer(
                                 defaultSize: defaultSize,
-                                wordHolder: word.thirdLang ?? ' ',
+                                wordHolder: word.thirdLang ?? '...',
                               ),
                               SizedBox(height: defaultSize * 5),
                               TitleTextHolderContainer(
                                 defaultSize: defaultSize,
-                                wordHolder: word.ownLang ?? ' ',
+                                wordHolder: word.ownLang ?? '...',
                               )
                             ],
                           ),
@@ -136,9 +132,9 @@ class WordCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     side == 'front'
-                        ? Text(word.example ?? ' ',
+                        ? Text(word.example ?? '...',
                             style: TextStyle(fontSize: 20))
-                        : Text(word.exampleTranslations ?? ' ',
+                        : Text(word.exampleTranslations ?? '...',
                             style: TextStyle(fontSize: 20))
                   ],
                 ),

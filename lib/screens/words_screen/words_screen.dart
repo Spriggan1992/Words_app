@@ -36,6 +36,7 @@ class WordsScreen extends StatelessWidget {
         Navigator.pop(context);
         context.bloc<WordsCubit>().toggleEditModeToFalse();
         context.bloc<WordsBloc>().add(WordsTurnOffIsEditingMode());
+        return true;
       },
       child: SafeArea(
         // Exclude top from SafeArea
