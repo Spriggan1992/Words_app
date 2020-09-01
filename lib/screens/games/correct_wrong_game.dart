@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 
 class Training extends StatefulWidget {
   static String id = 'training_screen';
-  Training({this.dataWord});
+  Training({this.words});
 
-  final List<Word> dataWord;
+  final List<Word> words;
 
   @override
   _TrainingState createState() => _TrainingState();
@@ -46,11 +46,9 @@ class _TrainingState extends State<Training> {
   void getData(List data) {}
 
   void createData() {
-    final providerData =
-        Provider.of<WordsRepository>(context, listen: false).words;
-    targetWords = [...providerData];
+    targetWords = [...widget.words];
     targetWords.shuffle();
-    ownLanguageWords = [...providerData];
+    ownLanguageWords = [...widget.words];
     ownLanguageWords.shuffle();
   }
 
@@ -137,28 +135,8 @@ class _TrainingState extends State<Training> {
   }
 }
 
-// Widget nioticeContainer(flag) {
-//   if (flag == 1) {
-//     return Center(
-//       child: Expanded(
-//           // flex: 1,
-//           child:
-//               Container(child: Text('I know', style: TextStyle(fontSize: 20)))),
-//     );
-//   } else if (flag == 2) {
-//     return Center(
-//       child: Expanded(
-//           // flex: 1,
-//           child: Container(
-//               child: Text("I don't know", style: TextStyle(fontSize: 20)))),
-//     );
-//   } else {
-//     return Container();
-//   }
-// }
-
-List matchWords(List dataWord) {
-  var matches = dataWord.map(
+List matchWords(List<Word> words) {
+  var matches = words.map(
     (item) {
       return Positioned(
         top: 400,
@@ -196,7 +174,7 @@ List<Widget> deck(List<Word> targetWords, removieItem, ownLanguageWords,
         child: Dismissible(
           onDismissed: (DismissDirection derection) {
             if (derection == DismissDirection.startToEnd) {
-              if (targetWords.last.id == ownLanguageWords.last.word) {
+              if (targetWords.last.id == ownLanguageWords.last.id) {
                 toogleAnswerCorrect();
               } else {
                 toogleAnswerWrong();
@@ -204,7 +182,7 @@ List<Widget> deck(List<Word> targetWords, removieItem, ownLanguageWords,
               removieItem(targetWords[i]);
             }
             if (derection == DismissDirection.endToStart) {
-              if (targetWords.last.id == ownLanguageWords.last.word) {
+              if (targetWords.last.id == ownLanguageWords.last.id) {
                 toogleAnswerWrong();
               } else {
                 toogleAnswerCorrect();

@@ -7,12 +7,12 @@ import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/base_bottom_appbar.dart';
 import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/constants/constants.dart';
-import 'package:words_app/models/part.dart';
+
 import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/words_repository.dart';
-import 'package:words_app/screens/review_card_screen/components/back_container.dart';
+
 import 'package:words_app/screens/review_card_screen/components/word_card.dart';
-import 'package:words_app/screens/training_screen/matches.dart';
+import 'package:words_app/screens/games/bricks_game.dart';
 import 'package:words_app/utils/size_config.dart';
 
 class ReviewCard extends StatefulWidget {

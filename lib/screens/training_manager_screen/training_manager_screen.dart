@@ -5,8 +5,8 @@ import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/screens/pair_game_screen/pair_game.dart';
-import 'package:words_app/screens/training_screen/matches.dart';
-import 'package:words_app/screens/training_screen/training_screen.dart';
+import 'package:words_app/screens/games/bricks_game.dart';
+import 'package:words_app/screens/games/correct_wrong_game.dart';
 import 'package:words_app/utils/size_config.dart';
 
 class TrainingManager extends StatefulWidget {
@@ -42,13 +42,17 @@ class _TrainingManagerState extends State<TrainingManager> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TrainingBtnsContainers(
-                  defaultSize: defaultSize,
-                  child: ReusableBottomIconBtn(
-                    icons: Icons.fitness_center,
-                    color: Colors.black,
-                    onPress: () => Navigator.pushNamed(context, Matches.id),
-                  ),
-                ),
+                    defaultSize: defaultSize,
+                    child: ReusableBottomIconBtn(
+                        icons: Icons.fitness_center,
+                        color: Colors.black,
+                        onPress: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Matches(
+                                words: words,
+                              ),
+                            )))),
                 TrainingBtnsContainers(
                   defaultSize: defaultSize,
                   child: ReusableBottomIconBtn(
@@ -64,14 +68,15 @@ class _TrainingManagerState extends State<TrainingManager> {
                 TrainingBtnsContainers(
                   defaultSize: defaultSize,
                   child: ReusableBottomIconBtn(
-                    icons: Icons.photo_album,
-                    color: Colors.black,
-                    onPress: () => Navigator.pushNamed(
-                      context,
-                      Training.id,
-                      arguments: {'id': collectionId},
-                    ),
-                  ),
+                      icons: Icons.photo_album,
+                      color: Colors.black,
+                      onPress: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Training(
+                              words: words,
+                            ),
+                          ))),
                 ),
               ],
             ),

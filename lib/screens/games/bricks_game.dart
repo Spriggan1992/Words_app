@@ -7,6 +7,9 @@ import 'package:words_app/repositories/words_repository.dart';
 
 class Matches extends StatefulWidget {
   static String id = 'matches_screen';
+  final List<Word> words;
+
+  const Matches({Key key, this.words}) : super(key: key);
 
   @override
   _MatchesState createState() => _MatchesState();
@@ -104,10 +107,7 @@ class _MatchesState extends State<Matches> with TickerProviderStateMixin {
   }
 
   void getDataFromProvider() {
-    final providerData =
-        Provider.of<WordsRepository>(context, listen: false).words;
-    providerData.shuffle();
-    initialData = [...providerData];
+    initialData = [...widget.words]..shuffle();
     // initialData = [...widget.dataWord];
   }
 
@@ -310,6 +310,7 @@ class _MatchesState extends State<Matches> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.width;
+
     // Here we call Show Dialog
     return WillPopScope(
       onWillPop: onBackPressed,
