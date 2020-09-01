@@ -21,7 +21,7 @@ class WordsRepository with ChangeNotifier {
   }
 
   //Card Creator
-
+  /// This method is responsible for adding new word to DB.
   Future<void> addNewWord(Word word) async {
     DBHelper.insert('words', {
       'collectionId': word.collectionId,
@@ -61,14 +61,12 @@ class WordsRepository with ChangeNotifier {
     notifyListeners();
   }
 
+  /// This method is responsible fetching data from db and setting to UI words_screen.
   Future<List<Word>> fetchAndSetWords(String collectionId) async {
     final dataList =
         await DBHelper.getData('words', collectionId: collectionId);
-//    print('DEBUG fetchAndSetWords ${dataList}');
+
     _words = dataList.map((item) {
-      // print(
-      //     "FROM WORDS REPOSITORY IMAGE PATH: ${File(item['image'])}");
-//      print(item['partColor']);
       Word word = Word(
         collectionId: item['collectionId'],
         id: item['id'],
@@ -81,25 +79,12 @@ class WordsRepository with ChangeNotifier {
         example: item['example'],
         exampleTranslations: item['exampleTranslations'],
       );
-
-//      print('DEBUG: ${word.image.path}');
       return word;
     }).toList();
 
     return _words;
   }
 
-  // ///update [Word] by ID receiving <Map>[data]
-  // Future<void> updateWord({Map<String, Object> data}) async {
-  //   final db = await DBHelper.database();
-  //   db.update(
-  //     'words',
-  //     data,
-  //     where: 'id = ?',
-  //     whereArgs: [data['id']],
-  //     conflictAlgorithm: ConflictAlgorithm.replace,
-  //   );
-  // }
   ///update [Word] by ID receiving <Map>[data]
   Future<void> updateWord({Word word}) async {
     final db = await DBHelper.database();
@@ -134,6 +119,7 @@ class WordsRepository with ChangeNotifier {
     DBHelper.delete('words', word.id);
   }
 
+  /// /// This method is responsible for returning picter [File].
   Future<dynamic> getImageFile() async {
     final picker = ImagePicker();
     PickedFile imageFile =
@@ -154,12 +140,6 @@ class WordsRepository with ChangeNotifier {
     );
     return croppedFile;
   }
-
-  // void toggleTargetLang(Word words) {
-  //   words.toggleTargetLang();
-
-  //   notifyListeners();
-  // }
 
   // void partHandleSubmit(dynamic value, Word words) {
   //   words.changePart(value);
@@ -230,32 +210,7 @@ class WordsRepository with ChangeNotifier {
     notifyListeners();
   }
 
-  // void toggleisSelectedWord(Word words) {
-  //   words.toggleIsSelected();
-  //   // DBHelper.update('words', {
-  //   //   'id': words.id,
-  //   //   'isSelected': words.isSelected,
-  //   // });
-  //   notifyListeners();
-  // }
-
   List selectedData = [];
-
-  // void toogleAllSelectedWords(List<Word> words) {
-  //   var dataList = [];
-  //   words.forEach((item) => {dataList.add(item.isSelected)});
-  //   for (int i = 0; i < words.length; i++) {
-  //     if (dataList.every((element) => element == false)) {
-  //      words[i].isSelected = true;
-  //     } else if (dataList.every((element) => element == true)) {
-  //       wordsData[i].isSelected = false;
-  //     } else if (dataList.contains(true)) {
-  //       wordsData[i].isSelected = true;
-  //     }
-  //   }
-
-  //   notifyListeners();
-  // }
 
   void addItemInList() {
     words.forEach((item) {

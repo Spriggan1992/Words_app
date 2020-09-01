@@ -33,6 +33,7 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     }
   }
 
+  /// This method is responsible for loading initial words from
   Stream<CollectionsState> _mapCollectionsLoadedToState() async* {
     try {
       final collections = await collectionsRepository.fetchAndSetCollection();

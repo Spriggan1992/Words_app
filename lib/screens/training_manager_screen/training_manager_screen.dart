@@ -3,6 +3,7 @@ import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/constants/constants.dart';
+import 'package:words_app/models/word.dart';
 import 'package:words_app/screens/pair_game_screen/pair_game.dart';
 import 'package:words_app/screens/training_screen/matches.dart';
 import 'package:words_app/screens/training_screen/training_screen.dart';
@@ -24,7 +25,8 @@ class _TrainingManagerState extends State<TrainingManager> {
     final defaultSize = SizeConfig.defaultSize;
     Map args = ModalRoute.of(context).settings.arguments;
     String collectionId = args['id'];
-    List selectedWords = args['selectedWords'];
+    List<Word> words = args['words'];
+
     return Scaffold(
       backgroundColor: Color(0xFFeae2da),
       appBar: BaseAppBar(
@@ -120,20 +122,19 @@ class _TrainingManagerState extends State<TrainingManager> {
                     right: defaultSize * 3,
                     left: defaultSize * 3),
                 child: ListView.builder(
-                    itemCount: selectedWords.length,
+                    itemCount: words.length,
                     itemBuilder: (context, index) {
                       return Container(
                         child: ListTile(
-                          leading: Text(selectedWords[index].part.partName,
+                          leading: Text(words[index].part.partName,
                               style: TextStyle(
-                                  color: selectedWords[index].part.partColor)),
+                                  color: words[index].part.partColor)),
                           title: Container(
                               padding: EdgeInsets.only(left: defaultSize * 1),
-                              child:
-                                  Text(selectedWords[index].targetLang ?? '')),
+                              child: Text(words[index].targetLang ?? '')),
                           subtitle: Container(
                               padding: EdgeInsets.only(left: defaultSize * 1),
-                              child: Text(selectedWords[index].ownLang ?? '')),
+                              child: Text(words[index].ownLang ?? '')),
                         ),
                       );
                     }),

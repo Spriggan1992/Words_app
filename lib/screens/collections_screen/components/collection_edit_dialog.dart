@@ -74,14 +74,15 @@ class CollectionsEditDialog extends StatelessWidget {
                 Container(
                   width: 200,
                   child: TextField(
-                      style: TextStyle(fontSize: 25, color: Color(0xFF34c7b3)),
-                      controller:
-                          TextEditingController(text: collection.language),
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(border: InputBorder.none),
-                      onChanged: (value) {
-                        onSubmitLanguageField = value;
-                      }),
+                    style: TextStyle(fontSize: 25, color: Color(0xFF34c7b3)),
+                    controller:
+                        TextEditingController(text: collection.language),
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(border: InputBorder.none),
+                    onChanged: (value) {
+                      onSubmitLanguageField = value;
+                    },
+                  ),
                 ),
                 Flexible(child: SizedBox(height: 10.0)),
                 // Words Text Holder

@@ -12,13 +12,12 @@ class CollectionsRepository {
     return [..._collections];
   }
 
+  /// This method is responsible for adding new  [Collection] to DB,
   Future<Collection> addNewCollection(
       {String collectionTitle,
       String languageTitle,
       String collectionId}) async {
     final collection = Collection(
-      // Creating object here for later adding it to _wordsCollectionData
-      //create Id for collection
       id: collectionId,
       title: collectionTitle,
       language: languageTitle,
@@ -26,7 +25,7 @@ class CollectionsRepository {
       isEditingBtns: false,
     );
 
-    //insert into collections table that we created in DBHelper
+    ///This method is responsible for inserting [Collection] to DB,
     DBHelper.insert(
       'collections',
       {
@@ -38,7 +37,7 @@ class CollectionsRepository {
     return collection;
   }
 
-  ///Fetching data from db  and setting the _collections
+  /// This method is responsible for fetching all Collections from DB and returning it to collections_bloc
   Future<List<Collection>> fetchAndSetCollection() async {
     final dataList = await DBHelper.getData('collections');
     _collections = dataList
@@ -54,6 +53,7 @@ class CollectionsRepository {
     return _collections;
   }
 
+  /// This method is responsible for deleting [<Collection>] by id from DB
   void deleteCollection(String id) {
     DBHelper.delete('collections', id);
   }
@@ -69,13 +69,4 @@ class CollectionsRepository {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
-
-  // void runAnimation(AnimationController controller) {
-  //   toggleIsEditingBtns();
-  //   if (isEditingBtns) {
-  //     controller.repeat(reverse: true);
-  //   } else {
-  //     controller.reset();
-  //   }
-  // }
 }

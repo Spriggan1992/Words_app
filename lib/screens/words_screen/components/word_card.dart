@@ -76,10 +76,9 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
     SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
 
-    /// Receiving word data from[ word_data provider], using index to extract single item from array
-    // final word = widget.selectedData[widget.index];
+    /// Receiving word data from[ words_screen], using index to extract single item from array
     final word = widget.word;
-    // final providerData = Provider.of<WordsRepository>(context, listen: false);
+
     return ExpandableContainer(
       collapseHeight: defaultSize * 9,
       expandeHeight: defaultSize * 23,
@@ -96,16 +95,12 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                     .bloc<WordsBloc>()
                     .add(WordsAddToSelectedList(word: word));
               },
-        // onTap: providerData.isEditingMode
         onTap: widget.isEditingMode
             ? () {
                 context.bloc<WordsBloc>().add(WordsToggled(word: word));
                 context
                     .bloc<WordsBloc>()
                     .add(WordsAddToSelectedList(word: word));
-                // context
-                //     .bloc<WordsBloc>()
-                //     .add(WordsLoaded(id: widget.collection.id));
               }
             : () {
                 Navigator.push(
@@ -159,7 +154,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                 left: defaultSize,
                 duration: Duration(milliseconds: 300),
                 child: Container(
-                  // width: isExpanded ? defaultSize : defaultSize * 4,
                   width: isExpanded ? defaultSize : defaultSize * 4,
                   height: defaultSize * 8,
                   child: Text(
@@ -175,9 +169,10 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                 ),
               ),
 
-              //Main word container
+              // TargetLang holder
               AnimatedPositioned(
-                left: isExpanded ? defaultSize * 3.7 : defaultSize * 6,
+                curve: Curves.easeIn,
+                left: isExpanded ? defaultSize * 3.7 : defaultSize * 6.0,
                 top: defaultSize * 1.7,
                 duration: Duration(milliseconds: 300),
                 child: Container(
@@ -197,7 +192,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                 ),
               ),
 
-              // Translation word container
+              // OwnLang holder
               AnimatedPositioned(
                 curve: Curves.easeIn,
                 left: isExpanded ? defaultSize * 3.7 : defaultSize * 6.0,
@@ -210,7 +205,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                     alignment: Alignment.centerLeft,
                     fit: BoxFit.scaleDown,
                     child: Text(word.ownLang ?? '', // Translation
-                        maxLines: 2,
                         style: TextStyle(fontSize: defaultSize * 1.6)),
                   ),
                 ),
@@ -264,7 +258,8 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                 left: defaultSize * 3.7,
                 top: defaultSize * 12,
                 child: ScaleTransition(
-                  scale: animation,
+                  scale: CurvedAnimation(
+                      parent: expandController, curve: Curves.fastOutSlowIn),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(defaultSize * 0.5),

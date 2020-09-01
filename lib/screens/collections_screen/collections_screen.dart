@@ -71,9 +71,11 @@ class CollectionsScreen extends StatelessWidget {
               backgroundColor: Color(0xffEAE2DA),
               shape:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-              content: StatefulBuilder(builder: (context, setState) {
-                return DialogAddCollection();
-              }),
+              content: StatefulBuilder(
+                builder: (context, setState) {
+                  return DialogAddCollection();
+                },
+              ),
             ),
           ),
         );

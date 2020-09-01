@@ -68,119 +68,120 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
 
     Size size = MediaQuery.of(context).size;
     return Container(
-        height: size.height * 0.43,
-        width: size.width * 0.8,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                CustomRoundBtn(
-                  fillColor: Color(0xff450920),
-                  icon: Icons.close,
-                  onPressed: () => Navigator.of(context).pop(),
-                  color: Theme.of(context).primaryColor,
-                ),
-              ],
-            ),
-            SizedBox(height: 20.0),
-            Container(
-              decoration: innerShadow,
-              child: TextField(
-                focusNode: myFocusNodeCollectionName,
-                autofocus: true,
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                    fillColor: Colors.white.withOpacity(0.6),
-                    filled: true,
-                    labelStyle: TextStyle(
-                      color: Colors.grey[500],
-                      fontSize: 18,
-                      height: heightCollectionName,
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none),
-                    labelText: 'Collection name',
-                    isDense: true),
-                onChanged: (value) {
-                  collectionTitle = value;
-                  if (collectionTitle.length > 0) {
-                    isTextCollectionNameFiledEmpty = false;
-                  } else {
-                    isTextCollectionNameFiledEmpty = true;
-                  }
-                },
+      height: size.height * 0.43,
+      width: size.width * 0.8,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              CustomRoundBtn(
+                fillColor: Color(0xff450920),
+                icon: Icons.close,
+                onPressed: () => Navigator.of(context).pop(),
+                color: Theme.of(context).primaryColor,
               ),
-            ),
-            SizedBox(height: 30),
-            Container(
-              decoration: innerShadow,
-              child: TextField(
-                focusNode: myFocusNodeLanguage,
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                    fillColor: Colors.white.withOpacity(0.6),
-                    filled: true,
-                    labelStyle: TextStyle(
-                      color: Colors.grey[500],
-                      fontSize: 18,
-                      height: heightLanguage,
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none),
-                    labelText: 'Language',
-                    isDense: true),
-                onChanged: (value) {
-                  collectionLanguage = value;
-                  if (collectionTitle.length > 0) {
-                    isLanguageTextFileEmpty = false;
-                  } else {
-                    isLanguageTextFileEmpty = true;
-                  }
-                },
-              ),
-            ),
-            SizedBox(height: 20),
-
-            /// Create collection Btn
-            RaisedButton(
-              highlightElevation: 5,
-              elevation: 10,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              padding: EdgeInsets.all(0),
-              color: Color(0xffDA627D),
-              child: Text('CREATE COLLECTION',
-                  style: TextStyle(color: Colors.white)),
-              onPressed: () {
-                Collection collection = Collection(
-                    language: collectionLanguage, title: collectionTitle);
-                context.bloc<CollectionsBloc>().add(
-                      CollectionsAdded(
-                        collection: collection,
-                      ),
-                    );
-                context.bloc<WordsBloc>().add(
-                      WordsLoaded(
-                        id: collection.id,
-                      ),
-                    );
-
-                Navigator.pushNamed(
-                  context,
-                  WordsScreen.id,
-                  arguments: {
-                    "id": collection.id,
-                    'title': collection.title,
-                  },
-                );
+            ],
+          ),
+          SizedBox(height: 20.0),
+          Container(
+            decoration: innerShadow,
+            child: TextField(
+              focusNode: myFocusNodeCollectionName,
+              autofocus: true,
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
+                  fillColor: Colors.white.withOpacity(0.6),
+                  filled: true,
+                  labelStyle: TextStyle(
+                    color: Colors.grey[500],
+                    fontSize: 18,
+                    height: heightCollectionName,
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none),
+                  labelText: 'Collection name',
+                  isDense: true),
+              onChanged: (value) {
+                collectionTitle = value;
+                if (collectionTitle.length > 0) {
+                  isTextCollectionNameFiledEmpty = false;
+                } else {
+                  isTextCollectionNameFiledEmpty = true;
+                }
               },
-            )
-          ],
-        ));
+            ),
+          ),
+          SizedBox(height: 30),
+          Container(
+            decoration: innerShadow,
+            child: TextField(
+              focusNode: myFocusNodeLanguage,
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
+                  fillColor: Colors.white.withOpacity(0.6),
+                  filled: true,
+                  labelStyle: TextStyle(
+                    color: Colors.grey[500],
+                    fontSize: 18,
+                    height: heightLanguage,
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none),
+                  labelText: 'Language',
+                  isDense: true),
+              onChanged: (value) {
+                collectionLanguage = value;
+                if (collectionTitle.length > 0) {
+                  isLanguageTextFileEmpty = false;
+                } else {
+                  isLanguageTextFileEmpty = true;
+                }
+              },
+            ),
+          ),
+          SizedBox(height: 20),
+
+          /// Create collection Btn
+          RaisedButton(
+            highlightElevation: 5,
+            elevation: 10,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            padding: EdgeInsets.all(0),
+            color: Color(0xffDA627D),
+            child: Text('CREATE COLLECTION',
+                style: TextStyle(color: Colors.white)),
+            onPressed: () {
+              Collection collection = Collection(
+                  language: collectionLanguage, title: collectionTitle);
+              context.bloc<CollectionsBloc>().add(
+                    CollectionsAdded(
+                      collection: collection,
+                    ),
+                  );
+              context.bloc<WordsBloc>().add(
+                    WordsLoaded(
+                      id: collection.id,
+                    ),
+                  );
+
+              Navigator.pushNamed(
+                context,
+                WordsScreen.id,
+                arguments: {
+                  "id": collection.id,
+                  'title': collection.title,
+                },
+              );
+            },
+          )
+        ],
+      ),
+    );
   }
 }

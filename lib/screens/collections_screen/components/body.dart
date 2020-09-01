@@ -42,47 +42,46 @@ class Body extends StatelessWidget {
                           index: index,
                           goToManagerCollections:
                               (String collectionId, String title) {
-                            Navigator.pushNamed(context, WordsScreen.id,
-                                arguments: {
-                                  'id': collectionId,
-                                  'title': title
-                                });
+                            Navigator.pushNamed(
+                              context,
+                              WordsScreen.id,
+                              arguments: {'id': collectionId, 'title': title},
+                            );
                           },
 
                           /// Show dialog with add collection
                           showEditDialog: (Collection collection) {
                             showGeneralDialog(
-                                barrierColor:
-                                    Color(0xff906c7a).withOpacity(0.9),
-                                transitionBuilder: (context, a1, a2, widget) {
-                                  final curvedValue =
-                                      Curves.easeInOutBack.transform(a1.value) -
-                                          1.0;
-                                  return Transform(
-                                      transform: Matrix4.translationValues(
-                                          0.0, curvedValue * 200, 0.0),
-                                      child: Opacity(
-                                        opacity: a1.value,
-                                        child: AlertDialog(
-                                          elevation: 0,
-                                          backgroundColor: Colors.transparent,
-                                          content: StatefulBuilder(
-                                              builder: (context, setState) {
-                                            return CollectionsEditDialog(
-                                              index: index,
-                                              collection: collection,
-                                            );
-                                          }),
-                                        ),
-                                      ));
-                                },
-                                transitionDuration: Duration(milliseconds: 200),
-                                barrierDismissible: false,
-                                barrierLabel: '',
-                                context: context,
-                                // ignore: missing_return
-                                pageBuilder:
-                                    (context, animation1, animation2) {});
+                              barrierColor: Color(0xff906c7a).withOpacity(0.9),
+                              transitionBuilder: (context, a1, a2, widget) {
+                                final curvedValue =
+                                    Curves.easeInOutBack.transform(a1.value) -
+                                        1.0;
+                                return Transform(
+                                    transform: Matrix4.translationValues(
+                                        0.0, curvedValue * 200, 0.0),
+                                    child: Opacity(
+                                      opacity: a1.value,
+                                      child: AlertDialog(
+                                        elevation: 0,
+                                        backgroundColor: Colors.transparent,
+                                        content: StatefulBuilder(
+                                            builder: (context, setState) {
+                                          return CollectionsEditDialog(
+                                            index: index,
+                                            collection: collection,
+                                          );
+                                        }),
+                                      ),
+                                    ));
+                              },
+                              transitionDuration: Duration(milliseconds: 200),
+                              barrierDismissible: false,
+                              barrierLabel: '',
+                              context: context,
+                              // ignore: missing_return
+                              pageBuilder: (context, animation1, animation2) {},
+                            );
                           },
                         ),
                       ),

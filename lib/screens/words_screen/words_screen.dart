@@ -12,6 +12,7 @@ import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/words_repository.dart';
 import 'package:words_app/screens/card_creator_screen/card_creator.dart';
 import 'package:words_app/screens/collections_screen/collections_screen.dart';
+import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
 import 'package:words_app/utils/size_config.dart';
 import 'components/word_card.dart';
 
@@ -229,8 +230,11 @@ class WordsScreen extends StatelessWidget {
                     //   children: [
                     IconButton(
                         onPressed: () {
-                          BlocProvider.of<WordsBloc>(context)
-                              .add(WordsDeletedSelectedAll());
+                          Navigator.pushNamed(
+                            context,
+                            TrainingManager.id,
+                            arguments: {'words': state.selectedList},
+                          );
                         },
                         icon: Icon(Icons.fitness_center)),
                     // Positioned(
@@ -256,8 +260,11 @@ class WordsScreen extends StatelessWidget {
                       children: [
                         IconButton(
                             onPressed: () {
-                              BlocProvider.of<WordsBloc>(context)
-                                  .add(WordsDeletedSelectedAll());
+                              Navigator.pushNamed(
+                                context,
+                                TrainingManager.id,
+                                arguments: {'words': state.words},
+                              );
                             },
                             icon: Icon(
                               Icons.fitness_center,
