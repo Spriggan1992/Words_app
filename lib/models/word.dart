@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
+
 import 'part.dart';
 
 // ignore: must_be_immutable
@@ -21,6 +21,8 @@ class Word extends Equatable with ChangeNotifier {
     this.isEditingSecondLang = true,
     this.isEditingOwnLang = true,
     this.isSelected = false,
+    this.favourite = 0,
+    this.difficulty = 2,
     // this.isEditingMode,
   });
   final String collectionId;
@@ -39,11 +41,8 @@ class Word extends Equatable with ChangeNotifier {
   final bool isEditingExampleTitle = true;
   final bool isEditingShowImg = true;
   final bool isSelected;
-  // bool isEditingMode;
-
-  // void toggleIsEditingMode() {
-  //   isEditingMode = !isEditingMode;
-  // }
+  final int favourite;
+  final int difficulty;
 
   Word copyWith({
     String collectionId,
@@ -57,19 +56,24 @@ class Word extends Equatable with ChangeNotifier {
     String example,
     String exampleTranslations,
     bool isSelected,
+    int favourite,
+    int difficulty,
   }) {
     return Word(
-        id: id ?? this.id,
-        targetLang: targetLang ?? this.targetLang,
-        secondLang: secondLang ?? this.secondLang,
-        thirdLang: thirdLang ?? this.thirdLang,
-        ownLang: ownLang ?? this.ownLang,
-        part: part ?? this.part,
-        image: image ?? this.image,
-        example: example ?? this.example,
-        exampleTranslations: exampleTranslations ?? this.exampleTranslations,
-        isSelected: isSelected ?? this.isSelected,
-        collectionId: collectionId ?? this.collectionId);
+      id: id ?? this.id,
+      targetLang: targetLang ?? this.targetLang,
+      secondLang: secondLang ?? this.secondLang,
+      thirdLang: thirdLang ?? this.thirdLang,
+      ownLang: ownLang ?? this.ownLang,
+      part: part ?? this.part,
+      image: image ?? this.image,
+      example: example ?? this.example,
+      exampleTranslations: exampleTranslations ?? this.exampleTranslations,
+      isSelected: isSelected ?? this.isSelected,
+      collectionId: collectionId ?? this.collectionId,
+      favourite: favourite ?? this.favourite,
+      difficulty: difficulty ?? this.difficulty,
+    );
   }
 
   @override
@@ -84,47 +88,7 @@ class Word extends Equatable with ChangeNotifier {
         exampleTranslations,
         isSelected,
         collectionId,
+        favourite,
+        difficulty,
       ];
-
-  List<Word> toList() {}
-
-  // void toggleIsSelected() {
-  //   isSelected = !isSelected;
-  // }
-
-  // void changePart(Part newPart) {
-  //   part = newPart;
-  // }
-
-  // void toggleTargetLang() {
-  //   isEditingTargetLang = !isEditingTargetLang;
-  // }
-
-  // void toggleSecondLang() {
-  //   isEditingSecondLang = !isEditingSecondLang;
-  // }
-
-  // void toggleOwnLang() {
-  //   isEditingOwnLang = !isEditingOwnLang;
-  // }
-
-  // void toggleShowImg() {
-  //   isEditingShowImg = !isEditingShowImg;
-  // }
-
-  // void changeTargetLang(String newName) {
-  //   targetLang = newName;
-  // }
-
-  // void changeSecondLang(String newName) {
-  //   secondLang = newName;
-  // }
-
-  // void changeOwnLang(String newName) {
-  //   ownLang = newName;
-  // }
-
-  // void changeThirdLang(String newName) {
-  //   thirdLang = newName;
-  // }
 }

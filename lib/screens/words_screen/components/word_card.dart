@@ -205,7 +205,10 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                     alignment: Alignment.centerLeft,
                     fit: BoxFit.scaleDown,
                     child: Text(word.ownLang ?? '', // Translation
-                        style: TextStyle(fontSize: defaultSize * 1.6)),
+                        style: TextStyle(
+                          fontSize: defaultSize * 1.6,
+                          fontFamily: 'italic',
+                        )),
                   ),
                 ),
               ),
