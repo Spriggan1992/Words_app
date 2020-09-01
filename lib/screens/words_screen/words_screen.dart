@@ -83,9 +83,6 @@ class WordsScreen extends StatelessWidget {
                                   context.bloc<CardCreatorBloc>().add(
                                       CardCreatorLoaded(
                                           word: Word(), isEditingMode: false));
-                                  // context
-                                  //     .bloc<WordsBloc>()
-                                  //     .add(WordsLoaded(id: collectionId));
                                 },
                         ),
                       ],

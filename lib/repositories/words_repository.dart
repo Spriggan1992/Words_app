@@ -23,8 +23,6 @@ class WordsRepository with ChangeNotifier {
   //Card Creator
 
   Future<void> addNewWord(Word word) async {
-    // print("Print from AddNEwWord ${word.id}");
-    print('PRINT FROM Words_repository:  ${word.collectionId}');
     DBHelper.insert('words', {
       'collectionId': word.collectionId,
       'id': word.id,
@@ -276,7 +274,6 @@ class WordsRepository with ChangeNotifier {
   }
 
   void removeSelectedWords() {
-    print(words.length);
     words.forEach((element) {
       if (element.isSelected == true) {
         words.remove(element);
