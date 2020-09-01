@@ -3,9 +3,15 @@ import 'package:uuid/uuid.dart';
 import 'package:words_app/models/word.dart';
 
 class Collection extends Equatable {
+  final String id;
+  final String title;
+  final String language;
+  final bool showBtns;
+  final bool isEditingBtns;
+  final bool isEditingMode;
+
   Collection(
-      {this.collection,
-      this.title,
+      {this.title,
       this.language,
       String id,
       this.showBtns = false,
@@ -14,17 +20,9 @@ class Collection extends Equatable {
       : this.id = id ?? Uuid().v4();
   //id for DB
 
-  final String id;
-  final String title;
-  final String language;
-  final bool showBtns;
-  final bool isEditingBtns;
-  List<Word> collection;
-  final bool isEditingMode;
-
   @override
   List<Object> get props =>
-      [id, title, language, showBtns, isEditingBtns, collection, isEditingMode];
+      [id, title, language, showBtns, isEditingBtns, isEditingMode];
 
   Collection copyWith({
     String id,
@@ -33,7 +31,6 @@ class Collection extends Equatable {
     bool showBtns,
     bool isEditingBtns,
     bool isEditingMode,
-    List<Word> collection,
   }) {
     return Collection(
       id: id ?? this.id,
@@ -42,7 +39,6 @@ class Collection extends Equatable {
       showBtns: showBtns ?? this.showBtns,
       isEditingBtns: isEditingBtns ?? this.isEditingBtns,
       isEditingMode: isEditingMode ?? this.isEditingMode,
-      collection: collection ?? this.collection,
     );
   }
 
