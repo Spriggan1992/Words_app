@@ -18,42 +18,50 @@ class CollectionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
-      child: Scaffold(
-        appBar: BaseAppBar(
-          title: Text('words_collection'),
-          appBar: AppBar(),
-        ),
-        body: BlocBuilder<CollectionsBloc, CollectionsState>(
-          builder: (context, state) {
-            if (state is CollectionsLoading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (state is CollectionsSuccess) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: Body(
-                      collections: state.collections,
+      child: WillPopScope(
+        onWillPop: () async {
+          Navigator.pushNamedAndRemoveUntil(context, CollectionsScreen.id,
+              ModalRoute.withName(CollectionsScreen.id));
+          context.bloc<CollectionsBloc>().add(CollectionsSetToFalse());
+          return;
+        },
+        child: Scaffold(
+          appBar: BaseAppBar(
+            title: Text('words_collection'),
+            appBar: AppBar(),
+          ),
+          body: BlocBuilder<CollectionsBloc, CollectionsState>(
+            builder: (context, state) {
+              if (state is CollectionsLoading) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is CollectionsSuccess) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: Body(
+                        collections: state.collections,
+                      ),
                     ),
-                  ),
-                  ReusableMainButton(
-                    titleText: 'Add Collection',
-                    textColor: Colors.white,
-                    backgroundColor: Theme.of(context).accentColor,
-                    onPressed: () {
-                      buildShowGeneralDialog(
-                        context,
-                      );
-                    },
-                  )
-                ],
-              );
-            } else {
-              return Text('Somthing went wrong.....');
-            }
-          },
+                    ReusableMainButton(
+                      titleText: 'Add Collection',
+                      textColor: Colors.white,
+                      backgroundColor: Theme.of(context).accentColor,
+                      onPressed: () {
+                        buildShowGeneralDialog(
+                          context,
+                        );
+                      },
+                    )
+                  ],
+                );
+              } else {
+                return Text('Somthing went wrong.....');
+              }
+            },
+          ),
         ),
       ),
     );
