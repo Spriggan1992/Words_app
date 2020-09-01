@@ -3,20 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
-
 import 'package:words_app/bloc/words/words_bloc.dart';
-
 import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
-
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/word.dart';
-
 import 'package:words_app/repositories/words_repository.dart';
 import 'package:words_app/screens/card_creator_screen/card_creator.dart';
 import 'package:words_app/screens/collections_screen/collections_screen.dart';
-
 import 'package:words_app/utils/size_config.dart';
 import 'components/word_card.dart';
 
@@ -26,7 +21,6 @@ class WordsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final providerData = Provider.of<WordsRepository>(context, listen: false);
     Map args = ModalRoute.of(context).settings.arguments;
     String collectionId = args['id'];
     String collectionTitle = args['title'];
@@ -38,6 +32,7 @@ class WordsScreen extends StatelessWidget {
         context.bloc<WordsBloc>().add(WordsTurnOffIsEditingMode());
         Navigator.pushNamedAndRemoveUntil(context, CollectionsScreen.id,
             ModalRoute.withName(CollectionsScreen.id));
+        return;
       },
       child: SafeArea(
         // Exclude top from SafeArea
@@ -53,48 +48,53 @@ class WordsScreen extends StatelessWidget {
               }
               if (state is WordsSuccess) {
                 /// Use cubit to switch editing mode(For selecting words);
-                return BlocBuilder<WordsCubit, bool>(
-                  builder: (context, isEditingMode) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        /// Fake Appbar
-                        buildAppBar(isEditingMode, context, collectionTitle,
-                            providerData, collectionId, state),
-
-                        /// List words
-                        buildListView(state, isEditingMode, collectionId),
-
-                        ReusableMainButton(
-                          titleText: 'Add Word',
-                          textColor: Colors.white,
-                          backgroundColor: Theme.of(context).accentColor,
-                          onPressed: isEditingMode
-                              ? () {}
-                              : () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    CardCreator.id,
-                                    arguments: {
-                                      'isEditingMode': false,
-                                      'collectionId': collectionId,
-                                    },
-                                  );
-                                  context.bloc<CardCreatorBloc>().add(
-                                      CardCreatorLoaded(
-                                          word: Word(), isEditingMode: false));
-                                },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              } else {
-                Text('Somthing went wrong....');
+                return buildBody(collectionTitle, collectionId, state);
               }
+              return Text('Somthing went wrong....');
             },
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildBody(
+      String collectionTitle, String collectionId, WordsSuccess state) {
+    return Container(
+      child: BlocBuilder<WordsCubit, bool>(
+        builder: (context, isEditingMode) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              /// Fake Appbar
+              buildAppBar(
+                  isEditingMode, context, collectionTitle, collectionId, state),
+
+              /// List words
+              buildListView(state, isEditingMode, collectionId),
+
+              ReusableMainButton(
+                titleText: 'Add Word',
+                textColor: Colors.white,
+                backgroundColor: Theme.of(context).accentColor,
+                onPressed: isEditingMode
+                    ? () {}
+                    : () {
+                        Navigator.pushNamed(
+                          context,
+                          CardCreator.id,
+                          arguments: {
+                            'isEditingMode': false,
+                            'collectionId': collectionId,
+                          },
+                        );
+                        context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
+                            word: Word(), isEditingMode: false));
+                      },
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -164,11 +164,10 @@ class WordsScreen extends StatelessWidget {
     );
   }
 
-  Container buildAppBar(
+  Widget buildAppBar(
     bool isEditingMode,
     BuildContext context,
     String collectionTitle,
-    WordsRepository providerData,
     String collectionId,
     WordsSuccess state,
   ) {

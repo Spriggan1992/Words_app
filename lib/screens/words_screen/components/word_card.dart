@@ -2,14 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-import 'package:words_app/animations/shake_animation.dart';
+
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/models/collection.dart';
 
 import '../../../models/word.dart';
-import '../../../repositories/words_repository.dart';
+
 import '../../../utils/size_config.dart';
 import '../../review_card_screen/review_card.dart';
 import 'dialog_window.dart';
@@ -18,7 +17,6 @@ import 'expandable_container.dart';
 class WordCard extends StatefulWidget {
   const WordCard({
     this.index,
-    this.toggleIsSelection,
     this.selectedList,
     this.collection,
     this.word,
@@ -26,8 +24,7 @@ class WordCard extends StatefulWidget {
     this.words,
   });
   final bool isEditingMode;
-  final index;
-  final Function toggleIsSelection;
+  final int index;
   final List selectedList;
   final Word word;
   final Collection collection;
@@ -38,8 +35,8 @@ class WordCard extends StatefulWidget {
 }
 
 class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
-  AnimationController pageAnimationController;
-  Animation pageAnimation;
+  // AnimationController pageAnimationController;
+  // Animation pageAnimation;
   AnimationController expandController;
   Animation<double> animation;
   Animation rotationAnimation;
@@ -92,7 +89,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
         onLongPress: widget.isEditingMode
             ? () {}
             : () {
-                BlocProvider.of<WordsCubit>(context).toggleEditMode();
+                context.bloc<WordsCubit>().toggleEditMode();
                 context.bloc<WordsBloc>().add(WordsToggled(word: word));
 
                 context
@@ -204,13 +201,11 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
               AnimatedPositioned(
                 curve: Curves.easeIn,
                 left: isExpanded ? defaultSize * 3.7 : defaultSize * 6.0,
-                // left: isExpanded ? defaultSize * 3.7 : defaultSize * 6.0,
                 top: defaultSize * 5.0,
                 duration: Duration(milliseconds: 300),
                 child: Container(
                   height: defaultSize * 3,
                   width: isExpanded ? defaultSize * 32 : defaultSize * 30,
-                  // width: isExpanded ? defaultSize * 32 : defaultSize * 30,
                   child: FittedBox(
                     alignment: Alignment.centerLeft,
                     fit: BoxFit.scaleDown,
@@ -222,7 +217,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
               ),
               // Arrow Icon
               widget.isEditingMode
-                  // providerData.isEditingMode
                   ? Container()
                   : Positioned(
                       left: defaultSize * 36,
@@ -306,11 +300,5 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
         );
       },
     );
-  }
-}
-
-extension AnimationExtension on Widget {
-  Widget get shakeAnimation {
-    return ShakeAnimation(child: this);
   }
 }

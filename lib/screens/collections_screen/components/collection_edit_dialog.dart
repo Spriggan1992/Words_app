@@ -68,7 +68,9 @@ class CollectionsEditDialog extends StatelessWidget {
                     height: 3.0,
                   ),
                 ),
-                Flexible(child: SizedBox(height: 5.0)),
+                Flexible(
+                  child: SizedBox(height: 5.0),
+                ),
                 Container(
                   width: 200,
                   child: TextField(
