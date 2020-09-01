@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:uuid/uuid.dart';
 import 'package:words_app/models/word.dart';
 
 class Collection extends Equatable {
@@ -6,10 +7,11 @@ class Collection extends Equatable {
       {this.collection,
       this.title,
       this.language,
-      this.id,
+      String id,
       this.showBtns = false,
       this.isEditingBtns,
-      this.isEditingMode = false});
+      this.isEditingMode = false})
+      : this.id = id ?? Uuid().v4();
   //id for DB
 
   final String id;

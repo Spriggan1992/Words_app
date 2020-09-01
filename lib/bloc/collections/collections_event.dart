@@ -10,13 +10,11 @@ abstract class CollectionsEvent extends Equatable {
 class CollectionsLoaded extends CollectionsEvent {}
 
 class CollectionsAdded extends CollectionsEvent {
-  final String title;
-  final String language;
-  final String collectionId;
+  final Collection collection;
 
-  CollectionsAdded({this.title, this.language, this.collectionId});
+  CollectionsAdded({this.collection});
 
-  List<Object> get props => [title, language, collectionId];
+  List<Object> get props => [collection];
 }
 
 class CollectionsToggleAll extends CollectionsEvent {

@@ -6,6 +6,7 @@ import 'package:words_app/bloc/collections/collections_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
+import 'package:words_app/models/collection.dart';
 import 'package:words_app/screens/words_screen/words_screen.dart';
 
 class DialogAddCollection extends StatefulWidget {
@@ -26,7 +27,6 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
   double heightLanguage = 1.2;
   bool isTextCollectionNameFiledEmpty = true;
   bool isLanguageTextFileEmpty = true;
-  String collectionId = Uuid().v4();
 
   @override
   void initState() {
@@ -157,22 +157,25 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
               child: Text('CREATE COLLECTION',
                   style: TextStyle(color: Colors.white)),
               onPressed: () {
+                Collection collection = Collection(
+                    language: collectionLanguage, title: collectionTitle);
                 context.bloc<CollectionsBloc>().add(
                       CollectionsAdded(
-                        language: collectionLanguage,
-                        title: collectionTitle,
-                        collectionId: collectionId,
+                        collection: collection,
                       ),
                     );
-                context.bloc<CollectionsBloc>().add(CollectionsLoaded());
-                context.bloc<WordsBloc>().add(WordsLoaded(id: collectionId));
+                context.bloc<WordsBloc>().add(
+                      WordsLoaded(
+                        id: collection.id,
+                      ),
+                    );
 
                 Navigator.pushNamed(
                   context,
                   WordsScreen.id,
                   arguments: {
-                    'id': collectionId,
-                    'title': collectionTitle,
+                    "id": collection.id,
+                    'title': collection.title,
                   },
                 );
               },

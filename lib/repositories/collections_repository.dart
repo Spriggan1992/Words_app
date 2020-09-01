@@ -13,10 +13,13 @@ class CollectionsRepository {
   }
 
   Future<Collection> addNewCollection(
-      String collectionTitle, String languageTitle, String collectionId) async {
+      {String collectionTitle,
+      String languageTitle,
+      String collectionId}) async {
     final collection = Collection(
       // Creating object here for later adding it to _wordsCollectionData
-      id: Uuid().v4(), //create Id for collection
+      //create Id for collection
+      id: collectionId,
       title: collectionTitle,
       language: languageTitle,
       showBtns: false,

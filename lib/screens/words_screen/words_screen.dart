@@ -34,10 +34,10 @@ class WordsScreen extends StatelessWidget {
     return WillPopScope(
       /// Overriding Back navigation logic --> exit from EditMode
       onWillPop: () async {
-        Navigator.pushNamed(context, CollectionsScreen.id);
         context.bloc<WordsCubit>().toggleEditModeToFalse();
         context.bloc<WordsBloc>().add(WordsTurnOffIsEditingMode());
-        return true;
+        Navigator.pushNamedAndRemoveUntil(context, CollectionsScreen.id,
+            ModalRoute.withName(CollectionsScreen.id));
       },
       child: SafeArea(
         // Exclude top from SafeArea

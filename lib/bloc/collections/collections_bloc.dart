@@ -47,7 +47,9 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
       CollectionsAdded event) async* {
     try {
       final collection = await collectionsRepository.addNewCollection(
-          event.title, event.language, event.collectionId);
+          collectionId: event.collection.id,
+          collectionTitle: event.collection.title,
+          languageTitle: event.collection.language);
       List<Collection> collections =
           List.from((state as CollectionsSuccess).collections)..add(collection);
       yield CollectionsSuccess(collections);
