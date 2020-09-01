@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/words_repository.dart';
 import 'package:words_app/screens/review_card_screen/review_card.dart';
-import 'package:words_app/screens/words_screen/components/dialog_window.dart';
 import 'package:words_app/utils/size_config.dart';
 import 'expandable_container.dart';
 
@@ -262,18 +260,18 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
     );
   }
 
-  Future showDialogWindow(BuildContext context, int index) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-          content: StatefulBuilder(builder: (context, setState) {
-            return DialogWindow(index: index);
-          }),
-        );
-      },
-    );
-  }
+  // Future showDialogWindow(BuildContext context, int index) {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         shape:
+  //             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+  //         content: StatefulBuilder(builder: (context, setState) {
+  //           return DialogWindow(index: index);
+  //         }),
+  //       );
+  //     },
+  //   );
+  // }
 }

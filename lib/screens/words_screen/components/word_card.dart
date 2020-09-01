@@ -1,17 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/models/collection.dart';
-
 import '../../../models/word.dart';
-
 import '../../../utils/size_config.dart';
 import '../../review_card_screen/review_card.dart';
-import 'dialog_window.dart';
 import 'expandable_container.dart';
 
 class WordCard extends StatefulWidget {
@@ -282,21 +276,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
           ),
         ),
       ),
-    );
-  }
-
-  Future showDialogWindow(BuildContext context, int index) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-          content: StatefulBuilder(builder: (context, setState) {
-            return DialogWindow(index: index);
-          }),
-        );
-      },
     );
   }
 }

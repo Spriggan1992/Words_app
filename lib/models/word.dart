@@ -17,9 +17,6 @@ class Word extends Equatable with ChangeNotifier {
     this.image,
     this.example,
     this.exampleTranslations,
-    this.isEditingTargetLang = true,
-    this.isEditingSecondLang = true,
-    this.isEditingOwnLang = true,
     this.isSelected = false,
     this.favourite = 0,
     this.difficulty = 2,
@@ -35,11 +32,7 @@ class Word extends Equatable with ChangeNotifier {
   final File image;
   final String example;
   final String exampleTranslations;
-  final bool isEditingTargetLang;
-  final bool isEditingSecondLang;
-  final bool isEditingOwnLang;
-  final bool isEditingExampleTitle = true;
-  final bool isEditingShowImg = true;
+
   final bool isSelected;
   final int favourite;
   final int difficulty;
