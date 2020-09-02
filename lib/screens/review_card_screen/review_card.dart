@@ -71,7 +71,7 @@ class _ReviewCardState extends State<ReviewCard>
     });
   }
 
-  _buildChoiceList() {
+  _buildChoiceList(int page) {
     List<Widget> choices = List();
     difficultyList.forEach(
       (item) {
@@ -97,9 +97,10 @@ class _ReviewCardState extends State<ReviewCard>
                     selectedChoice = item.name;
                   },
                 );
+                // print(widget.words[page].targetLang);
                 context.bloc<WordsBloc>().add(
                       WordsUpdatedWord(
-                        word: widget.words[widget.index]
+                        word: widget.words[page]
                             .copyWith(difficulty: item.difficulty),
                       ),
                     );
@@ -133,13 +134,7 @@ class _ReviewCardState extends State<ReviewCard>
                   setState(
                     () {
                       initialPage = value;
-                      // print("Difficulty from before bloc : ${difficulty}");
-                      context.bloc<WordsBloc>().add(
-                            WordsUpdatedWord(
-                              word: widget.words[widget.index]
-                                  .copyWith(difficulty: 0),
-                            ),
-                          );
+
                       selectedChoice = '';
                     },
                   );
@@ -158,6 +153,7 @@ class _ReviewCardState extends State<ReviewCard>
                         value = index - _pageController.page;
                         value = (value * 0.06).clamp(-1, 1);
                       }
+
                       return AnimatedOpacity(
                         duration: Duration(milliseconds: 500),
                         opacity: initialPage == index ? 1 : 0.1,
@@ -184,7 +180,22 @@ class _ReviewCardState extends State<ReviewCard>
                                     word: widget.words[index],
                                     index: index,
                                     part: widget.words[index].part.partColor),
-                              )
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                child: Container(
+                                  margin:
+                                      EdgeInsets.only(bottom: defaultSize * 2),
+                                  height: 50,
+                                  width: SizeConfig.blockSizeHorizontal * 75,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: _buildChoiceList(
+                                        _pageController.page.round()),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -195,15 +206,6 @@ class _ReviewCardState extends State<ReviewCard>
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(bottom: defaultSize * 2),
-            height: 50,
-            width: SizeConfig.blockSizeHorizontal * 75,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: _buildChoiceList(),
-            ),
-          )
         ],
       ),
       // bottomNavigationBar: BaseBottomAppBar(

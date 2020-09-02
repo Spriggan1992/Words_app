@@ -18,10 +18,11 @@ class Word extends Equatable with ChangeNotifier {
     this.example,
     this.exampleTranslations,
     this.isSelected = false,
-    this.favourite = 0,
-    this.difficulty = 2,
+    int favourite,
+    int difficulty,
     // this.isEditingMode,
-  });
+  })  : this.difficulty = difficulty ?? 2,
+        this.favourite = favourite ?? 0;
   final String collectionId;
   final String id;
   final String targetLang;
