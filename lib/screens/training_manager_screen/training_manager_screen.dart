@@ -17,7 +17,7 @@ class TrainingManager extends StatefulWidget {
 }
 
 class _TrainingManagerState extends State<TrainingManager> {
-  String dropdownValue = 'Filters';
+  String dropdownValue = 'Collection';
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +39,10 @@ class _TrainingManagerState extends State<TrainingManager> {
           // Main container with all content on the page
           Expanded(
             child: Container(
-              padding: EdgeInsets.all(defaultSize * 2),
+              padding: EdgeInsets.symmetric(horizontal: defaultSize * 3),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TitleTextHolder(title: '1. I want to play ...'),
                   Container(
@@ -50,86 +51,97 @@ class _TrainingManagerState extends State<TrainingManager> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         TrainingBtnsContainers(
-                            defaultSize: defaultSize,
-                            child: ReusableBottomIconBtn(
-                                icons: Icons.fitness_center,
-                                color: Colors.black,
-                                onPress: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Matches(
-                                        words: words,
-                                      ),
-                                    )))),
+                            icon: Icons.fitness_center,
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Matches(
+                                    words: words,
+                                  ),
+                                ))),
                         TrainingBtnsContainers(
-                          defaultSize: defaultSize,
-                          child: ReusableBottomIconBtn(
-                            icons: Icons.directions_bike,
-                            color: Colors.black,
-                            onPress: () => Navigator.pushNamed(
-                              context,
-                              PairGame.id,
-                              arguments: {'id': collectionId},
-                            ),
+                          icon: Icons.directions_bike,
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            PairGame.id,
+                            arguments: {'id': collectionId},
                           ),
                         ),
                         TrainingBtnsContainers(
-                          defaultSize: defaultSize,
-                          child: ReusableBottomIconBtn(
-                              icons: Icons.photo_album,
-                              color: Colors.black,
-                              onPress: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Training(
-                                      words: words,
-                                    ),
-                                  ))),
-                        ),
+                            icon: Icons.photo_album,
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Training(
+                                    words: words,
+                                  ),
+                                ))),
                       ],
                     ),
                   ),
                   TitleTextHolder(title: '2. I want to study words that I ...'),
                   Container(
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Chip(
-                          label: Text('know'),
-                          shape: Border(),
-                        )
+                        DifficultyBtns(
+                          title: 'know',
+                          color: Color(0xFFd4f1c7),
+                        ),
+                        DifficultyBtns(
+                            title: 'know a little', color: Color(0xFFfbe7c6)),
+                        DifficultyBtns(
+                            title: "don't know", color: Color(0xFFfea3ab)),
                       ],
                     ),
                   ),
-                  Container(
-                    // color: Colors.grey[200],
-                    padding: EdgeInsets.symmetric(horizontal: defaultSize * 3),
-                    height: defaultSize * 4,
-                    width: SizeConfig.blockSizeHorizontal * 100,
-                    alignment: Alignment.center,
+                  TitleTextHolder(
+                      title: '3. I want to include in the game ...'),
+                  Row(
+                    children: [
+                      TrainingBtnsContainers(
+                        icon: Icons.star_border,
+                        onTap: () {},
+                      ),
+                      TrainingBtnsContainers(
+                        icon: null,
+                        onTap: () {},
+                      )
+                    ],
+                  ),
+                  TitleTextHolder(title: '4. I want to use words from ...'),
+                  Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(defaultSize * 0.5)),
+                    margin: EdgeInsets.only(right: defaultSize * 20),
+                    color: Colors.white,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // Text('Filters'),
-                        DropdownButton<String>(
-                          value: dropdownValue,
-                          icon: Icon(Icons.arrow_drop_down),
-                          iconSize: defaultSize * 3,
-                          onChanged: (String newValue) {
-                            setState(() {
-                              dropdownValue = newValue;
-                            });
-                          },
-                          items: <String>[
-                            'Filters',
-                            'Know',
-                            "Don't know",
-                            'Custom list'
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: dropdownValue,
+                            icon: Icon(Icons.arrow_drop_down),
+                            iconSize: defaultSize * 3,
+                            onChanged: (String newValue) {
+                              setState(() {
+                                dropdownValue = newValue;
+                              });
+                            },
+                            items: <String>[
+                              'Collection',
+                              'Know',
+                              "Don't know",
+                              'Custom list'
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
                         )
                       ],
                     ),
@@ -138,6 +150,15 @@ class _TrainingManagerState extends State<TrainingManager> {
               ),
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Checkbox(value: false, onChanged: null),
+              Text('remember my choice'),
+            ],
+          ),
+          SizedBox(height: defaultSize * 2),
+
           //  Button-container
           Container(
             child: ReusableMainButton(
@@ -153,6 +174,50 @@ class _TrainingManagerState extends State<TrainingManager> {
   }
 }
 
+class DifficultyBtns extends StatelessWidget {
+  const DifficultyBtns({
+    Key key,
+    @required this.title,
+    @required this.color,
+  }) : super(key: key);
+
+  final String title;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    final defaultSize = SizeConfig.defaultSize;
+
+    return Card(
+      // padding: EdgeInsets.all(0),
+      elevation: 5,
+      color: color,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 16.0),
+        child: Text(
+          title,
+          style: TextStyle(
+              fontSize: defaultSize * 1.6,
+              color: Colors.black,
+              fontWeight: FontWeight.w900),
+        ),
+      ),
+
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(defaultSize * 0.5)),
+    );
+  }
+}
+
+// Container(
+//       decoration: BoxDecoration(boxShadow: [
+//         BoxShadow(
+//             color: Color(0xFF878686),
+//             blurRadius: 0.1,
+//             spreadRadius: 0.1,
+//             offset: Offset(0.5, 1))
+//       ])
 class TitleTextHolder extends StatelessWidget {
   const TitleTextHolder({
     Key key,
@@ -163,6 +228,7 @@ class TitleTextHolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
     return Container(
         child: Text(title,
@@ -175,28 +241,61 @@ class TitleTextHolder extends StatelessWidget {
 class TrainingBtnsContainers extends StatelessWidget {
   const TrainingBtnsContainers({
     Key key,
-    @required this.defaultSize,
-    this.child,
+    this.icon,
+    this.onTap,
   }) : super(key: key);
 
-  final double defaultSize;
-  final Widget child;
+  final IconData icon;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: defaultSize * 0.5, vertical: defaultSize),
-      decoration: BoxDecoration(
-        boxShadow: [kBoxShadow],
-        color: Colors.white,
+    SizeConfig().init(context);
+    final defaultSize = SizeConfig.defaultSize;
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 30),
+      child: InkWell(
+        onTap: onTap,
+        child: Card(
+          // padding: EdgeInsets.symmetric(horizontal: defaultSize * 1),
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(defaultSize * 0.5)),
+          child: Padding(
+            padding: EdgeInsets.all(defaultSize * 0.8),
+            child: Container(
+                alignment: Alignment.center,
+                width: defaultSize * 4,
+                height: defaultSize * 4,
+                child: icon is IconData
+                    ? Icon(
+                        icon,
+                        size: defaultSize * 3,
+                        color: Colors.black,
+                      )
+                    : Text('all', style: TextStyle(fontSize: defaultSize * 2))),
+          ),
+        ),
       ),
-      width: defaultSize * 5,
-      height: defaultSize * 5,
-      child: child,
     );
   }
 }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       margin: EdgeInsets.symmetric(
+//           horizontal: defaultSize * 0.5, vertical: defaultSize),
+//       decoration: BoxDecoration(
+//         boxShadow: [kBoxShadow],
+//         color: Colors.white,
+//       ),
+//       width: defaultSize * 5,
+//       height: defaultSize * 5,
+//       child: child,
+//     );
+//   }
+// }
 
 // Expanded(
 //                     child: Center(
