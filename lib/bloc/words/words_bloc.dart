@@ -46,6 +46,9 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (event is WordsAdded) {
       yield* _mapWordsAddedToState(event);
     }
+    // if (event is WordsAdded) {
+    //   yield* _mapWordsUpdatedWordDifficultyToState(event);
+    // }
   }
 
   /// Fetch data from db through repository
@@ -190,7 +193,8 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
                 part: event.word.part,
                 secondLang: event.word.secondLang,
                 targetLang: event.word.targetLang,
-                thirdLang: event.word.thirdLang)
+                thirdLang: event.word.thirdLang,
+              )
             : word;
       }).toList();
       yield WordsSuccess(words: updatedWord);
@@ -198,6 +202,39 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
       yield WordsFailure();
     }
   }
+
+  // /// This method is responsible for editing [Word] on dismissable swipe, edit button
+  // ///, and save it to UI wordsList  and DB
+  // Stream<WordsState> _mapWordsUpdatedWordDifficultyToState(
+  //     WordsUpdatedWord event) async* {
+  //   try {
+  //     final updatedWord = (state as WordsSuccess).words.map((word) {
+  //       print("from IF ${event.word.id}");
+  //       if (word.id == event.word.id) {
+  //         wordsRepository.updateWord(word: event.word);
+  //       }
+
+  //       return word.id == event.word.id
+  //           ? word.copyWith(
+  //               collectionId: word.collectionId,
+  //               id: event.word.id,
+  //               example: event.word.example,
+  //               isSelected: false,
+  //               exampleTranslations: event.word.exampleTranslations,
+  //               image: event.word.image,
+  //               ownLang: event.word.ownLang,
+  //               part: event.word.part,
+  //               secondLang: event.word.secondLang,
+  //               targetLang: event.word.targetLang,
+  //               thirdLang: event.word.thirdLang,
+  //             )
+  //           : word;
+  //     }).toList();
+  //     yield WordsSuccess(words: updatedWord);
+  //   } catch (_) {
+  //     yield WordsFailure();
+  //   }
+  // }
 
   /// This method is responsible for adding [Word] on preees of bottom Add Word buttton, edit button , to UI and DB
   Stream<WordsState> _mapWordsAddedToState(WordsAdded event) async* {

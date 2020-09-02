@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:words_app/bloc/words/words_bloc.dart';
 
 import 'package:words_app/components/base_appbar.dart';
 
@@ -34,6 +36,13 @@ class _ReviewCardState extends State<ReviewCard>
   bool isFront = true;
   String selectedChoice = "";
 
+  List<Difficulty> difficultyList = [
+    Difficulty(difficulty: 0, name: 'know', color: Colors.green[400]),
+    Difficulty(
+        difficulty: 1, name: "know a little", color: Colors.yellowAccent),
+    Difficulty(difficulty: 2, name: "don't know", color: Colors.redAccent),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -62,39 +71,44 @@ class _ReviewCardState extends State<ReviewCard>
     });
   }
 
-  List<Difficulty> difficultyList = [
-    Difficulty(name: 'know', color: Colors.green[400]),
-    Difficulty(name: "know a little", color: Colors.yellowAccent),
-    Difficulty(name: "don't know", color: Colors.redAccent),
-  ];
-
   _buildChoiceList() {
     List<Widget> choices = List();
-    difficultyList.forEach((item) {
-      choices.add(Container(
-        padding: const EdgeInsets.all(5.0),
-        child: ChoiceChip(
-          label: Text(item.name),
-          labelStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 14.0,
-            fontWeight: FontWeight.bold,
+    difficultyList.forEach(
+      (item) {
+        choices.add(
+          Container(
+            padding: const EdgeInsets.all(5.0),
+            child: ChoiceChip(
+              label: Text(item.name),
+              labelStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              backgroundColor: item.color,
+              selectedColor: Theme.of(context).accentColor,
+              selected: selectedChoice == item.name,
+              onSelected: (selected) {
+                setState(
+                  () {
+                    selectedChoice = item.name;
+                  },
+                );
+                context.bloc<WordsBloc>().add(
+                      WordsUpdatedWord(
+                        word: widget.words[widget.index]
+                            .copyWith(difficulty: item.difficulty),
+                      ),
+                    );
+              },
+            ),
           ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          backgroundColor: item.color,
-          selectedColor: Theme.of(context).accentColor,
-          selected: selectedChoice == item.name,
-          // selected:selectedChoice = = item.name,
-          onSelected: (selected) {
-            setState(() {
-              selectedChoice = item.name;
-            });
-          },
-        ),
-      ));
-    });
+        );
+      },
+    );
 
     return choices;
   }
@@ -119,6 +133,13 @@ class _ReviewCardState extends State<ReviewCard>
                   setState(
                     () {
                       initialPage = value;
+                      // print("Difficulty from before bloc : ${difficulty}");
+                      context.bloc<WordsBloc>().add(
+                            WordsUpdatedWord(
+                              word: widget.words[widget.index]
+                                  .copyWith(difficulty: 0),
+                            ),
+                          );
                       selectedChoice = '';
                     },
                   );
@@ -130,6 +151,8 @@ class _ReviewCardState extends State<ReviewCard>
                   return AnimatedBuilder(
                     animation: _pageController,
                     builder: (context, child) {
+                      // print(
+                      //     "Difficulty from review card: ${widget.words[index].difficulty}");
                       double value = 0;
                       if (_pageController.position.haveDimensions) {
                         value = index - _pageController.page;

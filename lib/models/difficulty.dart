@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Difficulty {
-  final String name;
+  final int difficulty;
   final Color color;
+  final String name;
 
-  Difficulty({this.name, this.color});
+  Difficulty({this.name, this.difficulty, this.color});
 }
