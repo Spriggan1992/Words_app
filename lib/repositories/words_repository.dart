@@ -35,6 +35,7 @@ class WordsRepository with ChangeNotifier {
       'image': word.image?.path ?? '',
       'example': word.example,
       'exampleTranslations': word.exampleTranslations,
+      'difficulty': word.difficulty,
     });
   }
 
@@ -56,6 +57,7 @@ class WordsRepository with ChangeNotifier {
         'image': imagePath.path,
         'example': item.example,
         'exampleTranslations': item.exampleTranslations,
+        'difficulty': item.difficulty,
       });
     });
     notifyListeners();
@@ -78,6 +80,7 @@ class WordsRepository with ChangeNotifier {
         image: File(item['image']),
         example: item['example'],
         exampleTranslations: item['exampleTranslations'],
+        difficulty: item['difficulty'],
       );
       return word;
     }).toList();
@@ -100,6 +103,7 @@ class WordsRepository with ChangeNotifier {
       'image': word.image?.path ?? '',
       'example': word.example,
       'exampleTranslations': word.exampleTranslations,
+      'difficulty': word.difficulty,
     };
     db.update(
       'words',
