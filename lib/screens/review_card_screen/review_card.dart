@@ -2,17 +2,15 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 import 'package:words_app/components/base_appbar.dart';
-import 'package:words_app/components/base_bottom_appbar.dart';
-import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
-import 'package:words_app/constants/constants.dart';
+
+import 'package:words_app/models/difficulty.dart';
 
 import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/words_repository.dart';
 
 import 'package:words_app/screens/review_card_screen/components/word_card.dart';
-import 'package:words_app/screens/games/bricks_game.dart';
+
 import 'package:words_app/utils/size_config.dart';
 
 class ReviewCard extends StatefulWidget {
@@ -34,6 +32,7 @@ class _ReviewCardState extends State<ReviewCard>
 
   /// If `true` show front - examples text
   bool isFront = true;
+  String selectedChoice = "";
 
   @override
   void initState() {
@@ -63,14 +62,47 @@ class _ReviewCardState extends State<ReviewCard>
     });
   }
 
+  List<Difficulty> difficultyList = [
+    Difficulty(name: 'know', color: Colors.green[400]),
+    Difficulty(name: "know a little", color: Colors.yellowAccent),
+    Difficulty(name: "don't know", color: Colors.redAccent),
+  ];
+
+  _buildChoiceList() {
+    List<Widget> choices = List();
+    difficultyList.forEach((item) {
+      choices.add(Container(
+        padding: const EdgeInsets.all(5.0),
+        child: ChoiceChip(
+          label: Text(item.name),
+          labelStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 14.0,
+            fontWeight: FontWeight.bold,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          backgroundColor: item.color,
+          selectedColor: Theme.of(context).accentColor,
+          selected: selectedChoice == item.name,
+          // selected:selectedChoice = = item.name,
+          onSelected: (selected) {
+            setState(() {
+              selectedChoice = item.name;
+            });
+          },
+        ),
+      ));
+    });
+
+    return choices;
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("FROM REVIEW CARD: ${widget.words[widget.index].ownLang}");
-
     SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize;
-    final wordsData =
-        Provider.of<WordsRepository>(context, listen: false).words;
 
     return Scaffold(
       appBar: BaseAppBar(
@@ -78,78 +110,90 @@ class _ReviewCardState extends State<ReviewCard>
         actions: <Widget>[],
         appBar: AppBar(),
       ),
-      bottomNavigationBar: BaseBottomAppBar(
-        child1: ReusableBottomIconBtn(
-          icons: Icons.keyboard_arrow_left,
-          color: kMainColorBackground,
-          onPress: () => Navigator.pop(context),
-        ),
-        child2: ReusableBottomIconBtn(
-            icons: Icons.fitness_center,
-            color: kMainColorBackground,
-            onPress: () => Navigator.pushNamed(context, Matches.id)),
-      ),
       body: Column(
         children: <Widget>[
           Expanded(
             child: Container(
               child: PageView.builder(
-                  onPageChanged: (value) {
-                    setState(() {
+                onPageChanged: (value) {
+                  setState(
+                    () {
                       initialPage = value;
-                    });
-                  },
-                  controller: _pageController,
-                  physics: ClampingScrollPhysics(),
-                  itemCount: widget.words.length,
-                  itemBuilder: (context, index) {
-                    return AnimatedBuilder(
-                        animation: _pageController,
-                        builder: (context, child) {
-                          double value = 0;
-                          if (_pageController.position.haveDimensions) {
-                            value = index - _pageController.page;
-                            value = (value * 0.06).clamp(-1, 1);
-                          }
-                          return AnimatedOpacity(
-                            duration: Duration(milliseconds: 500),
-                            opacity: initialPage == index ? 1 : 0.1,
-                            child: Transform.rotate(
-                              angle: math.pi * value,
-                              child: Stack(
-                                fit: StackFit.expand,
-                                alignment: Alignment.center,
-                                children: <Widget>[
-                                  FlipCard(
-                                    onFlip: () {
-                                      setState(() {
-                                        toggleIsFront();
-                                      });
-                                    },
-                                    direction: FlipDirection.HORIZONTAL,
-                                    speed: 400,
-                                    front: WordCard(
-                                        word: widget.words[index],
-                                        side: 'front',
-                                        index: index,
-                                        part:
-                                            widget.words[index].part.partColor),
-                                    back: WordCard(
-                                        word: widget.words[index],
-                                        index: index,
-                                        part:
-                                            widget.words[index].part.partColor),
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
-                  }),
+                      selectedChoice = '';
+                    },
+                  );
+                },
+                controller: _pageController,
+                physics: ClampingScrollPhysics(),
+                itemCount: widget.words.length,
+                itemBuilder: (context, index) {
+                  return AnimatedBuilder(
+                    animation: _pageController,
+                    builder: (context, child) {
+                      double value = 0;
+                      if (_pageController.position.haveDimensions) {
+                        value = index - _pageController.page;
+                        value = (value * 0.06).clamp(-1, 1);
+                      }
+                      return AnimatedOpacity(
+                        duration: Duration(milliseconds: 500),
+                        opacity: initialPage == index ? 1 : 0.1,
+                        child: Transform.rotate(
+                          angle: math.pi * value,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            alignment: Alignment.center,
+                            children: <Widget>[
+                              FlipCard(
+                                onFlip: () {
+                                  setState(() {
+                                    toggleIsFront();
+                                  });
+                                },
+                                direction: FlipDirection.HORIZONTAL,
+                                speed: 400,
+                                front: WordCard(
+                                    word: widget.words[index],
+                                    side: 'front',
+                                    index: index,
+                                    part: widget.words[index].part.partColor),
+                                back: WordCard(
+                                    word: widget.words[index],
+                                    index: index,
+                                    part: widget.words[index].part.partColor),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
+          Container(
+            margin: EdgeInsets.only(bottom: defaultSize * 2),
+            height: 50,
+            width: SizeConfig.blockSizeHorizontal * 75,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: _buildChoiceList(),
+            ),
+          )
         ],
       ),
+      // bottomNavigationBar: BaseBottomAppBar(
+      //   child1: ReusableBottomIconBtn(
+      //     icons: Icons.keyboard_arrow_left,
+      //     color: kMainColorBackground,
+      //     onPress: () => Navigator.pop(context),
+      //   ),
+      //   child2: ReusableBottomIconBtn(
+      //       icons: Icons.fitness_center,
+      //       color: kMainColorBackground,
+      //       onPress: () => Navigator.pushNamed(context, Matches.id)),
+      // ),
     );
   }
 }
