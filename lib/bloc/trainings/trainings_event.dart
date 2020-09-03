@@ -20,3 +20,10 @@ class TrainingsDifficultiesFilter extends TrainingsEvent {
   TrainingsDifficultiesFilter({this.difficultyFilter});
   List<Object> get props => [difficultyFilter];
 }
+
+class TrainingsFavoritesFilter extends TrainingsEvent {
+  final FavoritesBtns favourite;
+
+  TrainingsFavoritesFilter({this.favourite});
+  List<Object> get props => [favourite];
+}

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/reusable_main_button.dart';
+import 'package:words_app/models/FuiltersEnums.dart';
 import 'package:words_app/models/difficulty.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/screens/pair_game_screen/pair_game.dart';
@@ -24,6 +25,11 @@ class TrainingManager extends StatefulWidget {
 class _TrainingManagerState extends State<TrainingManager> {
   String dropdownValue = 'Collection';
   List<Difficulty> difficulty = DifficultyList().difficultyList;
+  List<IconData> iconsList = [
+    Icons.fitness_center,
+    Icons.directions_bike,
+    Icons.photo_album,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +102,42 @@ class _TrainingManagerState extends State<TrainingManager> {
                         ),
                         TitleTextHolder(
                             title: '2. I want to study words that I ...'),
+                        // Container(
+                        //     child: Row(
+                        //   children: difficulty.map((item) {
+                        //     for (var i = 0; i < iconsList.length - 1; i++) {
+                        //       return Padding(
+                        //         padding: const EdgeInsets.only(right: 30),
+                        //         child: ChoiceChip(
+                        //           backgroundColor: Colors.white,
+                        //           labelPadding:
+                        //               EdgeInsets.all(defaultSize * 0.8),
+                        //           selectedColor: Colors.grey,
+                        //           shape: RoundedRectangleBorder(
+                        //               borderRadius: BorderRadius.circular(
+                        //                   defaultSize * 0.5)),
+                        //           elevation: 5,
+                        //           label: Container(
+                        //             alignment: Alignment.center,
+                        //             width: defaultSize * 3,
+                        //             height: defaultSize * 3,
+                        //             child: Icon(
+                        //               iconsList[item.index],
+                        //               color: Colors.black,
+                        //               size: defaultSize * 3,
+                        //             ),
+                        //           ),
+                        //           selected: state.games == item,
+                        //           onSelected: (selected) {
+                        //             setState(() {
+                        //               selectedChoice = item;
+                        //             });
+                        //           },
+                        //         ),
+                        //       );
+                        //     }
+                        //   }).toList(),
+                        // )),
                         Container(
                           child: ChoiceChipWidget(difficultyList: difficulty),
                         ),

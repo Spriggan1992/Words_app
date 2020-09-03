@@ -15,7 +15,6 @@ class _GamesBtnsState extends State<GamesBtns> {
     Icons.fitness_center,
     Icons.directions_bike,
     Icons.photo_album,
-    null
   ];
 
   List<Widget> _buildGamesBtns() {

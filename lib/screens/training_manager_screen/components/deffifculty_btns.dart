@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/models/difficulty.dart';
 import 'package:words_app/utils/size_config.dart';
 
@@ -15,7 +16,7 @@ class ChoiceChipWidget extends StatefulWidget {
 class _ChoiceChipWidgetState extends State<ChoiceChipWidget> {
   String selectedChoice = '';
 
-  _buildChoiceList() {
+  List<Widget> _buildChoiceList(context) {
     SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
 
@@ -42,8 +43,10 @@ class _ChoiceChipWidgetState extends State<ChoiceChipWidget> {
               selectedChoice == item.name
                   ? selectedChoice = ''
                   : selectedChoice = item.name;
-              print(selectedChoice);
             });
+            // context.bloc<TrainingsBloc>().add(TrainingsDifficultiesFilter(
+            //     difficultyFilter:
+            //         selectedChoice == '' ? null : item.difficulty));
           },
         ),
       ));
@@ -56,7 +59,7 @@ class _ChoiceChipWidgetState extends State<ChoiceChipWidget> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: _buildChoiceList(),
+      children: _buildChoiceList(context),
     );
   }
 }
