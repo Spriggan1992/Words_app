@@ -13,3 +13,10 @@ class TrainingsLoaded extends TrainingsEvent {
   TrainingsLoaded({this.words});
   List<Object> get props => [words];
 }
+
+class TrainingsDifficultiesFilter extends TrainingsEvent {
+  final int difficultyFilter;
+
+  TrainingsDifficultiesFilter({this.difficultyFilter});
+  List<Object> get props => [difficultyFilter];
+}

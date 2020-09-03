@@ -13,6 +13,7 @@ class TrainingsSuccess extends TrainingsState {
   final List<Word> words;
 
   TrainingsSuccess({this.words});
+  @override
   List<Object> get props => [words];
 }
 
