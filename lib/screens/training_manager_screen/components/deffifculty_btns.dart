@@ -55,7 +55,7 @@ class _ChoiceChipWidgetState extends State<ChoiceChipWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: _buildChoiceList(),
     );
   }
