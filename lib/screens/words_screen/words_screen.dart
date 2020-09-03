@@ -130,7 +130,16 @@ class WordsScreen extends StatelessWidget {
                   caption: 'favourite',
                   color: Theme.of(context).accentColor,
                   icon: Icons.star,
-                  onTap: () => {},
+                  onTap: () {
+                    context.bloc<WordsBloc>().add(
+                          WordsUpdatedWord(
+                            word: state.words[index].copyWith(
+                                favorite:
+                                    state.words[index].favorite == 1 ? 0 : 1),
+                          ),
+                        );
+                    context.bloc<WordsBloc>().add(WordsLoaded());
+                  },
                 ),
               ],
               secondaryActions: <Widget>[

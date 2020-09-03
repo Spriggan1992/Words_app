@@ -140,8 +140,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
             alignment: Alignment.topLeft,
             overflow: Overflow.clip,
             children: <Widget>[
-              //TODO: favorite
-              word.favourite == 1
+              word.favorite == 1 && !widget.isEditingMode
                   ? Container(
                       width: 10,
                       color: Theme.of(context).accentColor,
@@ -159,7 +158,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                   height: defaultSize * 8,
                   child: Text(
                     //TODO: favorite favorite output
-                    "${word.part.partName} ${word.favourite}",
+                    "${word.part.partName}",
                     maxLines: 4,
                     style: TextStyle(
                       fontSize: word.part.partName.length > 1
@@ -185,7 +184,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                     fit: BoxFit.scaleDown,
                     child: Text(
                       // TODO : difficulty problem
-                      "${word.difficulty} ${word.targetLang}" ?? '', //Main word
+                      "${word.targetLang}" ?? '', //Main word
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           // fontSize: 20.0,
