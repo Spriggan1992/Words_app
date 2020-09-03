@@ -17,6 +17,9 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
     if (event is TrainingsLoaded) {
       yield* _mapTrainingsLoadedToState(event);
     }
+    if (event is TrainingsDifficultiesFilter) {
+      yield* _mapTrainingsDifficultiesFilterToState(event);
+    }
   }
 }
 
@@ -27,5 +30,19 @@ Stream<TrainingsState> _mapTrainingsLoadedToState(
     yield TrainingsSuccess(words: updatedWords);
   } catch (_) {
     yield TrainingsFailure();
+  }
+}
+
+Stream<TrainingsState> _mapTrainingsDifficultiesFilterToState(
+    TrainingsDifficultiesFilter event) async* {
+  if (event.difficultyFilter == 0) {
+    try {
+      final List<Word> updatedWords = (state as TrainingsSuccess)
+          .words
+          .where((word) => word.difficulty == 0);
+      yield TrainingsSuccess(words: updatedWords);
+    } catch (_) {
+      yield TrainingsFailure();
+    }
   }
 }
