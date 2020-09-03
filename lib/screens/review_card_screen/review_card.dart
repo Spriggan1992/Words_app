@@ -36,12 +36,13 @@ class _ReviewCardState extends State<ReviewCard>
   bool isFront = true;
   String selectedChoice = "";
 
-  List<Difficulty> difficultyList = [
-    Difficulty(difficulty: 0, name: 'know', color: Colors.green[400]),
-    Difficulty(
-        difficulty: 1, name: "know a little", color: Colors.yellowAccent),
-    Difficulty(difficulty: 2, name: "don't know", color: Colors.redAccent),
-  ];
+  List<Difficulty> difficultyList = DifficultyList().difficultyList;
+  // [
+  //   Difficulty(difficulty: 0, name: 'know', color: Colors.green[400]),
+  //   Difficulty(
+  //       difficulty: 1, name: "know a little", color: Colors.yellowAccent),
+  //   Difficulty(difficulty: 2, name: "don't know", color: Colors.redAccent),
+  // ];
 
   @override
   void initState() {
@@ -71,7 +72,7 @@ class _ReviewCardState extends State<ReviewCard>
     });
   }
 
-  _buildChoiceList(int page) {
+  _buildChoiceList(int page, double defaultSize) {
     List<Widget> choices = List();
     difficultyList.forEach(
       (item) {
@@ -79,6 +80,9 @@ class _ReviewCardState extends State<ReviewCard>
           Container(
             padding: const EdgeInsets.all(5.0),
             child: ChoiceChip(
+              elevation: 5,
+              padding: EdgeInsets.symmetric(
+                  horizontal: defaultSize * 0.6, vertical: defaultSize),
               label: Text(item.name),
               labelStyle: TextStyle(
                 color: Colors.black,
@@ -192,7 +196,8 @@ class _ReviewCardState extends State<ReviewCard>
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: _buildChoiceList(
-                                        _pageController.page.round()),
+                                        _pageController.page.round(),
+                                        defaultSize),
                                   ),
                                 ),
                               ),
@@ -206,6 +211,15 @@ class _ReviewCardState extends State<ReviewCard>
               ),
             ),
           ),
+          // Container(
+          //   margin: EdgeInsets.only(bottom: defaultSize * 2),
+          //   height: defaultSize * 5,
+          //   width: SizeConfig.blockSizeHorizontal * 75,
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //     children: _buildChoiceList(_pageController.page?.round()),
+          //   ),
+          // )
         ],
       ),
       // bottomNavigationBar: BaseBottomAppBar(

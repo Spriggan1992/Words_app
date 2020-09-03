@@ -19,6 +19,7 @@ class _choiceChipWidgetState extends State<choiceChipWidget> {
       choices.add(Container(
         padding: const EdgeInsets.all(5.0),
         child: ChoiceChip(
+          elevation: 5,
           label: Text(item.name),
           labelStyle: TextStyle(
               color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.bold),
