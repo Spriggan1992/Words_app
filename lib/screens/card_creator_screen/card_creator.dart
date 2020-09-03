@@ -11,10 +11,8 @@ import 'package:words_app/models/part.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/words_repository.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/size_config.dart';
 import 'components/InnerShadowTextField.dart';

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/components/base_appbar.dart';
-import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/components/reusable_main_button.dart';
-import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/difficulty.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/screens/pair_game_screen/pair_game.dart';

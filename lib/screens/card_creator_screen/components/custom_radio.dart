@@ -18,7 +18,6 @@ class CustomRadioState extends State<CustomRadio> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     radioButtonList.add(new RadioModel(false, '', Color(0xffF3F3F3)));
     radioButtonList.add(new RadioModel(false, 'n', Color(0xffB6D7A8)));

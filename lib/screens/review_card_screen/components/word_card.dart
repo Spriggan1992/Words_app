@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/words_repository.dart';
 import 'package:words_app/utils/size_config.dart';
 
 import 'title_text_holder_container.dart';

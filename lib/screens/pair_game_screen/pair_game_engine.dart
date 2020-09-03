@@ -1,5 +1,4 @@
 import 'package:words_app/models/game_card.dart';
-import 'package:words_app/repositories/pair_game_card_provider.dart';
 
 class GameEngine {
   bool isFinished = false;
@@ -8,11 +7,7 @@ class GameEngine {
 
   List<MyCard> cards = [];
 
-  List<void> printCards() {
-//    print(cards[0].targetLang);
-  }
-
-  //TODO: method to draw number of cards from [cards];
+  /// method  draws number of cards from [cards];
   List<MyCard> getNumberOfCards() {
     GameCard gameCard;
     cards = [];
@@ -35,6 +30,4 @@ class GameEngine {
     GameCard gameCard = gameCards.removeAt(index);
     return gameCard;
   }
-
-  //TODO: method to end the game
 }

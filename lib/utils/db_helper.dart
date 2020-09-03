@@ -75,7 +75,7 @@ class DBHelper {
     );
   }
 
-  //TODO: create ui delete collection method
+  /// Delete collection method
   static Future<void> delete(String table, String id) async {
     final db = await DBHelper.database();
     db.delete(table, where: 'id = ?', whereArgs: [id]);

@@ -23,7 +23,7 @@ class Utilities {
     //to get current app folder path.
     final appDir = await syspaths.getApplicationDocumentsDirectory();
     //creating savedImage in path on the phone
-    final savedImage = await File('${appDir.path}/$name');
+    final savedImage = File('${appDir.path}/$name');
     //write data from byteData to savedImage
     await savedImage.writeAsBytes(byteData.buffer
         .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));

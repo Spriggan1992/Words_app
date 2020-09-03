@@ -1,9 +1,6 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/game_card.dart';
-
 
 class Body extends StatefulWidget {
   const Body({
@@ -40,7 +37,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   /// method populate [cards] with 4 card pairs or size can be changed
   /// it draws cards from [widget.pairGameList]
-  // TODO: make a check for size of cards sent to the game. should be more than 4
   void getCards() {
     GameCard gameCard;
     cards = [];
@@ -112,7 +108,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     allPairs = widget.pairGameList.length;
     _controller = AnimationController(

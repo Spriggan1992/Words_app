@@ -1,5 +1,4 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/db_helper.dart';
 import '../models/collection.dart';
 
