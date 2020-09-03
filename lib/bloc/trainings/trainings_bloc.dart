@@ -32,35 +32,23 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
     try {
       final updatedWords = event.words;
       yield TrainingsSuccess(words: updatedWords);
+      print(updatedWords);
     } catch (_) {
       yield TrainingsFailure();
     }
   }
 
-  // Stream<TrainingsState> _mapTrainingsFavoritesFilterToState(
-  //     TrainingsFavoritesFilter event) async* {
-  //   try {
-  //     final List<Word> updatedWords = (state as TrainingsSuccess).words.where(
-  //         (word) => event.
-  //             ? word
-  //             : word.difficulty == event.difficultyFilter);
-  //     yield TrainingsSuccess(words: updatedWords);
-  //     print(updatedWords);
-  //   } catch (_) {
-  //     yield TrainingsFailure();
-  //   }
-  // }
   Stream<TrainingsState> _mapTrainingsDifficultiesFilterToState(
       TrainingsDifficultiesFilter event) async* {
-    try {
-      final List<Word> updatedWords = (state as TrainingsSuccess).words.where(
-          (word) => event.difficultyFilter == null
-              ? word
-              : word.difficulty == event.difficultyFilter);
-      yield TrainingsSuccess(words: updatedWords);
-      print(updatedWords);
-    } catch (_) {
-      yield TrainingsFailure();
+    if (event.difficultyFilter == 0) {
+      try {
+        final List<Word> updatedWords = (state as TrainingsSuccess)
+            .words
+            .where((word) => word.difficulty == 0);
+        yield TrainingsSuccess(words: updatedWords);
+      } catch (_) {
+        yield TrainingsFailure();
+      }
     }
   }
 }

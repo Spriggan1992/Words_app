@@ -43,9 +43,11 @@ class _FavoritesBtnsState extends State<FavoritesBtns> {
           ),
           selected: selectedChoice == item,
           onSelected: (selected) {
-            setState(() {
-              selectedChoice = item;
-            });
+            setState(
+              () {
+                selectedChoice = item;
+              },
+            );
           },
         ),
       );
