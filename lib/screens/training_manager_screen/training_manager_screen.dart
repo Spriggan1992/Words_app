@@ -3,11 +3,14 @@ import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/constants/constants.dart';
+import 'package:words_app/models/difficulty.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/screens/pair_game_screen/pair_game.dart';
 import 'package:words_app/screens/games/bricks_game.dart';
 import 'package:words_app/screens/games/correct_wrong_game.dart';
 import 'package:words_app/utils/size_config.dart';
+
+import 'components/deffifculty_btns.dart';
 
 class TrainingManager extends StatefulWidget {
   static String id = 'training_manager_screen';
@@ -18,6 +21,7 @@ class TrainingManager extends StatefulWidget {
 
 class _TrainingManagerState extends State<TrainingManager> {
   String dropdownValue = 'Collection';
+  List<Difficulty> difficulty = DifficultyList().difficultyList;
 
   @override
   Widget build(BuildContext context) {
@@ -81,19 +85,7 @@ class _TrainingManagerState extends State<TrainingManager> {
                   ),
                   TitleTextHolder(title: '2. I want to study words that I ...'),
                   Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        DifficultyBtns(
-                          title: 'know',
-                          color: Color(0xFFd4f1c7),
-                        ),
-                        DifficultyBtns(
-                            title: 'know a little', color: Color(0xFFfbe7c6)),
-                        DifficultyBtns(
-                            title: "don't know", color: Color(0xFFfea3ab)),
-                      ],
-                    ),
+                    child: ChoiceChipWidget(difficultyList: difficulty),
                   ),
                   TitleTextHolder(
                       title: '3. I want to include in the game ...'),
