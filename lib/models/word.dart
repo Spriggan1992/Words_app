@@ -18,11 +18,11 @@ class Word extends Equatable with ChangeNotifier {
     this.example,
     this.exampleTranslations,
     this.isSelected = false,
-    int favourite,
+    int favorite,
     int difficulty,
     // this.isEditingMode,
   })  : this.difficulty = difficulty ?? 2,
-        this.favourite = favourite ?? 0;
+        this.favorite = favorite ?? 1;
   final String collectionId;
   final String id;
   final String targetLang;
@@ -35,7 +35,7 @@ class Word extends Equatable with ChangeNotifier {
   final String exampleTranslations;
 
   final bool isSelected;
-  final int favourite;
+  final int favorite;
   final int difficulty;
 
   Word copyWith({
@@ -50,7 +50,7 @@ class Word extends Equatable with ChangeNotifier {
     String example,
     String exampleTranslations,
     bool isSelected,
-    int favourite,
+    int favorite,
     int difficulty,
   }) {
     return Word(
@@ -65,7 +65,7 @@ class Word extends Equatable with ChangeNotifier {
       exampleTranslations: exampleTranslations ?? this.exampleTranslations,
       isSelected: isSelected ?? this.isSelected,
       collectionId: collectionId ?? this.collectionId,
-      favourite: favourite ?? this.favourite,
+      favorite: favorite ?? this.favorite,
       difficulty: difficulty ?? this.difficulty,
     );
   }
@@ -82,7 +82,7 @@ class Word extends Equatable with ChangeNotifier {
         exampleTranslations,
         isSelected,
         collectionId,
-        favourite,
+        favorite,
         difficulty,
       ];
 }

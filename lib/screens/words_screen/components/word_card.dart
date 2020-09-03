@@ -184,7 +184,8 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                     alignment: Alignment.centerLeft,
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      word.targetLang ?? '', //Main word
+                      // TODO : difficulty problem
+                      "${word.difficulty} ${word.targetLang}" ?? '', //Main word
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           // fontSize: 20.0,
