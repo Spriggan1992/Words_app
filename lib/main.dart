@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:words_app/bloc/collections/collections_bloc.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'bloc/card_creator/card_creator_bloc.dart';
+import 'bloc/trainings/trainings_bloc.dart';
 import 'bloc/words/words_bloc.dart';
 import 'cubit/card_creator/part_color/part_color_cubit.dart';
 import 'repositories/collections_repository.dart';
@@ -47,6 +48,11 @@ void main() => runApp(MultiBlocProvider(providers: [
           return CardCreatorBloc(
             wordsRepository: WordsRepository(),
           );
+        },
+      ),
+      BlocProvider<TrainingsBloc>(
+        create: (context) {
+          return TrainingsBloc();
         },
       ),
       BlocProvider<WordsCubit>(

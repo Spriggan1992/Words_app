@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
+import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
@@ -260,6 +261,9 @@ class WordsScreen extends StatelessWidget {
                       children: [
                         IconButton(
                             onPressed: () {
+                              context
+                                  .bloc<TrainingsBloc>()
+                                  .add(TrainingsLoaded(words: state.words));
                               Navigator.pushNamed(
                                 context,
                                 TrainingManager.id,
