@@ -125,6 +125,14 @@ class WordsScreen extends StatelessWidget {
                 words: state.words,
               ), //
               actionPane: SlidableDrawerActionPane(),
+              actions: <Widget>[
+                IconSlideAction(
+                  caption: 'favourite',
+                  color: Theme.of(context).accentColor,
+                  icon: Icons.star,
+                  onTap: () => {},
+                ),
+              ],
               secondaryActions: <Widget>[
                 IconSlideAction(
                   caption: 'Edit',
