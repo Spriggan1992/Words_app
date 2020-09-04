@@ -21,6 +21,7 @@ class TrainingManager extends StatefulWidget {
 }
 
 class _TrainingManagerState extends State<TrainingManager> {
+  int selectedChoice = 3;
   String dropdownValue = 'Collection';
   List<Difficulty> difficulty = DifficultyList().difficultyList;
   List<IconData> iconsList = [
@@ -45,6 +46,10 @@ class _TrainingManagerState extends State<TrainingManager> {
           );
         }
         if (state is TrainingsSuccess) {
+          for (var i = 0; i < state.words.length; i++) {
+            print(
+                'difficulties ${state.words[i].targetLang} - ${state.words[i].difficulty}');
+          }
           return Scaffold(
             backgroundColor: Color(0xFFeae2da),
             appBar: BaseAppBar(
@@ -100,45 +105,48 @@ class _TrainingManagerState extends State<TrainingManager> {
                         ),
                         TitleTextHolder(
                             title: '2. I want to study words that I ...'),
-                        // Container(
-                        //     child: Row(
-                        //   children: difficulty.map((item) {
-                        //     for (var i = 0; i < iconsList.length - 1; i++) {
-                        //       return Padding(
-                        //         padding: const EdgeInsets.only(right: 30),
-                        //         child: ChoiceChip(
-                        //           backgroundColor: Colors.white,
-                        //           labelPadding:
-                        //               EdgeInsets.all(defaultSize * 0.8),
-                        //           selectedColor: Colors.grey,
-                        //           shape: RoundedRectangleBorder(
-                        //               borderRadius: BorderRadius.circular(
-                        //                   defaultSize * 0.5)),
-                        //           elevation: 5,
-                        //           label: Container(
-                        //             alignment: Alignment.center,
-                        //             width: defaultSize * 3,
-                        //             height: defaultSize * 3,
-                        //             child: Icon(
-                        //               iconsList[item.index],
-                        //               color: Colors.black,
-                        //               size: defaultSize * 3,
-                        //             ),
-                        //           ),
-                        //           selected: state.games == item,
-                        //           onSelected: (selected) {
-                        //             setState(() {
-                        //               selectedChoice = item;
-                        //             });
-                        //           },
-                        //         ),
-                        //       );
-                        //     }
-                        //   }).toList(),
-                        // )),
                         Container(
-                          child: ChoiceChipWidget(difficultyList: difficulty),
-                        ),
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: difficulty.map((item) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 5),
+                              child: ChoiceChip(
+                                elevation: 5,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 12.0),
+                                label: Text(item.name),
+                                labelStyle: TextStyle(
+                                    fontSize: defaultSize * 1.6,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w900),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(defaultSize * 0.5),
+                                ),
+                                backgroundColor: item.color,
+                                selectedColor: selectedChoice == 3
+                                    ? item.color
+                                    : Colors.grey,
+                                selected: selectedChoice == item.difficulty,
+                                onSelected: (selected) {
+                                  setState(() {
+                                    selectedChoice == item.difficulty
+                                        ? selectedChoice = 3
+                                        : selectedChoice = item.difficulty;
+                                  });
+
+                                  context.bloc<TrainingsBloc>().add(
+                                      TrainingsDifficultiesFilter(
+                                          difficultyFilter: selectedChoice));
+                                },
+                              ),
+                            );
+                          }).toList(),
+                        )),
+                        // Container(
+                        //   child: ChoiceChipWidget(difficultyList: difficulty),
+                        // ),
                         TitleTextHolder(
                             title: '3. I want to include in the game ...'),
                         FavoritesBtns(),

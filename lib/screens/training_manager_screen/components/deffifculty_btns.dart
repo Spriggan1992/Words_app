@@ -23,7 +23,7 @@ class _ChoiceChipWidgetState extends State<ChoiceChipWidget> {
     List<Widget> choices = List();
     widget.difficultyList.forEach((item) {
       choices.add(Container(
-        padding: const EdgeInsets.all(5.0),
+        padding: const EdgeInsets.all(3.0),
         child: ChoiceChip(
           elevation: 5,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12.0),
@@ -44,9 +44,10 @@ class _ChoiceChipWidgetState extends State<ChoiceChipWidget> {
                   ? selectedChoice = ''
                   : selectedChoice = item.name;
             });
-            // context.bloc<TrainingsBloc>().add(TrainingsDifficultiesFilter(
-            //     difficultyFilter:
-            //         selectedChoice == '' ? null : item.difficulty));
+            // print(item.difficulty);
+            //   context.bloc<TrainingsBloc>().add(TrainingsDifficultiesFilter(
+            //       difficultyFilter:
+            //           selectedChoice == '' ? null : item.difficulty));
           },
         ),
       ));
@@ -58,7 +59,7 @@ class _ChoiceChipWidgetState extends State<ChoiceChipWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: _buildChoiceList(context),
     );
   }

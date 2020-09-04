@@ -10,10 +10,12 @@ abstract class TrainingsState extends Equatable {
 class TrainingsLoading extends TrainingsState {}
 
 class TrainingsSuccess extends TrainingsState {
-  final Games games;
+  // final Games games;
   final List<Word> words;
 
-  TrainingsSuccess({this.words, this.games = Games.bricks});
+  TrainingsSuccess({
+    this.words,
+  });
   @override
   List<Object> get props => [words];
 }
