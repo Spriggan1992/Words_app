@@ -36,6 +36,8 @@ class _ReviewCardState extends State<ReviewCard>
   bool isFront = true;
   String selectedChoice = "";
 
+  /// Initial page from index
+  int page;
   List<Difficulty> difficultyList = DifficultyList().difficultyList;
   // [
   //   Difficulty(difficulty: 0, name: 'know', color: Colors.green[400]),
@@ -50,6 +52,8 @@ class _ReviewCardState extends State<ReviewCard>
     getCurrInd();
     _pageController =
         PageController(viewportFraction: 0.87, initialPage: initialPage);
+    // TODO: review_card
+    page = widget.index;
   }
 
   @override
@@ -108,6 +112,7 @@ class _ReviewCardState extends State<ReviewCard>
                             .copyWith(difficulty: item.difficulty),
                       ),
                     );
+                context.bloc<WordsBloc>().add(WordsLoaded());
               },
             ),
           ),
@@ -138,7 +143,7 @@ class _ReviewCardState extends State<ReviewCard>
                   setState(
                     () {
                       initialPage = value;
-
+                      page = _pageController.page.round();
                       selectedChoice = '';
                     },
                   );
@@ -185,22 +190,22 @@ class _ReviewCardState extends State<ReviewCard>
                                     index: index,
                                     part: widget.words[index].part.partColor),
                               ),
-                              Positioned(
-                                bottom: 0,
-                                child: Container(
-                                  margin:
-                                      EdgeInsets.only(bottom: defaultSize * 2),
-                                  height: 50,
-                                  width: SizeConfig.blockSizeHorizontal * 75,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: _buildChoiceList(
-                                        _pageController.page.round(),
-                                        defaultSize),
-                                  ),
-                                ),
-                              ),
+                              // Positioned(
+                              //   bottom: 0,
+                              //   child: Container(
+                              //     margin:
+                              //         EdgeInsets.only(bottom: defaultSize * 2),
+                              //     height: 50,
+                              //     width: SizeConfig.blockSizeHorizontal * 75,
+                              //     child: Row(
+                              //       mainAxisAlignment:
+                              //           MainAxisAlignment.spaceAround,
+                              //       children: _buildChoiceList(
+                              //           _pageController.page.round(),
+                              //           defaultSize),
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -211,15 +216,15 @@ class _ReviewCardState extends State<ReviewCard>
               ),
             ),
           ),
-          // Container(
-          //   margin: EdgeInsets.only(bottom: defaultSize * 2),
-          //   height: defaultSize * 5,
-          //   width: SizeConfig.blockSizeHorizontal * 75,
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //     children: _buildChoiceList(_pageController.page?.round()),
-          //   ),
-          // )
+          Container(
+            margin: EdgeInsets.only(bottom: defaultSize * 2),
+            height: defaultSize * 5,
+            width: SizeConfig.blockSizeHorizontal * 75,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: _buildChoiceList(page, defaultSize),
+            ),
+          )
         ],
       ),
       // bottomNavigationBar: BaseBottomAppBar(
