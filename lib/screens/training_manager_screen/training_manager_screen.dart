@@ -21,8 +21,10 @@ class TrainingManager extends StatefulWidget {
 }
 
 class _TrainingManagerState extends State<TrainingManager> {
-  int selectedChoice = 3;
+  int selectedDifficulty = 3;
+  FilterFavorites selectedFavorite = FilterFavorites.all;
   String dropdownValue = 'Collection';
+
   List<Difficulty> difficulty = DifficultyList().difficultyList;
   List<IconData> iconsList = [
     Icons.fitness_center,
@@ -46,10 +48,10 @@ class _TrainingManagerState extends State<TrainingManager> {
           );
         }
         if (state is TrainingsSuccess) {
-          for (var i = 0; i < state.words.length; i++) {
-            print(
-                'difficulties ${state.words[i].targetLang} - ${state.words[i].difficulty}');
-          }
+          // for (var i = 0; i < state.words.length; i++) {
+          //   print(
+          //       'difficulties ${state.words[i].targetLang} - ${state.words[i].difficulty}');
+          // }
           return Scaffold(
             backgroundColor: Color(0xFFeae2da),
             appBar: BaseAppBar(
@@ -105,63 +107,59 @@ class _TrainingManagerState extends State<TrainingManager> {
                         ),
                         TitleTextHolder(
                             title: '2. I want to study words that I ...'),
-                        Container(
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: difficulty.map((item) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: ChoiceChip(
-                                elevation: 5,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 12.0),
-                                label: Text(item.name),
-                                labelStyle: TextStyle(
-                                    fontSize: defaultSize * 1.6,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w900),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(defaultSize * 0.5),
-                                ),
-                                backgroundColor: item.color,
-                                selectedColor: selectedChoice == 3
-                                    ? item.color
-                                    : Colors.grey,
-                                selected: selectedChoice == item.difficulty,
-                                onSelected: (selected) {
-                                  setState(() {
-                                    selectedChoice == item.difficulty
-                                        ? selectedChoice = 3
-                                        : selectedChoice = item.difficulty;
-                                  });
+                        buildDifficultiesBtns(defaultSize, context, state),
 
-                                  context.bloc<TrainingsBloc>().add(
-                                      TrainingsDifficultiesFilter(
-                                          difficultyFilter: selectedChoice));
-                                },
-                              ),
-                            );
-                          }).toList(),
-                        )),
-                        // Container(
-                        //   child: ChoiceChipWidget(difficultyList: difficulty),
-                        // ),
                         TitleTextHolder(
                             title: '3. I want to include in the game ...'),
-                        FavoritesBtns(),
-                        // Row(
-                        //   children: [
-                        //     TrainingBtnsContainers(
-                        //       icon: Icons.star_border,
-                        //       onTap: () {},
-                        //     ),
-                        //     TrainingBtnsContainers(
-                        //       icon: null,
-                        //       onTap: () {},
-                        //     )
-                        //   ],
-                        // ),
+
+                        Container(
+                          child: Row(
+                            children: FilterFavorites.values.map((item) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 30),
+                                child: ChoiceChip(
+                                  backgroundColor: Colors.white,
+                                  labelPadding:
+                                      EdgeInsets.all(defaultSize * 0.8),
+                                  selectedColor: Colors.grey,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          defaultSize * 0.5)),
+                                  elevation: 5,
+                                  label: Container(
+                                    alignment: Alignment.center,
+                                    width: defaultSize * 3,
+                                    height: defaultSize * 3,
+                                    child: item == FilterFavorites.all
+                                        ? Text('all',
+                                            style: TextStyle(
+                                                fontSize: defaultSize * 2,
+                                                fontWeight: FontWeight.bold))
+                                        : Icon(
+                                            Icons.star_border,
+                                            color: Colors.black,
+                                            size: defaultSize * 3,
+                                          ),
+                                  ),
+                                  selected: selectedFavorite == item,
+                                  onSelected: (selected) {
+                                    setState(
+                                      () {
+                                        selectedFavorite = item;
+                                        print(selectedFavorite);
+                                      },
+                                    );
+                                    context.bloc<TrainingsBloc>().add(
+                                        TrainingsFavoritesFilter(
+                                            filterFavorites: selectedFavorite));
+                                  },
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        // FavoritesBtns(),
+
                         TitleTextHolder(
                             title: '4. I want to use words from ...'),
                         Card(
@@ -221,7 +219,10 @@ class _TrainingManagerState extends State<TrainingManager> {
                     titleText: 'Go to Trainig',
                     textColor: Colors.black,
                     backgroundColor: Theme.of(context).accentColor,
-                    onPressed: () {},
+                    onPressed: () {
+                      print(
+                          'from training_manager length of filtredList ${state.filterdList.length}');
+                    },
                   ),
                 ),
               ],
@@ -232,52 +233,48 @@ class _TrainingManagerState extends State<TrainingManager> {
       },
     );
   }
+
+  Container buildDifficultiesBtns(
+      double defaultSize, BuildContext context, TrainingsSuccess state) {
+    return Container(
+        child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: difficulty.map((item) {
+        return Padding(
+          padding: const EdgeInsets.only(right: 5),
+          child: ChoiceChip(
+            elevation: 5,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12.0),
+            label: Text(item.name),
+            labelStyle: TextStyle(
+                fontSize: defaultSize * 1.6,
+                color: Colors.black,
+                fontWeight: FontWeight.w900),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(defaultSize * 0.5),
+            ),
+            backgroundColor: item.color,
+            selectedColor: state.difficulty == 3 ? item.color : Colors.grey,
+            selected: state.difficulty == item.difficulty,
+            onSelected: (selected) {
+              selectedDifficulty == item.difficulty
+                  ? selectedDifficulty = 3
+                  : selectedDifficulty = item.difficulty;
+              context.bloc<TrainingsBloc>().add(TrainingsDifficultiesFilter(
+                    difficultyFilter: selectedDifficulty,
+
+                    // selectedFavorites: selectedFavorite
+                  ));
+
+              print('from training_screen $selectedDifficulty');
+            },
+          ),
+        );
+      }).toList(),
+    ));
+  }
 }
 
-// class DifficultyBtns extends StatelessWidget {
-//   const DifficultyBtns({
-//     Key key,
-//     @required this.title,
-//     @required this.color,
-//   }) : super(key: key);
-
-//   final String title;
-//   final Color color;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     SizeConfig().init(context);
-//     final defaultSize = SizeConfig.defaultSize;
-
-//     return Card(
-//       // padding: EdgeInsets.all(0),
-//       elevation: 5,
-//       color: color,
-//       child: Padding(
-//         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 16.0),
-//         child: Text(
-//           title,
-//           style: TextStyle(
-//               fontSize: defaultSize * 1.6,
-//               color: Colors.black,
-//               fontWeight: FontWeight.w900),
-//         ),
-//       ),
-
-//       shape: RoundedRectangleBorder(
-//           borderRadius: BorderRadius.circular(defaultSize * 0.5)),
-//     );
-//   }
-// }
-
-// Container(
-//       decoration: BoxDecoration(boxShadow: [
-//         BoxShadow(
-//             color: Color(0xFF878686),
-//             blurRadius: 0.1,
-//             spreadRadius: 0.1,
-//             offset: Offset(0.5, 1))
-//       ])
 class TitleTextHolder extends StatelessWidget {
   const TitleTextHolder({
     Key key,
