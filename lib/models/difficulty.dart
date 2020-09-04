@@ -6,6 +6,10 @@ class Difficulty {
   final String name;
 
   Difficulty({this.name, this.difficulty, this.color});
+
+  Difficulty copyWith({int difficulty}) {
+    return Difficulty(difficulty: difficulty ?? this.difficulty);
+  }
 }
 
 class DifficultyList {

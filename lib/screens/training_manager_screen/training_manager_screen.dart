@@ -24,6 +24,7 @@ class _TrainingManagerState extends State<TrainingManager> {
   int selectedDifficulty = 3;
   FilterFavorites selectedFavorite = FilterFavorites.all;
   String dropdownValue = 'Collection';
+
   List<Difficulty> difficulty = DifficultyList().difficultyList;
   List<IconData> iconsList = [
     Icons.fitness_center,
@@ -106,7 +107,7 @@ class _TrainingManagerState extends State<TrainingManager> {
                         ),
                         TitleTextHolder(
                             title: '2. I want to study words that I ...'),
-                        buildDifficultiesBtns(defaultSize, context),
+                        buildDifficultiesBtns(defaultSize, context, state),
 
                         TitleTextHolder(
                             title: '3. I want to include in the game ...'),
@@ -233,7 +234,8 @@ class _TrainingManagerState extends State<TrainingManager> {
     );
   }
 
-  Container buildDifficultiesBtns(double defaultSize, BuildContext context) {
+  Container buildDifficultiesBtns(
+      double defaultSize, BuildContext context, TrainingsSuccess state) {
     return Container(
         child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -252,17 +254,15 @@ class _TrainingManagerState extends State<TrainingManager> {
               borderRadius: BorderRadius.circular(defaultSize * 0.5),
             ),
             backgroundColor: item.color,
-            selectedColor: selectedDifficulty == 3 ? item.color : Colors.grey,
-            selected: selectedDifficulty == item.difficulty,
+            selectedColor: state.difficulty == 3 ? item.color : Colors.grey,
+            selected: state.difficulty == item.difficulty,
             onSelected: (selected) {
-              setState(() {
-                selectedDifficulty == item.difficulty
-                    ? selectedDifficulty = 3
-                    : selectedDifficulty = item.difficulty;
-              });
-
+              selectedDifficulty == item.difficulty
+                  ? selectedDifficulty = 3
+                  : selectedDifficulty = item.difficulty;
               context.bloc<TrainingsBloc>().add(TrainingsDifficultiesFilter(
                     difficultyFilter: selectedDifficulty,
+
                     // selectedFavorites: selectedFavorite
                   ));
 

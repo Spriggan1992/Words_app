@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:words_app/models/FuiltersEnums.dart';
+import 'package:words_app/models/difficulty.dart';
 import 'package:words_app/models/word.dart';
-import 'package:words_app/screens/training_manager_screen/components/favorites_btns.dart';
 
 part 'trainings_event.dart';
 part 'trainings_state.dart';
@@ -31,6 +31,7 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
       TrainingsLoaded event) async* {
     try {
       final updatedWords = event.words;
+
       yield TrainingsSuccess(words: updatedWords);
     } catch (_) {
       yield TrainingsFailure();
@@ -40,7 +41,7 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
   Stream<TrainingsState> _mapTrainingsDifficultiesFilterToState(
       TrainingsDifficultiesFilter event) async* {
     final filterFavorites = (state as TrainingsSuccess).filterFavorites;
-
+    final updatedDifficulties = event.difficultyFilter;
     if (filterFavorites == FilterFavorites.all) {
       final List<Word> newWords = List.from((state as TrainingsSuccess).words);
 
@@ -52,6 +53,7 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
       yield TrainingsSuccess(
         words: newWords,
         filterdList: updatedFilteredList,
+        difficulty: updatedDifficulties,
       );
       // for (var i = 0; i < updatedFilteredList.length; i++) {
       //   print('diff = ${updatedFilteredList[i].difficulty}; index = $i');
@@ -70,7 +72,7 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
             ..where((word) => event.difficultyFilter == 3
                 ? word.favorite == 1
                 : word.difficulty == event.difficultyFilter));
-      print(updatedFilteredListByDifficulty);
+      // print(updatedFilteredListByDifficulty);
       for (var i = 0; i < updatedFilteredListByFavorites.length; i++) {
         // print(
         // 'diff = ${updatedFilteredListByFavorites[i].difficulty}; index = $i');
@@ -85,6 +87,7 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
       yield TrainingsSuccess(
         words: newWords,
         filterdList: updatedFilteredListByDifficulty,
+        difficulty: updatedDifficulties,
       );
     }
   }
