@@ -219,7 +219,8 @@ class _TrainingManagerState extends State<TrainingManager> {
                     textColor: Colors.black,
                     backgroundColor: Theme.of(context).accentColor,
                     onPressed: () {
-                      print(state.filterdList);
+                      print(
+                          'from training_manager length of filtredList ${state.filterdList.length}');
                     },
                   ),
                 ),
