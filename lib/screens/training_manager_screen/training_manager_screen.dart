@@ -22,7 +22,7 @@ class TrainingManager extends StatefulWidget {
 
 class _TrainingManagerState extends State<TrainingManager> {
   int selectedDifficulty = 3;
-  FilterFavorites selectedFavorite = FilterFavorites.all;
+  FilterFavorites selectedFavorite;
   String dropdownValue = 'Collection';
 
   List<Difficulty> difficulty = DifficultyList().difficultyList;
@@ -141,17 +141,16 @@ class _TrainingManagerState extends State<TrainingManager> {
                                             size: defaultSize * 3,
                                           ),
                                   ),
-                                  selected: selectedFavorite == item,
+                                  selected: state.filterFavorites == item,
                                   onSelected: (selected) {
-                                    setState(
-                                      () {
-                                        selectedFavorite = item;
-                                        print(selectedFavorite);
-                                      },
-                                    );
+                                    selectedFavorite = item;
+                                    // print(selectedFavorite);
+
                                     context.bloc<TrainingsBloc>().add(
                                         TrainingsFavoritesFilter(
-                                            filterFavorites: selectedFavorite));
+                                            filterFavorites: selectedFavorite,
+                                            difficultyFilter:
+                                                selectedDifficulty));
                                   },
                                 ),
                               );
@@ -262,6 +261,7 @@ class _TrainingManagerState extends State<TrainingManager> {
                   : selectedDifficulty = item.difficulty;
               context.bloc<TrainingsBloc>().add(TrainingsDifficultiesFilter(
                     difficultyFilter: selectedDifficulty,
+                    filterFavorites: selectedFavorite,
 
                     // selectedFavorites: selectedFavorite
                   ));

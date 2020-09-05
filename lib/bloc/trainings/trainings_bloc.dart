@@ -32,7 +32,11 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
     try {
       final updatedWords = event.words;
 
-      yield TrainingsSuccess(words: updatedWords);
+      yield TrainingsSuccess(
+          words: updatedWords,
+          filterFavorites: FilterFavorites.all,
+          difficulty: 3,
+          filterdList: []);
     } catch (_) {
       yield TrainingsFailure();
     }
@@ -42,22 +46,24 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
       TrainingsDifficultiesFilter event) async* {
     final filterFavorites = (state as TrainingsSuccess).filterFavorites;
     final updatedDifficulties = event.difficultyFilter;
+    final difficultyFilter = (state as TrainingsSuccess).difficulty;
+
     if (filterFavorites == FilterFavorites.all) {
       final List<Word> newWords = List.from((state as TrainingsSuccess).words);
 
       final List<Word> updatedFilteredList = List.from(
           (state as TrainingsSuccess).words.where((word) =>
-              event.difficultyFilter == 3
+              difficultyFilter == 3
                   ? newWords != null
-                  : word.difficulty == event.difficultyFilter));
+                  : word.difficulty == difficultyFilter));
       yield TrainingsSuccess(
         words: newWords,
         filterdList: updatedFilteredList,
         difficulty: updatedDifficulties,
       );
-      // for (var i = 0; i < updatedFilteredList.length; i++) {
-      //   print('diff = ${updatedFilteredList[i].difficulty}; index = $i');
-      // }
+      for (var i = 0; i < updatedFilteredList.length; i++) {
+        print('diff = ${updatedFilteredList[i].difficulty}; index = $i');
+      }
     }
     if (filterFavorites == FilterFavorites.favorites) {
       final List<Word> newWords = List.from((state as TrainingsSuccess).words);
@@ -69,9 +75,9 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
 
       final List<Word> updatedFilteredListByDifficulty = List.from(
           (updatedFilteredListByFavorites)
-            ..where((word) => event.difficultyFilter == 3
+            ..where((word) => difficultyFilter == 3
                 ? word.favorite == 1
-                : word.difficulty == event.difficultyFilter));
+                : word.difficulty == difficultyFilter));
       // print(updatedFilteredListByDifficulty);
       for (var i = 0; i < updatedFilteredListByFavorites.length; i++) {
         // print(
@@ -85,23 +91,101 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
       // print(
       // 'updatedFilteredListByFavorites : ${updatedFilteredListByFavorites.length}');
       yield TrainingsSuccess(
-        words: newWords,
-        filterdList: updatedFilteredListByDifficulty,
-        difficulty: updatedDifficulties,
-      );
+          words: newWords,
+          filterdList: updatedFilteredListByDifficulty,
+          difficulty: updatedDifficulties,
+          filterFavorites: event.filterFavorites);
     }
   }
 
   Stream<TrainingsState> _mapTrainingsFavoritesFilterToState(
       TrainingsFavoritesFilter event) async* {
-    final List<Word> newWords = List.from((state as TrainingsSuccess).words);
+    final newWords = (state as TrainingsSuccess).words;
+    final difficultyFilter = (state as TrainingsSuccess).difficulty;
+    final favoriteFilter = (state as TrainingsSuccess).filterFavorites;
+    if (difficultyFilter == 0) {
+      final List<Word> updatedFavoritesList =
+          favoriteFilter == FilterFavorites.all
+              ? (state as TrainingsSuccess)
+                  .words
+                  .where((word) => word.difficulty == 0)
+                  .toList()
+              : (state as TrainingsSuccess)
+                  .words
+                  .where((word) => word.favorite == 1)
+                  .toList()
+                  .where((word) => word.difficulty == 0)
+                  .toList();
+      yield TrainingsSuccess(
+          words: newWords,
+          filterdList: updatedFavoritesList,
+          filterFavorites: event.filterFavorites,
+          difficulty: event.difficultyFilter);
+    }
+    if (difficultyFilter == 1) {
+      final List<Word> updatedFavoritesList =
+          favoriteFilter == FilterFavorites.all
+              ? (state as TrainingsSuccess)
+                  .words
+                  .where((word) => word.difficulty == 1)
+                  .toList()
+              : (state as TrainingsSuccess)
+                  .words
+                  .where((word) => word.favorite == 1)
+                  .toList()
+                  .where((word) => word.difficulty == 1)
+                  .toList();
+      yield TrainingsSuccess(
+          words: newWords,
+          filterdList: updatedFavoritesList,
+          filterFavorites: event.filterFavorites,
+          difficulty: event.difficultyFilter);
+    }
+    if (difficultyFilter == 2) {
+      final List<Word> updatedFavoritesList =
+          favoriteFilter == FilterFavorites.all
+              ? (state as TrainingsSuccess)
+                  .words
+                  .where((word) => word.difficulty == 2)
+                  .toList()
+              : (state as TrainingsSuccess)
+                  .words
+                  .where((word) => word.favorite == 1)
+                  .toList()
+                  .where((word) => word.difficulty == 2)
+                  .toList();
+      yield TrainingsSuccess(
+          words: newWords,
+          filterdList: updatedFavoritesList,
+          filterFavorites: event.filterFavorites,
+          difficulty: event.difficultyFilter);
+    }
+    if (difficultyFilter == 3) {
+      final List<Word> updatedFavoritesList =
+          favoriteFilter == FilterFavorites.all
+              ? (state as TrainingsSuccess).words.toList()
+              : (state as TrainingsSuccess)
+                  .words
+                  .where((word) => word.favorite == 1)
+                  .toList();
+      yield TrainingsSuccess(
+          words: newWords,
+          filterdList: updatedFavoritesList,
+          filterFavorites: event.filterFavorites,
+          difficulty: event.difficultyFilter);
+    }
 
-    final List<Word> updatedFavoritesList =
-        event.filterFavorites == FilterFavorites.all ? newWords : newWords
-          ..where((word) => word.favorite == 1);
-    yield TrainingsSuccess(
-        words: newWords,
-        filterdList: updatedFavoritesList,
-        filterFavorites: event.filterFavorites);
+    // final List<Word> newWords = List.from((state as TrainingsSuccess).words);
+
+    // final List<Word> updatedFavoritesList =
+    //     event.filterFavorites == FilterFavorites.all ? newWords : newWords
+    //       ..where((word) => word.favorite == 1);
+
+    // yield TrainingsSuccess(
+    //   words: newWords,
+    //   filterdList: updatedFavoritesList,
+    //   filterFavorites: event.filterFavorites,
+    //   difficulty: event.difficultyFilter,
+    // );
   }
 }
