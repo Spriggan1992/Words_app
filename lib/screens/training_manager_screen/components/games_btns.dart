@@ -10,7 +10,7 @@ class GamesBtns extends StatefulWidget {
 }
 
 class _GamesBtnsState extends State<GamesBtns> {
-  Games selectedChoice = Games.bricks;
+  FilterGames selectedChoice = FilterGames.bricks;
   List<IconData> iconsList = [
     Icons.fitness_center,
     Icons.directions_bike,
@@ -21,7 +21,7 @@ class _GamesBtnsState extends State<GamesBtns> {
     SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
     for (var i = 0; i < iconsList.length - 1; i++) {
-      List<Widget> data = Games.values.map((item) {
+      List<Widget> data = FilterGames.values.map((item) {
         return Padding(
           padding: const EdgeInsets.only(right: 30),
           child: ChoiceChip(

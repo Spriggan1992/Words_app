@@ -6,6 +6,8 @@ import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/models/FuiltersEnums.dart';
 import 'package:words_app/models/difficulty.dart';
 import 'package:words_app/models/word.dart';
+import 'package:words_app/screens/games/bricks_game.dart';
+import 'package:words_app/screens/games/correct_wrong_game.dart';
 
 import 'package:words_app/utils/size_config.dart';
 
@@ -23,7 +25,9 @@ class TrainingManager extends StatefulWidget {
 class _TrainingManagerState extends State<TrainingManager> {
   int selectedDifficulty = 3;
   FilterFavorites selectedFavorite;
+  FilterGames selectedGames;
   String dropdownValue = 'Collection';
+  Future getList;
 
   List<Difficulty> difficulty = DifficultyList().difficultyList;
   List<IconData> iconsList = [
@@ -58,6 +62,9 @@ class _TrainingManagerState extends State<TrainingManager> {
               title: Text('Training Manager'),
               appBar: AppBar(),
             ),
+            floatingActionButton: FloatingActionButton(onPressed: () {
+              print('filteredList: ${state.filterdList}');
+            }),
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -71,40 +78,45 @@ class _TrainingManagerState extends State<TrainingManager> {
                       children: [
                         TitleTextHolder(title: '1. I want to play ...'),
                         Container(
-                          child: GamesBtns(),
-                          // child: Row(
-                          //   crossAxisAlignment: CrossAxisAlignment.center,
-                          //   mainAxisAlignment: MainAxisAlignment.start,
-                          //   children: [
-                          //     TrainingBtnsContainers(
-                          //         icon: Icons.fitness_center,
-                          //         onTap: () => Navigator.push(
-                          //             context,
-                          //             MaterialPageRoute(
-                          //               builder: (context) => Matches(
-                          //                 words: words,
-                          //               ),
-                          //             ))),
-                          //     TrainingBtnsContainers(
-                          //       icon: Icons.directions_bike,
-                          //       onTap: () => Navigator.pushNamed(
-                          //         context,
-                          //         PairGame.id,
-                          //         arguments: {'id': collectionId},
-                          //       ),
-                          //     ),
-                          //     TrainingBtnsContainers(
-                          //         icon: Icons.photo_album,
-                          //         onTap: () => Navigator.push(
-                          //             context,
-                          //             MaterialPageRoute(
-                          //               builder: (context) => Training(
-                          //                 words: words,
-                          //               ),
-                          //             ))),
-                          //   ],
-                          // ),
-                        ),
+                            // child: GamesBtns(),
+                            child: Row(
+                          children: FilterGames.values.map((item) {
+                            for (var i = 0; i < iconsList.length - 1; i++) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 30),
+                                child: ChoiceChip(
+                                  backgroundColor: Colors.white,
+                                  labelPadding:
+                                      EdgeInsets.all(defaultSize * 0.8),
+                                  selectedColor: Colors.grey,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          defaultSize * 0.5)),
+                                  elevation: 5,
+                                  label: Container(
+                                    alignment: Alignment.center,
+                                    width: defaultSize * 3,
+                                    height: defaultSize * 3,
+                                    child: Icon(
+                                      iconsList[item.index],
+                                      color: Colors.black,
+                                      size: defaultSize * 3,
+                                    ),
+                                  ),
+                                  selected: state.filterGames == item,
+                                  onSelected: (selected) {
+                                    selectedGames = item;
+                                    context.bloc<TrainingsBloc>().add(
+                                        TrainingsToggleFilters(
+                                            favorites: selectedFavorite,
+                                            difficulty: selectedDifficulty,
+                                            games: selectedGames));
+                                  },
+                                ),
+                              );
+                            }
+                          }).toList(),
+                        )),
                         TitleTextHolder(
                             title: '2. I want to study words that I ...'),
                         buildDifficultiesBtns(defaultSize, context, state),
@@ -144,12 +156,21 @@ class _TrainingManagerState extends State<TrainingManager> {
                                   selected: state.filterFavorites == item,
                                   onSelected: (selected) {
                                     selectedFavorite = item;
-                                    // print(selectedFavorite);
 
                                     context.bloc<TrainingsBloc>().add(
-                                        TrainingsToggleFilters(
+                                        TrainingsGoToTraining(
                                             favorites: selectedFavorite,
-                                            difficulty: selectedDifficulty));
+                                            difficulty: selectedDifficulty,
+                                            games: selectedGames));
+                                    // print(selectedFavorite);
+
+                                    // context.bloc<TrainingsBloc>().add(
+                                    //     TrainingsToggleFilters(
+                                    //         favorites: selectedFavorite,
+                                    //         difficulty: selectedDifficulty));
+                                    // context
+                                    //     .bloc<TrainingsBloc>()
+                                    //     .add(TrainingsGoToTraining());
 
                                     // context.bloc<TrainingsBloc>().add(
                                     //     TrainingsDifficultiesFilter(
@@ -228,13 +249,30 @@ class _TrainingManagerState extends State<TrainingManager> {
                     titleText: 'Go to Trainig',
                     textColor: Colors.black,
                     backgroundColor: Theme.of(context).accentColor,
-                    onPressed: () {
-                      context
-                          .bloc<TrainingsBloc>()
-                          .add(TrainingsGoToTraining());
-
-                      print(
-                          'from training_manager length of filtredList ${state.filterdList.length}');
+                    onPressed: () async {
+                      // context
+                      // .bloc<TrainingsBloc>()
+                      // .add(TrainingsGoToTraining());
+                      if (state.filterGames == FilterGames.bricks) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Matches(
+                                words: state.filterdList,
+                              ),
+                            ));
+                      }
+                      if (state.filterGames == FilterGames.wrongCorrect) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CorrectWrong(
+                                words: state.filterdList,
+                              ),
+                            ));
+                      }
+                      // print(
+                      //     'from training_manager length of filtredList ${state.filterdList.length}');
                     },
                   ),
                 ),
@@ -274,8 +312,12 @@ class _TrainingManagerState extends State<TrainingManager> {
                   ? selectedDifficulty = 3
                   : selectedDifficulty = item.difficulty;
 
-              context.bloc<TrainingsBloc>().add(TrainingsToggleFilters(
-                  favorites: selectedFavorite, difficulty: selectedDifficulty));
+              // context.bloc<TrainingsBloc>().add(TrainingsToggleFilters(
+              //     favorites: selectedFavorite, difficulty: selectedDifficulty));
+              context.bloc<TrainingsBloc>().add(TrainingsGoToTraining(
+                  favorites: selectedFavorite,
+                  difficulty: selectedDifficulty,
+                  games: selectedGames));
 
               // context.bloc<TrainingsBloc>().add(TrainingsFavoritesFilter(
               //     filterFavorites: selectedFavorite,
