@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/models/enums.dart';
+import 'package:words_app/models/FuiltersEnums.dart';
 import 'package:words_app/utils/size_config.dart';
 
 class FavoritesBtns extends StatefulWidget {
@@ -33,7 +33,6 @@ class _FavoritesBtnsState extends State<FavoritesBtns> {
             child: item == FilterFavorites.favorites
                 ? Icon(
                     Icons.star_border,
-                    // size: defaultSize * 3,
                     color: Colors.black,
                     size: defaultSize * 3,
                   )
@@ -44,9 +43,11 @@ class _FavoritesBtnsState extends State<FavoritesBtns> {
           ),
           selected: selectedChoice == item,
           onSelected: (selected) {
-            setState(() {
-              selectedChoice = item;
-            });
+            setState(
+              () {
+                selectedChoice = item;
+              },
+            );
           },
         ),
       );

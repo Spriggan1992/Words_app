@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/models/difficulty.dart';
 
-class choiceChipWidget extends StatefulWidget {
+class ChoiceChipWidget extends StatefulWidget {
   final List<Difficulty> difficultyList;
 
-  choiceChipWidget({this.difficultyList});
+  ChoiceChipWidget({this.difficultyList});
 
   @override
-  _choiceChipWidgetState createState() => new _choiceChipWidgetState();
+  _ChoiceChipWidgetState createState() => new _ChoiceChipWidgetState();
 }
 
-class _choiceChipWidgetState extends State<choiceChipWidget> {
+class _ChoiceChipWidgetState extends State<ChoiceChipWidget> {
   String selectedChoice = "";
 
   _buildChoiceList() {
@@ -19,6 +19,7 @@ class _choiceChipWidgetState extends State<choiceChipWidget> {
       choices.add(Container(
         padding: const EdgeInsets.all(5.0),
         child: ChoiceChip(
+          elevation: 5,
           label: Text(item.name),
           labelStyle: TextStyle(
               color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.bold),

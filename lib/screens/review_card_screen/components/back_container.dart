@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:words_app/constants/constants.dart';
-import 'package:words_app/repositories/words_repository.dart';
 
 import 'package:words_app/utils/size_config.dart';
 
@@ -14,11 +12,6 @@ class BackContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.width;
-    final wordsData =
-        Provider.of<WordsRepository>(context, listen: false).words;
-
     return Container(
         padding: EdgeInsets.only(
           right: SizeConfig.defaultSize * 2,

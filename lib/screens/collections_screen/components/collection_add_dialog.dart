@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:words_app/bloc/collections/collections_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';

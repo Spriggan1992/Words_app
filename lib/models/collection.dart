@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
-import 'package:words_app/models/word.dart';
 
 class Collection extends Equatable {
   final String id;

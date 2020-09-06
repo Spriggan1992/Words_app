@@ -15,7 +15,7 @@ class DummyData {
         example: 'She is my mother',
         exampleTranslations: 'Она моя мама. Hän on  äitini. 他是我的妈妈.',
         difficulty: 0,
-        favourite: 1,
+        favorite: 1,
       ),
       Word(
         id: '2',
@@ -27,7 +27,7 @@ class DummyData {
         example: 'He is my father',
         exampleTranslations: 'Она мой папа. Hän on isäni. 他是我的爸爸.',
         difficulty: 2,
-        favourite: 0,
+        favorite: 0,
       ),
       Word(
         id: '3',
@@ -39,7 +39,7 @@ class DummyData {
         example: 'He is my brother',
         exampleTranslations: 'Он мой брат. Hän on  veleini. 他是我的弟弟.',
         difficulty: 2,
-        favourite: 0,
+        favorite: 0,
       ),
       Word(
         id: '4',
@@ -51,7 +51,7 @@ class DummyData {
         example: 'She is my sister',
         exampleTranslations: 'Она моя сестра. Hän on  siskoni. 他是我的姐姐.',
         difficulty: 2,
-        favourite: 1,
+        favorite: 1,
       ),
       Word(
         id: '5',
@@ -63,7 +63,7 @@ class DummyData {
         example: 'She is my grandmother',
         exampleTranslations: 'Она моя бабушка. Hän on  isoäitini. 他是我的奶奶.',
         difficulty: 1,
-        favourite: 1,
+        favorite: 1,
       ),
       Word(
         id: '6',
@@ -75,7 +75,7 @@ class DummyData {
         example: 'He is my grandfather',
         exampleTranslations: 'Он мой дедушка. Hän on minun isoisäni. 他是我的爷爷.',
         difficulty: 1,
-        favourite: 1,
+        favorite: 1,
       ),
       Word(
         id: '7',
@@ -87,7 +87,7 @@ class DummyData {
         example: 'He is my uncle',
         exampleTranslations: 'Он мой дядя. Hän on  setäni. 他是我的叔叔.',
         difficulty: 1,
-        favourite: 1,
+        favorite: 1,
       ),
       Word(
         id: '8',
@@ -99,7 +99,7 @@ class DummyData {
         example: 'She is my aunt',
         exampleTranslations: 'Она моя тетя. Hän on minun tätini. 他是我的阿姨.',
         difficulty: 0,
-        favourite: 1,
+        favorite: 1,
       ),
     ];
   }

@@ -31,7 +31,7 @@ class DBHelper {
     await db.execute(
         'CREATE TABLE collections(id TEXT PRIMARY KEY, title TEXT, language TEXT)');
     await db.execute(
-        'CREATE TABLE words(collectionId Text, id TEXT PRIMARY KEY, targetLang TEXT, ownLang TEXT, secondLang TEXT, thirdLang TEXT, partName TEXT, partColor TEXT, image TEXT, example TEXT, exampleTranslations TEXT, difficulty INTEGER)');
+        'CREATE TABLE words(collectionId Text, id TEXT PRIMARY KEY, targetLang TEXT, ownLang TEXT, secondLang TEXT, thirdLang TEXT, partName TEXT, partColor TEXT, image TEXT, example TEXT, exampleTranslations TEXT, difficulty INTEGER, favorite INTEGER)');
   }
 
   //method's will all be static So we don't need to create an instance of it, to work with it
@@ -75,7 +75,7 @@ class DBHelper {
     );
   }
 
-  //TODO: create ui delete collection method
+  /// Delete collection method
   static Future<void> delete(String table, String id) async {
     final db = await DBHelper.database();
     db.delete(table, where: 'id = ?', whereArgs: [id]);

@@ -4,8 +4,6 @@ import 'package:words_app/components/base_bottom_appbar.dart';
 import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/words_repository.dart';
-import 'package:provider/provider.dart';
 
 class Training extends StatefulWidget {
   static String id = 'training_screen';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/models/enums.dart';
+import 'package:words_app/models/FuiltersEnums.dart';
 import 'package:words_app/utils/size_config.dart';
 
 class GamesBtns extends StatefulWidget {
@@ -15,7 +15,6 @@ class _GamesBtnsState extends State<GamesBtns> {
     Icons.fitness_center,
     Icons.directions_bike,
     Icons.photo_album,
-    null
   ];
 
   List<Widget> _buildGamesBtns() {
@@ -38,7 +37,6 @@ class _GamesBtnsState extends State<GamesBtns> {
               height: defaultSize * 3,
               child: Icon(
                 iconsList[item.index],
-                // size: defaultSize * 3,
                 color: Colors.black,
                 size: defaultSize * 3,
               ),
@@ -52,7 +50,7 @@ class _GamesBtnsState extends State<GamesBtns> {
           ),
         );
       }).toList();
-      return data..removeLast();
+      return data;
     }
   }
 
