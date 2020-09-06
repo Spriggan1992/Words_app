@@ -32,3 +32,26 @@ class TrainingsFavoritesFilter extends TrainingsEvent {
   @override
   List<Object> get props => [filterFavorites, difficultyFilter];
 }
+
+class TrainingsToggleFilters extends TrainingsEvent {
+  final int difficulty;
+  final FilterFavorites favorites;
+
+  TrainingsToggleFilters({this.favorites, this.difficulty});
+  @override
+  List<Object> get props => [difficulty, favorites];
+}
+
+class TrainingsToggleFavoritesBtns extends TrainingsEvent {
+  final FilterFavorites favorites;
+
+  TrainingsToggleFavoritesBtns({this.favorites});
+  @override
+  List<Object> get props => [favorites];
+}
+
+class TrainingsGoToTraining extends TrainingsEvent {
+  TrainingsGoToTraining();
+  @override
+  List<Object> get props => [];
+}

@@ -147,10 +147,20 @@ class _TrainingManagerState extends State<TrainingManager> {
                                     // print(selectedFavorite);
 
                                     context.bloc<TrainingsBloc>().add(
-                                        TrainingsFavoritesFilter(
-                                            filterFavorites: selectedFavorite,
-                                            difficultyFilter:
-                                                selectedDifficulty));
+                                        TrainingsToggleFilters(
+                                            favorites: selectedFavorite,
+                                            difficulty: selectedDifficulty));
+
+                                    // context.bloc<TrainingsBloc>().add(
+                                    //     TrainingsDifficultiesFilter(
+                                    //         filterFavorites: selectedFavorite,
+                                    //         difficultyFilter:
+                                    //             selectedDifficulty));
+                                    // context.bloc<TrainingsBloc>().add(
+                                    //     TrainingsFavoritesFilter(
+                                    //         filterFavorites: selectedFavorite,
+                                    //         difficultyFilter:
+                                    //             selectedDifficulty));
                                   },
                                 ),
                               );
@@ -219,6 +229,10 @@ class _TrainingManagerState extends State<TrainingManager> {
                     textColor: Colors.black,
                     backgroundColor: Theme.of(context).accentColor,
                     onPressed: () {
+                      context
+                          .bloc<TrainingsBloc>()
+                          .add(TrainingsGoToTraining());
+
                       print(
                           'from training_manager length of filtredList ${state.filterdList.length}');
                     },
@@ -259,12 +273,18 @@ class _TrainingManagerState extends State<TrainingManager> {
               selectedDifficulty == item.difficulty
                   ? selectedDifficulty = 3
                   : selectedDifficulty = item.difficulty;
-              context.bloc<TrainingsBloc>().add(TrainingsDifficultiesFilter(
-                    difficultyFilter: selectedDifficulty,
-                    filterFavorites: selectedFavorite,
 
-                    // selectedFavorites: selectedFavorite
-                  ));
+              context.bloc<TrainingsBloc>().add(TrainingsToggleFilters(
+                  favorites: selectedFavorite, difficulty: selectedDifficulty));
+
+              // context.bloc<TrainingsBloc>().add(TrainingsFavoritesFilter(
+              //     filterFavorites: selectedFavorite,
+              //     difficultyFilter: selectedDifficulty));
+              // context.bloc<TrainingsBloc>().add(TrainingsDifficultiesFilter(
+              //       difficultyFilter: selectedDifficulty,
+              //       filterFavorites: selectedFavorite,
+              //       // selectedFavorites: selectedFavorite
+              //     ));
 
               print('from training_screen $selectedDifficulty');
             },
