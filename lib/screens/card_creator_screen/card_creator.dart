@@ -15,6 +15,7 @@ import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/models/word.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/size_config.dart';
+import 'ImgApi.dart';
 import 'components/InnerShadowTextField.dart';
 import 'components/custom_radio.dart';
 
@@ -63,13 +64,17 @@ class CardCreator extends StatelessWidget {
     return BlocBuilder<CardCreatorBloc, CardCreatorState>(
       builder: (context, state) {
         if (state is CardCreatorLoading) {
-          return Center(child: CircularProgressIndicator());
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
         if (state is CardCreatorSuccess) {
           return buildBody(context, isEditingMode, id, collectionId, word,
               state, defaultSize);
         }
-        return Text('Somthing went wrong....');
+        if (state is CardCreatorFailure) {
+          return Center(child: Text("${state.message}"));
+        }
       },
     );
   }
@@ -135,44 +140,78 @@ class CardCreator extends StatelessWidget {
                               defaultSize: defaultSize,
                               fontSizeMultiplyer: 3.2,
                             ),
-                            Container(
-                              width: defaultSize * 23,
-                              height: defaultSize * 23,
-                              decoration: innerShadow,
-                              child: state.image == null
-                                  ? IconButton(
-                                      onPressed: () {
-                                        context
-                                            .bloc<CardCreatorBloc>()
-                                            .add(CardCreatorUpdateImage());
-                                      },
-                                      icon: Icon(
-                                        Icons.photo_camera,
-                                        size: 48,
-                                      ),
-                                      color: Color(0xFFDA627D),
-                                    )
-                                  : ClipRRect(
-                                      borderRadius: BorderRadius.circular(14),
-                                      child: state.image.path == ''
-                                          ? IconButton(
+                            Stack(
+                              children: [
+                                Container(
+                                  width: defaultSize * 23,
+                                  height: defaultSize * 23,
+                                  decoration: innerShadow,
+                                ),
+                                state.image == null
+                                    ? Positioned.fill(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                context.bloc<CardCreatorBloc>().add(
+                                                    CardCreatorUpdateImgFromCamera());
+                                              },
+                                              icon: Icon(
+                                                Icons.photo_camera,
+                                                size: 32,
+                                              ),
+                                              color: Color(0xFFDA627D),
+                                            ),
+                                            // TODO: IMG
+                                            IconButton(
                                               onPressed: () {
                                                 context
                                                     .bloc<CardCreatorBloc>()
                                                     .add(
-                                                        CardCreatorUpdateImage());
+                                                      CardCreatorDownloadImagesFromAPI(
+                                                          name: targetLang),
+                                                    );
+                                                Navigator.pushNamed(
+                                                    context, ImgApi.id);
                                               },
                                               icon: Icon(
-                                                Icons.photo_camera,
-                                                size: 48,
+                                                Icons.api_rounded,
+                                                size: 32,
                                               ),
                                               color: Color(0xFFDA627D),
-                                            )
-                                          : Image.file(
-                                              state.image,
-                                              fit: BoxFit.cover,
                                             ),
-                                    ),
+                                          ],
+                                        ),
+                                      )
+                                    : Container(
+                                        width: defaultSize * 23,
+                                        height: defaultSize * 23,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(14),
+                                          child: state.image.path == ''
+                                              ? IconButton(
+                                                  onPressed: () {
+                                                    context
+                                                        .bloc<CardCreatorBloc>()
+                                                        .add(
+                                                            CardCreatorUpdateImgFromCamera());
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.photo_camera,
+                                                    size: 48,
+                                                  ),
+                                                  color: Color(0xFFDA627D),
+                                                )
+                                              : Image.file(
+                                                  state.image,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                        ),
+                                      ),
+                              ],
                             )
                           ],
                         ),

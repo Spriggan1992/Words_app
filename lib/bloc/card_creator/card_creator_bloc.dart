@@ -3,15 +3,17 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:words_app/models/image_data.dart';
 import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/words_repository.dart';
+import 'package:words_app/repositories/image_repository.dart';
+
 part 'card_creator_event.dart';
 part 'card_creator_state.dart';
 
 class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
-  CardCreatorBloc({this.wordsRepository}) : super(CardCreatorLoading());
+  CardCreatorBloc({this.imageRepository}) : super(CardCreatorLoading());
 
-  final WordsRepository wordsRepository;
+  final ImageRepository imageRepository;
   @override
   Stream<CardCreatorState> mapEventToState(
     CardCreatorEvent event,
@@ -19,8 +21,14 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
     if (event is CardCreatorLoaded) {
       yield* _mapCardCreatorLoadedToState(event);
     }
-    if (event is CardCreatorUpdateImage) {
-      yield* _mapCardCreatorUpdatedImageToState();
+    if (event is CardCreatorUpdateImgFromCamera) {
+      yield* _mapCardCreatorUpdatedImageFromCameraToState();
+    }
+    if (event is CardCreatorDownloadImagesFromAPI) {
+      yield* _mapCardCreatorDownloadImagesFromAPIInitialToState(event);
+    }
+    if (event is CardCreatorUpdateImagesFromAPI) {
+      yield* _mapCardCreatorUpdatedImageFromApiToState(event);
     }
   }
 
@@ -33,12 +41,36 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
     }
   }
 
-  Stream<CardCreatorState> _mapCardCreatorUpdatedImageToState() async* {
+  Stream<CardCreatorState>
+      _mapCardCreatorUpdatedImageFromCameraToState() async* {
     try {
-      final File croppedFile = await wordsRepository.getImageFile();
+      final File croppedFile = await imageRepository.getImageFile();
       yield CardCreatorSuccess(image: croppedFile);
     } catch (_) {
-      yield CardCreatorFailure();
+      yield CardCreatorFailure(message: "something went wrong with me");
+    }
+  }
+
+  Stream<CardCreatorState> _mapCardCreatorDownloadImagesFromAPIInitialToState(
+      CardCreatorDownloadImagesFromAPI event) async* {
+    try {
+      List<ImgData> imageData =
+          await imageRepository.getNetworkImg(value: event.name);
+      yield CardCreatorSuccess(imageData: imageData);
+    } on NetworkException {
+      yield CardCreatorFailure(message: "No such data you looser");
+    }
+  }
+
+  Stream<CardCreatorState> _mapCardCreatorUpdatedImageFromApiToState(
+      CardCreatorUpdateImagesFromAPI event) async* {
+    try {
+      final File file = await imageRepository.getImageFileFromUrl(event.url);
+
+      // final File croppedFile = await imageRepository.getImageFile();
+      yield CardCreatorSuccess(image: file);
+    } catch (_) {
+      yield CardCreatorFailure(message: "something went wrong with me");
     }
   }
 }

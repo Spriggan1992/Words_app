@@ -181,14 +181,16 @@ class _ReviewCardState extends State<ReviewCard>
                                 direction: FlipDirection.HORIZONTAL,
                                 speed: 400,
                                 front: WordCard(
-                                    word: widget.words[index],
-                                    side: 'front',
-                                    index: index,
-                                    part: widget.words[index].part.partColor),
+                                  word: widget.words[index],
+                                  side: 'front',
+                                  index: index,
+                                  part: widget.words[index].part.partColor,
+                                ),
                                 back: WordCard(
-                                    word: widget.words[index],
-                                    index: index,
-                                    part: widget.words[index].part.partColor),
+                                  word: widget.words[index],
+                                  index: index,
+                                  part: widget.words[index].part.partColor,
+                                ),
                               ),
                               // Positioned(
                               //   bottom: 0,

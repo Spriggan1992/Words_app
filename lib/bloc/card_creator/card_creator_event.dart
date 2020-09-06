@@ -16,7 +16,7 @@ class CardCreatorLoaded extends CardCreatorEvent {
   List<Object> get props => [word, isEditingMode];
 }
 
-class CardCreatorUpdateImage extends CardCreatorEvent {
+class CardCreatorUpdateImgFromCamera extends CardCreatorEvent {
   // final File image;
 
   // CardCreatorUpdateImage({this.image});
@@ -24,4 +24,20 @@ class CardCreatorUpdateImage extends CardCreatorEvent {
   // List<Object> get props => [
   //       image,
   //     ];
+}
+
+class CardCreatorDownloadImagesFromAPI extends CardCreatorEvent {
+  final String name;
+
+  CardCreatorDownloadImagesFromAPI({this.name = 'cat'});
+
+  List<Object> get props => [name];
+}
+
+class CardCreatorUpdateImagesFromAPI extends CardCreatorEvent {
+  final String url;
+
+  CardCreatorUpdateImagesFromAPI({this.url = 'cat'});
+
+  List<Object> get props => [url];
 }
