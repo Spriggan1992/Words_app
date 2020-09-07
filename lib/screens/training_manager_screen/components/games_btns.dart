@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/models/FuiltersEnums.dart';
+import 'package:words_app/models/fuiltersEnums.dart';
+
 import 'package:words_app/utils/size_config.dart';
 
 class GamesBtns extends StatefulWidget {

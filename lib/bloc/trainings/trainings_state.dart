@@ -12,14 +12,14 @@ class TrainingsLoading extends TrainingsState {}
 class TrainingsSuccess extends TrainingsState {
   final List<Word> words;
   final List<Word> filterdList;
-  final FilterFavorites filterFavorites;
+  final int filterFavorites;
   final int difficulty;
   final FilterGames filterGames;
 
   TrainingsSuccess({
     this.words,
     this.filterdList = const [],
-    this.filterFavorites = FilterFavorites.all,
+    this.filterFavorites = 0,
     this.difficulty = 3,
     this.filterGames = FilterGames.bricks,
   });

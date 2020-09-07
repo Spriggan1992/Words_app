@@ -3,17 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/reusable_main_button.dart';
-import 'package:words_app/models/FuiltersEnums.dart';
+
 import 'package:words_app/models/difficulty.dart';
+import 'package:words_app/models/fuiltersEnums.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/screens/games/bricks_game.dart';
 import 'package:words_app/screens/games/correct_wrong_game.dart';
 
 import 'package:words_app/utils/size_config.dart';
-
-import 'components/deffifculty_btns.dart';
-import 'components/favorites_btns.dart';
-import 'components/games_btns.dart';
 
 class TrainingManager extends StatefulWidget {
   static String id = 'training_manager_screen';
@@ -24,7 +21,8 @@ class TrainingManager extends StatefulWidget {
 
 class _TrainingManagerState extends State<TrainingManager> {
   int selectedDifficulty = 3;
-  FilterFavorites selectedFavorite;
+  List<int> filteredFavorites = [0, 1];
+  int selectedFavorite = 0;
   FilterGames selectedGames;
   String dropdownValue = 'Collection';
   Future getList;
@@ -106,11 +104,10 @@ class _TrainingManagerState extends State<TrainingManager> {
                                   selected: state.filterGames == item,
                                   onSelected: (selected) {
                                     selectedGames = item;
-                                    context.bloc<TrainingsBloc>().add(
-                                        TrainingsToggleFilters(
-                                            favorites: selectedFavorite,
-                                            difficulty: selectedDifficulty,
-                                            games: selectedGames));
+                                    // context.bloc<TrainingsBloc>().add(TrainingsFilteredFavorites(
+                                    //     favorites: selectedFavorite,
+                                    //     difficulty: selectedDifficulty,
+                                    //     games: selectedGames));
                                   },
                                 ),
                               );
@@ -126,65 +123,69 @@ class _TrainingManagerState extends State<TrainingManager> {
 
                         Container(
                           child: Row(
-                            children: FilterFavorites.values.map((item) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 30),
-                                child: ChoiceChip(
-                                  backgroundColor: Colors.white,
-                                  labelPadding:
-                                      EdgeInsets.all(defaultSize * 0.8),
-                                  selectedColor: Colors.grey,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          defaultSize * 0.5)),
-                                  elevation: 5,
-                                  label: Container(
-                                    alignment: Alignment.center,
-                                    width: defaultSize * 3,
-                                    height: defaultSize * 3,
-                                    child: item == FilterFavorites.all
-                                        ? Text('all',
-                                            style: TextStyle(
-                                                fontSize: defaultSize * 2,
-                                                fontWeight: FontWeight.bold))
-                                        : Icon(
-                                            Icons.star_border,
-                                            color: Colors.black,
-                                            size: defaultSize * 3,
-                                          ),
+                            children: filteredFavorites.map((item) {
+                              for (var i = 0;
+                                  i < filteredFavorites.length;
+                                  i++) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 30),
+                                  child: ChoiceChip(
+                                    backgroundColor: Colors.white,
+                                    labelPadding:
+                                        EdgeInsets.all(defaultSize * 0.8),
+                                    selectedColor: Colors.grey,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            defaultSize * 0.5)),
+                                    elevation: 5,
+                                    label: Container(
+                                      alignment: Alignment.center,
+                                      width: defaultSize * 3,
+                                      height: defaultSize * 3,
+                                      child: item == filteredFavorites[0]
+                                          ? Text('all',
+                                              style: TextStyle(
+                                                  fontSize: defaultSize * 2,
+                                                  fontWeight: FontWeight.bold))
+                                          : Icon(
+                                              Icons.star_border,
+                                              color: Colors.black,
+                                              size: defaultSize * 3,
+                                            ),
+                                    ),
+                                    selected: state.filterFavorites == item,
+                                    onSelected: (selected) {
+                                      selectedFavorite = item;
+
+                                      context.bloc<TrainingsBloc>().add(
+                                          TrainingsFilteredFavorites(
+                                              favorites: selectedFavorite,
+                                              difficulty: selectedDifficulty,
+                                              games: selectedGames));
+                                      // print(selectedFavorite);
+
+                                      // context.bloc<TrainingsBloc>().add(
+                                      //     TrainingsToggleFilters(
+                                      //         favorites: selectedFavorite,
+                                      //         difficulty: selectedDifficulty));
+                                      // context
+                                      //     .bloc<TrainingsBloc>()
+                                      //     .add(TrainingsGoToTraining());
+
+                                      // context.bloc<TrainingsBloc>().add(
+                                      //     TrainingsDifficultiesFilter(
+                                      //         filterFavorites: selectedFavorite,
+                                      //         difficultyFilter:
+                                      //             selectedDifficulty));
+                                      // context.bloc<TrainingsBloc>().add(
+                                      //     TrainingsFavoritesFilter(
+                                      //         filterFavorites: selectedFavorite,
+                                      //         difficultyFilter:
+                                      //             selectedDifficulty));
+                                    },
                                   ),
-                                  selected: state.filterFavorites == item,
-                                  onSelected: (selected) {
-                                    selectedFavorite = item;
-
-                                    context.bloc<TrainingsBloc>().add(
-                                        TrainingsGoToTraining(
-                                            favorites: selectedFavorite,
-                                            difficulty: selectedDifficulty,
-                                            games: selectedGames));
-                                    // print(selectedFavorite);
-
-                                    // context.bloc<TrainingsBloc>().add(
-                                    //     TrainingsToggleFilters(
-                                    //         favorites: selectedFavorite,
-                                    //         difficulty: selectedDifficulty));
-                                    // context
-                                    //     .bloc<TrainingsBloc>()
-                                    //     .add(TrainingsGoToTraining());
-
-                                    // context.bloc<TrainingsBloc>().add(
-                                    //     TrainingsDifficultiesFilter(
-                                    //         filterFavorites: selectedFavorite,
-                                    //         difficultyFilter:
-                                    //             selectedDifficulty));
-                                    // context.bloc<TrainingsBloc>().add(
-                                    //     TrainingsFavoritesFilter(
-                                    //         filterFavorites: selectedFavorite,
-                                    //         difficultyFilter:
-                                    //             selectedDifficulty));
-                                  },
-                                ),
-                              );
+                                );
+                              }
                             }).toList(),
                           ),
                         ),
@@ -253,26 +254,27 @@ class _TrainingManagerState extends State<TrainingManager> {
                       // context
                       // .bloc<TrainingsBloc>()
                       // .add(TrainingsGoToTraining());
-                      if (state.filterGames == FilterGames.bricks) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Matches(
-                                words: state.filterdList,
-                              ),
-                            ));
-                      }
-                      if (state.filterGames == FilterGames.wrongCorrect) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CorrectWrong(
-                                words: state.filterdList,
-                              ),
-                            ));
-                      }
-                      // print(
-                      //     'from training_manager length of filtredList ${state.filterdList.length}');
+                      // if (state.filterGames == FilterGames.bricks) {
+                      //   Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => Matches(
+                      //           words: state.filterdList,
+                      //         ),
+                      //       ));
+                      // }
+                      // if (state.filterGames == FilterGames.wrongCorrect) {
+                      //   Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => CorrectWrong(
+                      //           words: state.filterdList,
+                      //         ),
+                      //       ));
+                      // }
+                      print(
+                          'from training_manager filtredList ${state.filterdList}');
+                      print('difficulties: ${state.difficulty}');
                     },
                   ),
                 ),
@@ -314,7 +316,7 @@ class _TrainingManagerState extends State<TrainingManager> {
 
               // context.bloc<TrainingsBloc>().add(TrainingsToggleFilters(
               //     favorites: selectedFavorite, difficulty: selectedDifficulty));
-              context.bloc<TrainingsBloc>().add(TrainingsGoToTraining(
+              context.bloc<TrainingsBloc>().add(TrainingsFilteredDifficulties(
                   favorites: selectedFavorite,
                   difficulty: selectedDifficulty,
                   games: selectedGames));

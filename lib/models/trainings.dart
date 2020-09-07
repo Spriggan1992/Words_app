@@ -1,5 +1,5 @@
 import 'difficulty.dart';
-import 'FuiltersEnums.dart';
+import 'fuiltersEnums.dart';
 
 class TrainingManagerModel {
   final FilterGames games;
