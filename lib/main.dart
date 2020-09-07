@@ -16,7 +16,7 @@ import 'repositories/training_matches_provider.dart';
 import 'repositories/validation_provider.dart';
 import 'repositories/words_repository.dart';
 import 'screens/card_creator_screen//card_creator.dart';
-import 'screens/card_creator_screen/ImgApi.dart';
+import 'screens/card_creator_screen/img_api.dart';
 import 'screens/collections_screen/collections_screen.dart';
 import 'screens/games/bricks_game.dart';
 import 'screens/games/correct_wrong_game.dart';
@@ -149,7 +149,7 @@ class MyApp extends StatelessWidget {
           PairGame.id: (_) => PairGame(),
           Result.id: (_) => Result(),
           TrainingManager.id: (_) => TrainingManager(),
-          ImgApi.id: (_) => ImgApi(),
+          ImageApi.id: (_) => ImageApi(),
         },
       ),
     );

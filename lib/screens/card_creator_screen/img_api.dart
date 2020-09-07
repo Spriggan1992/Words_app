@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/models/image_data.dart';
 
-class ImgApi extends StatefulWidget {
+class ImageApi extends StatefulWidget {
   static const id = 'img_api';
   @override
-  _ImgApiState createState() => _ImgApiState();
+  _ImageApiState createState() => _ImageApiState();
 }
 
-class _ImgApiState extends State<ImgApi> {
+class _ImageApiState extends State<ImageApi> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
