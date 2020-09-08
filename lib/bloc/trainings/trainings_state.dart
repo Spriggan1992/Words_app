@@ -19,7 +19,7 @@ class TrainingsSuccess extends TrainingsState {
   TrainingsSuccess({
     this.words,
     this.filterdList = const [],
-    this.filterFavorites = 0,
+    this.filterFavorites,
     this.difficulty = 3,
     this.filterGames = FilterGames.bricks,
   });

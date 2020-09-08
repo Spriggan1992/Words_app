@@ -21,7 +21,7 @@ class TrainingManager extends StatefulWidget {
 
 class _TrainingManagerState extends State<TrainingManager> {
   int selectedDifficulty = 3;
-  List<int> filteredFavorites = [0, 1];
+  List<bool> filteredFavorites = List.generate(2, (_) => false);
   int selectedFavorite = 0;
   FilterGames selectedGames;
   String dropdownValue = 'Collection';
@@ -120,75 +120,98 @@ class _TrainingManagerState extends State<TrainingManager> {
 
                         TitleTextHolder(
                             title: '3. I want to include in the game ...'),
-
                         Container(
-                          child: Row(
-                            children: filteredFavorites.map((item) {
-                              for (var i = 0;
-                                  i < filteredFavorites.length;
-                                  i++) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(right: 30),
-                                  child: ChoiceChip(
-                                    backgroundColor: Colors.white,
-                                    labelPadding:
-                                        EdgeInsets.all(defaultSize * 0.8),
-                                    selectedColor: Colors.grey,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            defaultSize * 0.5)),
-                                    elevation: 5,
-                                    label: Container(
-                                      alignment: Alignment.center,
-                                      width: defaultSize * 3,
-                                      height: defaultSize * 3,
-                                      child: item == filteredFavorites[0]
-                                          ? Text('all',
-                                              style: TextStyle(
-                                                  fontSize: defaultSize * 2,
-                                                  fontWeight: FontWeight.bold))
-                                          : Icon(
-                                              Icons.star_border,
-                                              color: Colors.black,
-                                              size: defaultSize * 3,
-                                            ),
-                                    ),
-                                    selected: state.filterFavorites == item,
-                                    onSelected: (selected) {
-                                      selectedFavorite = item;
+                            child: ToggleButtons(
+                                children: <Widget>[
+                              Text('all'),
+                              Icon(Icons.star_border),
+                            ],
+                                isSelected: filteredFavorites,
+                                onPressed: (int index) {
+                                  setState(() {
+                                    for (var i = 0;
+                                        i < filteredFavorites.length;
+                                        i++) {
+                                      if (i == index) {
+                                        filteredFavorites[i] = true;
+                                      } else {
+                                        filteredFavorites[i] = false;
+                                      }
+                                    }
+                                  });
+                                  print(state.filterFavorites);
+                                  context.bloc<TrainingsBloc>().add(
+                                      TrainingsFilteredDifficulties(
+                                          favorites: selectedFavorite,
+                                          difficulty: selectedDifficulty,
+                                          games: selectedGames));
+                                })),
 
-                                      context.bloc<TrainingsBloc>().add(
-                                          TrainingsFilteredFavorites(
-                                              favorites: selectedFavorite,
-                                              difficulty: selectedDifficulty,
-                                              games: selectedGames));
-                                      // print(selectedFavorite);
+                        // Container(
+                        //   child: Row(
+                        //     children: filteredFavorites.map((item) {
+                        //       for (var i = 0;
+                        //           i < filteredFavorites.length;
+                        //           i++) {
+                        //         return Padding(
+                        //           padding: const EdgeInsets.only(right: 30),
+                        //           child: ChoiceChip(
+                        //             backgroundColor: Colors.white,
+                        //             labelPadding:
+                        //                 EdgeInsets.all(defaultSize * 0.8),
+                        //             selectedColor: Colors.grey,
+                        //             shape: RoundedRectangleBorder(
+                        //                 borderRadius: BorderRadius.circular(
+                        //                     defaultSize * 0.5)),
+                        //             elevation: 5,
+                        //             label: Container(
+                        //               alignment: Alignment.center,
+                        //               width: defaultSize * 3,
+                        //               height: defaultSize * 3,
+                        //               child:  Icon(
+                        //                     item,
+                        //                       color: Colors.black,
+                        //                       size: defaultSize * 3,
+                        //                     ),
+                        //             ),
+                        //             selected: selectedFavorite == ,
+                        //             onSelected: (selected) {
+                        //               setState(() {
+                        //                 selectedFavorite = ;
+                        //               });
+                        //               print(state.filterFavorites);
+                        //               context.bloc<TrainingsBloc>().add(
+                        //                   TrainingsFilteredDifficulties(
+                        //                       favorites: selectedFavorite,
+                        //                       difficulty: selectedDifficulty,
+                        //                       games: selectedGames));
+                        //               // print(selectedFavorite);
 
-                                      // context.bloc<TrainingsBloc>().add(
-                                      //     TrainingsToggleFilters(
-                                      //         favorites: selectedFavorite,
-                                      //         difficulty: selectedDifficulty));
-                                      // context
-                                      //     .bloc<TrainingsBloc>()
-                                      //     .add(TrainingsGoToTraining());
+                        //               // context.bloc<TrainingsBloc>().add(
+                        //               //     TrainingsToggleFilters(
+                        //               //         favorites: selectedFavorite,
+                        //               //         difficulty: selectedDifficulty));
+                        //               // context
+                        //               //     .bloc<TrainingsBloc>()
+                        //               //     .add(TrainingsGoToTraining());
 
-                                      // context.bloc<TrainingsBloc>().add(
-                                      //     TrainingsDifficultiesFilter(
-                                      //         filterFavorites: selectedFavorite,
-                                      //         difficultyFilter:
-                                      //             selectedDifficulty));
-                                      // context.bloc<TrainingsBloc>().add(
-                                      //     TrainingsFavoritesFilter(
-                                      //         filterFavorites: selectedFavorite,
-                                      //         difficultyFilter:
-                                      //             selectedDifficulty));
-                                    },
-                                  ),
-                                );
-                              }
-                            }).toList(),
-                          ),
-                        ),
+                        //               // context.bloc<TrainingsBloc>().add(
+                        //               //     TrainingsDifficultiesFilter(
+                        //               //         filterFavorites: selectedFavorite,
+                        //               //         difficultyFilter:
+                        //               //             selectedDifficulty));
+                        //               // context.bloc<TrainingsBloc>().add(
+                        //               //     TrainingsFavoritesFilter(
+                        //               //         filterFavorites: selectedFavorite,
+                        //               //         difficultyFilter:
+                        //               //             selectedDifficulty));
+                        //             },
+                        //           ),
+                        //         );
+                        //       }
+                        //     }).toList(),
+                        //   ),
+                        // ),
                         // FavoritesBtns(),
 
                         TitleTextHolder(
