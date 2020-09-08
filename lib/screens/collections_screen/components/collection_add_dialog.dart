@@ -26,7 +26,14 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
   double heightLanguage = 1.2;
   bool isTextCollectionNameFiledEmpty = true;
   bool isLanguageTextFileEmpty = true;
+  String _currentSelectedValue;
 
+  var _languages = [
+    "finnish",
+    "english",
+    "chinese",
+    "german",
+  ];
   @override
   void initState() {
     super.initState();
@@ -114,32 +121,70 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
               },
             ),
           ),
-          SizedBox(height: 30),
+          SizedBox(height: 20),
+          // Container(
+          //   decoration: innerShadow,
+          //   child: TextFormField(
+          //     focusNode: myFocusNodeLanguage,
+          //     textAlign: TextAlign.center,
+          //     decoration: InputDecoration(
+          //       fillColor: Colors.white.withOpacity(0.6),
+          //       filled: true,
+          //       labelStyle: TextStyle(
+          //         color: Colors.grey[500],
+          //         fontSize: 18,
+          //         height: heightLanguage,
+          //       ),
+          //       border: OutlineInputBorder(
+          //           borderRadius: BorderRadius.circular(10),
+          //           borderSide: BorderSide.none),
+          //       labelText: 'Language',
+          //       isDense: true,
+          //     ),
+          //     onChanged: (value) {
+          //       collectionLanguage = value;
+          //       if (collectionTitle.length > 0) {
+          //         isLanguageTextFileEmpty = false;
+          //       } else {
+          //         isLanguageTextFileEmpty = true;
+          //       }
+          //     },
+          //   ),
+          // ),
+          // SizedBox(height: 20),
           Container(
             decoration: innerShadow,
-            child: TextField(
-              focusNode: myFocusNodeLanguage,
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                  fillColor: Colors.white.withOpacity(0.6),
-                  filled: true,
-                  labelStyle: TextStyle(
-                    color: Colors.grey[500],
-                    fontSize: 18,
-                    height: heightLanguage,
+            child: FormField<String>(
+              builder: (FormFieldState<String> state) {
+                return InputDecorator(
+                  decoration: InputDecoration(
+                    errorStyle:
+                        TextStyle(color: Colors.redAccent, fontSize: 16.0),
+                    hintText: 'Please select expense',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none),
                   ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none),
-                  labelText: 'Language',
-                  isDense: true),
-              onChanged: (value) {
-                collectionLanguage = value;
-                if (collectionTitle.length > 0) {
-                  isLanguageTextFileEmpty = false;
-                } else {
-                  isLanguageTextFileEmpty = true;
-                }
+                  isEmpty: _currentSelectedValue == '',
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _currentSelectedValue,
+                      isDense: true,
+                      onChanged: (String newValue) {
+                        setState(() {
+                          _currentSelectedValue = newValue;
+                          state.didChange(newValue);
+                        });
+                      },
+                      items: _languages.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                );
               },
             ),
           ),
@@ -157,7 +202,7 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                 style: TextStyle(color: Colors.white)),
             onPressed: () {
               Collection collection = Collection(
-                  language: collectionLanguage, title: collectionTitle);
+                  language: _currentSelectedValue, title: collectionTitle);
               context.bloc<CollectionsBloc>().add(
                     CollectionsAdded(
                       collection: collection,

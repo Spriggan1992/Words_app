@@ -78,6 +78,6 @@ class Word extends Equatable with ChangeNotifier {
         exampleTranslations,
         isSelected,
         collectionId,
-        qdifficulty,
+        difficulty,
       ];
 }
