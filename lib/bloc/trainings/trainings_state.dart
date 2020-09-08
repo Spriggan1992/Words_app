@@ -12,17 +12,17 @@ class TrainingsLoading extends TrainingsState {}
 class TrainingsSuccess extends TrainingsState {
   final List<Word> words;
   final List<Word> filterdList;
-  final FilterFavorites filterFavorites;
   final int difficulty;
+  final FilterGames filterGames;
 
   TrainingsSuccess({
     this.words,
     this.filterdList = const [],
-    this.filterFavorites = FilterFavorites.all,
     this.difficulty = 3,
+    this.filterGames = FilterGames.bricks,
   });
   @override
-  List<Object> get props => [words, filterdList, filterFavorites, difficulty];
+  List<Object> get props => [words, filterdList, difficulty, filterGames];
 }
 
 class TrainingsFailure extends TrainingsState {}

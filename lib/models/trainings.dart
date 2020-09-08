@@ -1,8 +1,8 @@
 import 'difficulty.dart';
-import 'FuiltersEnums.dart';
+import 'fuiltersEnums.dart';
 
 class TrainingManagerModel {
-  final Games games;
+  final FilterGames games;
   final List<Difficulty> difficulty;
   final FilterFavorites favorites;
   final dynamic chooseColection;
@@ -14,7 +14,7 @@ class TrainingManagerModel {
 class TrainingManager {
   List<TrainingManagerModel> trainingManager = [
     TrainingManagerModel(
-        games: Games.bricks,
+        games: FilterGames.bricks,
         difficulty: DifficultyList().difficultyList,
         favorites: FilterFavorites.favorites,
         chooseColection: null)

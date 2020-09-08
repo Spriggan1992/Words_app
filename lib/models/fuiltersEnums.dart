@@ -1,4 +1,4 @@
-enum Games { bricks, pair, wrongCorrect }
+enum FilterGames { bricks, pair, wrongCorrect }
 enum FilterFavorites { favorites, all }
-enum Difficulties { know, knowALittle, dontKnow, none }
+enum FilterDifficulties { know, knowALittle, dontKnow, none }
 // enum  filterCollections{ know, knowALittle, dontKnow, none }

@@ -144,7 +144,7 @@ class MyApp extends StatelessWidget {
           WordsScreen.id: (_) => WordsScreen(),
           CardCreator.id: (_) => CardCreator(),
           ReviewCard.id: (_) => ReviewCard(),
-          Training.id: (_) => Training(),
+          CorrectWrong.id: (_) => CorrectWrong(),
           Matches.id: (_) => Matches(),
           PairGame.id: (_) => PairGame(),
           Result.id: (_) => Result(),
