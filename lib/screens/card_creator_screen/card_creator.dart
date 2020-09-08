@@ -177,7 +177,7 @@ class CardCreator extends StatelessWidget {
                                                     context, ImageApi.id);
                                               },
                                               icon: Icon(
-                                                Icons.api_rounded,
+                                                Icons.web_asset,
                                                 size: 32,
                                               ),
                                               color: Color(0xFFDA627D),

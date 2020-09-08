@@ -125,23 +125,7 @@ class WordsScreen extends StatelessWidget {
                 words: state.words,
               ), //
               actionPane: SlidableDrawerActionPane(),
-              actions: <Widget>[
-                IconSlideAction(
-                  caption: 'favourite',
-                  color: Theme.of(context).accentColor,
-                  icon: Icons.star,
-                  onTap: () {
-                    context.bloc<WordsBloc>().add(
-                          WordsUpdatedWord(
-                            word: state.words[index].copyWith(
-                                favorite:
-                                    state.words[index].favorite == 1 ? 0 : 1),
-                          ),
-                        );
-                    context.bloc<WordsBloc>().add(WordsLoaded());
-                  },
-                ),
-              ],
+
               secondaryActions: <Widget>[
                 IconSlideAction(
                   caption: 'Edit',

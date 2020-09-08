@@ -65,7 +65,6 @@ class Word extends Equatable with ChangeNotifier {
       exampleTranslations: exampleTranslations ?? this.exampleTranslations,
       isSelected: isSelected ?? this.isSelected,
       collectionId: collectionId ?? this.collectionId,
-      favorite: favorite ?? this.favorite,
       difficulty: difficulty ?? this.difficulty,
     );
   }
