@@ -21,12 +21,12 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
   FocusNode myFocusNodeCollectionName;
   FocusNode myFocusNodeLanguage;
   String collectionTitle;
-  String collectionLanguage;
+  // String collectionLanguage;
   double heightCollectionName = 0;
   double heightLanguage = 1.2;
   bool isTextCollectionNameFiledEmpty = true;
   bool isLanguageTextFileEmpty = true;
-  String _currentSelectedValue;
+  String collectionLanguage;
 
   var _languages = [
     "finnish",
@@ -34,6 +34,12 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
     "chinese",
     "german",
   ];
+  Map<String, String> languageMap = {
+    "finnish": 'fi',
+    "english": 'fi',
+    "chinese": 'zh',
+    "german": 'de',
+  };
   @override
   void initState() {
     super.initState();
@@ -158,23 +164,27 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
               builder: (FormFieldState<String> state) {
                 return InputDecorator(
                   decoration: InputDecoration(
-                    errorStyle:
-                        TextStyle(color: Colors.redAccent, fontSize: 16.0),
-                    hintText: 'Please select expense',
+                    // errorStyle:
+                    //     TextStyle(color: Colors.redAccent, fontSize: 16.0),
+                    // hintText: 'Please select expense',
+
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none),
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
-                  isEmpty: _currentSelectedValue == '',
+                  isEmpty: collectionLanguage == '',
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
-                      value: _currentSelectedValue,
+                      value: collectionLanguage ?? 'english',
                       isDense: true,
                       onChanged: (String newValue) {
-                        setState(() {
-                          _currentSelectedValue = newValue;
-                          state.didChange(newValue);
-                        });
+                        setState(
+                          () {
+                            collectionLanguage = newValue;
+                            state.didChange(newValue);
+                          },
+                        );
                       },
                       items: _languages.map((String value) {
                         return DropdownMenuItem<String>(
@@ -198,11 +208,15 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             padding: EdgeInsets.all(0),
             color: Color(0xffDA627D),
-            child: Text('CREATE COLLECTION',
-                style: TextStyle(color: Colors.white)),
+            child: Text(
+              'CREATE COLLECTION',
+              style: TextStyle(color: Colors.white),
+            ),
             onPressed: () {
               Collection collection = Collection(
-                  language: _currentSelectedValue, title: collectionTitle);
+                language: languageMap[collectionLanguage],
+                title: collectionTitle,
+              );
               context.bloc<CollectionsBloc>().add(
                     CollectionsAdded(
                       collection: collection,

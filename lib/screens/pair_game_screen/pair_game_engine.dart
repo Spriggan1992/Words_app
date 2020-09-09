@@ -15,14 +15,13 @@ class GameEngine {
 //      if (gameCards.isEmpty) {
 //        return cards;
 //      }
-      print(gameCards.length);
+
       gameCard = getOneCard(0);
 
       cards.add(MyCard(id: gameCard.id, word: gameCard.targetLang));
       cards.add(MyCard(id: gameCard.id, word: gameCard.ownLang));
-      print(gameCards.length);
     }
-    print(cards.length);
+
     return cards;
   }
 

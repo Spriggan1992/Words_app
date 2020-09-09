@@ -26,6 +26,9 @@ class WordsScreen extends StatelessWidget {
     Map args = ModalRoute.of(context).settings.arguments;
     String collectionId = args['id'];
     String collectionTitle = args['title'];
+    String collectionLang = args['lang'];
+    //TODO: lang
+    print(collectionLang);
 
     return WillPopScope(
       /// Overriding Back navigation logic --> exit from EditMode
@@ -49,8 +52,10 @@ class WordsScreen extends StatelessWidget {
                 );
               }
               if (state is WordsSuccess) {
+                //TODO: lang
                 /// Use cubit to switch editing mode(For selecting words);
-                return buildBody(collectionTitle, collectionId, state);
+                return buildBody(
+                    collectionTitle, collectionId, state, collectionLang);
               }
               return Text('Somthing went wrong....');
             },
@@ -60,8 +65,8 @@ class WordsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildBody(
-      String collectionTitle, String collectionId, WordsSuccess state) {
+  Widget buildBody(String collectionTitle, String collectionId,
+      WordsSuccess state, String collectionLang) {
     return Container(
       child: BlocBuilder<WordsCubit, bool>(
         builder: (context, isEditingMode) {
@@ -71,9 +76,9 @@ class WordsScreen extends StatelessWidget {
               /// Fake Appbar
               buildAppBar(
                   isEditingMode, context, collectionTitle, collectionId, state),
-
+//TODO: lang
               /// List words
-              buildListView(state, isEditingMode, collectionId),
+              buildListView(state, isEditingMode, collectionId, collectionLang),
 
               ReusableMainButton(
                 titleText: 'Add Word',
@@ -88,10 +93,13 @@ class WordsScreen extends StatelessWidget {
                           arguments: {
                             'isEditingMode': false,
                             'collectionId': collectionId,
+                            'lang': collectionLang,
                           },
                         );
                         context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
-                            word: Word(), isEditingMode: false));
+                            word: Word(),
+                            isEditingMode: false,
+                            collectionLaguage: collectionLang));
                       },
               ),
             ],
@@ -101,8 +109,9 @@ class WordsScreen extends StatelessWidget {
     );
   }
 
-  Expanded buildListView(
-      WordsSuccess state, bool isEditingMode, String collectionId) {
+//TODO: lang
+  Expanded buildListView(WordsSuccess state, bool isEditingMode,
+      String collectionId, String collectionLang) {
     return Expanded(
       child: Container(
         padding: EdgeInsets.only(bottom: 25.0),
@@ -135,17 +144,23 @@ class WordsScreen extends StatelessWidget {
                     Navigator.pushNamed(
                       context,
                       CardCreator.id,
+                      //TODO: lang
                       arguments: {
                         'isEditingMode': true,
                         'word': state.words[index],
-                        'collectionId': collectionId
+                        'collectionId': collectionId,
+                        'lang': collectionLang,
                       },
                     );
                     context
                         .bloc<PartColorCubit>()
                         .changeColor(state.words[index].part.partColor);
-                    context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
-                        word: state.words[index], isEditingMode: true));
+                    context.bloc<CardCreatorBloc>().add(
+                          CardCreatorLoaded(
+                              word: state.words[index],
+                              isEditingMode: true,
+                              collectionLaguage: collectionLang),
+                        );
                   },
                 ),
                 IconSlideAction(

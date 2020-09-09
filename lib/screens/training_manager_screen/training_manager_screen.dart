@@ -146,7 +146,6 @@ class _TrainingManagerState extends State<TrainingManager> {
                                     setState(
                                       () {
                                         selectedFavorite = item;
-                                        print(selectedFavorite);
                                       },
                                     );
                                     context.bloc<TrainingsBloc>().add(

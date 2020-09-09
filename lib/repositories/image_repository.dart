@@ -9,10 +9,10 @@ import 'package:path/path.dart' as p;
 import 'package:words_app/models/image_data.dart';
 
 class ImageRepository {
-  Future getNetworkImg({value}) async {
+  Future getNetworkImg({String word, String collectionLang}) async {
     List<ImgData> imageData = [];
     String requestUrl =
-        'https://pixabay.com/api/?key=17723422-77b02c597c0935e4cc98e0e5f&q=$value&image_type=photo&lang=zh';
+        'https://pixabay.com/api/?key=17723422-77b02c597c0935e4cc98e0e5f&q=$word&image_type=photo&lang=$collectionLang';
 
     http.Response response = await http.get(requestUrl);
 
@@ -20,13 +20,12 @@ class ImageRepository {
         jsonDecode(response.body)['hits'].length > 0) {
       String data = response.body;
       var images = jsonDecode(data);
-      print(images.runtimeType);
+
       // id = (jsonDecode(data)['hits'][2]['id']).toString();
       // img = (jsonDecode(data)['hits'][2]['previewURL']).toString();
       // tag = (jsonDecode(data)['hits'][2]['tags']).toString();
 
       List<dynamic> imagesList = images['hits'];
-      print(images);
 
       imagesList?.forEach(
         (item) {

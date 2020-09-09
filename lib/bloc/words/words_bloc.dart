@@ -176,7 +176,6 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
       WordsUpdatedWord event) async* {
     try {
       final updatedWord = (state as WordsSuccess).words.map((word) {
-        print("from IF ${event.word.id}");
         if (word.id == event.word.id) {
           wordsRepository.updateWord(word: event.word);
         }
@@ -241,7 +240,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (state is WordsSuccess) {
       final List<Word> updatedWord = List.from((state as WordsSuccess).words)
         ..add(event.word);
-      print('FROM _mapWordsAddedToState:  ${event.word.collectionId}');
+      
 
       yield WordsSuccess(words: updatedWord);
       await wordsRepository.addNewWord(event.word);
