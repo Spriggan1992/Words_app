@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/reusable_main_button.dart';
+import 'package:words_app/models/collection.dart';
 
 import 'package:words_app/models/difficulty.dart';
 import 'package:words_app/models/fuiltersEnums.dart';
@@ -22,6 +23,15 @@ class TrainingManager extends StatefulWidget {
 }
 
 class _TrainingManagerState extends State<TrainingManager> {
+  bool isChecked = false;
+  List<Collection> selectedListCollections = [];
+  List<String> dummySilectedCips = [
+    'first collection',
+    'body',
+    'verbs',
+    'noun',
+    'nothing iteresting'
+  ];
   int selectedDifficulty = 3;
   FilterGames selectedGames;
   String dropdownValue = 'Collection';
@@ -70,59 +80,131 @@ class _TrainingManagerState extends State<TrainingManager> {
                         TitleTextHolder(title: '1. I want to play ...'),
                         buildGamesBtns(defaultSize, state, context),
                         TitleTextHolder(
-                            title: '2. I want to study words that I ...'),
-                        buildDifficultiesBtns(defaultSize, context, state),
-                        TitleTextHolder(
                             title: '3. I want to use words from ...'),
-                        Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(defaultSize * 0.5)),
-                          margin: EdgeInsets.only(right: defaultSize * 20),
-                          color: Colors.white,
+                        Container(
+                          width: SizeConfig.blockSizeHorizontal * 100,
+                          height: defaultSize * 10,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              // Text('Filters'),
-                              DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  value: dropdownValue,
-                                  icon: Icon(Icons.arrow_drop_down),
-                                  iconSize: defaultSize * 3,
-                                  onChanged: (String newValue) {
-                                    setState(() {
-                                      dropdownValue = newValue;
-                                    });
-                                  },
-                                  items: <String>[
-                                    'Collection',
-                                    'Know',
-                                    "Don't know",
-                                    'Custom list'
-                                  ].map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
+                              Flexible(
+                                flex: 3,
+                                child: Card(
+                                  elevation: 5,
+                                  child: ListTile(
+                                    leading: Text('Choose collections'),
+                                    trailing: Icon(Icons.arrow_drop_down),
+                                    visualDensity: VisualDensity.compact,
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: Text('Select Colletions'),
+                                              // contentPadding: EdgeInsets.all(
+                                              //     defaultSize * 0.8),
+                                              content: StatefulBuilder(
+                                                builder: (context, setState) {
+                                                  return Container(
+                                                    height: defaultSize * 30,
+                                                    width: SizeConfig
+                                                            .blockSizeHorizontal *
+                                                        70,
+                                                    child: ListView.builder(
+                                                      itemExtent:
+                                                          defaultSize * 5,
+                                                      // shrinkWrap: true,
+                                                      itemCount: state
+                                                          .listCollection
+                                                          .length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return CollectionPicker(
+                                                          selectedList:
+                                                              selectedListCollections,
+                                                          state: state,
+                                                          index: index,
+                                                          onChanged: (value) {
+                                                            setState(() {
+                                                              if (value) {
+                                                                selectedListCollections
+                                                                    .add(state
+                                                                            .listCollection[
+                                                                        index]);
+                                                              } else {
+                                                                selectedListCollections
+                                                                    .remove(state
+                                                                            .listCollection[
+                                                                        index]);
+                                                              }
+                                                            });
+                                                          },
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                              actions: [
+                                                FlatButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  child: Text('Cancel'),
+                                                ),
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    context
+                                                        .bloc<TrainingsBloc>()
+                                                        .add(TrainingsSelectCollections(
+                                                            collection:
+                                                                selectedListCollections));
+                                                  },
+                                                  child: Text('Ok'),
+                                                )
+                                              ],
+                                            );
+                                          });
+                                    },
+                                  ),
                                 ),
-                              )
+                              ),
+                              Flexible(
+                                  flex: 3,
+                                  child: SingleChildScrollView(
+                                    child: Wrap(
+                                      // alignment: WrapAlignment.center,
+                                      // crossAxisAlignment:
+                                      //     WrapCrossAlignment.center,
+                                      // direction: Axis.vertical,
+                                      children:
+                                          selectedListCollections.map((item) {
+                                        return FittedBox(
+                                          child: Chip(
+                                            label: Text(item.title,
+                                                style: TextStyle(fontSize: 10)),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ))
                             ],
                           ),
                         ),
+                        TitleTextHolder(
+                            title: '2. I want to study words that I ...'),
+                        buildDifficultiesBtns(defaultSize, context, state),
                       ],
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Checkbox(value: false, onChanged: null),
-                    Text('remember my choice'),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Checkbox(value: false, onChanged: null),
+                //     Text('remember my choice'),
+                //   ],
+                // ),
                 SizedBox(height: defaultSize * 2),
 
                 //  Button-container
@@ -137,8 +219,8 @@ class _TrainingManagerState extends State<TrainingManager> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => Matches(
-                                words: state.filterdList,
-                              ),
+                                  // words: state.filteredListWords,
+                                  ),
                             ));
                       }
                       if (state.filterGames == FilterGames.wrongCorrect) {
@@ -146,8 +228,8 @@ class _TrainingManagerState extends State<TrainingManager> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => CorrectWrong(
-                                words: state.filterdList,
-                              ),
+                                  // words: state.filteredListWords,
+                                  ),
                             ));
                       }
                     },
@@ -234,5 +316,28 @@ class _TrainingManagerState extends State<TrainingManager> {
         );
       }).toList(),
     ));
+  }
+}
+
+class CollectionPicker extends StatelessWidget {
+  const CollectionPicker({
+    this.state,
+    this.index,
+    this.onChanged,
+    this.selectedList,
+    Key key,
+  }) : super(key: key);
+
+  final TrainingsSuccess state;
+  final int index;
+  final Function onChanged;
+  final List selectedList;
+
+  @override
+  Widget build(BuildContext context) {
+    return CheckboxListTile(
+        title: Text(state.listCollection[index].title),
+        value: selectedList.contains(state.listCollection[index]),
+        onChanged: onChanged);
   }
 }

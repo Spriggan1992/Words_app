@@ -55,7 +55,10 @@ void main() => runApp(MultiBlocProvider(providers: [
       ),
       BlocProvider<TrainingsBloc>(
         create: (context) {
-          return TrainingsBloc();
+          return TrainingsBloc(
+            wordsRepository: WordsRepository(),
+            collectionsRepository: CollectionsRepository(),
+          );
         },
       ),
       BlocProvider<WordsCubit>(

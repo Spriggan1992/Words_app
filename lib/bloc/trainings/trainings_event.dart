@@ -30,3 +30,12 @@ class TrainingsFilteredFavorites extends TrainingsEvent {
   @override
   List<Object> get props => [favorites, games, difficulty];
 }
+
+class TrainingsSelectCollections extends TrainingsEvent {
+  final List<Collection> collection;
+
+  TrainingsSelectCollections({this.collection});
+
+  @override
+  List<Object> get props => [collection];
+}
