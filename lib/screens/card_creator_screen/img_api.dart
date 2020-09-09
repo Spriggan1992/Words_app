@@ -27,7 +27,6 @@ class _ImageApiState extends State<ImageApi> {
               );
             }
             if (state is CardCreatorFailure) {
-              print('faild');
               return Center(
                 child: Text(
                   "${state.message}",

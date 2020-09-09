@@ -45,7 +45,11 @@ class Body extends StatelessWidget {
                             Navigator.pushNamed(
                               context,
                               WordsScreen.id,
-                              arguments: {'id': collectionId, 'title': title},
+                              arguments: {
+                                'id': collectionId,
+                                'title': title,
+                                'lang': collections[index].language
+                              },
                             );
                           },
 

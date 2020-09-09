@@ -27,7 +27,7 @@ class CollectionsScreen extends StatelessWidget {
         },
         child: Scaffold(
           appBar: BaseAppBar(
-            title: Text('words_collection'),
+            title: Text('collections'),
             appBar: AppBar(),
           ),
           body: BlocBuilder<CollectionsBloc, CollectionsState>(
@@ -58,7 +58,7 @@ class CollectionsScreen extends StatelessWidget {
                   ],
                 );
               } else {
-                return Text('Somthing went wrong.....');
+                return Text('Somthing went wrong...');
               }
             },
           ),

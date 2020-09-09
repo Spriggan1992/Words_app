@@ -32,10 +32,12 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
     }
   }
 
+  /// Method receives String [collectionLang] and pass it to the CardCreatorSuccess state.
   Stream<CardCreatorState> _mapCardCreatorLoadedToState(
       CardCreatorLoaded event) async* {
     try {
-      yield CardCreatorSuccess(image: event.word.image);
+      yield CardCreatorSuccess(
+          image: event.word.image, collectionLang: event.collectionLaguage);
     } catch (_) {
       yield CardCreatorFailure();
     }
@@ -54,9 +56,12 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
   Stream<CardCreatorState> _mapCardCreatorDownloadImagesFromAPIInitialToState(
       CardCreatorDownloadImagesFromAPI event) async* {
     try {
-      List<ImgData> imageData =
-          await imageRepository.getNetworkImg(value: event.name);
-      yield CardCreatorSuccess(imageData: imageData);
+      String collectionLang = (state as CardCreatorSuccess).collectionLang;
+      List<ImgData> imageData = await imageRepository.getNetworkImg(
+          word: event.name, collectionLang: collectionLang);
+
+      yield CardCreatorSuccess(
+          imageData: imageData, collectionLang: collectionLang);
     } on NetworkException {
       yield CardCreatorFailure(message: "No such data you looser");
     }
@@ -66,7 +71,6 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
       CardCreatorUpdateImagesFromAPI event) async* {
     try {
       final File file = await imageRepository.getImageFileFromUrl(event.url);
-
       // final File croppedFile = await imageRepository.getImageFile();
       yield CardCreatorSuccess(image: file);
     } catch (_) {

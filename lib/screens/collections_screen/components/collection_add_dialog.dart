@@ -21,12 +21,46 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
   FocusNode myFocusNodeCollectionName;
   FocusNode myFocusNodeLanguage;
   String collectionTitle;
-  String collectionLanguage;
+  // String collectionLanguage;
   double heightCollectionName = 0;
   double heightLanguage = 1.2;
   bool isTextCollectionNameFiledEmpty = true;
   bool isLanguageTextFileEmpty = true;
+  String collectionLanguage;
 
+  var _languages = [
+    "finnish",
+    "english",
+    "chinese",
+    "german",
+    'czech',
+    'danish',
+    'spanish',
+    'french',
+    'indonesian',
+    'italian',
+    'hungarian',
+    'nederlands',
+    'norwegian',
+    'polish',
+  ];
+  //cs, da, de, en, es, fr, id, it, hu, nl, no, pl, pt, ro, sk, fi, sv, tr, vi, th, bg, ru, el, ja, ko, zh
+  Map<String, String> languageMap = {
+    "finnish": 'fi',
+    "english": 'en',
+    "chinese": 'zh',
+    "german": 'de',
+    'czech': 'cs',
+    'danish': 'da',
+    'spanish': 'es',
+    'french': 'fr',
+    'indonesian': 'id',
+    'italian': 'it',
+    'hungarian': 'hu',
+    'nederlands': 'nl',
+    'norwegian': 'no',
+    'polish': 'pl',
+  };
   @override
   void initState() {
     super.initState();
@@ -88,21 +122,23 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
           Container(
             decoration: innerShadow,
             child: TextField(
-              focusNode: myFocusNodeCollectionName,
-              autofocus: true,
-              textAlign: TextAlign.center,
+              // focusNode: myFocusNodeCollectionName,
+              // autofocus: true,
+              textAlign: TextAlign.left,
               decoration: InputDecoration(
-                  fillColor: Colors.white.withOpacity(0.6),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 13, horizontal: 10),
+                  // fillColor: Colors.white.withOpacity(0.6),
                   filled: true,
-                  labelStyle: TextStyle(
-                    color: Colors.grey[500],
-                    fontSize: 18,
+                  hintStyle: TextStyle(
+                    color: Color(0xFFDA627D).withOpacity(0.5),
+                    fontSize: 20,
                     height: heightCollectionName,
                   ),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none),
-                  labelText: 'Collection name',
+                  hintText: 'Collection name',
                   isDense: true),
               onChanged: (value) {
                 collectionTitle = value;
@@ -114,32 +150,79 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
               },
             ),
           ),
-          SizedBox(height: 30),
+          SizedBox(height: 20),
+          // Container(
+          //   decoration: innerShadow,
+          //   child: TextFormField(
+          //     focusNode: myFocusNodeLanguage,
+          //     textAlign: TextAlign.center,
+          //     decoration: InputDecoration(
+          //       fillColor: Colors.white.withOpacity(0.6),
+          //       filled: true,
+          //       labelStyle: TextStyle(
+          //         color: Colors.grey[500],
+          //         fontSize: 18,
+          //         height: heightLanguage,
+          //       ),
+          //       border: OutlineInputBorder(
+          //           borderRadius: BorderRadius.circular(10),
+          //           borderSide: BorderSide.none),
+          //       labelText: 'Language',
+          //       isDense: true,
+          //     ),
+          //     onChanged: (value) {
+          //       collectionLanguage = value;
+          //       if (collectionTitle.length > 0) {
+          //         isLanguageTextFileEmpty = false;
+          //       } else {
+          //         isLanguageTextFileEmpty = true;
+          //       }
+          //     },
+          //   ),
+          // ),
+          // SizedBox(height: 20),
           Container(
+            alignment: Alignment.center,
             decoration: innerShadow,
-            child: TextField(
-              focusNode: myFocusNodeLanguage,
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                  fillColor: Colors.white.withOpacity(0.6),
-                  filled: true,
-                  labelStyle: TextStyle(
-                    color: Colors.grey[500],
-                    fontSize: 18,
-                    height: heightLanguage,
-                  ),
-                  border: OutlineInputBorder(
+            child: FormField<String>(
+              builder: (FormFieldState<String> state) {
+                return InputDecorator(
+                  decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none),
-                  labelText: 'Language',
-                  isDense: true),
-              onChanged: (value) {
-                collectionLanguage = value;
-                if (collectionTitle.length > 0) {
-                  isLanguageTextFileEmpty = false;
-                } else {
-                  isLanguageTextFileEmpty = true;
-                }
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  isEmpty: collectionLanguage == '',
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: collectionLanguage ?? 'english',
+                      isDense: true,
+                      onChanged: (String newValue) {
+                        setState(
+                          () {
+                            collectionLanguage = newValue;
+                            state.didChange(newValue);
+                          },
+                        );
+                      },
+                      items: _languages.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                              color: Color(0xFFDA627D).withOpacity(0.5),
+                              fontSize: 20,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                );
               },
             ),
           ),
@@ -153,11 +236,15 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             padding: EdgeInsets.all(0),
             color: Color(0xffDA627D),
-            child: Text('CREATE COLLECTION',
-                style: TextStyle(color: Colors.white)),
+            child: Text(
+              'CREATE COLLECTION',
+              style: TextStyle(color: Colors.white),
+            ),
             onPressed: () {
               Collection collection = Collection(
-                  language: collectionLanguage, title: collectionTitle);
+                language: languageMap[collectionLanguage],
+                title: collectionTitle,
+              );
               context.bloc<CollectionsBloc>().add(
                     CollectionsAdded(
                       collection: collection,

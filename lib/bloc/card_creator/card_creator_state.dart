@@ -14,9 +14,10 @@ class CardCreatorLoading extends CardCreatorState {}
 class CardCreatorSuccess extends CardCreatorState {
   final File image;
   final List<ImgData> imageData;
+  final String collectionLang;
 
-  CardCreatorSuccess({this.imageData, this.image});
-  List<Object> get props => [image, imageData];
+  CardCreatorSuccess({this.imageData, this.image, this.collectionLang});
+  List<Object> get props => [image, imageData, collectionLang];
 }
 
 class CardCreatorFailure extends CardCreatorState {

@@ -10,10 +10,11 @@ abstract class CardCreatorEvent extends Equatable {
 class CardCreatorLoaded extends CardCreatorEvent {
   final Word word;
   final bool isEditingMode;
+  final String collectionLaguage;
 
-  CardCreatorLoaded({this.word, this.isEditingMode});
+  CardCreatorLoaded({this.collectionLaguage, this.word, this.isEditingMode});
 
-  List<Object> get props => [word, isEditingMode];
+  List<Object> get props => [word, isEditingMode, collectionLaguage];
 }
 
 class CardCreatorUpdateImgFromCamera extends CardCreatorEvent {
@@ -29,7 +30,7 @@ class CardCreatorUpdateImgFromCamera extends CardCreatorEvent {
 class CardCreatorDownloadImagesFromAPI extends CardCreatorEvent {
   final String name;
 
-  CardCreatorDownloadImagesFromAPI({this.name = 'cat'});
+  CardCreatorDownloadImagesFromAPI({this.name});
 
   List<Object> get props => [name];
 }
