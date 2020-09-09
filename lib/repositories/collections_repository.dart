@@ -22,6 +22,7 @@ class CollectionsRepository {
       language: languageTitle,
       showBtns: false,
       isEditingBtns: false,
+      isSelected: false,
     );
 
     ///This method is responsible for inserting [Collection] to DB,

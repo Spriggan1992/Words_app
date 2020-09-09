@@ -8,6 +8,7 @@ class Collection extends Equatable {
   final bool showBtns;
   final bool isEditingBtns;
   final bool isEditingMode;
+  final bool isSelected;
 
   Collection(
       {this.title,
@@ -15,7 +16,8 @@ class Collection extends Equatable {
       String id,
       this.showBtns = false,
       this.isEditingBtns,
-      this.isEditingMode = false})
+      this.isEditingMode = false,
+      this.isSelected = false})
       : this.id = id ?? Uuid().v4();
   //id for DB
 
@@ -30,6 +32,7 @@ class Collection extends Equatable {
     bool showBtns,
     bool isEditingBtns,
     bool isEditingMode,
+    bool isSelected,
   }) {
     return Collection(
       id: id ?? this.id,
@@ -38,6 +41,7 @@ class Collection extends Equatable {
       showBtns: showBtns ?? this.showBtns,
       isEditingBtns: isEditingBtns ?? this.isEditingBtns,
       isEditingMode: isEditingMode ?? this.isEditingMode,
+      isSelected: isSelected ?? this.isSelected,
     );
   }
 

@@ -55,7 +55,10 @@ void main() => runApp(MultiBlocProvider(providers: [
       ),
       BlocProvider<TrainingsBloc>(
         create: (context) {
-          return TrainingsBloc();
+          return TrainingsBloc(
+            wordsRepository: WordsRepository(),
+            collectionsRepository: CollectionsRepository(),
+          );
         },
       ),
       BlocProvider<WordsCubit>(
@@ -144,7 +147,7 @@ class MyApp extends StatelessWidget {
           WordsScreen.id: (_) => WordsScreen(),
           CardCreator.id: (_) => CardCreator(),
           ReviewCard.id: (_) => ReviewCard(),
-          Training.id: (_) => Training(),
+          CorrectWrong.id: (_) => CorrectWrong(),
           Matches.id: (_) => Matches(),
           PairGame.id: (_) => PairGame(),
           Result.id: (_) => Result(),
