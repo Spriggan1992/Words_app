@@ -27,8 +27,6 @@ class WordsScreen extends StatelessWidget {
     String collectionId = args['id'];
     String collectionTitle = args['title'];
     String collectionLang = args['lang'];
-    //TODO: lang
-    print(collectionLang);
 
     return WillPopScope(
       /// Overriding Back navigation logic --> exit from EditMode

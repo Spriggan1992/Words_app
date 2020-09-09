@@ -33,12 +33,33 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
     "english",
     "chinese",
     "german",
+    'czech',
+    'danish',
+    'spanish',
+    'french',
+    'indonesian',
+    'italian',
+    'hungarian',
+    'nederlands',
+    'norwegian',
+    'polish',
   ];
+  //cs, da, de, en, es, fr, id, it, hu, nl, no, pl, pt, ro, sk, fi, sv, tr, vi, th, bg, ru, el, ja, ko, zh
   Map<String, String> languageMap = {
     "finnish": 'fi',
-    "english": 'fi',
+    "english": 'en',
     "chinese": 'zh',
     "german": 'de',
+    'czech': 'cs',
+    'danish': 'da',
+    'spanish': 'es',
+    'french': 'fr',
+    'indonesian': 'id',
+    'italian': 'it',
+    'hungarian': 'hu',
+    'nederlands': 'nl',
+    'norwegian': 'no',
+    'polish': 'pl',
   };
   @override
   void initState() {
@@ -101,21 +122,23 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
           Container(
             decoration: innerShadow,
             child: TextField(
-              focusNode: myFocusNodeCollectionName,
-              autofocus: true,
-              textAlign: TextAlign.center,
+              // focusNode: myFocusNodeCollectionName,
+              // autofocus: true,
+              textAlign: TextAlign.left,
               decoration: InputDecoration(
-                  fillColor: Colors.white.withOpacity(0.6),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 13, horizontal: 10),
+                  // fillColor: Colors.white.withOpacity(0.6),
                   filled: true,
-                  labelStyle: TextStyle(
-                    color: Colors.grey[500],
-                    fontSize: 18,
+                  hintStyle: TextStyle(
+                    color: Color(0xFFDA627D).withOpacity(0.5),
+                    fontSize: 20,
                     height: heightCollectionName,
                   ),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none),
-                  labelText: 'Collection name',
+                  hintText: 'Collection name',
                   isDense: true),
               onChanged: (value) {
                 collectionTitle = value;
@@ -159,15 +182,14 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
           // ),
           // SizedBox(height: 20),
           Container(
+            alignment: Alignment.center,
             decoration: innerShadow,
             child: FormField<String>(
               builder: (FormFieldState<String> state) {
                 return InputDecorator(
                   decoration: InputDecoration(
-                    // errorStyle:
-                    //     TextStyle(color: Colors.redAccent, fontSize: 16.0),
-                    // hintText: 'Please select expense',
-
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
@@ -189,7 +211,13 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                       items: _languages.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                              color: Color(0xFFDA627D).withOpacity(0.5),
+                              fontSize: 20,
+                            ),
+                          ),
                         );
                       }).toList(),
                     ),

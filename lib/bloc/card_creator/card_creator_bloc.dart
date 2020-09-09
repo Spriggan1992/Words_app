@@ -32,6 +32,7 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
     }
   }
 
+  /// Method receives String [collectionLang] and pass it to the CardCreatorSuccess state.
   Stream<CardCreatorState> _mapCardCreatorLoadedToState(
       CardCreatorLoaded event) async* {
     try {
