@@ -36,7 +36,6 @@ class WordsRepository with ChangeNotifier {
       'example': word.example,
       'exampleTranslations': word.exampleTranslations,
       'difficulty': word.difficulty,
-      'favorite': word.favorite,
     });
   }
 
@@ -59,7 +58,6 @@ class WordsRepository with ChangeNotifier {
         'example': item.example,
         'exampleTranslations': item.exampleTranslations,
         'difficulty': item.difficulty,
-        'favorite': item.favorite,
       });
     });
     notifyListeners();
@@ -72,18 +70,18 @@ class WordsRepository with ChangeNotifier {
 
     _words = dataList.map((item) {
       Word word = Word(
-          collectionId: item['collectionId'],
-          id: item['id'],
-          targetLang: item['targetLang'],
-          ownLang: item['ownLang'],
-          secondLang: item['secondLang'],
-          thirdLang: item['thirdLang'],
-          part: (Part(item['partName'], Utilities.getColor(item['partColor']))),
-          image: File(item['image']),
-          example: item['example'],
-          exampleTranslations: item['exampleTranslations'],
-          difficulty: item['difficulty'],
-          favorite: item['favorite']);
+        collectionId: item['collectionId'],
+        id: item['id'],
+        targetLang: item['targetLang'],
+        ownLang: item['ownLang'],
+        secondLang: item['secondLang'],
+        thirdLang: item['thirdLang'],
+        part: (Part(item['partName'], Utilities.getColor(item['partColor']))),
+        image: File(item['image']),
+        example: item['example'],
+        exampleTranslations: item['exampleTranslations'],
+        difficulty: item['difficulty'],
+      );
       return word;
     }).toList();
 
@@ -106,7 +104,6 @@ class WordsRepository with ChangeNotifier {
       'example': word.example,
       'exampleTranslations': word.exampleTranslations,
       'difficulty': word.difficulty,
-      'favorite': word.favorite,
     };
     db.update(
       'words',

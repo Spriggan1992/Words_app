@@ -15,7 +15,7 @@ import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/models/word.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/size_config.dart';
-import 'ImgApi.dart';
+import 'img_api.dart';
 import 'components/InnerShadowTextField.dart';
 import 'components/custom_radio.dart';
 
@@ -174,10 +174,10 @@ class CardCreator extends StatelessWidget {
                                                           name: targetLang),
                                                     );
                                                 Navigator.pushNamed(
-                                                    context, ImgApi.id);
+                                                    context, ImageApi.id);
                                               },
                                               icon: Icon(
-                                                Icons.api_rounded,
+                                                Icons.web_asset,
                                                 size: 32,
                                               ),
                                               color: Color(0xFFDA627D),

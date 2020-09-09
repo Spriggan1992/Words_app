@@ -12,7 +12,7 @@ class ImageRepository {
   Future getNetworkImg({value}) async {
     List<ImgData> imageData = [];
     String requestUrl =
-        'https://pixabay.com/api/?key=17723422-77b02c597c0935e4cc98e0e5f&q=$value&image_type=photo';
+        'https://pixabay.com/api/?key=17723422-77b02c597c0935e4cc98e0e5f&q=$value&image_type=photo&lang=zh';
 
     http.Response response = await http.get(requestUrl);
 

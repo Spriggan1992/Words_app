@@ -140,12 +140,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
             alignment: Alignment.topLeft,
             overflow: Overflow.clip,
             children: <Widget>[
-              word.favorite == 1 && !widget.isEditingMode
-                  ? Container(
-                      width: 10,
-                      color: Theme.of(context).accentColor,
-                    )
-                  : Container(),
               //Part of speech
               AnimatedPositioned(
                 top: word.part.partName.length > 1
@@ -157,7 +151,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                   width: isExpanded ? defaultSize : defaultSize * 4,
                   height: defaultSize * 8,
                   child: Text(
-                    //TODO: favorite favorite output
                     "${word.part.partName}",
                     maxLines: 4,
                     style: TextStyle(
