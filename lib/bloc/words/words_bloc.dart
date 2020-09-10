@@ -12,6 +12,7 @@ part 'words_state.dart';
 class WordsBloc extends Bloc<WordsEvent, WordsState> {
   WordsBloc({this.wordsRepository}) : super(WordsLoading());
   final WordsRepository wordsRepository;
+
   Collection collection;
   Stream<WordsState> mapEventToState(
     WordsEvent event,
@@ -240,7 +241,6 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (state is WordsSuccess) {
       final List<Word> updatedWord = List.from((state as WordsSuccess).words)
         ..add(event.word);
-      
 
       yield WordsSuccess(words: updatedWord);
       await wordsRepository.addNewWord(event.word);

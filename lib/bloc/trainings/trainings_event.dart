@@ -9,26 +9,21 @@ abstract class TrainingsEvent extends Equatable {
 
 class TrainingsLoaded extends TrainingsEvent {
   final List<Word> words;
+  final String collectionId;
 
-  TrainingsLoaded({this.words});
-  List<Object> get props => [words];
+  TrainingsLoaded({this.words, this.collectionId});
+  List<Object> get props => [words, collectionId];
 }
 
-class TrainingsFilteredDifficulties extends TrainingsEvent {
-  final int difficulty;
-  final FilterGames games;
-  TrainingsFilteredDifficulties({this.difficulty, this.games});
-  @override
-  List<Object> get props => [difficulty, games];
-}
+class TrainingsFiltered extends TrainingsEvent {
+  final List<int> selectedDifficulties;
+  final List<Collection> selectedListCollections;
 
-class TrainingsFilteredFavorites extends TrainingsEvent {
-  final int difficulty;
-  final int favorites;
-  final FilterGames games;
-  TrainingsFilteredFavorites({this.favorites, this.games, this.difficulty});
+  // final int difficulty;
+
+  TrainingsFiltered({this.selectedDifficulties, this.selectedListCollections});
   @override
-  List<Object> get props => [favorites, games, difficulty];
+  List<Object> get props => [selectedListCollections, selectedDifficulties];
 }
 
 class TrainingsSelectCollections extends TrainingsEvent {

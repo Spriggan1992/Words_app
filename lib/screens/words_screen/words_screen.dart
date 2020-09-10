@@ -275,9 +275,9 @@ class WordsScreen extends StatelessWidget {
                       children: [
                         IconButton(
                             onPressed: () {
-                              context
-                                  .bloc<TrainingsBloc>()
-                                  .add(TrainingsLoaded(words: state.words));
+                              context.bloc<TrainingsBloc>().add(TrainingsLoaded(
+                                  words: state.words,
+                                  collectionId: collectionId));
                               Navigator.pushNamed(
                                 context,
                                 TrainingManager.id,

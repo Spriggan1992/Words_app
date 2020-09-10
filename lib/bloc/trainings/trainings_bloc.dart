@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:words_app/models/collection.dart';
-import 'package:words_app/models/fuiltersEnums.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/collections_repository.dart';
 import 'package:words_app/repositories/words_repository.dart';
@@ -23,70 +21,83 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
     if (event is TrainingsLoaded) {
       yield* _mapTrainingsLoadedToState(event);
     }
-    if (event is TrainingsFilteredDifficulties) {
-      yield* _mapTrainingsFilteredDifficultiesToState(event);
+    if (event is TrainingsFiltered) {
+      yield* _mapTrainingsFilteredToState(event);
     }
-    if (event is TrainingsSelectCollections) {
-      yield* _mapTrainingsSelectCollectionsToState(event);
-    }
+    // if (event is TrainingsSelectCollections) {
+    //   yield* _mapTrainingsSelectCollectionsToState(event);
+    // }
   }
 
   Stream<TrainingsState> _mapTrainingsLoadedToState(
       TrainingsLoaded event) async* {
     try {
       final updatedWords = event.words;
+
       final List<Collection> updatedListCollection =
           await collectionsRepository.fetchAndSetCollection();
-      final List<bool> selectedList =
-          List.generate(updatedListCollection.length, (index) => false);
+      final List<Collection> filteredListCollections = updatedListCollection
+          .where((collection) => collection.id == event.collectionId)
+          .toList();
+
+      print('id = $filteredListCollections');
       yield TrainingsSuccess(
+        filteredListCollections: filteredListCollections,
         words: updatedWords,
-        difficulty: 3,
         filteredListWords: updatedWords,
-        filterGames: FilterGames.bricks,
-        listCollection: updatedListCollection,
+        listCollections: updatedListCollection,
       );
     } catch (_) {
       yield TrainingsFailure();
     }
   }
 
-  Stream<TrainingsState> _mapTrainingsFilteredDifficultiesToState(
-      TrainingsFilteredDifficulties event) async* {
-    try {
-      final List<Word> updatedWords =
-          List.from((state as TrainingsSuccess).words);
-      final updatedDifficulties = event.difficulty;
-      final updatedGames = event.games ?? FilterGames.bricks;
+  Stream<TrainingsState> _mapTrainingsFilteredToState(
+      TrainingsFiltered event) async* {
+    final List<Collection> updatedFilteredListCollections =
+        List.from(event.selectedListCollections);
+    final List<Collection> updatedListCollections =
+        List.from((state as TrainingsSuccess).listCollections);
 
-      final List<Word> updatedFilteredList = (state as TrainingsSuccess)
-          .words
-          .toList()
-          .where((word) => event.difficulty == 3
-              ? word is Word
-              : word.difficulty == event.difficulty)
-          .toList();
-
-      yield TrainingsSuccess(
-          difficulty: updatedDifficulties,
-          filteredListWords: updatedFilteredList,
-          filterGames: updatedGames,
-          words: updatedWords);
-    } catch (_) {
-      TrainingsFailure();
+    final List<Word> selectedFilteredList = [];
+    for (var i = 0; i < event.selectedListCollections.length; i++) {
+      var a = await wordsRepository
+          .fetchAndSetWords(event.selectedListCollections[i].id);
+      a.forEach((element) {
+        selectedFilteredList.add(element);
+      });
     }
+    final List<Word> updatedFilteredList = [];
+    for (var i = 0; i < event.selectedDifficulties.length; i++) {
+      selectedFilteredList.forEach((word) {
+        if (word.difficulty == event.selectedDifficulties[i]) {
+          updatedFilteredList.add(word);
+          print('word difficulty = ${word.difficulty} $i');
+        }
+        if (event.selectedDifficulties[i] == 3) {
+          print('word difficulty = ${word.difficulty} $i');
+          updatedFilteredList.add(word);
+        }
+      });
+    }
+
+    yield TrainingsSuccess(
+      filteredListWords: updatedFilteredList,
+      listCollections: updatedListCollections,
+      filteredListCollections: updatedFilteredListCollections,
+    );
   }
 
-  Stream<TrainingsState> _mapTrainingsSelectCollectionsToState(
-      TrainingsSelectCollections event) async* {
-    final List<Collection> updateList =
-        List.from((state as TrainingsSuccess).listCollection);
-    final List<Collection> updatedFilteredCollection =
-        event.collection.map((collection) => collection).toList();
-    print(updatedFilteredCollection);
-    yield TrainingsSuccess(
-        listCollection: updateList,
-        filteredListCollection: updatedFilteredCollection);
-    // }
-  }
+  // Stream<TrainingsState> _mapTrainingsSelectCollectionsToState(
+  //     TrainingsSelectCollections event) async* {
+  //   final List<Collection> updateList =
+  //       List.from((state as TrainingsSuccess).listCollections);
+  //   final List<Collection> updatedFilteredCollection =
+  //       event.collection.map((collection) => collection).toList();
+
+  //   yield TrainingsSuccess(
+  //       listCollections: updateList,
+  //       filteredListCollections: updatedFilteredCollection);
+  //   // }
+  // }
 }

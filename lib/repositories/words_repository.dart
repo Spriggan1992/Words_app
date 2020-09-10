@@ -145,67 +145,6 @@ class WordsRepository with ChangeNotifier {
     return croppedFile;
   }
 
-  // void partHandleSubmit(dynamic value, Word words) {
-  //   words.changePart(value);
-  //   DBHelper.update('words', {
-  //     'id': words.id,
-  //     'partName': words.part.partName,
-  //     'partColor': words.part.partColor.toString(),
-  //   });
-  //   notifyListeners();
-  // }
-
-  // void targetLangHandleSubmit(dynamic value, Word words) {
-  //   words.changeTargetLang(value);
-  //   DBHelper.update('words', {
-  //     'id': words.id,
-  //     'targetLang': words.targetLang,
-  //   });
-  //   notifyListeners();
-  // }
-
-  // void secondLangHandleSubmit(dynamic value, Word words) {
-  //   words.changeSecondLang(value);
-  //   DBHelper.update('words', {
-  //     'id': words.id,
-  //     'secondLang': words.secondLang,
-  //   });
-  //   notifyListeners();
-  // }
-
-  // void thirdLangHandleSubmit(dynamic value, Word words) {
-  //   words.changeThirdLang(value);
-  //   DBHelper.update('words', {
-  //     'id': words.id,
-  //     'thirdLang': words.thirdLang,
-  //   });
-  //   notifyListeners();
-  // }
-
-  // void ownLangHandleSubmit(dynamic value, Word words) {
-  //   words.changeOwnLang(value);
-  //   DBHelper.update('words', {
-  //     'id': words.id,
-  //     'ownLang': words.ownLang,
-  //   });
-  //   notifyListeners();
-  // }
-
-  // void toggleSecondLang(Word words) {
-  //   words.toggleSecondLang();
-  //   notifyListeners();
-  // }
-
-  // void toggleOwnLang(Word words) {
-  //   words.toggleOwnLang();
-  //   notifyListeners();
-  // }
-
-  // void toggleShowImgInWordsProvider(Word words) {
-  //   words.toggleShowImg();
-  //   notifyListeners();
-  // }
-
   bool isEditingMode = false;
   // bool isSelected = false;
 

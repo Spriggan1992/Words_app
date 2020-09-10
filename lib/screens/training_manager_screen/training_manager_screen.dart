@@ -23,18 +23,11 @@ class TrainingManager extends StatefulWidget {
 }
 
 class _TrainingManagerState extends State<TrainingManager> {
-  bool isChecked = false;
-  List<Collection> selectedListCollections = [];
-  List<String> dummySilectedCips = [
-    'first collection',
-    'body',
-    'verbs',
-    'noun',
-    'nothing iteresting'
-  ];
-  int selectedDifficulty = 3;
-  FilterGames selectedGames;
-  String dropdownValue = 'Collection';
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  Future<bool> confirm;
+  List<int> selectedDifficulties = [];
+  FilterGames selectedGames = FilterGames.bricks;
+  List<Collection> dummyFilteredListCollection;
 
   List<Difficulty> difficulty = DifficultyList().difficultyList;
 
@@ -60,7 +53,11 @@ class _TrainingManagerState extends State<TrainingManager> {
           );
         }
         if (state is TrainingsSuccess) {
+          // Varibal that contains Filtered List of Collections
+          List<Collection> selectedListCollections =
+              state.filteredListCollections;
           return Scaffold(
+            key: _scaffoldKey,
             backgroundColor: Color(0xFFeae2da),
             appBar: BaseAppBar(
               title: Text('Training Manager'),
@@ -80,19 +77,19 @@ class _TrainingManagerState extends State<TrainingManager> {
                         TitleTextHolder(title: '1. I want to play ...'),
                         buildGamesBtns(defaultSize, state, context),
                         TitleTextHolder(
-                            title: '3. I want to use words from ...'),
+                            title: '2. I want to use words from ...'),
                         Container(
                           width: SizeConfig.blockSizeHorizontal * 100,
                           height: defaultSize * 10,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Flexible(
-                                flex: 3,
                                 child: Card(
                                   elevation: 5,
                                   child: ListTile(
-                                    leading: Text('Choose collections'),
+                                    leading: Text('Choose collections',
+                                        style: TextStyle(fontSize: 12)),
                                     trailing: Icon(Icons.arrow_drop_down),
                                     visualDensity: VisualDensity.compact,
                                     onTap: () {
@@ -100,7 +97,10 @@ class _TrainingManagerState extends State<TrainingManager> {
                                           context: context,
                                           builder: (context) {
                                             return AlertDialog(
-                                              title: Text('Select Colletions'),
+                                              title: Text(
+                                                'Select Colletions',
+                                                textAlign: TextAlign.center,
+                                              ),
                                               // contentPadding: EdgeInsets.all(
                                               //     defaultSize * 0.8),
                                               content: StatefulBuilder(
@@ -115,27 +115,39 @@ class _TrainingManagerState extends State<TrainingManager> {
                                                           defaultSize * 5,
                                                       // shrinkWrap: true,
                                                       itemCount: state
-                                                          .listCollection
+                                                          .listCollections
                                                           .length,
                                                       itemBuilder:
                                                           (context, index) {
-                                                        return CollectionPicker(
-                                                          selectedList:
-                                                              selectedListCollections,
-                                                          state: state,
-                                                          index: index,
+                                                        return CheckboxListTile(
+                                                          title: Text(state
+                                                              .listCollections[
+                                                                  index]
+                                                              .title),
+                                                          value: selectedListCollections
+                                                              .contains(state
+                                                                      .listCollections[
+                                                                  index]),
                                                           onChanged: (value) {
                                                             setState(() {
                                                               if (value) {
                                                                 selectedListCollections
                                                                     .add(state
-                                                                            .listCollection[
+                                                                            .listCollections[
                                                                         index]);
                                                               } else {
                                                                 selectedListCollections
                                                                     .remove(state
-                                                                            .listCollection[
+                                                                            .listCollections[
                                                                         index]);
+                                                                // context
+                                                                //     .bloc<
+                                                                //         TrainingsBloc>()
+                                                                //     .add(TrainingsFiltered(
+                                                                //         selectedDifficulties:
+                                                                //             selectedDifficulties,
+                                                                //         selectedListCollections:
+                                                                //             selectedListCollections));
                                                               }
                                                             });
                                                           },
@@ -147,20 +159,21 @@ class _TrainingManagerState extends State<TrainingManager> {
                                               ),
                                               actions: [
                                                 FlatButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                  child: Text('Cancel'),
-                                                ),
-                                                FlatButton(
                                                   onPressed: () {
-                                                    Navigator.pop(context);
+                                                    setState(() {});
+
                                                     context
                                                         .bloc<TrainingsBloc>()
-                                                        .add(TrainingsSelectCollections(
-                                                            collection:
+                                                        .add(TrainingsFiltered(
+                                                            selectedDifficulties:
+                                                                selectedDifficulties,
+                                                            selectedListCollections:
                                                                 selectedListCollections));
+                                                    Navigator.pop(
+                                                      context,
+                                                    );
                                                   },
-                                                  child: Text('Ok'),
+                                                  child: Text('OK'),
                                                 )
                                               ],
                                             );
@@ -169,42 +182,34 @@ class _TrainingManagerState extends State<TrainingManager> {
                                   ),
                                 ),
                               ),
-                              Flexible(
-                                  flex: 3,
+                              SizedBox(width: defaultSize * 2),
+                              Expanded(
                                   child: SingleChildScrollView(
-                                    child: Wrap(
-                                      // alignment: WrapAlignment.center,
-                                      // crossAxisAlignment:
-                                      //     WrapCrossAlignment.center,
-                                      // direction: Axis.vertical,
-                                      children:
-                                          selectedListCollections.map((item) {
-                                        return FittedBox(
-                                          child: Chip(
+                                child: selectedListCollections.isEmpty
+                                    ? Text('You have to choose Collection')
+                                    : Wrap(
+                                        alignment: WrapAlignment.center,
+                                        children:
+                                            selectedListCollections.map((item) {
+                                          return Chip(
                                             label: Text(item.title,
                                                 style: TextStyle(fontSize: 10)),
-                                          ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ))
+                                          );
+                                        }).toList(),
+                                      ),
+                              ))
                             ],
                           ),
                         ),
                         TitleTextHolder(
-                            title: '2. I want to study words that I ...'),
-                        buildDifficultiesBtns(defaultSize, context, state),
+                            title: '3. I want to study words that I ...'),
+                        buildDifficultiesBtns(defaultSize, context, state,
+                            selectedListCollections),
                       ],
                     ),
                   ),
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Checkbox(value: false, onChanged: null),
-                //     Text('remember my choice'),
-                //   ],
-                // ),
+
                 SizedBox(height: defaultSize * 2),
 
                 //  Button-container
@@ -214,22 +219,47 @@ class _TrainingManagerState extends State<TrainingManager> {
                     textColor: Colors.black,
                     backgroundColor: Theme.of(context).accentColor,
                     onPressed: () async {
-                      if (state.filterGames == FilterGames.bricks) {
+                      if (selectedDifficulties.isEmpty) {
+                        _scaffoldKey.currentState.showSnackBar(SnackBar(
+                            duration: Duration(milliseconds: 1500),
+                            content: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'You have to choose which words you want to learn',
+                              ),
+                            )));
+                      }
+                      if (selectedListCollections.isEmpty) {
+                        _scaffoldKey.currentState.showSnackBar(SnackBar(
+                            duration: Duration(milliseconds: 1500),
+                            content: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'You have to choose which collection',
+                              ),
+                            )));
+                      }
+
+                      if (selectedGames == FilterGames.bricks &&
+                          selectedDifficulties.isNotEmpty &&
+                          selectedListCollections.isNotEmpty) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => Matches(
-                                  // words: state.filteredListWords,
-                                  ),
+                                words: state.filteredListWords,
+                              ),
                             ));
                       }
-                      if (state.filterGames == FilterGames.wrongCorrect) {
+                      if (selectedGames == FilterGames.wrongCorrect &&
+                          selectedDifficulties.isNotEmpty &&
+                          selectedListCollections.isNotEmpty) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => CorrectWrong(
-                                  // words: state.filteredListWords,
-                                  ),
+                                words: state.filteredListWords,
+                              ),
                             ));
                       }
                     },
@@ -245,7 +275,10 @@ class _TrainingManagerState extends State<TrainingManager> {
   }
 
   Widget buildGamesBtns(
-      double defaultSize, TrainingsSuccess state, BuildContext context) {
+    double defaultSize,
+    TrainingsSuccess state,
+    BuildContext context,
+  ) {
     return Container(
         // child: GamesBtns(),
         child: Row(
@@ -270,11 +303,11 @@ class _TrainingManagerState extends State<TrainingManager> {
                   size: defaultSize * 3,
                 ),
               ),
-              selected: state.filterGames == item,
+              selected: selectedGames == item,
               onSelected: (selected) {
-                selectedGames = item;
-                context.bloc<TrainingsBloc>().add(TrainingsFilteredDifficulties(
-                    difficulty: selectedDifficulty, games: selectedGames));
+                setState(() {
+                  selectedGames = item;
+                });
               },
             ),
           );
@@ -283,61 +316,89 @@ class _TrainingManagerState extends State<TrainingManager> {
     ));
   }
 
-  Container buildDifficultiesBtns(
-      double defaultSize, BuildContext context, TrainingsSuccess state) {
+  Container buildDifficultiesBtns(double defaultSize, BuildContext context,
+      TrainingsSuccess state, List<Collection> selectedListCollections) {
     return Container(
-        child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: difficulty.map((item) {
-        return Padding(
-          padding: const EdgeInsets.only(right: 5),
-          child: ChoiceChip(
-            elevation: 5,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12.0),
-            label: Text(item.name),
-            labelStyle: TextStyle(
-                fontSize: defaultSize * 1.6,
-                color: Colors.black,
-                fontWeight: FontWeight.w900),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(defaultSize * 0.5),
-            ),
-            backgroundColor: item.color,
-            selectedColor: state.difficulty == 3 ? item.color : Colors.grey,
-            selected: state.difficulty == item.difficulty,
-            onSelected: (selected) {
-              selectedDifficulty == item.difficulty
-                  ? selectedDifficulty = 3
-                  : selectedDifficulty = item.difficulty;
-              context.bloc<TrainingsBloc>().add(TrainingsFilteredDifficulties(
-                  difficulty: selectedDifficulty, games: selectedGames));
-            },
+        child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: difficulty.map((item) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: ChoiceChip(
+                elevation: 5,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 12.0),
+                label: Text(item.name),
+                labelStyle: TextStyle(
+                    fontSize: defaultSize * 1.6,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w900),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(defaultSize * 0.5),
+                ),
+                backgroundColor: item.color,
+                selected: selectedDifficulties.contains(item.difficulty),
+                onSelected: (selected) {
+                  setState(() {
+                    if (selectedDifficulties.contains(3)) {
+                      selectedDifficulties.clear();
+                      if (selectedDifficulties.contains(item.difficulty)) {
+                        selectedDifficulties.remove(item.difficulty);
+                      } else {
+                        selectedDifficulties.add(item.difficulty);
+                      }
+                    } else {
+                      selectedDifficulties.contains(item.difficulty)
+                          ? selectedDifficulties.remove(item.difficulty)
+                          : selectedDifficulties.add(item.difficulty);
+                    }
+                  });
+
+                  context.bloc<TrainingsBloc>().add(TrainingsFiltered(
+                      selectedDifficulties: selectedDifficulties,
+                      selectedListCollections: selectedListCollections));
+                },
+              ),
+            );
+          }).toList(),
+        ),
+        SizedBox(height: 5),
+        ChoiceChip(
+          labelPadding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.blockSizeHorizontal * 37),
+          elevation: 5,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12.0),
+          label: Text('all'),
+          labelStyle: TextStyle(
+              fontSize: defaultSize * 1.6,
+              color: Colors.black,
+              fontWeight: FontWeight.w900),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(defaultSize * 0.5),
           ),
-        );
-      }).toList(),
+          backgroundColor: Colors.white,
+          selected: selectedDifficulties.contains(3),
+          onSelected: (selected) {
+            setState(() {
+              if (selectedDifficulties.contains(3)) {
+                selectedDifficulties.remove(3);
+              } else {
+                selectedDifficulties.clear();
+                selectedDifficulties.add(3);
+              }
+            });
+            // context.bloc<TrainingsBloc>().add(
+            context.bloc<TrainingsBloc>().add(TrainingsFiltered(
+                selectedDifficulties: selectedDifficulties,
+                selectedListCollections: selectedListCollections));
+          },
+        )
+      ],
     ));
   }
 }
 
-class CollectionPicker extends StatelessWidget {
-  const CollectionPicker({
-    this.state,
-    this.index,
-    this.onChanged,
-    this.selectedList,
-    Key key,
-  }) : super(key: key);
-
-  final TrainingsSuccess state;
-  final int index;
-  final Function onChanged;
-  final List selectedList;
-
-  @override
-  Widget build(BuildContext context) {
-    return CheckboxListTile(
-        title: Text(state.listCollection[index].title),
-        value: selectedList.contains(state.listCollection[index]),
-        onChanged: onChanged);
-  }
-}
+// Colors.lightBlue.withOpacity(0.3),
+// padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2.0),
