@@ -87,17 +87,4 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
       filteredListCollections: updatedFilteredListCollections,
     );
   }
-
-  // Stream<TrainingsState> _mapTrainingsSelectCollectionsToState(
-  //     TrainingsSelectCollections event) async* {
-  //   final List<Collection> updateList =
-  //       List.from((state as TrainingsSuccess).listCollections);
-  //   final List<Collection> updatedFilteredCollection =
-  //       event.collection.map((collection) => collection).toList();
-
-  //   yield TrainingsSuccess(
-  //       listCollections: updateList,
-  //       filteredListCollections: updatedFilteredCollection);
-  //   // }
-  // }
 }
