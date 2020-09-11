@@ -37,21 +37,6 @@ class CollectionsRepository {
     return collection;
   }
 
-  // Future<List<Collection>> fetchAndSetOneCollection(String id) async {
-  //   final dataList = await DBHelper.getData('collections', collectionId: id);
-  //   _collections = dataList
-  //       .map(
-  //         (item) => Collection(
-  //             id: item['id'],
-  //             title: item['title'],
-  //             language: item['language'],
-  //             isEditingBtns: false,
-  //             showBtns: false),
-  //       )
-  //       .toList();
-  //   return _collections;
-  // }
-
   /// This method is responsible for fetching all Collections from DB and returning it to collections_bloc
   Future<List<Collection>> fetchAndSetCollection() async {
     final dataList = await DBHelper.getData('collections');

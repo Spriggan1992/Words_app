@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/reusable_main_button.dart';
+import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/collection.dart';
 
 import 'package:words_app/models/difficulty.dart';
@@ -24,18 +25,37 @@ class TrainingManager extends StatefulWidget {
 
 class _TrainingManagerState extends State<TrainingManager> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  Future<bool> confirm;
   List<int> selectedDifficulties = [];
   FilterGames selectedGames = FilterGames.bricks;
-  List<Collection> dummyFilteredListCollection;
-
   List<Difficulty> difficulty = DifficultyList().difficultyList;
 
+  // Data for creating dynamic icons for games buttons
   List<IconData> iconsList = [
     Icons.fitness_center,
     Icons.directions_bike,
     Icons.photo_album,
   ];
+
+  /// Return amount of filtered words when difficulties is chosen.
+  ///
+  /// path:'/training_manager_screen'
+  String countWordsByDifficulty(List<Word> listWord, int difficulty) {
+    int counter = 0;
+    for (int i = 0; i < listWord.length; i++) {
+      if (selectedDifficulties.isEmpty) {
+        counter = 0;
+      } else {
+        if (listWord[i].difficulty == difficulty) {
+          counter++;
+        } else {
+          if (difficulty == 3) {
+            counter = listWord.length;
+          }
+        }
+      }
+    }
+    return counter.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +74,7 @@ class _TrainingManagerState extends State<TrainingManager> {
         }
         if (state is TrainingsSuccess) {
           // Varibal that contains Filtered List of Collections
-          List<Collection> selectedListCollections =
-              state.filteredListCollections;
+          List<Collection> selectedListCollections = state.filteredCollections;
           return Scaffold(
             key: _scaffoldKey,
             backgroundColor: Color(0xFFeae2da),
@@ -66,7 +85,6 @@ class _TrainingManagerState extends State<TrainingManager> {
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Main container with all content on the page
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: defaultSize * 3),
@@ -78,193 +96,18 @@ class _TrainingManagerState extends State<TrainingManager> {
                         buildGamesBtns(defaultSize, state, context),
                         TitleTextHolder(
                             title: '2. I want to use words from ...'),
-                        Container(
-                          width: SizeConfig.blockSizeHorizontal * 100,
-                          height: defaultSize * 10,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Card(
-                                  elevation: 5,
-                                  child: ListTile(
-                                    leading: Text('Choose collections',
-                                        style: TextStyle(fontSize: 12)),
-                                    trailing: Icon(Icons.arrow_drop_down),
-                                    visualDensity: VisualDensity.compact,
-                                    onTap: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title: Text(
-                                                'Select Colletions',
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              // contentPadding: EdgeInsets.all(
-                                              //     defaultSize * 0.8),
-                                              content: StatefulBuilder(
-                                                builder: (context, setState) {
-                                                  return Container(
-                                                    height: defaultSize * 30,
-                                                    width: SizeConfig
-                                                            .blockSizeHorizontal *
-                                                        70,
-                                                    child: ListView.builder(
-                                                      itemExtent:
-                                                          defaultSize * 5,
-                                                      // shrinkWrap: true,
-                                                      itemCount: state
-                                                          .listCollections
-                                                          .length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return CheckboxListTile(
-                                                          title: Text(state
-                                                              .listCollections[
-                                                                  index]
-                                                              .title),
-                                                          value: selectedListCollections
-                                                              .contains(state
-                                                                      .listCollections[
-                                                                  index]),
-                                                          onChanged: (value) {
-                                                            setState(() {
-                                                              if (value) {
-                                                                selectedListCollections
-                                                                    .add(state
-                                                                            .listCollections[
-                                                                        index]);
-                                                              } else {
-                                                                selectedListCollections
-                                                                    .remove(state
-                                                                            .listCollections[
-                                                                        index]);
-                                                                // context
-                                                                //     .bloc<
-                                                                //         TrainingsBloc>()
-                                                                //     .add(TrainingsFiltered(
-                                                                //         selectedDifficulties:
-                                                                //             selectedDifficulties,
-                                                                //         selectedListCollections:
-                                                                //             selectedListCollections));
-                                                              }
-                                                            });
-                                                          },
-                                                        );
-                                                      },
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                              actions: [
-                                                FlatButton(
-                                                  onPressed: () {
-                                                    setState(() {});
-
-                                                    context
-                                                        .bloc<TrainingsBloc>()
-                                                        .add(TrainingsFiltered(
-                                                            selectedDifficulties:
-                                                                selectedDifficulties,
-                                                            selectedListCollections:
-                                                                selectedListCollections));
-                                                    Navigator.pop(
-                                                      context,
-                                                    );
-                                                  },
-                                                  child: Text('OK'),
-                                                )
-                                              ],
-                                            );
-                                          });
-                                    },
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: defaultSize * 2),
-                              Expanded(
-                                  child: SingleChildScrollView(
-                                child: selectedListCollections.isEmpty
-                                    ? Text('You have to choose Collection')
-                                    : Wrap(
-                                        alignment: WrapAlignment.center,
-                                        children:
-                                            selectedListCollections.map((item) {
-                                          return Chip(
-                                            label: Text(item.title,
-                                                style: TextStyle(fontSize: 10)),
-                                          );
-                                        }).toList(),
-                                      ),
-                              ))
-                            ],
-                          ),
-                        ),
+                        buildChooseCollectionsContainer(defaultSize, context,
+                            state, selectedListCollections),
                         TitleTextHolder(
                             title: '3. I want to study words that I ...'),
                         buildDifficultiesBtns(defaultSize, context, state,
                             selectedListCollections),
+                        buildMetricsContainer(state),
                       ],
                     ),
                   ),
                 ),
-
-                SizedBox(height: defaultSize * 2),
-
-                //  Button-container
-                Container(
-                  child: ReusableMainButton(
-                    titleText: 'Go to Trainig',
-                    textColor: Colors.black,
-                    backgroundColor: Theme.of(context).accentColor,
-                    onPressed: () async {
-                      if (selectedDifficulties.isEmpty) {
-                        _scaffoldKey.currentState.showSnackBar(SnackBar(
-                            duration: Duration(milliseconds: 1500),
-                            content: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'You have to choose which words you want to learn',
-                              ),
-                            )));
-                      }
-                      if (selectedListCollections.isEmpty) {
-                        _scaffoldKey.currentState.showSnackBar(SnackBar(
-                            duration: Duration(milliseconds: 1500),
-                            content: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'You have to choose which collection',
-                              ),
-                            )));
-                      }
-
-                      if (selectedGames == FilterGames.bricks &&
-                          selectedDifficulties.isNotEmpty &&
-                          selectedListCollections.isNotEmpty) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Matches(
-                                words: state.filteredListWords,
-                              ),
-                            ));
-                      }
-                      if (selectedGames == FilterGames.wrongCorrect &&
-                          selectedDifficulties.isNotEmpty &&
-                          selectedListCollections.isNotEmpty) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CorrectWrong(
-                                words: state.filteredListWords,
-                              ),
-                            ));
-                      }
-                    },
-                  ),
-                ),
+                buildMainBtn(context, selectedListCollections, state),
               ],
             ),
           );
@@ -283,13 +126,12 @@ class _TrainingManagerState extends State<TrainingManager> {
         // child: GamesBtns(),
         child: Row(
       children: FilterGames.values.map((item) {
-        for (var i = 0; i < iconsList.length - 1; i++) {
+        for (var i = 0; i < iconsList.length; i++) {
           return Padding(
             padding: const EdgeInsets.only(right: 30),
             child: ChoiceChip(
               backgroundColor: Colors.white,
               labelPadding: EdgeInsets.all(defaultSize * 0.8),
-              selectedColor: Colors.grey,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(defaultSize * 0.5)),
               elevation: 5,
@@ -342,6 +184,7 @@ class _TrainingManagerState extends State<TrainingManager> {
                 selected: selectedDifficulties.contains(item.difficulty),
                 onSelected: (selected) {
                   setState(() {
+                    /// Add difficulties filter to the List[selectedDifficulties]
                     if (selectedDifficulties.contains(3)) {
                       selectedDifficulties.clear();
                       if (selectedDifficulties.contains(item.difficulty)) {
@@ -358,7 +201,7 @@ class _TrainingManagerState extends State<TrainingManager> {
 
                   context.bloc<TrainingsBloc>().add(TrainingsFiltered(
                       selectedDifficulties: selectedDifficulties,
-                      selectedListCollections: selectedListCollections));
+                      selectedCollections: selectedListCollections));
                 },
               ),
             );
@@ -381,6 +224,7 @@ class _TrainingManagerState extends State<TrainingManager> {
           backgroundColor: Colors.white,
           selected: selectedDifficulties.contains(3),
           onSelected: (selected) {
+            /// Add difficulties filter to the List[selectedDifficulties]
             setState(() {
               if (selectedDifficulties.contains(3)) {
                 selectedDifficulties.remove(3);
@@ -392,13 +236,221 @@ class _TrainingManagerState extends State<TrainingManager> {
             // context.bloc<TrainingsBloc>().add(
             context.bloc<TrainingsBloc>().add(TrainingsFiltered(
                 selectedDifficulties: selectedDifficulties,
-                selectedListCollections: selectedListCollections));
+                selectedCollections: selectedListCollections));
           },
         )
       ],
     ));
   }
-}
 
-// Colors.lightBlue.withOpacity(0.3),
-// padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2.0),
+  Container buildChooseCollectionsContainer(
+      double defaultSize,
+      BuildContext context,
+      TrainingsSuccess state,
+      List<Collection> selectedListCollections) {
+    return Container(
+      width: SizeConfig.blockSizeHorizontal * 100,
+      height: defaultSize * 10,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Card(
+              elevation: 5,
+              child: ListTile(
+                leading:
+                    Text('Choose collections', style: TextStyle(fontSize: 12)),
+                trailing: Icon(Icons.arrow_drop_down),
+                visualDensity: VisualDensity.compact,
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(
+                            'Select Colletions',
+                            textAlign: TextAlign.center,
+                          ),
+                          content: StatefulBuilder(
+                            builder: (context, setState) {
+                              return Container(
+                                height: defaultSize * 30,
+                                width: SizeConfig.blockSizeHorizontal * 70,
+                                child: ListView.builder(
+                                  itemExtent: defaultSize * 5,
+                                  itemCount: state.collections.length,
+                                  itemBuilder: (context, index) {
+                                    return CheckboxListTile(
+                                      title:
+                                          Text(state.collections[index].title),
+                                      value: selectedListCollections
+                                          .contains(state.collections[index]),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          if (value) {
+                                            selectedListCollections
+                                                .add(state.collections[index]);
+                                          } else {
+                                            selectedListCollections.remove(
+                                                state.collections[index]);
+                                          }
+                                        });
+                                      },
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                          actions: [
+                            FlatButton(
+                              onPressed: () {
+                                setState(() {});
+                                context.bloc<TrainingsBloc>().add(
+                                    TrainingsFiltered(
+                                        selectedDifficulties:
+                                            selectedDifficulties,
+                                        selectedCollections:
+                                            selectedListCollections));
+                                Navigator.pop(
+                                  context,
+                                );
+                              },
+                              child: Text('OK'),
+                            )
+                          ],
+                        );
+                      });
+                },
+              ),
+            ),
+          ),
+          SizedBox(width: defaultSize * 2),
+          Expanded(
+              child: Container(
+            decoration: innerShadow,
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 5),
+              child: SingleChildScrollView(
+                physics: ScrollPhysics(parent: BouncingScrollPhysics()),
+                clipBehavior: Clip.hardEdge,
+                child: selectedListCollections.isEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'You have to choose Collection',
+                        ),
+                      )
+                    : Wrap(
+                        spacing: defaultSize * 0.3,
+                        alignment: WrapAlignment.center,
+                        children: selectedListCollections.map((item) {
+                          return Chip(
+                            label: Text(item.title,
+                                style: TextStyle(fontSize: 10)),
+                          );
+                        }).toList(),
+                      ),
+              ),
+            ),
+          ))
+        ],
+      ),
+    );
+  }
+
+  Container buildMetricsContainer(TrainingsSuccess state) {
+    return Container(
+        padding: const EdgeInsets.all(10),
+        decoration: innerShadow,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('know:'),
+                Text(countWordsByDifficulty(state.filteredWords, 0))
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('know a little:'),
+                Text(countWordsByDifficulty(state.filteredWords, 1))
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("don't know"),
+                Text(countWordsByDifficulty(state.filteredWords, 2))
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Total:"),
+                Text(countWordsByDifficulty(state.filteredWords, 3))
+              ],
+            )
+          ],
+        ));
+  }
+
+  Container buildMainBtn(BuildContext context,
+      List<Collection> selectedListCollections, TrainingsSuccess state) {
+    return Container(
+      child: ReusableMainButton(
+        titleText: 'Go to Trainig',
+        textColor: Colors.black,
+        backgroundColor: Theme.of(context).accentColor,
+        onPressed: () async {
+          if (selectedDifficulties.isEmpty) {
+            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                duration: Duration(milliseconds: 1500),
+                content: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'You have to choose which words you want to learn',
+                  ),
+                )));
+          }
+          if (selectedListCollections.isEmpty) {
+            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                duration: Duration(milliseconds: 1500),
+                content: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'You have to choose which collection',
+                  ),
+                )));
+          }
+
+          if (selectedGames == FilterGames.bricks &&
+              selectedDifficulties.isNotEmpty &&
+              selectedListCollections.isNotEmpty) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Matches(
+                    words: state.filteredWords,
+                  ),
+                ));
+          }
+          if (selectedGames == FilterGames.wrongCorrect &&
+              selectedDifficulties.isNotEmpty &&
+              selectedListCollections.isNotEmpty) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CorrectWrong(
+                    words: state.filteredWords,
+                  ),
+                ));
+          }
+        },
+      ),
+    );
+  }
+}

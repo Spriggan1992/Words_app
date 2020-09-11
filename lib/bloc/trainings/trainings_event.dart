@@ -17,20 +17,20 @@ class TrainingsLoaded extends TrainingsEvent {
 
 class TrainingsFiltered extends TrainingsEvent {
   final List<int> selectedDifficulties;
-  final List<Collection> selectedListCollections;
+  final List<Collection> selectedCollections;
 
   // final int difficulty;
 
-  TrainingsFiltered({this.selectedDifficulties, this.selectedListCollections});
+  TrainingsFiltered({this.selectedDifficulties, this.selectedCollections});
   @override
-  List<Object> get props => [selectedListCollections, selectedDifficulties];
+  List<Object> get props => [selectedCollections, selectedDifficulties];
 }
 
 class TrainingsSelectCollections extends TrainingsEvent {
-  final List<Collection> collection;
+  final List<Collection> collections;
 
-  TrainingsSelectCollections({this.collection});
+  TrainingsSelectCollections({this.collections});
 
   @override
-  List<Object> get props => [collection];
+  List<Object> get props => [collections];
 }

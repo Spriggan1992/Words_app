@@ -24,28 +24,21 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
     if (event is TrainingsFiltered) {
       yield* _mapTrainingsFilteredToState(event);
     }
-    // if (event is TrainingsSelectCollections) {
-    //   yield* _mapTrainingsSelectCollectionsToState(event);
-    // }
   }
 
   Stream<TrainingsState> _mapTrainingsLoadedToState(
       TrainingsLoaded event) async* {
     try {
-      final updatedWords = event.words;
-
-      final List<Collection> updatedListCollection =
+      final List<Word> updatedWords = List.from(event.words);
+      final List<Collection> updatedCollections =
           await collectionsRepository.fetchAndSetCollection();
-      final List<Collection> filteredListCollections = updatedListCollection
+      final List<Collection> filteredCollections = updatedCollections
           .where((collection) => collection.id == event.collectionId)
           .toList();
-
-      print('id = $filteredListCollections');
       yield TrainingsSuccess(
-        filteredListCollections: filteredListCollections,
-        words: updatedWords,
-        filteredListWords: updatedWords,
-        listCollections: updatedListCollection,
+        filteredCollections: filteredCollections,
+        filteredWords: updatedWords,
+        collections: updatedCollections,
       );
     } catch (_) {
       yield TrainingsFailure();
@@ -54,37 +47,41 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
 
   Stream<TrainingsState> _mapTrainingsFilteredToState(
       TrainingsFiltered event) async* {
-    final List<Collection> updatedFilteredListCollections =
-        List.from(event.selectedListCollections);
-    final List<Collection> updatedListCollections =
-        List.from((state as TrainingsSuccess).listCollections);
+    try {
+      final List<Collection> updatedFilteredCollections =
+          List.from(event.selectedCollections);
+      final List<Collection> updatedCollections =
+          List.from((state as TrainingsSuccess).collections);
 
-    final List<Word> selectedFilteredList = [];
-    for (var i = 0; i < event.selectedListCollections.length; i++) {
-      var a = await wordsRepository
-          .fetchAndSetWords(event.selectedListCollections[i].id);
-      a.forEach((element) {
-        selectedFilteredList.add(element);
-      });
-    }
-    final List<Word> updatedFilteredList = [];
-    for (var i = 0; i < event.selectedDifficulties.length; i++) {
-      selectedFilteredList.forEach((word) {
-        if (word.difficulty == event.selectedDifficulties[i]) {
-          updatedFilteredList.add(word);
-          print('word difficulty = ${word.difficulty} $i');
-        }
-        if (event.selectedDifficulties[i] == 3) {
-          print('word difficulty = ${word.difficulty} $i');
-          updatedFilteredList.add(word);
-        }
-      });
-    }
+      // Extract Words from FuilteredCollections
+      final List<Word> selectedFilteredList = [];
+      for (var i = 0; i < event.selectedCollections.length; i++) {
+        var fetchedCollections = await wordsRepository
+            .fetchAndSetWords(event.selectedCollections[i].id);
+        fetchedCollections.forEach((element) {
+          selectedFilteredList.add(element);
+        });
+      }
+      // Update Words by difficulties
+      final List<Word> updatedFilteredList = [];
+      for (var i = 0; i < event.selectedDifficulties.length; i++) {
+        selectedFilteredList.forEach((word) {
+          if (word.difficulty == event.selectedDifficulties[i]) {
+            updatedFilteredList.add(word);
+          }
+          if (event.selectedDifficulties[i] == 3) {
+            updatedFilteredList.add(word);
+          }
+        });
+      }
 
-    yield TrainingsSuccess(
-      filteredListWords: updatedFilteredList,
-      listCollections: updatedListCollections,
-      filteredListCollections: updatedFilteredListCollections,
-    );
+      yield TrainingsSuccess(
+        filteredWords: updatedFilteredList,
+        collections: updatedCollections,
+        filteredCollections: updatedFilteredCollections,
+      );
+    } catch (_) {
+      TrainingsFailure();
+    }
   }
 }
