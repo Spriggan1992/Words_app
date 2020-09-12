@@ -10,6 +10,7 @@ import 'package:words_app/models/difficulty.dart';
 import 'package:words_app/models/fuiltersEnums.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/screens/games/bricks_game_screen//bricks_game.dart';
+import 'package:words_app/screens/games/pair_game_screen/pair_game.dart';
 import 'package:words_app/screens/games/right_wrong_game/correct_wrong_game.dart';
 
 import 'package:words_app/utils/size_config.dart';
@@ -445,6 +446,17 @@ class _TrainingManagerState extends State<TrainingManager> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => RightWrong(
+                    words: state.filteredWords,
+                  ),
+                ));
+          }
+          if (selectedGames == FilterGames.pair &&
+              selectedDifficulties.isNotEmpty &&
+              selectedListCollections.isNotEmpty) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PairGame(
                     words: state.filteredWords,
                   ),
                 ));

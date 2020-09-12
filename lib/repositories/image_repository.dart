@@ -70,7 +70,7 @@ class ImageRepository {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path;
     String name = p.basename(url);
-    File file = File("$path/${name}");
+    File file = File("$path/$name");
     // print(
     //   "path: $path name $name",
     // );
