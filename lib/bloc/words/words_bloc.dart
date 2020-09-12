@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/models/collection.dart';
 import 'package:words_app/models/word.dart';
@@ -47,9 +48,24 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (event is WordsAdded) {
       yield* _mapWordsAddedToState(event);
     }
+    if (event is WordsPopulate) {
+      yield* _mapWordsPopulatedToState(event);
+    }
     // if (event is WordsAdded) {
     //   yield* _mapWordsUpdatedWordDifficultyToState(event);
     // }
+  }
+
+  /// call populate method
+  Stream<WordsState> _mapWordsPopulatedToState(WordsPopulate event) async* {
+    try {
+      List<Word> dummyDataList = await wordsRepository.populateList(event.id);
+
+      // yield WordsSuccess(
+      //     words: [...(state as WordsSuccess).words, ...dummyDataList]);
+    } catch (_) {
+      yield WordsFailure();
+    }
   }
 
   /// Fetch data from db through repository

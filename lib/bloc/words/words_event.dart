@@ -58,3 +58,12 @@ class WordsAdded extends WordsEvent {
   WordsAdded({this.word});
   List<Object> get props => [word];
 }
+
+//FIXME: temp method for populating collection with words
+class WordsPopulate extends WordsEvent {
+  final String id;
+
+  WordsPopulate({this.id});
+
+  List<Object> get props => [id];
+}

@@ -299,10 +299,14 @@ class WordsScreen extends StatelessWidget {
                         Icons.refresh,
                         color: Colors.white,
                       ),
-                      onPressed: () async {
-                        await Provider.of<WordsRepository>(context,
-                                listen: false)
-                            .populateList(collectionId);
+                      onPressed: () {
+                        //TODO: populate
+                        context
+                            .bloc<WordsBloc>()
+                            .add(WordsPopulate(id: collectionId));
+                        context
+                            .bloc<WordsBloc>()
+                            .add(WordsLoaded(id: collectionId));
                       },
                     ),
                   ],

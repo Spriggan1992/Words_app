@@ -39,9 +39,12 @@ class WordsRepository with ChangeNotifier {
     });
   }
 
+  //TODO: populate
   // temporary method for pre-populating list
-  Future<void> populateList(String collectionId) async {
-    DummyData.words.forEach((item) async {
+  Future<List<Word>> populateList(String collectionId) async {
+    List<Word> dummyDataList = DummyData.words;
+
+    dummyDataList.forEach((item) async {
       File imagePath = await Utilities.assetToFile(
           'images/${item.targetLang}.jpg',
           imageName: item.targetLang);
@@ -60,7 +63,8 @@ class WordsRepository with ChangeNotifier {
         'difficulty': item.difficulty,
       });
     });
-    notifyListeners();
+
+    return dummyDataList;
   }
 
   /// This method is responsible fetching data from db and setting to UI words_screen.

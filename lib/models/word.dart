@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import 'part.dart';
 
@@ -8,7 +9,7 @@ import 'part.dart';
 class Word extends Equatable with ChangeNotifier {
   Word({
     this.collectionId,
-    this.id,
+    String id,
     this.targetLang,
     this.secondLang,
     this.thirdLang,
@@ -20,7 +21,8 @@ class Word extends Equatable with ChangeNotifier {
     this.isSelected = false,
     int difficulty,
     // this.isEditingMode,
-  }) : this.difficulty = difficulty ?? 2;
+  })  : this.difficulty = difficulty ?? 2,
+        this.id = id ?? Uuid().v4();
   final String collectionId;
   final String id;
   final String targetLang;
