@@ -14,7 +14,6 @@ import 'cubit/card_creator/part_color/part_color_cubit.dart';
 import 'cubit/words/words_cubit.dart';
 import 'repositories/collections_repository.dart';
 import 'repositories/image_repository.dart';
-import 'repositories/pair_game_card_provider.dart';
 import 'repositories/training_matches_provider.dart';
 import 'repositories/validation_provider.dart';
 import 'repositories/words_repository.dart';
@@ -72,17 +71,7 @@ void main() => runApp(MultiBlocProvider(providers: [
           return PartColorCubit();
         },
       ),
-    ], child: MyApp())
-
-        // BlocProvider(
-        //   create: (context) {
-        //     return CollectionsBloc(
-        //       collectionsRepository: CollectionsRepository(),
-        //     )..add(CollectionsLoaded());
-        //   },
-        //
-        // ),
-        );
+    ], child: MyApp()));
 
 class MyApp extends StatelessWidget {
   @override
@@ -104,9 +93,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => TrainingMatches(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => GameCards(),
-        )
       ],
       child: MaterialApp(
         theme: ThemeData.light().copyWith(

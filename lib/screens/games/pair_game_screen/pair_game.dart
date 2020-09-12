@@ -8,11 +8,8 @@ import 'package:words_app/utils/size_config.dart';
 
 class PairGame extends StatefulWidget {
   PairGame({this.words});
-
   final List<Word> words;
-
   static const id = 'pair_game';
-
   @override
   _PairGameState createState() => _PairGameState();
 }
@@ -51,10 +48,11 @@ class _PairGameState extends State<PairGame> {
         title: Text('pair words'),
       ),
       body: Body(
-          defaultSize: defaultSize,
-          blockSizeVertical: blockSizeVertical,
-          blockSizeHorizontal: blockSizeHorizontal,
-          pairGameList: _pairGameList),
+        defaultSize: defaultSize,
+        blockSizeVertical: blockSizeVertical,
+        blockSizeHorizontal: blockSizeHorizontal,
+        pairGameList: _pairGameList,
+      ),
     );
   }
 }
