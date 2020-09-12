@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:words_app/models/game_card.dart';
 import 'package:words_app/repositories/pair_game_card_provider.dart';
 import 'package:words_app/components/base_appbar.dart';
+import 'package:words_app/screens/games/pair_game_screen/components/body.dart';
 
-import 'package:words_app/screens/pair_game_screen/components/body.dart';
 import 'package:words_app/utils/size_config.dart';
 
 

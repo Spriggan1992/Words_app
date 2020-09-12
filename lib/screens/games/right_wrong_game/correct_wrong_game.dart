@@ -5,17 +5,17 @@ import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/word.dart';
 
-class CorrectWrong extends StatefulWidget {
+class RightWrong extends StatefulWidget {
   static String id = 'training_screen';
-  CorrectWrong({this.words});
+  RightWrong({this.words});
 
   final List<Word> words;
 
   @override
-  _CorrectWrongState createState() => _CorrectWrongState();
+  _RightWrongState createState() => _RightWrongState();
 }
 
-class _CorrectWrongState extends State<CorrectWrong> {
+class _RightWrongState extends State<RightWrong> {
   List<Word> targetWords;
   List<Word> ownLanguageWords;
   bool correct = false;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/screens/games/pair_game_screen/pair_game.dart';
 
 import 'bloc/card_creator/card_creator_bloc.dart';
 import 'bloc/collections/collections_bloc.dart';
@@ -18,10 +19,10 @@ import 'repositories/words_repository.dart';
 import 'screens/card_creator_screen//card_creator.dart';
 import 'screens/card_creator_screen/img_api.dart';
 import 'screens/collections_screen/collections_screen.dart';
-import 'screens/games/bricks_game.dart';
-import 'screens/games/correct_wrong_game.dart';
+import 'screens/games/bricks_game_screen//bricks_game.dart';
+import 'screens/games/right_wrong_game/correct_wrong_game.dart';
 import 'screens/loging_screen/login_screen.dart';
-import 'screens/pair_game_screen/pair_game.dart';
+
 import 'screens/registration_screen/registration_screen.dart';
 import 'screens/result_screen/result_screen.dart';
 import 'screens/review_card_screen/review_card.dart';
@@ -147,8 +148,8 @@ class MyApp extends StatelessWidget {
           WordsScreen.id: (_) => WordsScreen(),
           CardCreator.id: (_) => CardCreator(),
           ReviewCard.id: (_) => ReviewCard(),
-          CorrectWrong.id: (_) => CorrectWrong(),
-          Matches.id: (_) => Matches(),
+          RightWrong.id: (_) => RightWrong(),
+          Bricks.id: (_) => Bricks(),
           PairGame.id: (_) => PairGame(),
           Result.id: (_) => Result(),
           TrainingManager.id: (_) => TrainingManager(),

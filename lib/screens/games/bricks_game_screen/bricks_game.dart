@@ -4,17 +4,17 @@ import 'package:provider/provider.dart';
 import 'package:words_app/repositories/training_matches_provider.dart';
 import 'package:words_app/models/word.dart';
 
-class Matches extends StatefulWidget {
+class Bricks extends StatefulWidget {
   static String id = 'matches_screen';
   final List<Word> words;
 
-  const Matches({Key key, this.words}) : super(key: key);
+  const Bricks({Key key, this.words}) : super(key: key);
 
   @override
-  _MatchesState createState() => _MatchesState();
+  _BricksState createState() => _BricksState();
 }
 
-class _MatchesState extends State<Matches> with TickerProviderStateMixin {
+class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   AnimationController errorAnimationController;
   AnimationController shakeController;
   AnimationController slideTransitionController;

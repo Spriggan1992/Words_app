@@ -9,8 +9,8 @@ import 'package:words_app/models/collection.dart';
 import 'package:words_app/models/difficulty.dart';
 import 'package:words_app/models/fuiltersEnums.dart';
 import 'package:words_app/models/word.dart';
-import 'package:words_app/screens/games/bricks_game.dart';
-import 'package:words_app/screens/games/correct_wrong_game.dart';
+import 'package:words_app/screens/games/bricks_game_screen//bricks_game.dart';
+import 'package:words_app/screens/games/right_wrong_game/correct_wrong_game.dart';
 
 import 'package:words_app/utils/size_config.dart';
 
@@ -433,7 +433,7 @@ class _TrainingManagerState extends State<TrainingManager> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Matches(
+                  builder: (context) => Bricks(
                     words: state.filteredWords,
                   ),
                 ));
@@ -444,7 +444,7 @@ class _TrainingManagerState extends State<TrainingManager> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CorrectWrong(
+                  builder: (context) => RightWrong(
                     words: state.filteredWords,
                   ),
                 ));
