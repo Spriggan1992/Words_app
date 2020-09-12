@@ -93,6 +93,28 @@ class DummyData {
         exampleTranslations: 'Она моя тетя. Hän on minun tätini. 他是我的阿姨.',
         difficulty: 0,
       ),
+      Word(
+        id: '9',
+        part: Part('n', Color(0xffB6D7A8)),
+        targetLang: 'gun',
+        ownLang: 'пистолет',
+        secondLang: 'pistooli',
+        thirdLang: '手枪',
+        example: "It's my gun",
+        exampleTranslations: 'Это мой пистолет. Se on pistoolini. 是我的枪.',
+        difficulty: 0,
+      ),
+      Word(
+        id: '10',
+        part: Part('n', Color(0xffB6D7A8)),
+        targetLang: 'subway',
+        ownLang: 'метро',
+        secondLang: 'metro',
+        thirdLang: '地铁',
+        example: "It's my gun",
+        exampleTranslations: 'метро закрывается. metro sulkeutuu. 地铁正在关闭.',
+        difficulty: 0,
+      ),
     ];
   }
 }
