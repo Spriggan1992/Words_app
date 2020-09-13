@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/constants/constants.dart';
 import 'package:words_app/repositories/training_matches_provider.dart';
 import 'package:words_app/models/word.dart';
+import 'package:words_app/utils/size_config.dart';
 
 class Bricks extends StatefulWidget {
   static String id = 'matches_screen';
@@ -248,9 +250,9 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
               : () {},
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(),
-              color: setUpColor(),
-            ),
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [kBoxShadow],
+                color: Colors.white),
             alignment: Alignment.center,
             width: 40,
             height: 40,
@@ -279,7 +281,9 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
           child: shuffledWordArray.listMatches[i].isVisible
               ? Container(
                   decoration: BoxDecoration(
-                      border: Border.all(), color: Colors.lightBlueAccent),
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [kBoxShadow],
+                      color: Colors.white),
                   alignment: Alignment.center,
                   width: 45,
                   height: 45,
@@ -307,6 +311,8 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    final defaultSize = SizeConfig.defaultSize;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.width;
 
@@ -319,78 +325,116 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
         }),
         body: SafeArea(
             child: initialData.isNotEmpty
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      SlideTransition(
-                        position: slideTransitionAnimation,
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 30.0),
+                ? Center(
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          color: Colors.white,
+                          padding: EdgeInsets.symmetric(vertical: 40),
+                          width: SizeConfig.blockSizeHorizontal * 100,
+                          height: SizeConfig.blockSizeVertical * 40,
+                          child: SlideTransition(
+                            position: slideTransitionAnimation,
                             child: Container(
-                              alignment: Alignment.center,
-                              color: Colors.white,
-                              width: 200,
-                              height: 300,
-                              child: Text(initialData.last.ownLang),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                              maxWidth: screenWidth, maxHeight: screenHeight),
-                          child: Wrap(
-                            runSpacing: 2,
-                            spacing: 2,
-                            direction: Axis.horizontal,
-                            children: buildAnswerContainer(),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                              maxWidth: screenWidth, maxHeight: screenHeight),
-                          child: Wrap(
-                            runSpacing: 2,
-                            spacing: 2,
-                            direction: Axis.horizontal,
-                            children: buildTargetWordContainer(),
-                          ),
-                        ),
-                      ),
-                      AnimatedBuilder(
-                        animation: shakeBtnAnimation,
-                        builder: (context, child) {
-                          return Padding(
-                            padding: EdgeInsets.only(
-                                left: shakeBtnAnimation.value + 20.0,
-                                right: 20.0 - shakeBtnAnimation.value),
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 20.0),
-                              alignment: Alignment.center,
-                              width: 100,
-                              height: 40,
-                              color: Colors.grey[400],
-                              child: FlatButton(
-                                onPressed: activateSubmitBtn()
-                                    ? () {
-                                        checkAnswer();
-                                      }
-                                    : () {
-                                        runShakeAnimation();
-                                      },
-                                child: Text('Submit'),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: defaultSize * 11),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: [kBoxShadow],
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      boxShadow: [kBoxShadow],
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    margin: EdgeInsets.only(
+                                      right: SizeConfig.blockSizeHorizontal * 5,
+                                      left: SizeConfig.blockSizeHorizontal * 5,
+                                      top: defaultSize * 3.0,
+                                      bottom: defaultSize * 18.0,
+                                    ),
+                                    child: Text(initialData.last.ownLang)),
                               ),
                             ),
-                          );
-                        },
-                      )
-                    ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                                maxWidth: screenWidth, maxHeight: screenHeight),
+                            child: Wrap(
+                              runSpacing: 2,
+                              spacing: 2,
+                              direction: Axis.horizontal,
+                              children: buildAnswerContainer(),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                    maxWidth: screenWidth,
+                                    maxHeight: screenHeight),
+                                child: Wrap(
+                                  runSpacing: 2,
+                                  spacing: 2,
+                                  direction: Axis.horizontal,
+                                  children: buildTargetWordContainer(),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        AnimatedBuilder(
+                          animation: shakeBtnAnimation,
+                          builder: (context, child) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  left: shakeBtnAnimation.value + 20.0,
+                                  right: 20.0 - shakeBtnAnimation.value),
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 20.0),
+                                alignment: Alignment.center,
+                                width: 100,
+                                height: 40,
+                                color: Colors.grey[400],
+                                child: FlatButton(
+                                  onPressed: activateSubmitBtn()
+                                      ? () {
+                                          checkAnswer();
+                                        }
+                                      : () {
+                                          runShakeAnimation();
+                                        },
+                                  child: Text('Submit'),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: defaultSize * 2,
+                                horizontal: defaultSize * 1.5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('HELP'),
+                                Text('NEXT'),
+                              ],
+                            )),
+                      ],
+                    ),
                   )
                 : Center(child: Text('You run out of words'))),
       ),
