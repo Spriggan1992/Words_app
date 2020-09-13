@@ -254,8 +254,8 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                 boxShadow: [kBoxShadow],
                 color: Colors.white),
             alignment: Alignment.center,
-            width: 40,
-            height: 40,
+            width: 41,
+            height: 42,
             child: Text(
               answerWordArray[i],
               style: TextStyle(fontSize: 20),
@@ -285,8 +285,9 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                       boxShadow: [kBoxShadow],
                       color: Colors.white),
                   alignment: Alignment.center,
-                  width: 45,
-                  height: 45,
+                  width: 41,
+                  // width: shuffledWordArray.listMatches.length < 27 ? 41 : 34.1,
+                  height: 42,
                   child: Text(
                     shuffledWordArray.listMatches[i].targetLangWord,
                     style: TextStyle(fontSize: 20),
@@ -320,72 +321,110 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     return WillPopScope(
       onWillPop: onBackPressed,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () {
-          runSlideAnimation();
-        }),
         body: SafeArea(
             child: initialData.isNotEmpty
                 ? Center(
                     child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Container(
-                          color: Colors.white,
-                          padding: EdgeInsets.symmetric(vertical: 40),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: defaultSize * 12,
+                              vertical: defaultSize * 1.5),
+                          height: SizeConfig.blockSizeVertical * 35,
                           width: SizeConfig.blockSizeHorizontal * 100,
-                          height: SizeConfig.blockSizeVertical * 40,
                           child: SlideTransition(
                             position: slideTransitionAnimation,
                             child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: defaultSize * 11),
-                              child: Container(
                                 decoration: BoxDecoration(
                                   boxShadow: [kBoxShadow],
-                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
                                 ),
                                 child: Container(
                                     alignment: Alignment.center,
+                                    margin: EdgeInsets.only(
+                                      right: SizeConfig.blockSizeHorizontal * 4,
+                                      left: SizeConfig.blockSizeHorizontal * 4,
+                                      top: defaultSize * 3.0,
+                                      bottom: defaultSize * 15.0,
+                                    ),
                                     decoration: BoxDecoration(
                                       boxShadow: [kBoxShadow],
-                                      color: Colors.white,
                                       borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white,
                                     ),
-                                    margin: EdgeInsets.only(
-                                      right: SizeConfig.blockSizeHorizontal * 5,
-                                      left: SizeConfig.blockSizeHorizontal * 5,
-                                      top: defaultSize * 3.0,
-                                      bottom: defaultSize * 18.0,
-                                    ),
-                                    child: Text(initialData.last.ownLang)),
+                                    child: Text(
+                                      initialData.last.ownLang,
+                                    ))),
+                          ),
+                        ),
+
+                        // Container(
+                        //   color: Colors.white,
+                        //   padding: EdgeInsets.symmetric(vertical: 10),
+                        //   width: SizeConfig.blockSizeHorizontal * 100,
+                        //   height: SizeConfig.blockSizeVertical * 40,
+                        //   child: SlideTransition(
+                        //     position: slideTransitionAnimation,
+                        //     child: Container(
+                        //       margin: EdgeInsets.symmetric(
+                        //           horizontal: defaultSize * 11),
+                        //       child: Container(
+                        //         decoration: BoxDecoration(
+                        //           boxShadow: [kBoxShadow],
+                        //           color: Colors.white,
+                        //           borderRadius: BorderRadius.circular(5),
+                        //         ),
+                        //         child: Container(
+                        //             alignment: Alignment.center,
+                        //             decoration: BoxDecoration(
+                        //               boxShadow: [kBoxShadow],
+                        //               color: Colors.white,
+                        //               borderRadius: BorderRadius.circular(5),
+                        //             ),
+                        //             margin: EdgeInsets.only(
+                        //               right: SizeConfig.blockSizeHorizontal * 5,
+                        //               left: SizeConfig.blockSizeHorizontal * 5,
+                        //               top: defaultSize * 3.0,
+                        //               bottom: defaultSize * 18.0,
+                        //             ),
+                        //             child: Text(initialData.last.ownLang)),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        SingleChildScrollView(
+                          child: Container(
+                            height: defaultSize * 15,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SingleChildScrollView(
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                      maxHeight: defaultSize * 20),
+                                  child: Wrap(
+                                    alignment: WrapAlignment.center,
+                                    runSpacing: 2,
+                                    spacing: 2,
+                                    direction: Axis.horizontal,
+                                    children: buildAnswerContainer(),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                                maxWidth: screenWidth, maxHeight: screenHeight),
-                            child: Wrap(
-                              runSpacing: 2,
-                              spacing: 2,
-                              direction: Axis.horizontal,
-                              children: buildAnswerContainer(),
-                            ),
-                          ),
-                        ),
-                        Expanded(
+                        Container(
+                          height: defaultSize * 15,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
+                            child: SingleChildScrollView(
                               child: ConstrainedBox(
-                                constraints: BoxConstraints(
-                                    maxWidth: screenWidth,
-                                    maxHeight: screenHeight),
+                                constraints:
+                                    BoxConstraints(maxHeight: defaultSize * 20),
                                 child: Wrap(
+                                  alignment: WrapAlignment.center,
                                   runSpacing: 2,
                                   spacing: 2,
                                   direction: Axis.horizontal,
@@ -395,42 +434,39 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                             ),
                           ),
                         ),
+
                         AnimatedBuilder(
                           animation: shakeBtnAnimation,
                           builder: (context, child) {
-                            return Padding(
-                              padding: EdgeInsets.only(
-                                  left: shakeBtnAnimation.value + 20.0,
-                                  right: 20.0 - shakeBtnAnimation.value),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 20.0),
-                                alignment: Alignment.center,
-                                width: 100,
-                                height: 40,
-                                color: Colors.grey[400],
-                                child: FlatButton(
-                                  onPressed: activateSubmitBtn()
-                                      ? () {
-                                          checkAnswer();
-                                        }
-                                      : () {
-                                          runShakeAnimation();
-                                        },
-                                  child: Text('Submit'),
-                                ),
-                              ),
+                            return RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5)),
+                              color: Theme.of(context).accentColor,
+                              elevation: 5,
+                              onPressed: activateSubmitBtn()
+                                  ? () {
+                                      checkAnswer();
+                                    }
+                                  : () {
+                                      runShakeAnimation();
+                                    },
+                              child: Text('Submit'),
                             );
                           },
                         ),
                         Container(
                             padding: EdgeInsets.symmetric(
-                                vertical: defaultSize * 2,
+                                // vertical: defaultSize * 3,
                                 horizontal: defaultSize * 1.5),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('HELP'),
-                                Text('NEXT'),
+                                GestureDetector(
+                                    onTap: () {
+                                      runSlideAnimation();
+                                    },
+                                    child: Text('NEXT')),
                               ],
                             )),
                       ],
