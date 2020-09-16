@@ -17,9 +17,9 @@ class Bricks extends StatefulWidget {
 }
 
 class _BricksState extends State<Bricks> with TickerProviderStateMixin {
-  AnimationController errorAnimationController;
-  AnimationController shakeController;
-  AnimationController slideTransitionController;
+  AnimationController _errorAnimationController;
+  AnimationController _shakeController;
+  AnimationController _slideTransitionController;
 
   Animation<double> shakeBtnAnimation;
   Animation errorColorAnimation;
@@ -28,11 +28,20 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   List<Word> initialData;
   var shuffledWordArray;
   List answerWordArray = [];
-  var matches;
+  String matches;
   int flag = 0;
   bool disableAnswersWordArray = false;
   bool isCheckSlideTransition = true;
   // bool waitingAnimation = false;
+
+  static final tweenSequence = TweenSequence(<TweenSequenceItem<Color>>[
+    TweenSequenceItem<Color>(
+        tween: Tween<Color>(begin: Colors.red, end: Colors.white), weight: 33),
+    TweenSequenceItem<Color>(
+        tween: Tween<Color>(begin: Colors.white, end: Colors.red), weight: 33),
+    TweenSequenceItem<Color>(
+        tween: Tween<Color>(begin: Colors.red, end: Colors.white), weight: 33),
+  ]);
 
   @override
   void initState() {
@@ -40,52 +49,57 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     getDataFromProvider();
     extractAndGetDataFromProvider();
 
-    errorAnimationController = AnimationController(
-      duration: Duration(milliseconds: 130),
+    _errorAnimationController = AnimationController(
+      duration: Duration(milliseconds: 2030),
       vsync: this,
     );
-    errorColorAnimation =
-        ColorTween(begin: Colors.lightBlueAccent, end: Colors.red)
-            .animate(errorAnimationController);
-    errorAnimationController.addListener(() {
-      setState(() {});
-    });
+    errorColorAnimation = tweenSequence.animate(_errorAnimationController);
 
-    shakeController =
+    // errorAnimationController = AnimationController(
+    //   duration: Duration(milliseconds: 230),
+    //   vsync: this,
+    // );
+    // errorColorAnimation = ColorTween(begin: Colors.black, end: Colors.red)
+    //     .animate(errorAnimationController);
+    // errorAnimationController.addListener(() {
+    //   setState(() {});
+    // });
+
+    _shakeController =
         AnimationController(duration: Duration(milliseconds: 100), vsync: this);
 
     shakeBtnAnimation = Tween(begin: 0.0, end: 20.0)
         .chain(CurveTween(curve: Curves.bounceIn))
-        .animate(shakeController)
+        .animate(_shakeController)
           ..addStatusListener((status) {
             if (status == AnimationStatus.completed) {
-              shakeController.reverse();
+              _shakeController.reverse();
             }
           });
-    slideTransitionController = AnimationController(
+    _slideTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
     );
     slideTransitionAnimation =
         Tween<Offset>(begin: Offset.zero, end: Offset(2.0, 0.0))
-            .animate(slideTransitionController)
+            .animate(_slideTransitionController)
               ..addStatusListener((status) {
                 if (status == AnimationStatus.completed) {
-                  slideTransitionController.reverse();
+                  _slideTransitionController.reverse();
                 }
               });
   }
 
   @override
   void dispose() {
-    errorAnimationController.dispose();
-    shakeController.dispose();
-    slideTransitionController.dispose();
+    _errorAnimationController.dispose();
+    _shakeController.dispose();
+    _slideTransitionController.dispose();
     super.dispose();
   }
 
   void runSlideAnimation() {
-    slideTransitionController.forward();
+    _slideTransitionController.forward();
     Timer(Duration(milliseconds: 100), () {
       loadNextWord();
     });
@@ -93,19 +107,22 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   }
 
   void runShakeAnimation() {
-    shakeController.forward(from: 0.0);
-
+    _shakeController.forward(from: 0.0);
     setState(() {});
   }
 
   void runAnimation() {
-    TickerFuture tickerFuture = errorAnimationController.repeat();
-    tickerFuture.timeout(Duration(milliseconds: 300), onTimeout: () {
-      errorAnimationController.forward(from: 0);
-      errorAnimationController.stop(canceled: true);
-    });
+    _slideTransitionController.forward();
     setState(() {});
   }
+  // void runAnimation() {
+  //   TickerFuture tickerFuture = _errorAnimationController.repeat();
+  //   tickerFuture.timeout(Duration(milliseconds: 300), onTimeout: () {
+  //     _errorAnimationController.forward(from: 0);
+  //     _errorAnimationController.stop(canceled: true);
+  //   });
+  //   setState(() {});
+  // }
 
   void getDataFromProvider() {
     initialData = [...widget.words]..shuffle();
@@ -116,12 +133,10 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     final providerData = Provider.of<TrainingMatches>(context, listen: false);
     if (initialData.length >= 1) {
       // Add last word in targetLangWord;
-      String targetLangWord;
       for (int i = 0; i < initialData.length; i++) {
-        targetLangWord = initialData[i].targetLang;
-        matches = targetLangWord.toLowerCase();
+        matches = initialData[i].targetLang.toLowerCase();
       }
-      List<String> targetSplitted = targetLangWord.toLowerCase().split('');
+      List<String> targetSplitted = matches.toLowerCase().split('');
       // Check if providerData.listMatches empty or not. If it empty-> add new word, else dont add it.
       if (providerData.listMatches.isEmpty) {
         targetSplitted.forEach((item) {
@@ -177,16 +192,15 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   void checkAnswer() {
     final providerData = Provider.of<TrainingMatches>(context, listen: false);
     String a = answerWordArray.join('');
-    String b = matches;
-    if (b.startsWith(a) == true) {
+    print(a);
+    if (matches.startsWith(a) == true) {
       flag = 1;
       runSlideAnimation();
-
       flag = 0;
     } else {
       flag = 2;
       runAnimation();
-      errorAnimationController.addStatusListener((status) {
+      _errorAnimationController.addStatusListener((status) {
         if (status == AnimationStatus.dismissed) {
           for (int i = 0; i < providerData.listMatches.length; i++) {
             providerData.listMatches[i].isVisible = true;
@@ -196,6 +210,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
         }
       });
     }
+    print(flag);
     setState(() {});
   }
 
@@ -438,19 +453,24 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                         AnimatedBuilder(
                           animation: shakeBtnAnimation,
                           builder: (context, child) {
-                            return RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5)),
-                              color: Theme.of(context).accentColor,
-                              elevation: 5,
-                              onPressed: activateSubmitBtn()
-                                  ? () {
-                                      checkAnswer();
-                                    }
-                                  : () {
-                                      runShakeAnimation();
-                                    },
-                              child: Text('Submit'),
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  left: shakeBtnAnimation.value + 20.0,
+                                  right: 20.0 - shakeBtnAnimation.value),
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5)),
+                                color: Theme.of(context).accentColor,
+                                elevation: 5,
+                                onPressed: activateSubmitBtn()
+                                    ? () {
+                                        checkAnswer();
+                                      }
+                                    : () {
+                                        runShakeAnimation();
+                                      },
+                                child: Text('Submit'),
+                              ),
                             );
                           },
                         ),
@@ -461,7 +481,11 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('HELP'),
+                                GestureDetector(
+                                    onTap: () {
+                                      runAnimation();
+                                    },
+                                    child: Text('HELP')),
                                 GestureDetector(
                                     onTap: () {
                                       runSlideAnimation();
