@@ -18,11 +18,13 @@ class Bricks extends StatefulWidget {
 
 class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   AnimationController _errorAnimationController;
+  AnimationController _successAnimationController;
   AnimationController _shakeController;
   AnimationController _slideTransitionController;
 
   Animation<double> shakeBtnAnimation;
   Animation errorColorAnimation;
+  Animation successColorAnimation;
   Animation slideTransitionAnimation;
 
   List<Word> initialData;
@@ -34,13 +36,21 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   bool isCheckSlideTransition = true;
   // bool waitingAnimation = false;
 
-  static final tweenSequence = TweenSequence(<TweenSequenceItem<Color>>[
+  static final tweenSequenceError = TweenSequence(<TweenSequenceItem<Color>>[
     TweenSequenceItem<Color>(
-        tween: Tween<Color>(begin: Colors.red, end: Colors.white), weight: 33),
+        tween: ColorTween(begin: Colors.red, end: Colors.white), weight: 33),
     TweenSequenceItem<Color>(
-        tween: Tween<Color>(begin: Colors.white, end: Colors.red), weight: 33),
+        tween: ColorTween(begin: Colors.white, end: Colors.red), weight: 33),
     TweenSequenceItem<Color>(
-        tween: Tween<Color>(begin: Colors.red, end: Colors.white), weight: 33),
+        tween: ColorTween(begin: Colors.red, end: Colors.white), weight: 33),
+  ]);
+  static final tweenSequenceSuccess = TweenSequence(<TweenSequenceItem<Color>>[
+    TweenSequenceItem<Color>(
+        tween: ColorTween(begin: Colors.green, end: Colors.white), weight: 33),
+    TweenSequenceItem<Color>(
+        tween: ColorTween(begin: Colors.white, end: Colors.green), weight: 33),
+    TweenSequenceItem<Color>(
+        tween: ColorTween(begin: Colors.green, end: Colors.white), weight: 33),
   ]);
 
   @override
@@ -50,24 +60,25 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     extractAndGetDataFromProvider();
 
     _errorAnimationController = AnimationController(
-      duration: Duration(milliseconds: 2030),
+      duration: Duration(milliseconds: 500),
       vsync: this,
     );
-    errorColorAnimation = tweenSequence.animate(_errorAnimationController);
-
-    // errorAnimationController = AnimationController(
-    //   duration: Duration(milliseconds: 230),
-    //   vsync: this,
-    // );
-    // errorColorAnimation = ColorTween(begin: Colors.black, end: Colors.red)
-    //     .animate(errorAnimationController);
-    // errorAnimationController.addListener(() {
-    //   setState(() {});
-    // });
+    errorColorAnimation = tweenSequenceError.animate(_errorAnimationController)
+      ..addListener(() {
+        setState(() {});
+      });
+    _successAnimationController = AnimationController(
+      duration: Duration(milliseconds: 500),
+      vsync: this,
+    );
+    successColorAnimation =
+        tweenSequenceSuccess.animate(_successAnimationController)
+          ..addListener(() {
+            setState(() {});
+          });
 
     _shakeController =
         AnimationController(duration: Duration(milliseconds: 100), vsync: this);
-
     shakeBtnAnimation = Tween(begin: 0.0, end: 20.0)
         .chain(CurveTween(curve: Curves.bounceIn))
         .animate(_shakeController)
@@ -95,10 +106,12 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     _errorAnimationController.dispose();
     _shakeController.dispose();
     _slideTransitionController.dispose();
+    _successAnimationController.dispose();
     super.dispose();
   }
 
   void runSlideAnimation() {
+    // _successAnimationController.forward(from: 0.0);
     _slideTransitionController.forward();
     Timer(Duration(milliseconds: 100), () {
       loadNextWord();
@@ -111,22 +124,18 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     setState(() {});
   }
 
-  void runAnimation() {
-    _slideTransitionController.forward();
+  void runErrorAnimation() {
+    _errorAnimationController.forward(from: 0.0);
     setState(() {});
   }
-  // void runAnimation() {
-  //   TickerFuture tickerFuture = _errorAnimationController.repeat();
-  //   tickerFuture.timeout(Duration(milliseconds: 300), onTimeout: () {
-  //     _errorAnimationController.forward(from: 0);
-  //     _errorAnimationController.stop(canceled: true);
-  //   });
-  //   setState(() {});
-  // }
+
+  void runSuccessAnimation() {
+    _successAnimationController.forward(from: 0.0);
+    setState(() {});
+  }
 
   void getDataFromProvider() {
     initialData = [...widget.words]..shuffle();
-    // initialData = [...widget.dataWord];
   }
 
   void extractAndGetDataFromProvider() {
@@ -180,28 +189,32 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
 
   Color setUpColor() {
     if (flag == 1) {
-      return Colors.green;
+      return successColorAnimation.value;
     }
     if (flag == 2) {
       return errorColorAnimation.value;
     } else {
-      return Colors.lightBlueAccent;
+      return Colors.white;
     }
   }
 
   void checkAnswer() {
     final providerData = Provider.of<TrainingMatches>(context, listen: false);
     String a = answerWordArray.join('');
-    print(a);
     if (matches.startsWith(a) == true) {
       flag = 1;
-      runSlideAnimation();
-      flag = 0;
+      runSuccessAnimation();
+      _successAnimationController.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          runSlideAnimation();
+          flag = 0;
+        }
+      });
     } else {
       flag = 2;
-      runAnimation();
+      runErrorAnimation();
       _errorAnimationController.addStatusListener((status) {
-        if (status == AnimationStatus.dismissed) {
+        if (status == AnimationStatus.completed) {
           for (int i = 0; i < providerData.listMatches.length; i++) {
             providerData.listMatches[i].isVisible = true;
             answerWordArray.clear();
@@ -267,7 +280,8 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 boxShadow: [kBoxShadow],
-                color: Colors.white),
+                //TODO: ANSWER CONTAINER
+                color: setUpColor()),
             alignment: Alignment.center,
             width: 41,
             height: 42,
@@ -482,10 +496,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 GestureDetector(
-                                    onTap: () {
-                                      runAnimation();
-                                    },
-                                    child: Text('HELP')),
+                                    onTap: () {}, child: Text('HELP')),
                                 GestureDetector(
                                     onTap: () {
                                       runSlideAnimation();
