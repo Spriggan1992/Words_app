@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:words_app/utils/db_helper.dart';
 import '../models/collection.dart';
+import 'words_repository.dart';
 
 class CollectionsRepository {
+  WordsRepository wordsRepository;
   List<Collection> _collections = [
     Collection(title: "nouns", language: 'eng'),
   ];
@@ -54,7 +58,11 @@ class CollectionsRepository {
   }
 
   /// This method is responsible for deleting [<Collection>] by id from DB
-  void deleteCollection(String id) {
+  void deleteCollection(String id) async {
+    final dataList = await DBHelper.getData('words', collectionId: id);
+    dataList.forEach((item) async {
+      await File(item['image']).delete();
+    });
     DBHelper.delete('collections', id);
   }
 
