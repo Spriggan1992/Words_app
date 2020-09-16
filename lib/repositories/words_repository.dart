@@ -123,7 +123,8 @@ class WordsRepository with ChangeNotifier {
     return newValue;
   }
 
-  void removeWord(Word word) {
+  void removeWord(Word word) async {
+    await word.image.delete();
     DBHelper.delete('words', word.id);
   }
 
@@ -176,12 +177,15 @@ class WordsRepository with ChangeNotifier {
   }
 
   void removeSelectedWords() {
-    words.forEach((element) {
-      if (element.isSelected == true) {
-        words.remove(element);
-        DBHelper.delete('words', element.id);
-      }
-    });
+    words.forEach(
+      (element) async {
+        if (element.isSelected == true) {
+          await element.image.delete();
+          words.remove(element);
+          await DBHelper.delete('words', element.id);
+        }
+      },
+    );
 
     notifyListeners();
   }

@@ -71,9 +71,9 @@ class ImageRepository {
     String path = directory.path;
     String name = p.basename(url);
     File file = File("$path/$name");
-    // print(
-    //   "path: $path name $name",
-    // );
+    print(
+      "path: $path name $name",
+    );
     http.Response response = await http.get(url);
 
     if (response.statusCode == 200) {
