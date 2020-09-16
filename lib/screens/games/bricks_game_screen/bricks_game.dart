@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/constants/constants.dart';
 import 'package:words_app/repositories/training_matches_provider.dart';
 import 'package:words_app/models/word.dart';
+import 'package:words_app/utils/size_config.dart';
 
 class Bricks extends StatefulWidget {
   static String id = 'matches_screen';
@@ -15,22 +17,41 @@ class Bricks extends StatefulWidget {
 }
 
 class _BricksState extends State<Bricks> with TickerProviderStateMixin {
-  AnimationController errorAnimationController;
-  AnimationController shakeController;
-  AnimationController slideTransitionController;
+  AnimationController _errorAnimationController;
+  AnimationController _successAnimationController;
+  AnimationController _shakeController;
+  AnimationController _slideTransitionController;
 
   Animation<double> shakeBtnAnimation;
   Animation errorColorAnimation;
+  Animation successColorAnimation;
   Animation slideTransitionAnimation;
 
   List<Word> initialData;
   var shuffledWordArray;
   List answerWordArray = [];
-  var matches;
+  String matches;
   int flag = 0;
   bool disableAnswersWordArray = false;
   bool isCheckSlideTransition = true;
   // bool waitingAnimation = false;
+
+  static final tweenSequenceError = TweenSequence(<TweenSequenceItem<Color>>[
+    TweenSequenceItem<Color>(
+        tween: ColorTween(begin: Colors.red, end: Colors.white), weight: 33),
+    TweenSequenceItem<Color>(
+        tween: ColorTween(begin: Colors.white, end: Colors.red), weight: 33),
+    TweenSequenceItem<Color>(
+        tween: ColorTween(begin: Colors.red, end: Colors.white), weight: 33),
+  ]);
+  static final tweenSequenceSuccess = TweenSequence(<TweenSequenceItem<Color>>[
+    TweenSequenceItem<Color>(
+        tween: ColorTween(begin: Colors.green, end: Colors.white), weight: 33),
+    TweenSequenceItem<Color>(
+        tween: ColorTween(begin: Colors.white, end: Colors.green), weight: 33),
+    TweenSequenceItem<Color>(
+        tween: ColorTween(begin: Colors.green, end: Colors.white), weight: 33),
+  ]);
 
   @override
   void initState() {
@@ -38,52 +59,60 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     getDataFromProvider();
     extractAndGetDataFromProvider();
 
-    errorAnimationController = AnimationController(
-      duration: Duration(milliseconds: 130),
+    _errorAnimationController = AnimationController(
+      duration: Duration(milliseconds: 500),
       vsync: this,
     );
-    errorColorAnimation =
-        ColorTween(begin: Colors.lightBlueAccent, end: Colors.red)
-            .animate(errorAnimationController);
-    errorAnimationController.addListener(() {
-      setState(() {});
-    });
+    errorColorAnimation = tweenSequenceError.animate(_errorAnimationController)
+      ..addListener(() {
+        setState(() {});
+      });
+    _successAnimationController = AnimationController(
+      duration: Duration(milliseconds: 500),
+      vsync: this,
+    );
+    successColorAnimation =
+        tweenSequenceSuccess.animate(_successAnimationController)
+          ..addListener(() {
+            setState(() {});
+          });
 
-    shakeController =
+    _shakeController =
         AnimationController(duration: Duration(milliseconds: 100), vsync: this);
-
     shakeBtnAnimation = Tween(begin: 0.0, end: 20.0)
         .chain(CurveTween(curve: Curves.bounceIn))
-        .animate(shakeController)
+        .animate(_shakeController)
           ..addStatusListener((status) {
             if (status == AnimationStatus.completed) {
-              shakeController.reverse();
+              _shakeController.reverse();
             }
           });
-    slideTransitionController = AnimationController(
+    _slideTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
     );
     slideTransitionAnimation =
         Tween<Offset>(begin: Offset.zero, end: Offset(2.0, 0.0))
-            .animate(slideTransitionController)
+            .animate(_slideTransitionController)
               ..addStatusListener((status) {
                 if (status == AnimationStatus.completed) {
-                  slideTransitionController.reverse();
+                  _slideTransitionController.reverse();
                 }
               });
   }
 
   @override
   void dispose() {
-    errorAnimationController.dispose();
-    shakeController.dispose();
-    slideTransitionController.dispose();
+    _errorAnimationController.dispose();
+    _shakeController.dispose();
+    _slideTransitionController.dispose();
+    _successAnimationController.dispose();
     super.dispose();
   }
 
   void runSlideAnimation() {
-    slideTransitionController.forward();
+    // _successAnimationController.forward(from: 0.0);
+    _slideTransitionController.forward();
     Timer(Duration(milliseconds: 100), () {
       loadNextWord();
     });
@@ -91,35 +120,32 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   }
 
   void runShakeAnimation() {
-    shakeController.forward(from: 0.0);
-
+    _shakeController.forward(from: 0.0);
     setState(() {});
   }
 
-  void runAnimation() {
-    TickerFuture tickerFuture = errorAnimationController.repeat();
-    tickerFuture.timeout(Duration(milliseconds: 300), onTimeout: () {
-      errorAnimationController.forward(from: 0);
-      errorAnimationController.stop(canceled: true);
-    });
+  void runErrorAnimation() {
+    _errorAnimationController.forward(from: 0.0);
+    setState(() {});
+  }
+
+  void runSuccessAnimation() {
+    _successAnimationController.forward(from: 0.0);
     setState(() {});
   }
 
   void getDataFromProvider() {
     initialData = [...widget.words]..shuffle();
-    // initialData = [...widget.dataWord];
   }
 
   void extractAndGetDataFromProvider() {
     final providerData = Provider.of<TrainingMatches>(context, listen: false);
     if (initialData.length >= 1) {
       // Add last word in targetLangWord;
-      String targetLangWord;
       for (int i = 0; i < initialData.length; i++) {
-        targetLangWord = initialData[i].targetLang;
-        matches = targetLangWord.toLowerCase();
+        matches = initialData[i].targetLang.toLowerCase();
       }
-      List<String> targetSplitted = targetLangWord.toLowerCase().split('');
+      List<String> targetSplitted = matches.toLowerCase().split('');
       // Check if providerData.listMatches empty or not. If it empty-> add new word, else dont add it.
       if (providerData.listMatches.isEmpty) {
         targetSplitted.forEach((item) {
@@ -163,29 +189,32 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
 
   Color setUpColor() {
     if (flag == 1) {
-      return Colors.green;
+      return successColorAnimation.value;
     }
     if (flag == 2) {
       return errorColorAnimation.value;
     } else {
-      return Colors.lightBlueAccent;
+      return Colors.white;
     }
   }
 
   void checkAnswer() {
     final providerData = Provider.of<TrainingMatches>(context, listen: false);
     String a = answerWordArray.join('');
-    String b = matches;
-    if (b.startsWith(a) == true) {
+    if (matches.startsWith(a) == true) {
       flag = 1;
-      runSlideAnimation();
-
-      flag = 0;
+      runSuccessAnimation();
+      _successAnimationController.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          runSlideAnimation();
+          flag = 0;
+        }
+      });
     } else {
       flag = 2;
-      runAnimation();
-      errorAnimationController.addStatusListener((status) {
-        if (status == AnimationStatus.dismissed) {
+      runErrorAnimation();
+      _errorAnimationController.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
           for (int i = 0; i < providerData.listMatches.length; i++) {
             providerData.listMatches[i].isVisible = true;
             answerWordArray.clear();
@@ -194,6 +223,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
         }
       });
     }
+    print(flag);
     setState(() {});
   }
 
@@ -248,12 +278,13 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
               : () {},
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(),
-              color: setUpColor(),
-            ),
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [kBoxShadow],
+                //TODO: ANSWER CONTAINER
+                color: setUpColor()),
             alignment: Alignment.center,
-            width: 40,
-            height: 40,
+            width: 41,
+            height: 42,
             child: Text(
               answerWordArray[i],
               style: TextStyle(fontSize: 20),
@@ -279,10 +310,13 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
           child: shuffledWordArray.listMatches[i].isVisible
               ? Container(
                   decoration: BoxDecoration(
-                      border: Border.all(), color: Colors.lightBlueAccent),
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [kBoxShadow],
+                      color: Colors.white),
                   alignment: Alignment.center,
-                  width: 45,
-                  height: 45,
+                  width: 41,
+                  // width: shuffledWordArray.listMatches.length < 27 ? 41 : 34.1,
+                  height: 42,
                   child: Text(
                     shuffledWordArray.listMatches[i].targetLangWord,
                     style: TextStyle(fontSize: 20),
@@ -307,6 +341,8 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    final defaultSize = SizeConfig.defaultSize;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.width;
 
@@ -314,69 +350,132 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     return WillPopScope(
       onWillPop: onBackPressed,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () {
-          runSlideAnimation();
-        }),
         body: SafeArea(
             child: initialData.isNotEmpty
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      SlideTransition(
-                        position: slideTransitionAnimation,
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 30.0),
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: defaultSize * 12,
+                              vertical: defaultSize * 1.5),
+                          height: SizeConfig.blockSizeVertical * 35,
+                          width: SizeConfig.blockSizeHorizontal * 100,
+                          child: SlideTransition(
+                            position: slideTransitionAnimation,
                             child: Container(
-                              alignment: Alignment.center,
-                              color: Colors.white,
-                              width: 200,
-                              height: 300,
-                              child: Text(initialData.last.ownLang),
+                                decoration: BoxDecoration(
+                                  boxShadow: [kBoxShadow],
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                ),
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.only(
+                                      right: SizeConfig.blockSizeHorizontal * 4,
+                                      left: SizeConfig.blockSizeHorizontal * 4,
+                                      top: defaultSize * 3.0,
+                                      bottom: defaultSize * 15.0,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      boxShadow: [kBoxShadow],
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white,
+                                    ),
+                                    child: Text(
+                                      initialData.last.ownLang,
+                                    ))),
+                          ),
+                        ),
+
+                        // Container(
+                        //   color: Colors.white,
+                        //   padding: EdgeInsets.symmetric(vertical: 10),
+                        //   width: SizeConfig.blockSizeHorizontal * 100,
+                        //   height: SizeConfig.blockSizeVertical * 40,
+                        //   child: SlideTransition(
+                        //     position: slideTransitionAnimation,
+                        //     child: Container(
+                        //       margin: EdgeInsets.symmetric(
+                        //           horizontal: defaultSize * 11),
+                        //       child: Container(
+                        //         decoration: BoxDecoration(
+                        //           boxShadow: [kBoxShadow],
+                        //           color: Colors.white,
+                        //           borderRadius: BorderRadius.circular(5),
+                        //         ),
+                        //         child: Container(
+                        //             alignment: Alignment.center,
+                        //             decoration: BoxDecoration(
+                        //               boxShadow: [kBoxShadow],
+                        //               color: Colors.white,
+                        //               borderRadius: BorderRadius.circular(5),
+                        //             ),
+                        //             margin: EdgeInsets.only(
+                        //               right: SizeConfig.blockSizeHorizontal * 5,
+                        //               left: SizeConfig.blockSizeHorizontal * 5,
+                        //               top: defaultSize * 3.0,
+                        //               bottom: defaultSize * 18.0,
+                        //             ),
+                        //             child: Text(initialData.last.ownLang)),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        SingleChildScrollView(
+                          child: Container(
+                            height: defaultSize * 15,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SingleChildScrollView(
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                      maxHeight: defaultSize * 20),
+                                  child: Wrap(
+                                    alignment: WrapAlignment.center,
+                                    runSpacing: 2,
+                                    spacing: 2,
+                                    direction: Axis.horizontal,
+                                    children: buildAnswerContainer(),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                              maxWidth: screenWidth, maxHeight: screenHeight),
-                          child: Wrap(
-                            runSpacing: 2,
-                            spacing: 2,
-                            direction: Axis.horizontal,
-                            children: buildAnswerContainer(),
+                        Container(
+                          height: defaultSize * 15,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SingleChildScrollView(
+                              child: ConstrainedBox(
+                                constraints:
+                                    BoxConstraints(maxHeight: defaultSize * 20),
+                                child: Wrap(
+                                  alignment: WrapAlignment.center,
+                                  runSpacing: 2,
+                                  spacing: 2,
+                                  direction: Axis.horizontal,
+                                  children: buildTargetWordContainer(),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                              maxWidth: screenWidth, maxHeight: screenHeight),
-                          child: Wrap(
-                            runSpacing: 2,
-                            spacing: 2,
-                            direction: Axis.horizontal,
-                            children: buildTargetWordContainer(),
-                          ),
-                        ),
-                      ),
-                      AnimatedBuilder(
-                        animation: shakeBtnAnimation,
-                        builder: (context, child) {
-                          return Padding(
-                            padding: EdgeInsets.only(
-                                left: shakeBtnAnimation.value + 20.0,
-                                right: 20.0 - shakeBtnAnimation.value),
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 20.0),
-                              alignment: Alignment.center,
-                              width: 100,
-                              height: 40,
-                              color: Colors.grey[400],
-                              child: FlatButton(
+
+                        AnimatedBuilder(
+                          animation: shakeBtnAnimation,
+                          builder: (context, child) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  left: shakeBtnAnimation.value + 20.0,
+                                  right: 20.0 - shakeBtnAnimation.value),
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5)),
+                                color: Theme.of(context).accentColor,
+                                elevation: 5,
                                 onPressed: activateSubmitBtn()
                                     ? () {
                                         checkAnswer();
@@ -386,11 +485,27 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                                       },
                                 child: Text('Submit'),
                               ),
-                            ),
-                          );
-                        },
-                      )
-                    ],
+                            );
+                          },
+                        ),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                // vertical: defaultSize * 3,
+                                horizontal: defaultSize * 1.5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                    onTap: () {}, child: Text('HELP')),
+                                GestureDetector(
+                                    onTap: () {
+                                      runSlideAnimation();
+                                    },
+                                    child: Text('NEXT')),
+                              ],
+                            )),
+                      ],
+                    ),
                   )
                 : Center(child: Text('You run out of words'))),
       ),
