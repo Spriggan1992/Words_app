@@ -176,10 +176,12 @@ class WordsRepository with ChangeNotifier {
     selectedData.clear();
   }
 
+  // This method is used when we use selecting words feature. It delets as bunch of items
   void removeSelectedWords() {
     words.forEach(
       (element) async {
         if (element.isSelected == true) {
+          // Here we delete image from phisycal device
           await element.image.delete();
           words.remove(element);
           await DBHelper.delete('words', element.id);
