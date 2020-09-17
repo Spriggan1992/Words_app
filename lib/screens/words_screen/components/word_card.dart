@@ -130,7 +130,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
             ),
             //change color inside expanded container
             // color: isExpanded ? Color(0xFFCFD8DC) : Colors.transparent,
-            // T
+            //
             color: isExpanded
                 ? Color(0xFFCFD8DC)
                 : word.isSelected ? Colors.grey[400] : Colors.transparent,
@@ -203,6 +203,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                         style: TextStyle(
                           fontSize: defaultSize * 1.6,
                           fontFamily: 'italic',
+                          fontStyle: FontStyle.italic,
                         )),
                   ),
                 ),

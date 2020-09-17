@@ -19,4 +19,8 @@ class TrainingMatches with ChangeNotifier {
     listMatches.clear();
     notifyListeners();
   }
+
+  void toggleAllVisibility() {
+    listMatches.map((item) => item.isVisible = false);
+  }
 }

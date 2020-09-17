@@ -193,6 +193,9 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     }
     if (flag == 2) {
       return errorColorAnimation.value;
+    }
+    if (flag == 3) {
+      return Colors.red;
     } else {
       return Colors.white;
     }
@@ -223,8 +226,16 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
         }
       });
     }
-    print(flag);
     setState(() {});
+  }
+
+  void activateTryAgan() {
+    final providerData = Provider.of<TrainingMatches>(context, listen: false);
+    for (int i = 0; i < providerData.listMatches.length; i++) {
+      providerData.listMatches[i].isVisible = true;
+      answerWordArray.clear();
+      flag = 0;
+    }
   }
 
   void returnLetters(String element) {
@@ -262,6 +273,17 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
       initialData.clear();
     }
     answerWordArray.clear();
+    setState(() {});
+  }
+
+  void giveUp() {
+    final providerData = Provider.of<TrainingMatches>(context, listen: false);
+    matches.split('').forEach((element) => answerWordArray.add(element));
+    for (int i = 0; i < shuffledWordArray.listMatches.length; i++) {
+      shuffledWordArray.listMatches[i].isVisible = false;
+    }
+    flag = 3;
+
     setState(() {});
   }
 
@@ -345,6 +367,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     final defaultSize = SizeConfig.defaultSize;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.width;
+    final providerData = Provider.of<TrainingMatches>(context, listen: false);
 
     // Here we call Show Dialog
     return WillPopScope(
@@ -356,6 +379,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
+                        // Card
                         Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: defaultSize * 12,
@@ -389,40 +413,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                           ),
                         ),
 
-                        // Container(
-                        //   color: Colors.white,
-                        //   padding: EdgeInsets.symmetric(vertical: 10),
-                        //   width: SizeConfig.blockSizeHorizontal * 100,
-                        //   height: SizeConfig.blockSizeVertical * 40,
-                        //   child: SlideTransition(
-                        //     position: slideTransitionAnimation,
-                        //     child: Container(
-                        //       margin: EdgeInsets.symmetric(
-                        //           horizontal: defaultSize * 11),
-                        //       child: Container(
-                        //         decoration: BoxDecoration(
-                        //           boxShadow: [kBoxShadow],
-                        //           color: Colors.white,
-                        //           borderRadius: BorderRadius.circular(5),
-                        //         ),
-                        //         child: Container(
-                        //             alignment: Alignment.center,
-                        //             decoration: BoxDecoration(
-                        //               boxShadow: [kBoxShadow],
-                        //               color: Colors.white,
-                        //               borderRadius: BorderRadius.circular(5),
-                        //             ),
-                        //             margin: EdgeInsets.only(
-                        //               right: SizeConfig.blockSizeHorizontal * 5,
-                        //               left: SizeConfig.blockSizeHorizontal * 5,
-                        //               top: defaultSize * 3.0,
-                        //               bottom: defaultSize * 18.0,
-                        //             ),
-                        //             child: Text(initialData.last.ownLang)),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
+                        // Answer
                         SingleChildScrollView(
                           child: Container(
                             height: defaultSize * 15,
@@ -444,6 +435,8 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                             ),
                           ),
                         ),
+
+                        // TargetWord
                         Container(
                           height: defaultSize * 15,
                           child: Padding(
@@ -464,6 +457,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                           ),
                         ),
 
+                        //Button
                         AnimatedBuilder(
                           animation: shakeBtnAnimation,
                           builder: (context, child) {
@@ -476,32 +470,44 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                                     borderRadius: BorderRadius.circular(5)),
                                 color: Theme.of(context).accentColor,
                                 elevation: 5,
-                                onPressed: activateSubmitBtn()
-                                    ? () {
-                                        checkAnswer();
-                                      }
-                                    : () {
-                                        runShakeAnimation();
-                                      },
-                                child: Text('Submit'),
+                                onPressed: flag == 3
+                                    ? () {}
+                                    : activateSubmitBtn()
+                                        ? () {
+                                            checkAnswer();
+                                          }
+                                        : () {
+                                            runShakeAnimation();
+                                          },
+                                child: Text(flag == 3 ? 'Try Again' : 'Submit'),
                               ),
                             );
                           },
                         ),
+
+                        // Help and Next btns
                         Container(
                             padding: EdgeInsets.symmetric(
-                                // vertical: defaultSize * 3,
                                 horizontal: defaultSize * 1.5),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 GestureDetector(
-                                    onTap: () {}, child: Text('HELP')),
+                                    onTap: flag == 3
+                                        ? () {}
+                                        : () {
+                                            giveUp();
+                                          },
+                                    child: Text('GIVE UP',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
                                 GestureDetector(
                                     onTap: () {
                                       runSlideAnimation();
                                     },
-                                    child: Text('NEXT')),
+                                    child: Text('NEXT',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
                               ],
                             )),
                       ],
