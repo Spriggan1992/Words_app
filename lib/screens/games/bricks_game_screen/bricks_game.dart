@@ -27,12 +27,12 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   Animation successColorAnimation;
   Animation slideTransitionAnimation;
 
-  List<Word> initialData;
-  var shuffledWord;
-  List<String> answerWordArray = [];
-  String matches;
-  int flag = 0;
-  bool isCheckSlideTransition = true;
+  // List<Word> initialData;
+  // var shuffledWord;
+  // List<String> answerWordArray = [];
+  // String matches;
+  // int flag = 0;
+  // bool isCheckSlideTransition = true;
   // bool waitingAnimation = false;
 
   static final tweenSequenceError = TweenSequence(<TweenSequenceItem<Color>>[
@@ -55,8 +55,9 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    getDataFromProvider();
-    extractAndGetDataFromProvider();
+    loadData();
+    // getDataFromProvider();
+    // extractAndGetDataFromProvider();
 
     _errorAnimationController = AnimationController(
       duration: Duration(milliseconds: 500),
@@ -109,58 +110,14 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void runSlideAnimation() {
-    // _successAnimationController.forward(from: 0.0);
-    _slideTransitionController.forward();
-    Timer(Duration(milliseconds: 100), () {
-      loadNextWord();
-    });
-    setState(() {});
-  }
-
-  // void runShakeAnimation() {
-  //   _shakeController.forward(from: 0.0);
-  //   setState(() {});
-  // }
-
-  // void runErrorAnimation() {
-  //   _errorAnimationController.forward(from: 0.0);
-  //   setState(() {});
-  // }
-
-  // void runSuccessAnimation() {
-  //   _successAnimationController.forward(from: 0.0);
-  //   setState(() {});
-  // }
-
-  void getDataFromProvider() {
-    initialData = [...widget.words]..shuffle();
-  }
-
-  void extractAndGetDataFromProvider() {
+  void loadData() {
     final providerData = Provider.of<TrainingMatches>(context, listen: false);
-    if (initialData.length >= 1) {
-      // Add last word in targetLangWord;
-      for (int i = 0; i < initialData.length; i++) {
-        matches = initialData[i].targetLang.toLowerCase();
-      }
-      List<String> targetSplitted = matches.toLowerCase().split('');
-      // Check if providerData.listMatches empty or not. If it empty-> add new word, else dont add it.
-      if (providerData.listMatches.isEmpty) {
-        targetSplitted.forEach((item) {
-          providerData.addWord(item, true);
-        });
-      }
-
-      shuffledWord = providerData;
-      shuffledWord.listMatches.shuffle();
-      print(shuffledWord.listMatches);
-    } else {
-      print('Data is Empty');
-    }
+    providerData.getDataFromProvider(widget.words);
+    providerData.extractAndGetDataFromProvider();
   }
 
   Future<bool> onBackPressed() {
+    final providerData = Provider.of<TrainingMatches>(context, listen: false);
     return showDialog(
           context: context,
           builder: (context) => new AlertDialog(
@@ -175,9 +132,8 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
               new GestureDetector(
                 onTap: () {
                   Navigator.of(context).pop(true);
-                  initialData.clear();
-                  Provider.of<TrainingMatches>(context, listen: false)
-                      .cleanData();
+                  providerData.initialData.clear();
+                  providerData.cleanData();
                 },
                 child: Text("YES"),
               ),
@@ -187,128 +143,30 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
         false;
   }
 
-  Color setUpColor() {
-    if (flag == 1) {
-      return successColorAnimation.value;
-    }
-    if (flag == 2) {
-      return errorColorAnimation.value;
-    }
-    if (flag == 3) {
-      return Colors.red;
-    } else {
-      return Colors.white;
-    }
-  }
-
-  void checkAnswer() {
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
-    String a = answerWordArray.join('');
-    if (matches.startsWith(a) == true) {
-      flag = 1;
-      providerData.runSuccessAnimation(_successAnimationController);
-      _successAnimationController.addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          runSlideAnimation();
-          flag = 0;
-        }
-      });
-    } else {
-      flag = 2;
-      providerData.runErrorAnimation(_errorAnimationController);
-      _errorAnimationController.addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          for (int i = 0; i < providerData.listMatches.length; i++) {
-            providerData.listMatches[i].isVisible = true;
-            answerWordArray.clear();
-            flag = 0;
-          }
-        }
-      });
-    }
-    setState(() {});
-  }
-
-  void activateTryAgan() {
-    setState(() {});
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
-    for (int i = 0; i < providerData.listMatches.length; i++) {
-      providerData.listMatches[i].isVisible = true;
-      answerWordArray.clear();
-      flag = 0;
-    }
-  }
-
-  void returnLetters(String element) {
-    setState(() {
-      for (int i = 0; i < shuffledWord.listMatches.length; i++) {
-        if (element == shuffledWord.listMatches[i].targetLangWord &&
-            shuffledWord.listMatches[i].isVisible == false) {
-          shuffledWord.listMatches[i].isVisible = true;
-          break;
-        }
-      }
-      answerWordArray.remove(element);
-    });
-  }
-
-  void addLetter(String element) {
-    answerWordArray.add(element);
-    setState(() {});
-  }
-
-  bool activateSubmitBtn() {
-    if (answerWordArray.length != shuffledWord.listMatches.length) {
-      return false;
-    }
-    return true;
-  }
-
-  void loadNextWord() {
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
-    providerData.cleanData();
-    if (initialData.length >= 1) {
-      initialData.removeLast();
-      extractAndGetDataFromProvider();
-    } else {
-      initialData.clear();
-    }
-    answerWordArray.clear();
-    setState(() {});
-  }
-
-  void giveUp() {
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
-    matches.split('').forEach((element) => answerWordArray.add(element));
-    for (int i = 0; i < shuffledWord.listMatches.length; i++) {
-      shuffledWord.listMatches[i].isVisible = false;
-    }
-    flag = 3;
-
-    setState(() {});
-  }
-
   List<Widget> buildAnswerContainer() {
+    final providerData = Provider.of<TrainingMatches>(context, listen: false);
     List<Widget> listWidget = [];
-    for (int i = 0; i < answerWordArray.length; i++) {
+    for (int i = 0; i < providerData.answerWordArray.length; i++) {
       listWidget.add(Visibility(
         child: GestureDetector(
-          onTap: flag == 3
+          onTap: providerData.flag == 3
               ? () {}
               : () {
-                  setState(() {});
-                  returnLetters(answerWordArray[i]);
+                  setState(() {
+                    providerData.returnLetters(providerData.answerWordArray[i]);
+                  });
                 },
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 boxShadow: [kBoxShadow],
-                color: setUpColor()),
+                color: providerData.setUpColor(
+                    successColorAnimation, errorColorAnimation)),
             alignment: Alignment.center,
             width: 41,
             height: 42,
             child: Text(
-              answerWordArray[i],
+              providerData.answerWordArray[i],
               style: TextStyle(fontSize: 20),
             ),
           ),
@@ -320,16 +178,19 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
 
   List<Widget> buildTargetWordContainer() {
     List<Widget> listWidget = [];
+    final providerData = Provider.of<TrainingMatches>(context, listen: false);
 
-    for (int i = 0; i < shuffledWord.listMatches.length; i++) {
+    for (int i = 0; i < providerData.listMatches.length; i++) {
       listWidget.add(Visibility(
         child: GestureDetector(
           onTap: () {
-            setState(() {});
-            addLetter(shuffledWord.listMatches[i].targetLangWord);
-            shuffledWord.listMatches[i].toggleVisibility();
+            setState(() {
+              providerData
+                  .addLetter(providerData.listMatches[i].targetLangWord);
+              providerData.listMatches[i].toggleVisibility();
+            });
           },
-          child: shuffledWord.listMatches[i].isVisible
+          child: providerData.listMatches[i].isVisible
               ? Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
@@ -340,7 +201,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                   // width: shuffledWordArray.listMatches.length < 27 ? 41 : 34.1,
                   height: 42,
                   child: Text(
-                    shuffledWord.listMatches[i].targetLangWord,
+                    providerData.listMatches[i].targetLangWord,
                     style: TextStyle(fontSize: 20),
                   ),
                 )
@@ -349,16 +210,6 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
       ));
     }
     return listWidget;
-  }
-
-  void resetWords() {
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
-    for (int i = 0; i < providerData.listMatches.length; i++) {
-      providerData.listMatches[i].isVisible = true;
-      answerWordArray.clear();
-      flag = 0;
-    }
-    setState(() {});
   }
 
   @override
@@ -374,7 +225,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
       onWillPop: onBackPressed,
       child: Scaffold(
         body: SafeArea(
-            child: initialData.isNotEmpty
+            child: providerData.initialData.isNotEmpty
                 ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -408,7 +259,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                                       color: Colors.white,
                                     ),
                                     child: Text(
-                                      initialData.last.ownLang,
+                                      providerData.initialData.last.ownLang,
                                     ))),
                           ),
                         ),
@@ -470,19 +321,31 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                                     borderRadius: BorderRadius.circular(5)),
                                 color: Theme.of(context).accentColor,
                                 elevation: 5,
-                                onPressed: flag == 3
+                                onPressed: providerData.flag == 3
                                     ? () {
-                                        activateTryAgan();
+                                        setState(() {
+                                          providerData.activateTryAgan();
+                                        });
                                       }
-                                    : activateSubmitBtn()
+                                    : providerData.activateSubmitBtn()
                                         ? () {
-                                            checkAnswer();
+                                            setState(() {
+                                              providerData.checkAnswer(
+                                                  _successAnimationController,
+                                                  _errorAnimationController,
+                                                  _slideTransitionController,
+                                                  providerData.initialData);
+                                            });
                                           }
                                         : () {
-                                            providerData.runShakeAnimation(
-                                                _shakeController);
+                                            setState(() {
+                                              providerData.runShakeAnimation(
+                                                  _shakeController);
+                                            });
                                           },
-                                child: Text(flag == 3 ? 'Try Again' : 'Submit'),
+                                child: Text(providerData.flag == 3
+                                    ? 'Try Again'
+                                    : 'Submit'),
                               ),
                             );
                           },
@@ -496,18 +359,22 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 GestureDetector(
-                                    onTap: flag == 3
+                                    onTap: providerData.flag == 3
                                         ? () {}
                                         : () {
-                                            giveUp();
+                                            setState(() {
+                                              providerData.giveUp();
+                                            });
                                           },
                                     child: Text('GIVE UP',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold))),
                                 GestureDetector(
                                     onTap: () {
-                                      runSlideAnimation();
-                                      flag = 0;
+                                      setState(() {});
+                                      providerData.runSlideAnimation(
+                                          _slideTransitionController);
+                                      providerData.flag = 0;
                                     },
                                     child: Text('NEXT',
                                         style: TextStyle(
