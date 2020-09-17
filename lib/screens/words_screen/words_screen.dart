@@ -147,7 +147,7 @@ class WordsScreen extends StatelessWidget {
                         'isEditingMode': true,
                         'word': state.words[index],
                         'collectionId': collectionId,
-                        'lang': collectionLang,
+                        // 'lang': collectionLang,
                       },
                     );
                     context

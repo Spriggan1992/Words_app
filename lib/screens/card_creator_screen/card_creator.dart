@@ -58,7 +58,7 @@ class CardCreator extends StatelessWidget {
     final bool isEditingMode = args['isEditingMode'];
     final String id = word.id;
     final String collectionId = args['collectionId'];
-    final String collectionLang = args['lang'];
+    // final String collectionLang = args['lang'];
     SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize;
 
@@ -70,8 +70,16 @@ class CardCreator extends StatelessWidget {
           );
         }
         if (state is CardCreatorSuccess) {
-          return buildBody(context, isEditingMode, id, collectionId, word,
-              state, defaultSize, collectionLang);
+          return buildBody(
+            context,
+            isEditingMode,
+            id,
+            collectionId,
+            word,
+            state,
+            defaultSize,
+            // collectionLang,
+          );
         }
         if (state is CardCreatorFailure) {
           return Center(child: Text("${state.message}"));
@@ -81,14 +89,15 @@ class CardCreator extends StatelessWidget {
   }
 
   Scaffold buildBody(
-      BuildContext context,
-      bool isEditingMode,
-      String id,
-      String collectionId,
-      Word word,
-      CardCreatorSuccess state,
-      double defaultSize,
-      String collectionLang) {
+    BuildContext context,
+    bool isEditingMode,
+    String id,
+    String collectionId,
+    Word word,
+    CardCreatorSuccess state,
+    double defaultSize,
+    // String collectionLang,
+  ) {
     return Scaffold(
       appBar: buildBaseAppBar(
           context, isEditingMode, id, collectionId, word, state),
