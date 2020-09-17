@@ -43,6 +43,7 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
     'nederlands',
     'norwegian',
     'polish',
+    'russian',
   ];
   //cs, da, de, en, es, fr, id, it, hu, nl, no, pl, pt, ro, sk, fi, sv, tr, vi, th, bg, ru, el, ja, ko, zh
   Map<String, String> languageMap = {
@@ -60,6 +61,7 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
     'nederlands': 'nl',
     'norwegian': 'no',
     'polish': 'pl',
+    'russian': 'ru',
   };
   @override
   void initState() {
