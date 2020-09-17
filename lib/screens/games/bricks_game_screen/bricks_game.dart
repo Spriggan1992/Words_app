@@ -28,11 +28,10 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   Animation slideTransitionAnimation;
 
   List<Word> initialData;
-  var shuffledWordArray;
-  List answerWordArray = [];
+  var shuffledWord;
+  List<String> answerWordArray = [];
   String matches;
   int flag = 0;
-  bool disableAnswersWordArray = false;
   bool isCheckSlideTransition = true;
   // bool waitingAnimation = false;
 
@@ -119,20 +118,20 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     setState(() {});
   }
 
-  void runShakeAnimation() {
-    _shakeController.forward(from: 0.0);
-    setState(() {});
-  }
+  // void runShakeAnimation() {
+  //   _shakeController.forward(from: 0.0);
+  //   setState(() {});
+  // }
 
-  void runErrorAnimation() {
-    _errorAnimationController.forward(from: 0.0);
-    setState(() {});
-  }
+  // void runErrorAnimation() {
+  //   _errorAnimationController.forward(from: 0.0);
+  //   setState(() {});
+  // }
 
-  void runSuccessAnimation() {
-    _successAnimationController.forward(from: 0.0);
-    setState(() {});
-  }
+  // void runSuccessAnimation() {
+  //   _successAnimationController.forward(from: 0.0);
+  //   setState(() {});
+  // }
 
   void getDataFromProvider() {
     initialData = [...widget.words]..shuffle();
@@ -153,8 +152,9 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
         });
       }
 
-      shuffledWordArray = providerData;
-      shuffledWordArray.listMatches.shuffle();
+      shuffledWord = providerData;
+      shuffledWord.listMatches.shuffle();
+      print(shuffledWord.listMatches);
     } else {
       print('Data is Empty');
     }
@@ -206,7 +206,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     String a = answerWordArray.join('');
     if (matches.startsWith(a) == true) {
       flag = 1;
-      runSuccessAnimation();
+      providerData.runSuccessAnimation(_successAnimationController);
       _successAnimationController.addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           runSlideAnimation();
@@ -215,7 +215,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
       });
     } else {
       flag = 2;
-      runErrorAnimation();
+      providerData.runErrorAnimation(_errorAnimationController);
       _errorAnimationController.addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           for (int i = 0; i < providerData.listMatches.length; i++) {
@@ -230,6 +230,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   }
 
   void activateTryAgan() {
+    setState(() {});
     final providerData = Provider.of<TrainingMatches>(context, listen: false);
     for (int i = 0; i < providerData.listMatches.length; i++) {
       providerData.listMatches[i].isVisible = true;
@@ -239,16 +240,16 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   }
 
   void returnLetters(String element) {
-    for (int i = 0; i < shuffledWordArray.listMatches.length; i++) {
-      if (element == shuffledWordArray.listMatches[i].targetLangWord &&
-          shuffledWordArray.listMatches[i].isVisible == false) {
-        shuffledWordArray.listMatches[i].isVisible = true;
-        break;
+    setState(() {
+      for (int i = 0; i < shuffledWord.listMatches.length; i++) {
+        if (element == shuffledWord.listMatches[i].targetLangWord &&
+            shuffledWord.listMatches[i].isVisible == false) {
+          shuffledWord.listMatches[i].isVisible = true;
+          break;
+        }
       }
-      setState(() {});
-    }
-    answerWordArray.remove(element);
-    setState(() {});
+      answerWordArray.remove(element);
+    });
   }
 
   void addLetter(String element) {
@@ -257,7 +258,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   }
 
   bool activateSubmitBtn() {
-    if (answerWordArray.length != shuffledWordArray.listMatches.length) {
+    if (answerWordArray.length != shuffledWord.listMatches.length) {
       return false;
     }
     return true;
@@ -279,8 +280,8 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   void giveUp() {
     final providerData = Provider.of<TrainingMatches>(context, listen: false);
     matches.split('').forEach((element) => answerWordArray.add(element));
-    for (int i = 0; i < shuffledWordArray.listMatches.length; i++) {
-      shuffledWordArray.listMatches[i].isVisible = false;
+    for (int i = 0; i < shuffledWord.listMatches.length; i++) {
+      shuffledWord.listMatches[i].isVisible = false;
     }
     flag = 3;
 
@@ -292,17 +293,16 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     for (int i = 0; i < answerWordArray.length; i++) {
       listWidget.add(Visibility(
         child: GestureDetector(
-          onTap: !disableAnswersWordArray
-              ? () {
+          onTap: flag == 3
+              ? () {}
+              : () {
                   setState(() {});
                   returnLetters(answerWordArray[i]);
-                }
-              : () {},
+                },
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 boxShadow: [kBoxShadow],
-                //TODO: ANSWER CONTAINER
                 color: setUpColor()),
             alignment: Alignment.center,
             width: 41,
@@ -321,15 +321,15 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   List<Widget> buildTargetWordContainer() {
     List<Widget> listWidget = [];
 
-    for (int i = 0; i < shuffledWordArray.listMatches.length; i++) {
+    for (int i = 0; i < shuffledWord.listMatches.length; i++) {
       listWidget.add(Visibility(
         child: GestureDetector(
           onTap: () {
             setState(() {});
-            addLetter(shuffledWordArray.listMatches[i].targetLangWord);
-            shuffledWordArray.listMatches[i].toggleVisibility();
+            addLetter(shuffledWord.listMatches[i].targetLangWord);
+            shuffledWord.listMatches[i].toggleVisibility();
           },
-          child: shuffledWordArray.listMatches[i].isVisible
+          child: shuffledWord.listMatches[i].isVisible
               ? Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
@@ -340,7 +340,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                   // width: shuffledWordArray.listMatches.length < 27 ? 41 : 34.1,
                   height: 42,
                   child: Text(
-                    shuffledWordArray.listMatches[i].targetLangWord,
+                    shuffledWord.listMatches[i].targetLangWord,
                     style: TextStyle(fontSize: 20),
                   ),
                 )
@@ -471,13 +471,16 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                                 color: Theme.of(context).accentColor,
                                 elevation: 5,
                                 onPressed: flag == 3
-                                    ? () {}
+                                    ? () {
+                                        activateTryAgan();
+                                      }
                                     : activateSubmitBtn()
                                         ? () {
                                             checkAnswer();
                                           }
                                         : () {
-                                            runShakeAnimation();
+                                            providerData.runShakeAnimation(
+                                                _shakeController);
                                           },
                                 child: Text(flag == 3 ? 'Try Again' : 'Submit'),
                               ),
@@ -504,6 +507,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                                 GestureDetector(
                                     onTap: () {
                                       runSlideAnimation();
+                                      flag = 0;
                                     },
                                     child: Text('NEXT',
                                         style: TextStyle(
@@ -518,80 +522,3 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     );
   }
 }
-//   @override
-//   Widget build(BuildContext context) {
-//     double screenWidth = MediaQuery.of(context).size.width;
-//     double screenHeight = MediaQuery.of(context).size.width;
-//     // Here we call Show Dialog
-//     return WillPopScope(
-//       onWillPop: onBackPressed,
-//       child: Scaffold(
-//         floatingActionButton: FloatingActionButton(onPressed: () {
-//           runAnimation();
-//         }),
-//         body: SafeArea(
-//             child: initialData.isNotEmpty
-//                 ? Column(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: <Widget>[
-//                       Expanded(
-//                         child: Center(
-//                           child: Padding(
-//                             padding: const EdgeInsets.only(top: 30.0),
-//                             child: Container(
-//                               alignment: Alignment.center,
-//                               color: Colors.white,
-//                               width: 200,
-//                               height: 300,
-//                               child: Text(initialData.last.ownLang),
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                       Expanded(
-//                           child: Container(
-//                         child: buildSliverGridAnswerContainer(),
-//                       )),
-//                       Flexible(
-//                         child: Wrap(
-//                           direction: Axis.vertical,
-//                           children: <Widget>[
-//                             Padding(
-//                               padding: const EdgeInsets.all(8.0),
-//                               child: Container(
-//                                 width: screenWidth,
-//                                 height: 800,
-//                                 child: buildSliverGridShuffeldContainer(),
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                       Flexible(
-//                         child: FlatButton(
-//                             child: Container(
-//                               alignment: Alignment.center,
-//                               width: 100,
-//                               height: 40,
-//                               color: Colors.grey[400],
-//                               child: Text('Submit'),
-//                             ),
-//                             onPressed: activateSubmitBtn()
-//                                 ? () {
-//                                     checkAnswer();
-//                                     if (flag == 2) {
-//                                       print('2');
-//                                     } else if (flag == 1) {
-//                                       loadNextWord();
-//                                       flag = 0;
-//                                     }
-//                                   }
-//                                 : () {}),
-//                       )
-//                     ],
-//                   )
-//                 : Center(child: Text('You run out of words'))),
-//       ),
-//     );
-//   }
-// }
