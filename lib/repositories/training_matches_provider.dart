@@ -43,40 +43,40 @@ class TrainingMatches with ChangeNotifier {
   }
 //------------------------------------------------------------------------------
 
-  void loadNextWord(
-    List<Word> initialData,
-    List<String> answerWordArray,
-  ) {
-    cleanData();
-    if (initialData.length >= 1) {
-      initialData.removeLast();
-      extractAndGetDataFromProvider();
-    } else {
-      initialData.clear();
-    }
-    answerWordArray.clear();
-  }
+  // void loadNextWord(
+  //   List<Word> initialData,
+  //   List<String> answerWordArray,
+  // ) {
+  //   cleanData();
+  //   if (initialData.length >= 1) {
+  //     initialData.removeLast();
+  //     extractAndGetDataFromProvider();
+  //   } else {
+  //     initialData.clear();
+  //   }
+  //   answerWordArray.clear();
+  // }
 
-  void extractAndGetDataFromProvider(
-    List<Word> initialData,
-    String matches,
-  ) {
-    if (initialData.length >= 1) {
-      // Add last word in targetLangWord;
-      for (int i = 0; i < initialData.length; i++) {
-        matches = initialData[i].targetLang.toLowerCase();
-      }
-      List<String> targetSplitted = matches.toLowerCase().split('');
-      // Check if providerData.listMatches empty or not. If it empty-> add new word, else dont add it.
-      if (listMatches.isEmpty) {
-        targetSplitted.forEach((item) {
-          addWord(item, true);
-        });
-      }
+  // void extractAndGetDataFromProvider(
+  //   List<Word> initialData,
+  //   String matches,
+  // ) {
+  //   if (initialData.length >= 1) {
+  //     // Add last word in targetLangWord;
+  //     for (int i = 0; i < initialData.length; i++) {
+  //       matches = initialData[i].targetLang.toLowerCase();
+  //     }
+  //     List<String> targetSplitted = matches.toLowerCase().split('');
+  //     // Check if providerData.listMatches empty or not. If it empty-> add new word, else dont add it.
+  //     if (listMatches.isEmpty) {
+  //       targetSplitted.forEach((item) {
+  //         addWord(item, true);
+  //       });
+  //     }
 
-      listMatches.shuffle();
-    } else {
-      print('Data is Empty');
-    }
-  }
+  //     listMatches.shuffle();
+  //   } else {
+  //     print('Data is Empty');
+  //   }
+  // }
 }
