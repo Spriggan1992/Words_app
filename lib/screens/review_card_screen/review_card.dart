@@ -52,7 +52,7 @@ class _ReviewCardState extends State<ReviewCard>
     getCurrInd();
     _pageController =
         PageController(viewportFraction: 0.87, initialPage: initialPage);
-    // TODO: review_card
+
     page = widget.index;
   }
 
