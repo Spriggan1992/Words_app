@@ -172,7 +172,6 @@ class CardCreator extends StatelessWidget {
                                               ),
                                               color: Color(0xFFDA627D),
                                             ),
-                                            // TODO: IMG
                                             IconButton(
                                               onPressed: () {
                                                 context
@@ -201,19 +200,7 @@ class CardCreator extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(14),
                                           child: state.image.path == ''
-                                              ? IconButton(
-                                                  onPressed: () {
-                                                    context
-                                                        .bloc<CardCreatorBloc>()
-                                                        .add(
-                                                            CardCreatorUpdateImgFromCamera());
-                                                  },
-                                                  icon: Icon(
-                                                    Icons.photo_camera,
-                                                    size: 48,
-                                                  ),
-                                                  color: Color(0xFFDA627D),
-                                                )
+                                              ? Container()
                                               : Image.file(
                                                   state.image,
                                                   fit: BoxFit.cover,

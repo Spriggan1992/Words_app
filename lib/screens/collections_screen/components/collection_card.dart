@@ -25,7 +25,23 @@ class CollectionCard extends StatelessWidget {
   final int index;
   final List<Collection> collections;
   final Function showEditDialog;
-
+  Map<String, String> languageMap = {
+    'fi': "finnish",
+    'en': "english",
+    "zh": "chinese",
+    'de': "german",
+    'cz': 'czech',
+    'da': 'danish',
+    'es': 'spanish',
+    'fr': 'french',
+    'id': 'indonesian',
+    'it': 'italian',
+    'hu': 'hungarian',
+    'nl': 'nederlands',
+    'no': 'norwegian',
+    'pl': 'polish',
+    'ru': 'russian',
+  };
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -101,7 +117,8 @@ class CollectionCard extends StatelessWidget {
                       SizedBox(height: 5.0),
                       FittedBox(
                         child: TextHolder(
-                          titleNameValue: collections[index].language ?? ' ',
+                          titleNameValue:
+                              languageMap[collections[index].language] ?? ' ',
                           fontSize1: 9.0,
                           fontSize2: 15.0,
                         ),
