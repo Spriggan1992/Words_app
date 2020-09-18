@@ -18,21 +18,25 @@ class Bricks with ChangeNotifier {
   /// Run Shake Animation
   void runShakeAnimation(AnimationController shakeController) {
     shakeController.forward(from: 0.0);
+    notifyListeners();
   }
 
   /// Run Error Animation
   void runErrorAnimation(AnimationController errorAnimationController) {
     errorAnimationController.forward(from: 0.0);
+    notifyListeners();
   }
 
   /// Run Success Animation
   void runSuccessAnimation(AnimationController successAnimationController) {
     successAnimationController.forward(from: 0.0);
+    notifyListeners();
   }
 
   /// Run Slide Animation
   void runSlideAnimation(AnimationController slideTransitionController) {
     slideTransitionController.forward();
+    notifyListeners();
   }
 
 //------------------------------------------------------------------------------
@@ -64,6 +68,7 @@ class Bricks with ChangeNotifier {
     } else {
       print('Data is Empty');
     }
+    notifyListeners();
   }
 
   /// Load next word
@@ -83,17 +88,24 @@ class Bricks with ChangeNotifier {
   void addWord(String targetLangWord, bool isVisible) {
     final bricks = Brick(targetLangWord: targetLangWord, isVisible: isVisible);
     listBricks.add(bricks);
-    // notifyListeners();
+    notifyListeners();
   }
 
   /// cleat [listBricks]
   void cleanData() {
     listBricks.clear();
+    notifyListeners();
+  }
+
+  void toggleVisible(Brick item) {
+    item.isVisible = !item.isVisible;
+    notifyListeners();
   }
 
   /// Make target letters(bricks) to be vissible or hidden
   void toggleAllVisibility() {
     listBricks.map((item) => item.isVisible = false);
+    notifyListeners();
   }
 
   /// Set up color depending on what the [dynamicColor] variable will be equal to
@@ -145,6 +157,7 @@ class Bricks with ChangeNotifier {
         }
       });
     }
+    notifyListeners();
   }
 
   /// Start over to match bricks
@@ -156,6 +169,7 @@ class Bricks with ChangeNotifier {
       answerWordArray.clear();
       dynamicColor = DynamicColor.normal;
     }
+    notifyListeners();
   }
 
   /// Delete letter(bricks) from answerWordArray
@@ -171,19 +185,27 @@ class Bricks with ChangeNotifier {
       }
     }
     answerWordArray.remove(element);
+    notifyListeners();
   }
 
   /// Add letters(bricks) in [answerWordArray]
   void addLetter(String element) {
     answerWordArray.add(element);
+    notifyListeners();
   }
 
-  /// return bool for activating Submit button
-  bool activateSubmitBtn() {
+  /// Activate submit button
+  void activateSubmitBtn(successAnimationController, errorAnimationController,
+      slideTransitionController, shakeController) {
     if (answerWordArray.length != listBricks.length) {
-      return false;
+      runShakeAnimation(shakeController);
+    } else if (dynamicColor == DynamicColor.wrong) {
+      activateTryAgan();
+    } else {
+      checkAnswer(successAnimationController, errorAnimationController,
+          slideTransitionController, initialData);
     }
-    return true;
+    notifyListeners();
   }
 
   /// Show correct answer and start over to match bricks
@@ -193,6 +215,7 @@ class Bricks with ChangeNotifier {
       listBricks[i].isVisible = false;
     }
     dynamicColor = DynamicColor.wrong;
+    notifyListeners();
   }
 
   /// Reset Word
@@ -204,5 +227,6 @@ class Bricks with ChangeNotifier {
       answerWordArray.clear();
       dynamicColor = DynamicColor.normal;
     }
+    notifyListeners();
   }
 }
