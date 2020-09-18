@@ -8,28 +8,30 @@ void deleteConfirmation(BuildContext context, Function remover, String title) {
         return Transform(
             transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
             child: Opacity(
-              opacity: a1.value,
-              child: AlertDialog(
-                title: new Text('Are you sure?'),
-                content: new Text(title),
-                actions: <Widget>[
-                  new GestureDetector(
-                    onTap: () => Navigator.of(context).pop(false),
-                    child: Text("NO"),
+                  opacity: a1.value,
+                  child: AlertDialog(
+                    title: Text('Are you sure?'),
+                    content: Text(title),
+                    actions: <Widget>[
+                      GestureDetector(
+                        onTap: () => Navigator.of(context).pop(false),
+                        child: Text("NO"),
+                      ),
+                      SizedBox(height: 16),
+                      GestureDetector(
+                        onTap: remover,
+                        child: Text("YES"),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 16),
-                  new GestureDetector(
-                    onTap: remover,
-                    child: Text("YES"),
-                  ),
-                ],
-              ),
-            ));
+                ) ??
+                false);
       },
       transitionDuration: Duration(milliseconds: 200),
       barrierDismissible: false,
       barrierLabel: '',
       context: context,
-      // ignore: missing_return
-      pageBuilder: (context, animation1, animation2) {});
+      pageBuilder: (context, animation1, animation2) {
+        return;
+      });
 }

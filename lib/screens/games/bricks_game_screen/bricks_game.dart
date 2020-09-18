@@ -2,21 +2,24 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/constants/constants.dart';
-import 'package:words_app/repositories/training_matches_provider.dart';
+import 'package:words_app/repositories/bricks_provider.dart';
 import 'package:words_app/models/word.dart';
+import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
 import 'package:words_app/utils/size_config.dart';
 
-class Bricks extends StatefulWidget {
-  static String id = 'matches_screen';
+import 'components/answer_container.dart';
+
+class BricksGame extends StatefulWidget {
+  static String id = 'bricks_game';
   final List<Word> words;
 
-  const Bricks({Key key, this.words}) : super(key: key);
+  const BricksGame({Key key, this.words}) : super(key: key);
 
   @override
-  _BricksState createState() => _BricksState();
+  _BricksGameState createState() => _BricksGameState();
 }
 
-class _BricksState extends State<Bricks> with TickerProviderStateMixin {
+class _BricksGameState extends State<BricksGame> with TickerProviderStateMixin {
   AnimationController _errorAnimationController;
   AnimationController _successAnimationController;
   AnimationController _shakeController;
@@ -26,14 +29,6 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   Animation errorColorAnimation;
   Animation successColorAnimation;
   Animation slideTransitionAnimation;
-
-  // List<Word> initialData;
-  // var shuffledWord;
-  // List<String> answerWordArray = [];
-  // String matches;
-  // int flag = 0;
-  // bool isCheckSlideTransition = true;
-  // bool waitingAnimation = false;
 
   static final tweenSequenceError = TweenSequence(<TweenSequenceItem<Color>>[
     TweenSequenceItem<Color>(
@@ -56,8 +51,6 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     loadData();
-    // getDataFromProvider();
-    // extractAndGetDataFromProvider();
 
     _errorAnimationController = AnimationController(
       duration: Duration(milliseconds: 500),
@@ -111,86 +104,103 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   }
 
   void loadData() {
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
-    providerData.getDataFromProvider(widget.words);
-    providerData.extractAndGetDataFromProvider();
+    final providerData = Provider.of<Bricks>(context, listen: false);
+    providerData.setUpInitialData(widget.words);
+    providerData.extractAndAssingData();
   }
 
   Future<bool> onBackPressed() {
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
-    return showDialog(
-          context: context,
-          builder: (context) => new AlertDialog(
-            title: new Text('Are you sure?'),
-            content: new Text('Do you want to finish your traning?'),
-            actions: <Widget>[
-              new GestureDetector(
-                onTap: () => Navigator.of(context).pop(false),
-                child: Text("NO"),
-              ),
-              SizedBox(height: 16),
-              new GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop(true);
-                  providerData.initialData.clear();
-                  providerData.cleanData();
-                },
-                child: Text("YES"),
-              ),
-            ],
-          ),
-        ) ??
-        false;
+    final providerData = Provider.of<Bricks>(context, listen: false);
+    return showGeneralDialog(
+        barrierColor: Color(0xff906c7a).withOpacity(0.9),
+        transitionBuilder: (context, a1, a2, widget) {
+          final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
+          return Transform(
+              transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
+              child: Opacity(
+                    opacity: a1.value,
+                    child: new AlertDialog(
+                      title: new Text('Are you sure?'),
+                      content: new Text('Do you want to finish your traning?'),
+                      actions: <Widget>[
+                        new GestureDetector(
+                          onTap: () => Navigator.of(context).pop(false),
+                          child: Text("NO"),
+                        ),
+                        SizedBox(height: 16),
+                        new GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              Navigator.of(context).pop(true);
+                              providerData.initialData.clear();
+                              providerData.cleanData();
+                              providerData.resetWords();
+                              providerData.answerWordArray.clear();
+                              providerData.dynamicColor = DynamicColor.normal;
+                            });
+                          },
+                          child: Text("YES"),
+                        ),
+                      ],
+                    ),
+                  ) ??
+                  false);
+        },
+        transitionDuration: Duration(milliseconds: 200),
+        barrierDismissible: false,
+        barrierLabel: '',
+        context: context,
+        pageBuilder: (context, animation1, animation2) {
+          return;
+        });
   }
 
-  List<Widget> buildAnswerContainer() {
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
-    List<Widget> listWidget = [];
-    for (int i = 0; i < providerData.answerWordArray.length; i++) {
-      listWidget.add(Visibility(
-        child: GestureDetector(
-          onTap: providerData.flag == 3
-              ? () {}
-              : () {
-                  setState(() {
-                    providerData.returnLetters(providerData.answerWordArray[i]);
-                  });
-                },
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                boxShadow: [kBoxShadow],
-                color: providerData.setUpColor(
-                    successColorAnimation, errorColorAnimation)),
-            alignment: Alignment.center,
-            width: 41,
-            height: 42,
-            child: Text(
-              providerData.answerWordArray[i],
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-        ),
-      ));
-    }
-    return listWidget;
-  }
+  // List<Widget> buildAnswerContainer() {
+  //   final providerData = Provider.of<Bricks>(context, listen: false);
+  //   List<Widget> listWidget = [];
+  //   for (int i = 0; i < providerData.answerWordArray.length; i++) {
+  //     listWidget.add(Visibility(
+  //       child: GestureDetector(
+  //         onTap: providerData.dynamicColor == DynamicColor.wrong
+  //             ? () {}
+  //             : () {
+  //                 setState(() {
+  //                   providerData.returnLetters(providerData.answerWordArray[i]);
+  //                 });
+  //               },
+  //         child: Container(
+  //           decoration: BoxDecoration(
+  //               borderRadius: BorderRadius.circular(5),
+  //               boxShadow: [kBoxShadow],
+  //               color: providerData.setUpColor(
+  //                   successColorAnimation, errorColorAnimation)),
+  //           alignment: Alignment.center,
+  //           width: 41,
+  //           height: 42,
+  //           child: Text(
+  //             providerData.answerWordArray[i],
+  //             style: TextStyle(fontSize: 20),
+  //           ),
+  //         ),
+  //       ),
+  //     ));
+  //   }
+  //   return listWidget;
+  // }
 
   List<Widget> buildTargetWordContainer() {
     List<Widget> listWidget = [];
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
-
-    for (int i = 0; i < providerData.listMatches.length; i++) {
+    final providerData = Provider.of<Bricks>(context, listen: false);
+    for (int i = 0; i < providerData.listBricks.length; i++) {
       listWidget.add(Visibility(
         child: GestureDetector(
           onTap: () {
             setState(() {
-              providerData
-                  .addLetter(providerData.listMatches[i].targetLangWord);
-              providerData.listMatches[i].toggleVisibility();
+              providerData.addLetter(providerData.listBricks[i].targetLangWord);
+              providerData.listBricks[i].toggleVisibility();
             });
           },
-          child: providerData.listMatches[i].isVisible
+          child: providerData.listBricks[i].isVisible
               ? Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
@@ -201,7 +211,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                   // width: shuffledWordArray.listMatches.length < 27 ? 41 : 34.1,
                   height: 42,
                   child: Text(
-                    providerData.listMatches[i].targetLangWord,
+                    providerData.listBricks[i].targetLangWord,
                     style: TextStyle(fontSize: 20),
                   ),
                 )
@@ -216,10 +226,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.width;
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
-
+    final providerData = Provider.of<Bricks>(context, listen: false);
     // Here we call Show Dialog
     return WillPopScope(
       onWillPop: onBackPressed,
@@ -279,7 +286,11 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                                     runSpacing: 2,
                                     spacing: 2,
                                     direction: Axis.horizontal,
-                                    children: buildAnswerContainer(),
+                                    children: buildAnswerContainer(
+                                        setState,
+                                        context,
+                                        successColorAnimation,
+                                        errorColorAnimation),
                                   ),
                                 ),
                               ),
@@ -321,7 +332,8 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                                     borderRadius: BorderRadius.circular(5)),
                                 color: Theme.of(context).accentColor,
                                 elevation: 5,
-                                onPressed: providerData.flag == 3
+                                onPressed: providerData.dynamicColor ==
+                                        DynamicColor.wrong
                                     ? () {
                                         setState(() {
                                           providerData.activateTryAgan();
@@ -343,7 +355,8 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                                                   _shakeController);
                                             });
                                           },
-                                child: Text(providerData.flag == 3
+                                child: Text(providerData.dynamicColor ==
+                                        DynamicColor.wrong
                                     ? 'Try Again'
                                     : 'Submit'),
                               ),
@@ -359,7 +372,8 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 GestureDetector(
-                                    onTap: providerData.flag == 3
+                                    onTap: providerData.dynamicColor ==
+                                            DynamicColor.wrong
                                         ? () {}
                                         : () {
                                             setState(() {
@@ -371,10 +385,20 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                                             fontWeight: FontWeight.bold))),
                                 GestureDetector(
                                     onTap: () {
-                                      setState(() {});
-                                      providerData.runSlideAnimation(
-                                          _slideTransitionController);
-                                      providerData.flag = 0;
+                                      setState(() {
+                                        providerData.runSlideAnimation(
+                                            _slideTransitionController);
+                                      });
+                                      Future.delayed(
+                                          const Duration(milliseconds: 230),
+                                          () {
+                                        setState(() {
+                                          providerData.loadNextWord();
+                                        });
+                                      });
+
+                                      providerData.dynamicColor =
+                                          DynamicColor.normal;
                                     },
                                     child: Text('NEXT',
                                         style: TextStyle(
