@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/models/word.dart';
+import 'package:words_app/repositories/bricks_provider.dart';
 
-import '../../../models/word.dart';
-import '../../../repositories/bricks_provider.dart';
 import 'components/answer_container.dart';
 import 'components/card_container.dart';
 import 'components/next_and_give_up_btns.dart';
