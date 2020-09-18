@@ -434,7 +434,7 @@ class _TrainingManagerState extends State<TrainingManager> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Bricks(
+                  builder: (context) => BricksGame(
                     words: state.filteredWords,
                   ),
                 ));

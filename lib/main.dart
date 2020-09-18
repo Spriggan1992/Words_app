@@ -14,7 +14,7 @@ import 'cubit/card_creator/part_color/part_color_cubit.dart';
 import 'cubit/words/words_cubit.dart';
 import 'repositories/collections_repository.dart';
 import 'repositories/image_repository.dart';
-import 'repositories/training_matches_provider.dart';
+import 'repositories/bricks_provider.dart';
 import 'repositories/validation_provider.dart';
 import 'repositories/words_repository.dart';
 import 'screens/card_creator_screen//card_creator.dart';
@@ -91,7 +91,7 @@ class MyApp extends StatelessWidget {
           create: (_) => ValidationForm(),
         ),
         ChangeNotifierProvider(
-          create: (_) => TrainingMatches(),
+          create: (_) => Bricks(),
         ),
       ],
       child: MaterialApp(
@@ -135,7 +135,7 @@ class MyApp extends StatelessWidget {
           CardCreator.id: (_) => CardCreator(),
           ReviewCard.id: (_) => ReviewCard(),
           RightWrong.id: (_) => RightWrong(),
-          Bricks.id: (_) => Bricks(),
+          BricksGame.id: (_) => BricksGame(),
           PairGame.id: (_) => PairGame(),
           Result.id: (_) => Result(),
           TrainingManager.id: (_) => TrainingManager(),

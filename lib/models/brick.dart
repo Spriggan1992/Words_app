@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MatchesWord<T> with ChangeNotifier {
-  MatchesWord({
+class Brick<T> with ChangeNotifier {
+  Brick({
     this.targetLangWord,
     this.isVisible,
     // this.ownLangWord,

@@ -2,21 +2,21 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/constants/constants.dart';
-import 'package:words_app/repositories/training_matches_provider.dart';
+import 'package:words_app/repositories/bricks_provider.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/utils/size_config.dart';
 
-class Bricks extends StatefulWidget {
-  static String id = 'matches_screen';
+class BricksGame extends StatefulWidget {
+  static String id = 'bricks_game';
   final List<Word> words;
 
-  const Bricks({Key key, this.words}) : super(key: key);
+  const BricksGame({Key key, this.words}) : super(key: key);
 
   @override
-  _BricksState createState() => _BricksState();
+  _BricksGameState createState() => _BricksGameState();
 }
 
-class _BricksState extends State<Bricks> with TickerProviderStateMixin {
+class _BricksGameState extends State<BricksGame> with TickerProviderStateMixin {
   AnimationController _errorAnimationController;
   AnimationController _successAnimationController;
   AnimationController _shakeController;
@@ -26,14 +26,6 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   Animation errorColorAnimation;
   Animation successColorAnimation;
   Animation slideTransitionAnimation;
-
-  // List<Word> initialData;
-  // var shuffledWord;
-  // List<String> answerWordArray = [];
-  // String matches;
-  // int flag = 0;
-  // bool isCheckSlideTransition = true;
-  // bool waitingAnimation = false;
 
   static final tweenSequenceError = TweenSequence(<TweenSequenceItem<Color>>[
     TweenSequenceItem<Color>(
@@ -111,13 +103,13 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   }
 
   void loadData() {
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
-    providerData.getDataFromProvider(widget.words);
-    providerData.extractAndGetDataFromProvider();
+    final providerData = Provider.of<Bricks>(context, listen: false);
+    providerData.setUpInitialData(widget.words);
+    providerData.extractAndAssingData();
   }
 
   Future<bool> onBackPressed() {
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
+    final providerData = Provider.of<Bricks>(context, listen: false);
     return showDialog(
           context: context,
           builder: (context) => new AlertDialog(
@@ -144,7 +136,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
   }
 
   List<Widget> buildAnswerContainer() {
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
+    final providerData = Provider.of<Bricks>(context, listen: false);
     List<Widget> listWidget = [];
     for (int i = 0; i < providerData.answerWordArray.length; i++) {
       listWidget.add(Visibility(
@@ -178,19 +170,18 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
 
   List<Widget> buildTargetWordContainer() {
     List<Widget> listWidget = [];
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
+    final providerData = Provider.of<Bricks>(context, listen: false);
 
-    for (int i = 0; i < providerData.listMatches.length; i++) {
+    for (int i = 0; i < providerData.listBricks.length; i++) {
       listWidget.add(Visibility(
         child: GestureDetector(
           onTap: () {
             setState(() {
-              providerData
-                  .addLetter(providerData.listMatches[i].targetLangWord);
-              providerData.listMatches[i].toggleVisibility();
+              providerData.addLetter(providerData.listBricks[i].targetLangWord);
+              providerData.listBricks[i].toggleVisibility();
             });
           },
-          child: providerData.listMatches[i].isVisible
+          child: providerData.listBricks[i].isVisible
               ? Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
@@ -201,7 +192,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                   // width: shuffledWordArray.listMatches.length < 27 ? 41 : 34.1,
                   height: 42,
                   child: Text(
-                    providerData.listMatches[i].targetLangWord,
+                    providerData.listBricks[i].targetLangWord,
                     style: TextStyle(fontSize: 20),
                   ),
                 )
@@ -218,7 +209,7 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
     final defaultSize = SizeConfig.defaultSize;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.width;
-    final providerData = Provider.of<TrainingMatches>(context, listen: false);
+    final providerData = Provider.of<Bricks>(context, listen: false);
 
     // Here we call Show Dialog
     return WillPopScope(
@@ -371,9 +362,18 @@ class _BricksState extends State<Bricks> with TickerProviderStateMixin {
                                             fontWeight: FontWeight.bold))),
                                 GestureDetector(
                                     onTap: () {
-                                      setState(() {});
-                                      providerData.runSlideAnimation(
-                                          _slideTransitionController);
+                                      setState(() {
+                                        providerData.runSlideAnimation(
+                                            _slideTransitionController);
+                                      });
+                                      Future.delayed(
+                                          const Duration(milliseconds: 230),
+                                          () {
+                                        setState(() {
+                                          providerData.loadNextWord();
+                                        });
+                                      });
+
                                       providerData.flag = 0;
                                     },
                                     child: Text('NEXT',
