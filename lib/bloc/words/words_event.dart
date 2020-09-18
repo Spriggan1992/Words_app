@@ -59,7 +59,7 @@ class WordsAdded extends WordsEvent {
   List<Object> get props => [word];
 }
 
-//FIXME: temp method for populating collection with words
+// HACK:  temp method for populating collection with words
 class WordsPopulate extends WordsEvent {
   final String id;
 

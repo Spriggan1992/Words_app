@@ -50,7 +50,6 @@ class WordsScreen extends StatelessWidget {
                 );
               }
               if (state is WordsSuccess) {
-                //TODO: lang
                 /// Use cubit to switch editing mode(For selecting words);
                 return buildBody(
                     collectionTitle, collectionId, state, collectionLang);
@@ -74,7 +73,7 @@ class WordsScreen extends StatelessWidget {
               /// Fake Appbar
               buildAppBar(
                   isEditingMode, context, collectionTitle, collectionId, state),
-//TODO: lang
+
               /// List words
               buildListView(state, isEditingMode, collectionId, collectionLang),
 
@@ -107,7 +106,6 @@ class WordsScreen extends StatelessWidget {
     );
   }
 
-//TODO: lang
   Expanded buildListView(WordsSuccess state, bool isEditingMode,
       String collectionId, String collectionLang) {
     return Expanded(
@@ -142,12 +140,10 @@ class WordsScreen extends StatelessWidget {
                     Navigator.pushNamed(
                       context,
                       CardCreator.id,
-                      //TODO: lang
                       arguments: {
                         'isEditingMode': true,
                         'word': state.words[index],
                         'collectionId': collectionId,
-                        'lang': collectionLang,
                       },
                     );
                     context
@@ -300,7 +296,7 @@ class WordsScreen extends StatelessWidget {
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        //TODO: populate
+                        //FIXME: Temp used to populate words  delete it later
                         context
                             .bloc<WordsBloc>()
                             .add(WordsPopulate(id: collectionId));

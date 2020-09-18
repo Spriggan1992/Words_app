@@ -60,64 +60,77 @@ class WordCard extends StatelessWidget {
                           width: SizeConfig.blockSizeHorizontal * 73,
                           height: 10,
                           decoration: BoxDecoration(
-                              color: part,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                              )),
+                            color: part,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                          ),
                         ),
                       ),
+                      side == 'front'
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                SizedBox(
+                                  height: defaultSize * 2,
+                                ),
+                                TitleTextHolderContainer(
+                                  defaultSize: defaultSize,
+                                  wordHolder: word.targetLang ?? '...',
+                                ),
+                                SizedBox(height: defaultSize * 4),
+                                Container(
+                                  margin:
+                                      EdgeInsets.only(bottom: defaultSize * 1),
+                                  width: defaultSize * 20,
+                                  height: defaultSize * 20,
+                                  decoration: word.image.path == '' ||
+                                          word.image == null ||
+                                          word.image.path == null
+                                      ? BoxDecoration()
+                                      : BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            image: FileImage(word.image),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                )
+                              ],
+                            )
+                          : Container(
+                              margin:
+                                  EdgeInsets.only(bottom: defaultSize * 6.5),
+                              alignment: Alignment.center,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    height: defaultSize * 4,
+                                  ),
+                                  TitleTextHolderContainer(
+                                    defaultSize: defaultSize,
+                                    wordHolder: word.ownLang ?? '...',
+                                  ),
+                                  SizedBox(height: defaultSize * 5),
+                                  TitleTextHolderContainer(
+                                    defaultSize: defaultSize,
+                                    wordHolder: word.secondLang ?? '...',
+                                  ),
+                                  SizedBox(height: defaultSize * 5),
+                                  TitleTextHolderContainer(
+                                    defaultSize: defaultSize,
+                                    wordHolder: word.thirdLang ?? '...',
+                                  )
+                                ],
+                              ),
+                            )
                     ],
                   ),
                 ),
-                side == 'front'
-                    ? Column(
-                        children: [
-                          TitleTextHolderContainer(
-                            defaultSize: defaultSize,
-                            wordHolder: word.targetLang ?? '...',
-                          ),
-                          SizedBox(height: defaultSize * 4),
-                          Container(
-                            margin: EdgeInsets.only(bottom: defaultSize * 1),
-                            width: defaultSize * 20,
-                            height: defaultSize * 20,
-                            decoration: word.image.path == '' ||
-                                    word.image == null ||
-                                    word.image.path == null
-                                ? BoxDecoration()
-                                : BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(
-                                      image: FileImage(word.image),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                          )
-                        ],
-                      )
-                    : Container(
-                        margin: EdgeInsets.only(bottom: defaultSize * 6.5),
-                        alignment: Alignment.center,
-                        child: Column(
-                          children: [
-                            TitleTextHolderContainer(
-                              defaultSize: defaultSize,
-                              wordHolder: word.secondLang ?? '...',
-                            ),
-                            SizedBox(height: defaultSize * 5),
-                            TitleTextHolderContainer(
-                              defaultSize: defaultSize,
-                              wordHolder: word.thirdLang ?? '...',
-                            ),
-                            SizedBox(height: defaultSize * 5),
-                            TitleTextHolderContainer(
-                              defaultSize: defaultSize,
-                              wordHolder: word.ownLang ?? '...',
-                            )
-                          ],
-                        ),
-                      )
               ],
             ),
           ),

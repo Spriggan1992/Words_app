@@ -33,7 +33,6 @@ class CollectionCard extends StatelessWidget {
         Navigator.pushNamed(
           context,
           WordsScreen.id,
-          //TODO: language
           arguments: {
             'id': collections[index].id,
             'title': collections[index].title,

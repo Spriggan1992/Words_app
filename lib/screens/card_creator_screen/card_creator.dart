@@ -24,9 +24,6 @@ import 'components/reusable_card.dart';
 class CardCreator extends StatelessWidget {
   static const id = 'card_creator';
 
-  //Global key for Flip card
-  // GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
-
   //variables to work with card
   String targetLang;
   String ownLang;
@@ -58,7 +55,7 @@ class CardCreator extends StatelessWidget {
     final bool isEditingMode = args['isEditingMode'];
     final String id = word.id;
     final String collectionId = args['collectionId'];
-    final String collectionLang = args['lang'];
+    // final String collectionLang = args['lang'];
     SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize;
 
@@ -70,8 +67,16 @@ class CardCreator extends StatelessWidget {
           );
         }
         if (state is CardCreatorSuccess) {
-          return buildBody(context, isEditingMode, id, collectionId, word,
-              state, defaultSize, collectionLang);
+          return buildBody(
+            context,
+            isEditingMode,
+            id,
+            collectionId,
+            word,
+            state,
+            defaultSize,
+            // collectionLang,
+          );
         }
         if (state is CardCreatorFailure) {
           return Center(child: Text("${state.message}"));
@@ -81,14 +86,15 @@ class CardCreator extends StatelessWidget {
   }
 
   Scaffold buildBody(
-      BuildContext context,
-      bool isEditingMode,
-      String id,
-      String collectionId,
-      Word word,
-      CardCreatorSuccess state,
-      double defaultSize,
-      String collectionLang) {
+    BuildContext context,
+    bool isEditingMode,
+    String id,
+    String collectionId,
+    Word word,
+    CardCreatorSuccess state,
+    double defaultSize,
+    // String collectionLang,
+  ) {
     return Scaffold(
       appBar: buildBaseAppBar(
           context, isEditingMode, id, collectionId, word, state),
@@ -213,6 +219,49 @@ class CardCreator extends StatelessWidget {
                                                   fit: BoxFit.cover,
                                                 ),
                                         ),
+                                      ),
+
+                                /// FIXME: refactor to use less code
+                                isEditingMode
+                                    ? Positioned.fill(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                context.bloc<CardCreatorBloc>().add(
+                                                    CardCreatorUpdateImgFromCamera());
+                                              },
+                                              icon: Icon(
+                                                Icons.photo_camera,
+                                                size: 32,
+                                              ),
+                                              color: Color(0xFFDA627D),
+                                            ),
+                                            IconButton(
+                                              onPressed: () {
+                                                context
+                                                    .bloc<CardCreatorBloc>()
+                                                    .add(
+                                                      CardCreatorDownloadImagesFromAPI(
+                                                        name: targetLang,
+                                                      ),
+                                                    );
+                                                Navigator.pushNamed(
+                                                    context, ImageApi.id);
+                                              },
+                                              icon: Icon(
+                                                Icons.web_asset,
+                                                size: 32,
+                                              ),
+                                              color: Color(0xFFDA627D),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : Positioned.fill(
+                                        child: Container(),
                                       ),
                               ],
                             )
