@@ -49,6 +49,10 @@ class ImageRepository {
     final picker = ImagePicker();
     PickedFile imageFile =
         await picker.getImage(source: ImageSource.camera, maxWidth: 600);
+    Directory directory = await getApplicationDocumentsDirectory();
+    String path = directory.path;
+    String name = p.basename(imageFile.path);
+
 //    final imageFile2 = await assetToFile('images/noimages.png');
 //    print(imageFile2.path);
     //This check is needed if we didn't take a picture  and used back button in camera;
@@ -63,7 +67,13 @@ class ImageRepository {
       maxWidth: 600,
       maxHeight: 600,
     );
-    return croppedFile;
+
+    File file = await croppedFile.copy("$path/$name");
+    try {
+      croppedFile.delete();
+    } on FileSystemDeleteEvent {}
+    // print('name: $name path: $path file size: ${file.length()}');
+    return file;
   }
 
   Future<File> getImageFileFromUrl(String url) async {
@@ -71,9 +81,9 @@ class ImageRepository {
     String path = directory.path;
     String name = p.basename(url);
     File file = File("$path/$name");
-    print(
-      "path: $path name $name",
-    );
+    // print(
+    //   "path: $path name $name",
+    // );
     http.Response response = await http.get(url);
 
     if (response.statusCode == 200) {

@@ -65,7 +65,9 @@ class CollectionsRepository {
     // Loop through them and deleting all files that are assosiated with collectionId collection
     dataList.forEach((item) async {
       // Simply deleting file using metod from dart.io
-      await File(item['image']).delete();
+      try {
+        await File(item['image']).delete();
+      } on FileSystemException {}
     });
     DBHelper.delete('collections', collectionId);
   }

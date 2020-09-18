@@ -123,32 +123,35 @@ class WordsRepository with ChangeNotifier {
     return newValue;
   }
 
+  /// Method removeWord removes single file from from phone folder
   void removeWord(Word word) async {
-    await word.image.delete();
+    try {
+      await word.image.delete();
+    } on FileSystemException {}
+
     DBHelper.delete('words', word.id);
   }
 
-  /// /// This method is responsible for returning picter [File].
-  Future<dynamic> getImageFile() async {
-    final picker = ImagePicker();
-    PickedFile imageFile =
-        await picker.getImage(source: ImageSource.camera, maxWidth: 600);
-//    final imageFile2 = await assetToFile('images/noimages.png');
-//    print(imageFile2.path);
-    //This check is needed if we didn't take a picture  and used back button in camera;
+  ///  This method is responsible for returning picter [File].
+  // Future<dynamic> getImageFile() async {
+  //   final picker = ImagePicker();
+  //   PickedFile imageFile =
+  //       await picker.getImage(source: ImageSource.camera, maxWidth: 600);
+  //   // print('getImageFile ${imageFile.path}');
 
-    if (imageFile == null) {
-      return;
-    }
+  //   //This if block checks   if we didn't take a picture  and used back button in camera;
+  //   if (imageFile == null) {
+  //     return;
+  //   }
 
-    //Call imageCropper module and crop the image. I has different looks on Android and IOS
-    File croppedFile = await ImageCropper.cropImage(
-      sourcePath: imageFile.path,
-      maxWidth: 600,
-      maxHeight: 600,
-    );
-    return croppedFile;
-  }
+  //   //Call imageCropper module and crop the image. I has different looks on Android and IOS
+  //   File croppedFile = await ImageCropper.cropImage(
+  //     sourcePath: imageFile.path,
+  //     maxWidth: 600,
+  //     maxHeight: 600,
+  //   );
+  //   return croppedFile;
+  // }
 
   bool isEditingMode = false;
   // bool isSelected = false;
@@ -182,7 +185,9 @@ class WordsRepository with ChangeNotifier {
       (element) async {
         if (element.isSelected == true) {
           // Here we delete image from phisycal device
-          await element.image.delete();
+          try {
+            await element.image.delete();
+          } on FileSystemException {}
           words.remove(element);
           await DBHelper.delete('words', element.id);
         }
