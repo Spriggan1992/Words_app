@@ -45,7 +45,7 @@ class Bricks with ChangeNotifier {
   ///
   ///
   /// Get Words from word_screen and pass it to initialData varible and shuffle;
-  void setUpInitialData(List<Word> words) {
+  Future<void> setUpInitialData(List<Word> words) async {
     initialData = [...words]..shuffle();
   }
 
@@ -68,7 +68,7 @@ class Bricks with ChangeNotifier {
     } else {
       print('Data is Empty');
     }
-    notifyListeners();
+    // notifyListeners();
   }
 
   /// Load next word
