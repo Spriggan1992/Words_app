@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:words_app/models/brick.dart';
 import 'package:words_app/models/word.dart';
 
-enum dynamicColor { normal, success, error, wrong }
+enum DynamicColor { normal, success, error, wrong }
 
 class Bricks with ChangeNotifier {
   List<Word> initialData;
   List<String> answerWordArray = [];
   String answer;
 
-  /// flag: 0 = white color;  1 = successColorAnimation; 2 = errorColorAnimation, 3 = red color;
-  int flag = 0;
+  /// DynamicColor: normal = white color;  success = successColorAnimation; error = errorColorAnimation, wrong = red color;
+  DynamicColor dynamicColor = DynamicColor.normal;
   bool isCheckSlideTransition = true;
   List<Brick> listBricks = [];
 
@@ -96,16 +96,16 @@ class Bricks with ChangeNotifier {
     listBricks.map((item) => item.isVisible = false);
   }
 
-  /// Set up color depending on what the [flag] variable will be equal to
+  /// Set up color depending on what the [dynamicColor] variable will be equal to
   Color setUpColor(Animation<dynamic> successColorAnimation,
       Animation<dynamic> errorColorAnimation) {
-    if (flag == 1) {
+    if (dynamicColor == DynamicColor.success) {
       return successColorAnimation.value;
     }
-    if (flag == 2) {
+    if (dynamicColor == DynamicColor.error) {
       return errorColorAnimation.value;
     }
-    if (flag == 3) {
+    if (dynamicColor == DynamicColor.wrong) {
       return Colors.red;
     } else {
       return Colors.white;
@@ -123,24 +123,24 @@ class Bricks with ChangeNotifier {
       List<Word> initialData) {
     String matchedAnswer = answerWordArray.join('');
     if (answer.startsWith(matchedAnswer) == true) {
-      flag = 1;
+      dynamicColor = DynamicColor.success;
       runSuccessAnimation(successAnimationController);
       successAnimationController.addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           runSlideAnimation(slideTransitionController);
           loadNextWord();
-          flag = 0;
+          dynamicColor = DynamicColor.normal;
         }
       });
     } else {
-      flag = 2;
+      dynamicColor = DynamicColor.error;
       runErrorAnimation(errorAnimationController);
       errorAnimationController.addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           for (int i = 0; i < listBricks.length; i++) {
             listBricks[i].isVisible = true;
             answerWordArray.clear();
-            flag = 0;
+            dynamicColor = DynamicColor.normal;
           }
         }
       });
@@ -154,7 +154,7 @@ class Bricks with ChangeNotifier {
     for (int i = 0; i < listBricks.length; i++) {
       listBricks[i].isVisible = true;
       answerWordArray.clear();
-      flag = 0;
+      dynamicColor = DynamicColor.normal;
     }
   }
 
@@ -192,7 +192,7 @@ class Bricks with ChangeNotifier {
     for (int i = 0; i < listBricks.length; i++) {
       listBricks[i].isVisible = false;
     }
-    flag = 3;
+    dynamicColor = DynamicColor.wrong;
   }
 
   /// Reset Word
@@ -202,7 +202,7 @@ class Bricks with ChangeNotifier {
     for (int i = 0; i < listBricks.length; i++) {
       listBricks[i].isVisible = true;
       answerWordArray.clear();
-      flag = 0;
+      dynamicColor = DynamicColor.normal;
     }
   }
 }

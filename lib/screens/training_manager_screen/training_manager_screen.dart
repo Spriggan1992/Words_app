@@ -406,7 +406,7 @@ class _TrainingManagerState extends State<TrainingManager> {
         titleText: 'Go to Trainig',
         textColor: Colors.black,
         backgroundColor: Theme.of(context).accentColor,
-        onPressed: () async {
+        onPressed: () {
           if (selectedDifficulties.isEmpty) {
             _scaffoldKey.currentState.showSnackBar(SnackBar(
                 duration: Duration(milliseconds: 1500),
