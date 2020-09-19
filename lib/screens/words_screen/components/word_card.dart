@@ -128,9 +128,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
               bottom: BorderSide(
                   color: isExpanded ? Colors.black26 : Colors.transparent),
             ),
-            //change color inside expanded container
-            // color: isExpanded ? Color(0xFFCFD8DC) : Colors.transparent,
-            //
             color: isExpanded
                 ? Color(0xFFCFD8DC)
                 : word.isSelected ? Colors.grey[400] : Colors.transparent,

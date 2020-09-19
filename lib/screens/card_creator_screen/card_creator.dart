@@ -354,7 +354,7 @@ class CardCreator extends StatelessWidget {
       actions: [
         CustomRoundBtn(
           icon: Icons.check,
-          fillColor: Color(0xffDA627D),
+          fillColor: Theme.of(context).accentColor,
           onPressed: () {
             var newWord = Word(
               collectionId: collectionId,

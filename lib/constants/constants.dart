@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:words_app/components/concave_decoration.dart';
 
+// USED Constants
+const Color kDifficultyKnowColor = Color(0xFFd4f1c7);
+const Color kDifficultyKnowALittleColor = Color(0xFFfbe7c6);
+const Color kDifficultyDontKnowColor = Color(0xFFfea3ab);
+
 // Background for Login Screen
+// ****** COLORS*******
 const Color kMainColorBackground = Color(0xFFf8e6e6);
 const Color kAppBarsColor = Color(0xFFff9f9f);
 const Color kMainColorBlue = Color(0xFF498ba6);
 const Color kMainButtonColor = Color(0xFF34c7b3);
+
+// ****** TEXT STYLES *******
+const TextStyle kAppBarTextStyle = TextStyle(
+  fontSize: 20,
+  fontFamily: 'Anybody',
+  color: Color(0xffA53860),
+);
+// USED Constants
 
 const kBackgroundColor = BoxDecoration(
   gradient: LinearGradient(

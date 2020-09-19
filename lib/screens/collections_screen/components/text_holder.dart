@@ -20,13 +20,19 @@ class TextHolder extends StatelessWidget {
       text: TextSpan(
         style: DefaultTextStyle.of(context).style,
         children: <TextSpan>[
-          TextSpan(text: titleName, style: TextStyle(fontSize: fontSize1)),
+          TextSpan(
+            text: titleName,
+            style: Theme.of(context)
+                .primaryTextTheme
+                .bodyText2
+                .merge(TextStyle(fontSize: 14, color: Colors.black)),
+          ),
           TextSpan(
             text: titleNameValue,
-            style: TextStyle(
-              fontSize: fontSize2,
-              color: Color(0xFF34c7b3),
-            ),
+            style: Theme.of(context)
+                .primaryTextTheme
+                .bodyText2
+                .merge(TextStyle(fontSize: 14, color: Color(0xFF34c7b3))),
           ),
         ],
       ),

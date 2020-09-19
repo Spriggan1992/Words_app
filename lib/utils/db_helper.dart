@@ -26,7 +26,7 @@ class DBHelper {
     return await sql.openDatabase(path.join(dbPath, DB_NAME),
         version: 1, onCreate: _onCreate);
   }
-
+  /// Method  creates specified tables to DB,
   static _onCreate(sql.Database db, int version) async {
     await db.execute(
         'CREATE TABLE collections(id TEXT PRIMARY KEY, title TEXT, language TEXT)');

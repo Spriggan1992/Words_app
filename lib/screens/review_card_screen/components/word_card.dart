@@ -145,9 +145,15 @@ class WordCard extends StatelessWidget {
                 children: <Widget>[
                   side == 'front'
                       ? Text(word.example ?? '...',
-                          style: TextStyle(fontSize: 20))
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .bodyText2
+                              .merge(TextStyle(fontSize: 20.0)))
                       : Text(word.exampleTranslations ?? '...',
-                          style: TextStyle(fontSize: 20))
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .bodyText2
+                              .merge(TextStyle(fontSize: 20.0)))
                 ],
               ),
             ),

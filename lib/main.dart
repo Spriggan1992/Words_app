@@ -98,23 +98,36 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.light().copyWith(
           //primary font is Montserrat and font for appbar titles is Anybody
           primaryTextTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
-            headline6: TextStyle(
-              color: Color(0xffA53860),
-              fontFamily: 'Anybody',
-              fontStyle: FontStyle.italic,
-            ),
-            bodyText1: TextStyle(
-              color: Color(0xFFDA627D),
-            ),
-            bodyText2: TextStyle(
-              color: Color(0xFFDA627D),
-            ),
-          ),
+              // responsible for title colors in the app, AppBar title color and style
+              headline6: TextStyle(
+                color: Color(0xffA53860),
+                fontFamily: 'Anybody',
+                fontStyle: FontStyle.italic,
+                fontSize: 20,
+              ),
+              bodyText1: TextStyle(
+                color: Color(0xFFDA627D),
+              ),
+
+              // to apply it on Text, you need specify Theme.of(context).primaryTextField.bodyText2
+              bodyText2: GoogleFonts.montserrat(
+                  textStyle: TextStyle(
+                color: Colors.black,
+              ))
+              // bodyText2: TextStyle(
+              //   color: Colors.green,
+              //   fontSize: 40,
+              // ),
+              ),
+          //resposible for appBArColor
           primaryColor: Color(0xff450920),
+          buttonColor: Color(0xFFDA627D),
           accentColor: Color(0xFFDA627D),
           backgroundColor: Color(0xffEAE2DA),
+          // backgroundColor: Colors.blue,
           scaffoldBackgroundColor: Color(0xffEAE2DA),
           bottomAppBarColor: Color(0xffA53860),
+
 //          primaryTextTheme:
 //              //this responsible for appBAr title
 //              TextTheme(

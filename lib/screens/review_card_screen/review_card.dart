@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 
 import 'package:words_app/components/base_appbar.dart';
+import 'package:words_app/constants/constants.dart';
 
 import 'package:words_app/models/difficulty.dart';
 
@@ -86,18 +87,22 @@ class _ReviewCardState extends State<ReviewCard>
             child: ChoiceChip(
               elevation: 5,
               padding: EdgeInsets.symmetric(
-                  horizontal: defaultSize * 0.6, vertical: defaultSize),
-              label: Text(item.name),
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 14.0,
-                fontWeight: FontWeight.bold,
+                horizontal: defaultSize * 0.6,
+                vertical: defaultSize,
               ),
+              label: Text(item.name),
+              labelStyle: Theme.of(context).primaryTextTheme.bodyText2.merge(
+                    TextStyle(
+                      color: Colors.black,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
               ),
               backgroundColor: item.color,
-              selectedColor: Theme.of(context).accentColor,
+              selectedColor: Colors.black26,
               selected: selectedChoice == item.name,
               onSelected: (selected) {
                 setState(
@@ -130,7 +135,9 @@ class _ReviewCardState extends State<ReviewCard>
 
     return Scaffold(
       appBar: BaseAppBar(
-        title: Text("Collection's name"),
+        title: Text(
+          "Collection's name",
+        ),
         actions: <Widget>[],
         appBar: AppBar(),
       ),

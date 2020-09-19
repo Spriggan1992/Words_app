@@ -6,6 +6,7 @@ import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/components/reusable_main_button.dart';
+import 'package:words_app/constants/constants.dart';
 import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/helpers/functions.dart';
@@ -41,7 +42,7 @@ class WordsScreen extends StatelessWidget {
         // Exclude top from SafeArea
         top: true,
         child: Scaffold(
-          backgroundColor: Color(0xFFeae2da),
+          // backgroundColor: Theme.of(context).backgroundColor,
           body: BlocBuilder<WordsBloc, WordsState>(
             builder: (context, state) {
               if (state is WordsLoading) {
@@ -80,7 +81,7 @@ class WordsScreen extends StatelessWidget {
               ReusableMainButton(
                 titleText: 'Add Word',
                 textColor: Colors.white,
-                backgroundColor: Theme.of(context).accentColor,
+                backgroundColor: Theme.of(context).buttonColor,
                 onPressed: isEditingMode
                     ? () {}
                     : () {
@@ -134,7 +135,7 @@ class WordsScreen extends StatelessWidget {
               secondaryActions: <Widget>[
                 IconSlideAction(
                   caption: 'Edit',
-                  color: Colors.black45,
+                  color: Colors.black26,
                   icon: Icons.edit,
                   onTap: () {
                     Navigator.pushNamed(
@@ -159,7 +160,7 @@ class WordsScreen extends StatelessWidget {
                 ),
                 IconSlideAction(
                   caption: 'Delete',
-                  color: Colors.red,
+                  color: Theme.of(context).accentColor,
                   icon: Icons.delete,
                   onTap: () => deleteConfirmation(context, () {
                     context
@@ -195,11 +196,7 @@ class WordsScreen extends StatelessWidget {
                 ? Text('')
                 : Text(
                     "${collectionTitle ?? ''}",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Theme.of(context).accentColor,
-                      fontFamily: 'Anybody',
-                    ),
+                    style: kAppBarTextStyle,
                   ),
           ),
           isEditingMode

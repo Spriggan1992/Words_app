@@ -399,7 +399,7 @@ class _TrainingManagerState extends State<TrainingManager> {
       child: ReusableMainButton(
         titleText: 'Go to Trainig',
         textColor: Colors.black,
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: Theme.of(context).buttonColor,
         onPressed: () {
           if (state.isEmptyCardWord == true &&
               selectedDifficulties.isNotEmpty) {

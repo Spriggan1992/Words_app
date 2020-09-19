@@ -74,7 +74,7 @@ class CollectionsEditDialog extends StatelessWidget {
                 Container(
                   width: 200,
                   child: TextField(
-                    style: TextStyle(fontSize: 25, color: Color(0xFF34c7b3)),
+                    style: TextStyle(fontSize: 20, color: Color(0xFF34c7b3)),
                     controller:
                         TextEditingController(text: collection.language),
                     textAlign: TextAlign.center,
@@ -90,7 +90,7 @@ class CollectionsEditDialog extends StatelessWidget {
                   titleName: 'words:   ',
                   titleNameValue: '   16',
                   fontSize1: 20.0,
-                  fontSize2: 25.0,
+                  fontSize2: 20.0,
                 ),
                 Flexible(child: SizedBox(height: 25.0)),
                 // Learned Text Holder

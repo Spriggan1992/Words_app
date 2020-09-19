@@ -48,7 +48,7 @@ class CollectionsScreen extends StatelessWidget {
                     ReusableMainButton(
                       titleText: 'Add Collection',
                       textColor: Colors.white,
-                      backgroundColor: Theme.of(context).accentColor,
+                      backgroundColor: Theme.of(context).buttonColor,
                       onPressed: () {
                         buildShowGeneralDialog(
                           context,

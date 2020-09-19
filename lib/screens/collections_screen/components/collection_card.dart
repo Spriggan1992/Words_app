@@ -100,8 +100,10 @@ class CollectionCard extends StatelessWidget {
                                 top: 1, right: 1, bottom: 1, left: 1),
                             child: Text(
                               collections[index].title ?? ' ',
-                              style: TextStyle(
-                                  fontSize: 20.0, color: Colors.black),
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .bodyText2
+                                  .merge(TextStyle(fontSize: 20.0)),
                             ),
                           ),
                         ),

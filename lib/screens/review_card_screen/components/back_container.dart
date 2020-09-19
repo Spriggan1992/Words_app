@@ -27,7 +27,8 @@ class BackContainer extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(),
                 borderRadius: BorderRadius.circular(15),
-                color: kAppBarsColor,
+                // color: kAppBarsColor,
+                // color: Colors.black
               ),
               child: Padding(
                   padding: const EdgeInsets.only(top: 20.0),

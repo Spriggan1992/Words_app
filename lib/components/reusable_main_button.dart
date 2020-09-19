@@ -24,14 +24,17 @@ class ReusableMainButton extends StatelessWidget {
       ),
       child: FlatButton(
         onPressed: onPressed,
-        child: Text(
-          titleText,
-          style: TextStyle(
-            color: textColor,
-            fontSize: fontSize,
-            fontWeight: fontWeight,
-          ),
-        ),
+        child: Text(titleText,
+            style: Theme.of(context)
+                .primaryTextTheme
+                .bodyText2
+                .merge(TextStyle(fontSize: 16.0, color: Colors.white))
+            //  TextStyle(
+            //   color: textColor,
+            //   fontSize: fontSize,
+            //   fontWeight: fontWeight,
+            // ),
+            ),
       ),
     );
   }
