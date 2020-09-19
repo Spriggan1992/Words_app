@@ -79,10 +79,10 @@ class _BricksGameState extends State<BricksGame> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void loadData() {
+  void loadData() async {
     final providerData = Provider.of<Bricks>(context, listen: false);
-    setState(() {});
-    providerData.setUpInitialData(widget.words);
+
+    await providerData.setUpInitialData(widget.words);
     providerData.extractAndAssingData();
   }
 
@@ -90,7 +90,7 @@ class _BricksGameState extends State<BricksGame> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final providerData = Provider.of<Bricks>(context);
     return WillPopScope(
-      onWillPop: onBackPressed,
+      onWillPop: () async => onBackPressed(),
       child: Scaffold(
         body: SafeArea(
             child: providerData.initialData.isNotEmpty
