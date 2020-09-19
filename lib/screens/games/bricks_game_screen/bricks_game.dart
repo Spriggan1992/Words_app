@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/bricks_provider.dart';
+import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
 
 import 'components/answer_container.dart';
 import 'components/card_container.dart';
@@ -154,7 +155,14 @@ class _BricksGameState extends State<BricksGame> with TickerProviderStateMixin {
                         new GestureDetector(
                           onTap: () {
                             setState(() {
-                              Navigator.of(context).pop(true);
+                              // Navigator.of(context).maybePop(true);
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  TrainingManager.id,
+                                  ModalRoute.withName(TrainingManager.id));
+
+                              // Navigator.pushReplacementNamed(
+                              // context, TrainingManager.id);
                               providerData.initialData.clear();
                               providerData.cleanData();
                               providerData.resetWords();

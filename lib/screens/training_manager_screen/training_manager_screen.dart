@@ -4,6 +4,7 @@ import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/components/base_appbar.dart';
 import 'package:words_app/components/reusable_main_button.dart';
 import 'package:words_app/constants/constants.dart';
+import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/collection.dart';
 
 import 'package:words_app/models/difficulty.dart';
@@ -15,7 +16,8 @@ import 'package:words_app/screens/games/right_wrong_game/correct_wrong_game.dart
 
 import 'package:words_app/utils/size_config.dart';
 
-import 'components/title_text_holder.dart';
+import 'helper.dart';
+import 'wigets/title_text_holder.dart';
 
 class TrainingManager extends StatefulWidget {
   static String id = 'training_manager_screen';
@@ -29,6 +31,7 @@ class _TrainingManagerState extends State<TrainingManager> {
   List<int> selectedDifficulties = [];
   FilterGames selectedGames = FilterGames.bricks;
   List<Difficulty> difficulty = DifficultyList().difficultyList;
+  bool isEmptyString;
 
   // Data for creating dynamic icons for games buttons
   List<IconData> iconsList = [
@@ -37,34 +40,13 @@ class _TrainingManagerState extends State<TrainingManager> {
     Icons.photo_album,
   ];
 
-  /// Return amount of filtered words when difficulties is chosen.
-  ///
-  /// path:'/training_manager_screen'
-  String countWordsByDifficulty(List<Word> listWord, int difficulty) {
-    int counter = 0;
-    for (int i = 0; i < listWord.length; i++) {
-      if (selectedDifficulties.isEmpty) {
-        counter = 0;
-      } else {
-        if (listWord[i].difficulty == difficulty) {
-          counter++;
-        } else {
-          if (difficulty == 3) {
-            counter = listWord.length;
-          }
-        }
-      }
-    }
-    return counter.toString();
-  }
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
     Map args = ModalRoute.of(context).settings.arguments;
-    String collectionId = args['id'];
-    List<Word> words = args['words'];
+    // String collectionId = args['id'];
+    // List<Word> words = args['words'];
 
     return BlocBuilder<TrainingsBloc, TrainingsState>(
       builder: (context, state) {
@@ -102,8 +84,8 @@ class _TrainingManagerState extends State<TrainingManager> {
                         TitleTextHolder(
                             title: '3. I want to study words that I ...'),
                         buildDifficultiesBtns(defaultSize, context, state,
-                            selectedListCollections),
-                        buildMetricsContainer(state),
+                            selectedListCollections, isEmptyString),
+                        buildMetricsContainer(state, selectedDifficulties),
                       ],
                     ),
                   ),
@@ -159,8 +141,12 @@ class _TrainingManagerState extends State<TrainingManager> {
     ));
   }
 
-  Container buildDifficultiesBtns(double defaultSize, BuildContext context,
-      TrainingsSuccess state, List<Collection> selectedListCollections) {
+  Container buildDifficultiesBtns(
+      double defaultSize,
+      BuildContext context,
+      TrainingsSuccess state,
+      List<Collection> selectedListCollections,
+      bool isEmptyString) {
     return Container(
         child: Column(
       children: [
@@ -224,7 +210,7 @@ class _TrainingManagerState extends State<TrainingManager> {
           ),
           backgroundColor: Colors.white,
           selected: selectedDifficulties.contains(3),
-          onSelected: (selected) {
+          onSelected: (selected) async {
             /// Add difficulties filter to the List[selectedDifficulties]
             setState(() {
               if (selectedDifficulties.contains(3)) {
@@ -234,10 +220,10 @@ class _TrainingManagerState extends State<TrainingManager> {
                 selectedDifficulties.add(3);
               }
             });
-            // context.bloc<TrainingsBloc>().add(
             context.bloc<TrainingsBloc>().add(TrainingsFiltered(
                 selectedDifficulties: selectedDifficulties,
                 selectedCollections: selectedListCollections));
+            isEmptyString = state.isEmptyCardWord;
           },
         )
       ],
@@ -360,7 +346,8 @@ class _TrainingManagerState extends State<TrainingManager> {
     );
   }
 
-  Container buildMetricsContainer(TrainingsSuccess state) {
+  Container buildMetricsContainer(
+      TrainingsSuccess state, selectedDifficulties) {
     return Container(
         padding: const EdgeInsets.all(10),
         decoration: innerShadow,
@@ -371,95 +358,70 @@ class _TrainingManagerState extends State<TrainingManager> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('know:'),
-                Text(countWordsByDifficulty(state.filteredWords, 0))
+                Text(countWordsByDifficulty(
+                    state.filteredWords, 0, selectedDifficulties))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('know a little:'),
-                Text(countWordsByDifficulty(state.filteredWords, 1))
+                Text(countWordsByDifficulty(
+                    state.filteredWords, 1, selectedDifficulties))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("don't know"),
-                Text(countWordsByDifficulty(state.filteredWords, 2))
+                Text(countWordsByDifficulty(
+                    state.filteredWords, 2, selectedDifficulties))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Total:"),
-                Text(countWordsByDifficulty(state.filteredWords, 3))
+                Text(countWordsByDifficulty(
+                    state.filteredWords, 3, selectedDifficulties))
               ],
             )
           ],
         ));
   }
 
-  Container buildMainBtn(BuildContext context,
-      List<Collection> selectedListCollections, TrainingsSuccess state) {
+  Container buildMainBtn(
+    BuildContext context,
+    List<Collection> selectedListCollections,
+    TrainingsSuccess state,
+  ) {
     return Container(
       child: ReusableMainButton(
         titleText: 'Go to Trainig',
         textColor: Colors.black,
         backgroundColor: Theme.of(context).accentColor,
         onPressed: () {
-          if (selectedDifficulties.isEmpty) {
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
-                duration: Duration(milliseconds: 1500),
-                content: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'You have to choose which words you want to learn',
-                  ),
-                )));
-          }
-          if (selectedListCollections.isEmpty) {
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
-                duration: Duration(milliseconds: 1500),
-                content: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'You have to choose which collection',
-                  ),
-                )));
-          }
-
-          if (selectedGames == FilterGames.bricks &&
-              selectedDifficulties.isNotEmpty &&
-              selectedListCollections.isNotEmpty) {
-            Navigator.push(
+          if (state.isEmptyCardWord == true &&
+              selectedDifficulties.isNotEmpty) {
+            showCustomDialog(context, () {
+              checkNavigation(
+                selectedListCollections,
+                state,
                 context,
-                MaterialPageRoute(
-                  builder: (context) => BricksGame(
-                    words: state.filteredWords,
-                  ),
-                ));
-          }
-          if (selectedGames == FilterGames.wrongCorrect &&
-              selectedDifficulties.isNotEmpty &&
-              selectedListCollections.isNotEmpty) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => RightWrong(
-                    words: state.filteredWords,
-                  ),
-                ));
-          }
-          if (selectedGames == FilterGames.pair &&
-              selectedDifficulties.isNotEmpty &&
-              selectedListCollections.isNotEmpty) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PairGame(
-                    words: state.filteredWords,
-                  ),
-                ));
+                _scaffoldKey,
+                selectedDifficulties,
+                selectedGames,
+              );
+            });
+          } else {
+            checkNavigation(
+              selectedListCollections,
+              state,
+              context,
+              _scaffoldKey,
+              selectedDifficulties,
+              selectedGames,
+            );
           }
         },
       ),

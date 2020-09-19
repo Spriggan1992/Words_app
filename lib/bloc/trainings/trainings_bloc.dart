@@ -29,6 +29,7 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
   Stream<TrainingsState> _mapTrainingsLoadedToState(
       TrainingsLoaded event) async* {
     try {
+      final updatedIsEmptyCardWord = false;
       final List<Word> updatedWords = List.from(event.words);
       final List<Collection> updatedCollections =
           await collectionsRepository.fetchAndSetCollection();
@@ -39,6 +40,7 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
         filteredCollections: filteredCollections,
         filteredWords: updatedWords,
         collections: updatedCollections,
+        isEmptyCardWord: updatedIsEmptyCardWord,
       );
     } catch (_) {
       yield TrainingsFailure();
@@ -64,22 +66,34 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
       }
       // Update Words by difficulties
       final List<Word> updatedFilteredList = [];
+      bool updatedIsEmptyCardWord = false;
       for (var i = 0; i < event.selectedDifficulties.length; i++) {
         selectedFilteredList.forEach((word) {
           if (word.difficulty == event.selectedDifficulties[i]) {
             updatedFilteredList.add(word);
+            if (word.targetLang == null || word.ownLang == null) {
+              updatedIsEmptyCardWord = true;
+              updatedFilteredList.remove(word);
+            }
           }
           if (event.selectedDifficulties[i] == 3) {
             updatedFilteredList.add(word);
+            if (word.targetLang == null ||
+                word.ownLang == null && event.selectedDifficulties.isNotEmpty) {
+              updatedIsEmptyCardWord = true;
+              updatedFilteredList.remove(word);
+            } else {
+              updatedIsEmptyCardWord = false;
+            }
           }
         });
       }
-
+      updatedFilteredList..shuffle();
       yield TrainingsSuccess(
-        filteredWords: updatedFilteredList,
-        collections: updatedCollections,
-        filteredCollections: updatedFilteredCollections,
-      );
+          filteredWords: updatedFilteredList,
+          collections: updatedCollections,
+          filteredCollections: updatedFilteredCollections,
+          isEmptyCardWord: updatedIsEmptyCardWord);
     } catch (_) {
       TrainingsFailure();
     }
