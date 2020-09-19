@@ -47,6 +47,7 @@ class Bricks with ChangeNotifier {
   /// Get Words from word_screen and pass it to initialData varible and shuffle;
   void setUpInitialData(List<Word> words) {
     initialData = [...words]..shuffle();
+    notifyListeners();
   }
 
   /// Extract Word fromn initialData and pass it to [answer] as String.
@@ -68,7 +69,7 @@ class Bricks with ChangeNotifier {
     } else {
       print('Data is Empty');
     }
-    notifyListeners();
+    // notifyListeners();
   }
 
   /// Load next word

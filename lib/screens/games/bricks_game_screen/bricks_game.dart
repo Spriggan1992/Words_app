@@ -81,6 +81,7 @@ class _BricksGameState extends State<BricksGame> with TickerProviderStateMixin {
 
   void loadData() {
     final providerData = Provider.of<Bricks>(context, listen: false);
+    setState(() {});
     providerData.setUpInitialData(widget.words);
     providerData.extractAndAssingData();
   }
