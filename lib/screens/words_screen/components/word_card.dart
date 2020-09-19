@@ -176,9 +176,12 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                       // TODO : difficulty problem
                       "${word.targetLang}" ?? '', //Main word
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          // fontSize: 20.0,
-                          fontSize: defaultSize * 2),
+                      style: Theme.of(context)
+                          .primaryTextTheme
+                          .bodyText2
+                          .merge(TextStyle(
+                            fontSize: defaultSize * 2,
+                          )),
                     ),
                   ),
                 ),
@@ -196,12 +199,16 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                   child: FittedBox(
                     alignment: Alignment.centerLeft,
                     fit: BoxFit.scaleDown,
-                    child: Text(word.ownLang ?? '', // Translation
-                        style: TextStyle(
-                          fontSize: defaultSize * 1.6,
-                          fontFamily: 'italic',
-                          fontStyle: FontStyle.italic,
-                        )),
+                    child: Text(
+                      word.ownLang ?? '', // Translation
+                      style: Theme.of(context).primaryTextTheme.bodyText2.merge(
+                            TextStyle(
+                              fontSize: defaultSize * 1.6,
+                              fontFamily: 'italic',
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                    ),
                   ),
                 ),
               ),
@@ -242,7 +249,12 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                       fit: BoxFit.scaleDown,
                       child: Text(
                         word.secondLang ?? ' ',
-                        style: TextStyle(fontSize: defaultSize * 1.6),
+                        style:
+                            Theme.of(context).primaryTextTheme.bodyText2.merge(
+                                  TextStyle(
+                                    fontSize: defaultSize * 1.6,
+                                  ),
+                                ),
                       ),
                     ),
                   ),
@@ -266,7 +278,8 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                          'example : ${word.example} \n translationExample: ${word.exampleTranslations}'),
+                        '${word.example}\n${word.exampleTranslations}',
+                      ),
                     ),
                   ),
                 ),
