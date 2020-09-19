@@ -11,7 +11,7 @@ class TrainingsLoading extends TrainingsState {}
 
 class TrainingsSuccess extends TrainingsState {
   final List<Word> filteredWords;
-
+  final bool isEmptyCardWord;
   final List<Collection> collections;
   final List<Collection> filteredCollections;
 
@@ -19,12 +19,14 @@ class TrainingsSuccess extends TrainingsState {
     this.filteredWords = const [],
     this.collections = const [],
     this.filteredCollections = const [],
+    this.isEmptyCardWord,
   });
   @override
   List<Object> get props => [
         filteredWords,
         collections,
         filteredCollections,
+        isEmptyCardWord,
       ];
 }
 
