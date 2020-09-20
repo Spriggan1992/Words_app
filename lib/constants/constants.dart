@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+
 import 'package:words_app/components/concave_decoration.dart';
 
 // USED Constants
@@ -19,6 +19,12 @@ const TextStyle kAppBarTextStyle = TextStyle(
   fontSize: 20,
   fontFamily: 'Anybody',
   color: Color(0xffA53860),
+);
+
+const TextStyle kHintStyle = TextStyle(
+  color: Color(0xE2DA627D),
+  fontSize: 20,
+  // fontWeight: FontWeight.w600,
 );
 // USED Constants
 

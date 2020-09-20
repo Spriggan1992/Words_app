@@ -1,20 +1,16 @@
 import 'dart:async';
 import 'dart:math' as math;
+
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:words_app/bloc/words/words_bloc.dart';
 
-import 'package:words_app/components/base_appbar.dart';
-import 'package:words_app/constants/constants.dart';
-
-import 'package:words_app/models/difficulty.dart';
-
-import 'package:words_app/models/word.dart';
-
-import 'package:words_app/screens/review_card_screen/components/word_card.dart';
-
-import 'package:words_app/utils/size_config.dart';
+import '../../bloc/words/words_bloc.dart';
+import '../../components/base_appbar.dart';
+import '../../models/difficulty.dart';
+import '../../models/word.dart';
+import '../../utils/size_config.dart';
+import 'components/word_card.dart';
 
 class ReviewCard extends StatefulWidget {
   static String id = 'review_card_screen';
@@ -40,12 +36,6 @@ class _ReviewCardState extends State<ReviewCard>
   /// Initial page from index
   int page;
   List<Difficulty> difficultyList = DifficultyList().difficultyList;
-  // [
-  //   Difficulty(difficulty: 0, name: 'know', color: Colors.green[400]),
-  //   Difficulty(
-  //       difficulty: 1, name: "know a little", color: Colors.yellowAccent),
-  //   Difficulty(difficulty: 2, name: "don't know", color: Colors.redAccent),
-  // ];
 
   @override
   void initState() {
@@ -75,57 +65,6 @@ class _ReviewCardState extends State<ReviewCard>
     Timer(Duration(milliseconds: 100), () {
       setState(() {});
     });
-  }
-
-  _buildChoiceList(int page, double defaultSize) {
-    List<Widget> choices = List();
-    difficultyList.forEach(
-      (item) {
-        choices.add(
-          Container(
-            padding: const EdgeInsets.all(5.0),
-            child: ChoiceChip(
-              elevation: 5,
-              padding: EdgeInsets.symmetric(
-                horizontal: defaultSize * 0.6,
-                vertical: defaultSize,
-              ),
-              label: Text(item.name),
-              labelStyle: Theme.of(context).primaryTextTheme.bodyText2.merge(
-                    TextStyle(
-                      color: Colors.black,
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              backgroundColor: item.color,
-              selectedColor: Colors.black26,
-              selected: selectedChoice == item.name,
-              onSelected: (selected) {
-                setState(
-                  () {
-                    selectedChoice = item.name;
-                  },
-                );
-                // print(widget.words[page].targetLang);
-                context.bloc<WordsBloc>().add(
-                      WordsUpdatedWord(
-                        word: widget.words[page]
-                            .copyWith(difficulty: item.difficulty),
-                      ),
-                    );
-                context.bloc<WordsBloc>().add(WordsLoaded());
-              },
-            ),
-          ),
-        );
-      },
-    );
-
-    return choices;
   }
 
   @override
@@ -162,8 +101,6 @@ class _ReviewCardState extends State<ReviewCard>
                   return AnimatedBuilder(
                     animation: _pageController,
                     builder: (context, child) {
-                      // print(
-                      //     "Difficulty from review card: ${widget.words[index].difficulty}");
                       double value = 0;
                       if (_pageController.position.haveDimensions) {
                         value = index - _pageController.page;
@@ -199,22 +136,6 @@ class _ReviewCardState extends State<ReviewCard>
                                   part: widget.words[index].part.partColor,
                                 ),
                               ),
-                              // Positioned(
-                              //   bottom: 0,
-                              //   child: Container(
-                              //     margin:
-                              //         EdgeInsets.only(bottom: defaultSize * 2),
-                              //     height: 50,
-                              //     width: SizeConfig.blockSizeHorizontal * 75,
-                              //     child: Row(
-                              //       mainAxisAlignment:
-                              //           MainAxisAlignment.spaceAround,
-                              //       children: _buildChoiceList(
-                              //           _pageController.page.round(),
-                              //           defaultSize),
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),
@@ -231,22 +152,56 @@ class _ReviewCardState extends State<ReviewCard>
             width: SizeConfig.blockSizeHorizontal * 75,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: _buildChoiceList(page, defaultSize),
+              children: [
+                ...List.generate(
+                  difficultyList.length,
+                  (index) => Container(
+                    padding: const EdgeInsets.all(5.0),
+                    child: ChoiceChip(
+                      labelPadding:
+                          EdgeInsets.symmetric(horizontal: defaultSize * 0.7),
+                      elevation: 5,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: defaultSize * 0.6,
+                        vertical: defaultSize,
+                      ),
+                      label: Text(difficultyList[index].name),
+                      labelStyle:
+                          Theme.of(context).primaryTextTheme.bodyText2.merge(
+                                TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      backgroundColor: difficultyList[index].color,
+                      selected: selectedChoice == difficultyList[index].name,
+                      onSelected: (selected) {
+                        setState(
+                          () {
+                            selectedChoice = difficultyList[index].name;
+                          },
+                        );
+                        context.bloc<WordsBloc>().add(
+                              WordsUpdatedWord(
+                                word: widget.words[page].copyWith(
+                                    difficulty:
+                                        difficultyList[index].difficulty),
+                              ),
+                            );
+                        context.bloc<WordsBloc>().add(WordsLoaded());
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
           )
         ],
       ),
-      // bottomNavigationBar: BaseBottomAppBar(
-      //   child1: ReusableBottomIconBtn(
-      //     icons: Icons.keyboard_arrow_left,
-      //     color: kMainColorBackground,
-      //     onPress: () => Navigator.pop(context),
-      //   ),
-      //   child2: ReusableBottomIconBtn(
-      //       icons: Icons.fitness_center,
-      //       color: kMainColorBackground,
-      //       onPress: () => Navigator.pushNamed(context, Matches.id)),
-      // ),
     );
   }
 }

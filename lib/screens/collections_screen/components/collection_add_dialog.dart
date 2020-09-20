@@ -124,19 +124,16 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
           Container(
             decoration: innerShadow,
             child: TextField(
-              // focusNode: myFocusNodeCollectionName,
-              // autofocus: true,
+              style: kHintStyle,
               textAlign: TextAlign.left,
               decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 13, horizontal: 10),
-                  // fillColor: Colors.white.withOpacity(0.6),
+                  
                   filled: true,
-                  hintStyle: TextStyle(
-                    color: Color(0xFFDA627D).withOpacity(0.5),
-                    fontSize: 20,
-                    height: heightCollectionName,
-                  ),
+                  hintStyle: Theme.of(context).primaryTextTheme.bodyText2.merge(
+                        kHintStyle,
+                      ),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none),
@@ -215,10 +212,12 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                           value: value,
                           child: Text(
                             value,
-                            style: TextStyle(
-                              color: Color(0xFFDA627D).withOpacity(0.5),
-                              fontSize: 20,
-                            ),
+                            style: Theme.of(context)
+                                .primaryTextTheme
+                                .bodyText2
+                                .merge(
+                                  kHintStyle,
+                                ),
                           ),
                         );
                       }).toList(),
@@ -240,7 +239,9 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
             color: Color(0xffDA627D),
             child: Text(
               'CREATE COLLECTION',
-              style: TextStyle(color: Colors.white),
+              style: Theme.of(context).primaryTextTheme.bodyText2.merge(
+                    TextStyle(color: Colors.white),
+                  ),
             ),
             onPressed: () {
               Collection collection = Collection(

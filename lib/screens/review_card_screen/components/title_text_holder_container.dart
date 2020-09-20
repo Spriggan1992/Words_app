@@ -16,7 +16,7 @@ class TitleTextHolderContainer extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       width: defaultSize * 25,
-      height: defaultSize * 5,
+      height: defaultSize * 4,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.white),
         color: Colors.white,
@@ -26,7 +26,7 @@ class TitleTextHolderContainer extends StatelessWidget {
       child: Text(
         wordHolder,
         style: Theme.of(context).primaryTextTheme.bodyText2.merge(
-              TextStyle(fontSize: defaultSize * 3, height: 1),
+              TextStyle(fontSize: defaultSize * 2.6, height: 1.2),
             ),
       ),
     );

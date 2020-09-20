@@ -14,9 +14,11 @@ class TitleTextHolder extends StatelessWidget {
     SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
     return Container(
-        child: Text(title,
-            style: TextStyle(
-                fontSize: defaultSize * 2,
-                color: Theme.of(context).accentColor)));
+      child: Text(
+        title,
+        style: Theme.of(context).primaryTextTheme.bodyText2.merge(TextStyle(
+            fontSize: defaultSize * 2, color: Theme.of(context).accentColor)),
+      ),
+    );
   }
 }

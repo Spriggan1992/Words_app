@@ -163,7 +163,7 @@ class _TrainingManagerState extends State<TrainingManager> {
                 labelStyle: TextStyle(
                     fontSize: defaultSize * 1.6,
                     color: Colors.black,
-                    fontWeight: FontWeight.w900),
+                    fontWeight: FontWeight.w700),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(defaultSize * 0.5),
                 ),

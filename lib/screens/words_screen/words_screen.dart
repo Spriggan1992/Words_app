@@ -159,6 +159,7 @@ class WordsScreen extends StatelessWidget {
                   },
                 ),
                 IconSlideAction(
+                  
                   caption: 'Delete',
                   color: Theme.of(context).accentColor,
                   icon: Icons.delete,

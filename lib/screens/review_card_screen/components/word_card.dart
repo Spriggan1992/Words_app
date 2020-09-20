@@ -101,26 +101,19 @@ class WordCard extends StatelessWidget {
                               ],
                             )
                           : Container(
-                              margin:
-                                  EdgeInsets.only(bottom: defaultSize * 6.5),
                               alignment: Alignment.center,
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceAround,
                                 children: [
-                                  SizedBox(
-                                    height: defaultSize * 4,
-                                  ),
                                   TitleTextHolderContainer(
                                     defaultSize: defaultSize,
                                     wordHolder: word.ownLang ?? '...',
                                   ),
-                                  SizedBox(height: defaultSize * 5),
                                   TitleTextHolderContainer(
                                     defaultSize: defaultSize,
                                     wordHolder: word.secondLang ?? '...',
                                   ),
-                                  SizedBox(height: defaultSize * 5),
                                   TitleTextHolderContainer(
                                     defaultSize: defaultSize,
                                     wordHolder: word.thirdLang ?? '...',
