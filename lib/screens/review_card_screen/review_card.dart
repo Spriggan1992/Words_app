@@ -4,9 +4,15 @@ import 'dart:math' as math;
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:words_app/bloc/words/words_bloc.dart';
+
+import 'package:words_app/widgets/base_appbar.dart';
+import 'package:words_app/constants/constants.dart';
+
+import 'package:words_app/models/difficulty.dart';
 
 import '../../bloc/words/words_bloc.dart';
-import '../../components/base_appbar.dart';
+import '../../widgets/base_appbar.dart';
 import '../../models/difficulty.dart';
 import '../../models/word.dart';
 import '../../utils/size_config.dart';

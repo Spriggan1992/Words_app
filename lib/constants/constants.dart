@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:words_app/components/concave_decoration.dart';
+import 'package:words_app/widgets/concave_decoration.dart';
 
 // USED Constants
 const Color kDifficultyKnowColor = Color(0xFFd4f1c7);

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/collections/collections_bloc.dart';
 
-import 'package:words_app/components/base_appbar.dart';
+import 'package:words_app/widgets/base_appbar.dart';
 
-import 'package:words_app/components/reusable_main_button.dart';
+import 'package:words_app/widgets/reusable_main_button.dart';
 
 import 'components/body.dart';
 

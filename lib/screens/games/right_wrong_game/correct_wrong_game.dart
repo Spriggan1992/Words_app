@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/components/base_appbar.dart';
-import 'package:words_app/components/base_bottom_appbar.dart';
-import 'package:words_app/components/reusable_bottomappbar_icon_btn.dart';
+import 'package:words_app/widgets/base_appbar.dart';
+import 'package:words_app/widgets/base_bottom_appbar.dart';
+import 'package:words_app/widgets/reusable_bottomappbar_icon_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/word.dart';
 

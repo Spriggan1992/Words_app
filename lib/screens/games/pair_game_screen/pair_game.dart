@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/models/game_card.dart';
 import 'package:words_app/models/word.dart';
-import 'package:words_app/components/base_appbar.dart';
+import 'package:words_app/widgets/base_appbar.dart';
 import 'package:words_app/screens/games/pair_game_screen/components/body.dart';
 
 import 'package:words_app/utils/size_config.dart';

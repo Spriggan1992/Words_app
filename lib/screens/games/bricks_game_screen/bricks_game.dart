@@ -2,15 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/bricks_provider.dart';
+import 'package:words_app/screens/result_screen/result_screen.dart';
 import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
 
-import 'components/answer_container.dart';
-import 'components/card_container.dart';
-import 'components/next_and_give_up_btns.dart';
-import 'components/submit_and_try_again_btn.dart';
-import 'components/target_word_container.dart';
+import 'widgets/answer_container.dart';
+import 'widgets/card_container.dart';
+import 'widgets/next_and_give_up_btns.dart';
+import 'widgets/submit_and_try_again_btn.dart';
+import 'widgets/target_word_container.dart';
 import 'animation_utils.dart';
 
 class BricksGame extends StatefulWidget {

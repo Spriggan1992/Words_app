@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:words_app/bloc/collections/collections_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
-import 'package:words_app/components/custom_round_btn.dart';
+import 'package:words_app/widgets/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/collection.dart';
 import 'package:words_app/screens/words_screen/words_screen.dart';

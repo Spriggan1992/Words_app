@@ -7,7 +7,7 @@ import 'package:words_app/helpers/functions.dart';
 
 import 'package:words_app/models/collection.dart';
 
-import 'package:words_app/components/my_separator.dart';
+import 'package:words_app/widgets/my_separator.dart';
 import 'package:words_app/screens/words_screen/words_screen.dart';
 
 import 'btns.dart';
