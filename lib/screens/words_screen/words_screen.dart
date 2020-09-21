@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
-import 'package:words_app/components/reusable_main_button.dart';
+import 'package:words_app/widgets/reusable_main_button.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';

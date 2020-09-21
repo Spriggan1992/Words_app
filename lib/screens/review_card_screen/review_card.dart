@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 
-import 'package:words_app/components/base_appbar.dart';
+import 'package:words_app/widgets/base_appbar.dart';
 import 'package:words_app/constants/constants.dart';
 
 import 'package:words_app/models/difficulty.dart';

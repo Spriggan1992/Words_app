@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/repositories/bricks_provider.dart';
+import 'package:words_app/screens/result_screen/result_screen.dart';
 import 'package:words_app/utils/size_config.dart';
 
 class NextAndGiveUpBtns extends StatefulWidget {
@@ -45,6 +47,8 @@ class _NextAndGiveUpBtnsState extends State<NextAndGiveUpBtns> {
                   Future.delayed(const Duration(milliseconds: 230), () {
                     setState(() {
                       providerData.loadNextWord();
+                      goToResultScreen(
+                          providerData.answerWordArray, context, Result());
                     });
                   });
 

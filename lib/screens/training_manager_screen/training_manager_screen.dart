@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/trainings/trainings_bloc.dart';
-import 'package:words_app/components/base_appbar.dart';
-import 'package:words_app/components/reusable_main_button.dart';
+import 'package:words_app/widgets/base_appbar.dart';
+import 'package:words_app/widgets/reusable_main_button.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/collection.dart';
@@ -44,7 +44,7 @@ class _TrainingManagerState extends State<TrainingManager> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
-    Map args = ModalRoute.of(context).settings.arguments;
+    // Map args = ModalRoute.of(context).settings.arguments;
     // String collectionId = args['id'];
     // List<Word> words = args['words'];
 

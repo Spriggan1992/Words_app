@@ -73,3 +73,9 @@ void showCustomDialog(BuildContext context, Function confirmFunc) {
         return;
       });
 }
+
+void goToResultScreen(List data, BuildContext context, dynamic path) {
+  if (data.isEmpty) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => path));
+  }
+}

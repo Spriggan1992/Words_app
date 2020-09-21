@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/components/reusable_main_button.dart';
-import 'package:words_app/components/text_field_log_pass.dart';
+import 'package:words_app/widgets/reusable_main_button.dart';
+import 'package:words_app/widgets/text_field_log_pass.dart';
 import 'package:words_app/screens/card_creator_screen/card_creator.dart';
 
 class RegistrationScreen extends StatefulWidget {
