@@ -6,7 +6,6 @@ class Collection extends Equatable {
   final String id;
   final String title;
   final String language;
-  final bool showBtns;
   final bool isEditingBtns;
   final bool isEditingMode;
   final bool isSelected;
@@ -15,7 +14,6 @@ class Collection extends Equatable {
       {this.title,
       this.language,
       String id,
-      this.showBtns = false,
       this.isEditingBtns = false,
       this.isEditingMode = false,
       this.isSelected = false})
@@ -23,15 +21,13 @@ class Collection extends Equatable {
   //id for DB
 
   @override
-  List<Object> get props =>
-      [id, title, language, showBtns, isEditingBtns, isEditingMode];
+  List<Object> get props => [id, title, language, isEditingBtns, isEditingMode];
 
   @override
   String toString() => '''UserEntity{
     id: $id,
     title: $title,
     language: $language,
-    showBtns: $showBtns,
     isEditingBtns: $isEditingBtns,
     isEditingMode: $isEditingMode,
     isSelected: $isSelected
@@ -42,7 +38,6 @@ class Collection extends Equatable {
       id: entity.id,
       title: entity.title,
       language: entity.language,
-      showBtns: false,
       isEditingBtns: false,
       isEditingMode: false,
       isSelected: false,
@@ -60,7 +55,6 @@ class Collection extends Equatable {
     String id,
     String title,
     String language,
-    bool showBtns,
     bool isEditingBtns,
     bool isEditingMode,
     bool isSelected,
@@ -69,7 +63,6 @@ class Collection extends Equatable {
       id: id ?? this.id,
       title: title ?? this.title,
       language: language ?? this.language,
-      showBtns: showBtns ?? this.showBtns,
       isEditingBtns: isEditingBtns ?? this.isEditingBtns,
       isEditingMode: isEditingMode ?? this.isEditingMode,
       isSelected: isSelected ?? this.isSelected,

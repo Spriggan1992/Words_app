@@ -10,7 +10,7 @@ import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/words_repository.dart';
+import 'package:words_app/repositories/words/words_repository.dart';
 import 'package:words_app/screens/card_creator_screen/card_creator.dart';
 import 'package:words_app/screens/collections_screen/collections_screen.dart';
 import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';

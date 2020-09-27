@@ -4,18 +4,12 @@ import 'package:sqflite/sqflite.dart';
 import 'package:words_app/config/paths.dart';
 import 'package:words_app/entities/collection_entity.dart';
 import 'package:words_app/utils/db_helper.dart';
-import '../models/collection.dart';
-import 'words_repository.dart';
+import '../../models/collection.dart';
+import '../words/words_repository.dart';
 
 class CollectionsRepository {
   WordsRepository wordsRepository;
-  List<Collection> _collections = [
-    Collection(title: "nouns", language: 'eng'),
-  ];
-  //  using spread operator to return copy of our list, to prevent access to original list
-  List<Collection> get wordsCollectionData {
-    return [..._collections];
-  }
+  List<Collection> _collections = [];
 
   /// This method is responsible for adding new  [Collection] to DB,
   Future<Collection> addNewCollection({Collection collection}) async {

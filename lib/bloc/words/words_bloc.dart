@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/models/collection.dart';
 import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/words_repository.dart';
+import 'package:words_app/repositories/words/words_repository.dart';
 
 part 'words_event.dart';
 part 'words_state.dart';
