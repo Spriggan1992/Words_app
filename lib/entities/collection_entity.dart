@@ -18,7 +18,7 @@ class CollectionEntity extends Equatable {
 
   }''';
 
-  Map<String, dynamic> toDocument() {
+  Map<String, dynamic> toDb() {
     return {
       'id': id,
       'title': title,

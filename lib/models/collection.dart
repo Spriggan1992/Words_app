@@ -16,7 +16,7 @@ class Collection extends Equatable {
       this.language,
       String id,
       this.showBtns = false,
-      this.isEditingBtns,
+      this.isEditingBtns = false,
       this.isEditingMode = false,
       this.isSelected = false})
       : this.id = id ?? Uuid().v4();
@@ -46,6 +46,13 @@ class Collection extends Equatable {
       isEditingBtns: false,
       isEditingMode: false,
       isSelected: false,
+    );
+  }
+  CollectionEntity toEntity() {
+    return CollectionEntity(
+      id: id,
+      title: title,
+      language: language,
     );
   }
 

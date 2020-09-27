@@ -37,7 +37,6 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
   Stream<CollectionsState> _mapCollectionsLoadedToState() async* {
     try {
       final collections = await collectionsRepository.fetchAndSetCollection();
-
       yield CollectionsSuccess(collections);
     } catch (_) {
       yield CollectionsFailure();
@@ -48,9 +47,7 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
       CollectionsAdded event) async* {
     try {
       final collection = await collectionsRepository.addNewCollection(
-          collectionId: event.collection.id,
-          collectionTitle: event.collection.title,
-          languageTitle: event.collection.language);
+          collection: event.collection);
       List<Collection> collections =
           List.from((state as CollectionsSuccess).collections)..add(collection);
       yield CollectionsSuccess(collections);
