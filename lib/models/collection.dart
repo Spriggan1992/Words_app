@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
+import 'package:words_app/entities/collection_entity.dart';
 
 class Collection extends Equatable {
   final String id;
@@ -24,6 +25,29 @@ class Collection extends Equatable {
   @override
   List<Object> get props =>
       [id, title, language, showBtns, isEditingBtns, isEditingMode];
+
+  @override
+  String toString() => '''UserEntity{
+    id: $id,
+    title: $title,
+    language: $language,
+    showBtns: $showBtns,
+    isEditingBtns: $isEditingBtns,
+    isEditingMode: $isEditingMode,
+    isSelected: $isSelected
+  }''';
+
+  factory Collection.fromEntity(CollectionEntity entity) {
+    return Collection(
+      id: entity.id,
+      title: entity.title,
+      language: entity.language,
+      showBtns: false,
+      isEditingBtns: false,
+      isEditingMode: false,
+      isSelected: false,
+    );
+  }
 
   Collection copyWith({
     String id,

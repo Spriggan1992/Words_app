@@ -29,8 +29,6 @@ import 'screens/training_manager_screen/training_manager_screen.dart';
 import 'screens/welcome_screen/welcom_screen.dart';
 import 'screens/words_screen/words_screen.dart';
 
-// import 'package:hive/hive.dart';
-
 void main() => runApp(MultiBlocProvider(providers: [
       BlocProvider<CollectionsBloc>(
         create: (context) {

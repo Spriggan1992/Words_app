@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:sqflite/sqflite.dart';
+import 'package:words_app/entities/collection_entity.dart';
 import 'package:words_app/utils/db_helper.dart';
 import '../models/collection.dart';
 import 'words_repository.dart';
@@ -46,12 +47,7 @@ class CollectionsRepository {
     final dataList = await DBHelper.getData('collections');
     _collections = dataList
         .map(
-          (item) => Collection(
-              id: item['id'],
-              title: item['title'],
-              language: item['language'],
-              isEditingBtns: false,
-              showBtns: false),
+          (data) => Collection.fromEntity(CollectionEntity.fromDb(data)),
         )
         .toList();
     return _collections;
