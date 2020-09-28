@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/bloc/collections/collections_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,7 +7,7 @@ import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/models/collection.dart';
 
 import 'package:words_app/components/my_separator.dart';
-import 'package:words_app/screens/collections_screen/components/text_holder.dart';
+import 'package:words_app/screens/collections_screen/widgets/text_holder.dart';
 
 class CollectionsEditDialog extends StatelessWidget {
   const CollectionsEditDialog({
@@ -127,11 +128,8 @@ class CollectionsEditDialog extends StatelessWidget {
                   fillColor: Color(0xffDA627D),
                   // onPressed: onSaveForm,
                   onPressed: () {
-                    context.bloc<CollectionsBloc>().add(
-                          CollectionsUpdated(
-                              id: collection.id,
-                              title: onSubmitTitleField,
-                              language: onSubmitLanguageField),
+                    context.bloc<CollectionDetailBloc>().add(
+                          CollectionDetailAdded(),
                         );
                     Navigator.pop(context);
                   },

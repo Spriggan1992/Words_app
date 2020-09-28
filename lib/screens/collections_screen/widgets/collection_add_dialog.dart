@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:words_app/bloc/blocs.dart';
 
-import 'package:words_app/bloc/collections/collections_bloc.dart';
-import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/components/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
-import 'package:words_app/models/collection.dart';
-import 'package:words_app/screens/words_screen/words_screen.dart';
 
 class DialogAddCollection extends StatefulWidget {
   const DialogAddCollection({
@@ -80,26 +77,26 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
   @override
   Widget build(BuildContext context) {
     // Setup height for [heightCollectionName]
-    myFocusNodeCollectionName.addListener(() {
-      setState(() {
-        if (myFocusNodeCollectionName.hasFocus ||
-            !isTextCollectionNameFiledEmpty) {
-          heightCollectionName = 0.0;
-        } else {
-          heightCollectionName = 1.2;
-        }
-      });
-    });
+    // myFocusNodeCollectionName.addListener(() {
+    //   setState(() {
+    //     if (myFocusNodeCollectionName.hasFocus ||
+    //         !isTextCollectionNameFiledEmpty) {
+    //       heightCollectionName = 0.0;
+    //     } else {
+    //       heightCollectionName = 1.2;
+    //     }
+    //   });
+    // });
     // Setup height for [heightLanguage]
-    myFocusNodeLanguage.addListener(() {
-      setState(() {
-        if (myFocusNodeLanguage.hasFocus || !isLanguageTextFileEmpty) {
-          heightLanguage = 0;
-        } else {
-          heightLanguage = 1.2;
-        }
-      });
-    });
+    // myFocusNodeLanguage.addListener(() {
+    //   setState(() {
+    //     if (myFocusNodeLanguage.hasFocus || !isLanguageTextFileEmpty) {
+    //       heightLanguage = 0;
+    //     } else {
+    //       heightLanguage = 1.2;
+    //     }
+    //   });
+    // });
 
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -143,12 +140,9 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                   hintText: 'Collection name',
                   isDense: true),
               onChanged: (value) {
-                collectionTitle = value;
-                if (collectionTitle.length > 0) {
-                  isTextCollectionNameFiledEmpty = false;
-                } else {
-                  isTextCollectionNameFiledEmpty = true;
-                }
+                context
+                    .bloc<CollectionDetailBloc>()
+                    .add(CollectionTitleUpdated(title: value));
               },
             ),
           ),
@@ -205,7 +199,8 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                       onChanged: (String newValue) {
                         setState(
                           () {
-                            collectionLanguage = newValue;
+                            context.bloc<CollectionDetailBloc>().add(
+                                CollectionLanguageUpdated(language: newValue));
                             state.didChange(newValue);
                           },
                         );
@@ -243,29 +238,28 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () {
-              Collection collection = Collection(
-                language: languageMap[collectionLanguage],
-                title: collectionTitle,
-              );
-              context.bloc<CollectionsBloc>().add(
-                    CollectionsAdded(
-                      collection: collection,
-                    ),
-                  );
-              context.bloc<WordsBloc>().add(
-                    WordsLoaded(
-                      id: collection.id,
-                    ),
-                  );
+              // Collection collection = Collection(
+              //   language: languageMap[collectionLanguage],
+              //   title: collectionTitle,
+              // );
+              // FIXME: Collection_details
+              context.bloc<CollectionDetailBloc>().add(CollectionDetailAdded());
+              // context.bloc<WordsBloc>().add(
+              //       WordsLoaded(
+              //         id: collection.id,
+              //       ),
+              //     );
 
-              Navigator.pushNamed(
-                context,
-                WordsScreen.id,
-                arguments: {
-                  "id": collection.id,
-                  'title': collection.title,
-                },
-              );
+              // Navigator.pushNamed(
+              //   context,
+              //   WordsScreen.id,
+              //   arguments: {
+              //     "id": collection.id,
+              //     'title': collection.title,
+              //   },
+              // );
+              context.bloc<CollectionsBloc>().add(CollectionsLoaded());
+              Navigator.of(context).pop();
             },
           )
         ],
