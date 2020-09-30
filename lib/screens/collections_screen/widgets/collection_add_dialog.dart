@@ -199,11 +199,13 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                       onChanged: (String newValue) {
                         setState(
                           () {
-                            context.bloc<CollectionDetailBloc>().add(
-                                CollectionLanguageUpdated(language: newValue));
+                            collectionLanguage = newValue;
                             state.didChange(newValue);
                           },
                         );
+                        context.bloc<CollectionDetailBloc>().add(
+                            CollectionLanguageUpdated(
+                                language: collectionLanguage));
                       },
                       items: _languages.map((String value) {
                         return DropdownMenuItem<String>(
