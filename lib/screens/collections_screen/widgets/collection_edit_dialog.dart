@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/bloc/collections/collections_bloc.dart';
+import 'package:words_app/bloc/blocs.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:words_app/models/models.dart';
+import 'package:words_app/widgets/widgets.dart';
 
-import 'package:words_app/widgets/custom_round_btn.dart';
-import 'package:words_app/models/collection.dart';
-
-import 'package:words_app/widgets/my_separator.dart';
-import 'package:words_app/screens/collections_screen/components/text_holder.dart';
+import 'collection_widgets.dart';
 
 class CollectionsEditDialog extends StatelessWidget {
   const CollectionsEditDialog({
@@ -86,7 +84,7 @@ class CollectionsEditDialog extends StatelessWidget {
                 ),
                 Flexible(child: SizedBox(height: 10.0)),
                 // Words Text Holder
-                TextHolder(
+                CollectionTextHolder(
                   titleName: 'words:   ',
                   titleNameValue: '   16',
                   fontSize1: 20.0,
@@ -94,7 +92,7 @@ class CollectionsEditDialog extends StatelessWidget {
                 ),
                 Flexible(child: SizedBox(height: 25.0)),
                 // Learned Text Holder
-                TextHolder(
+                CollectionTextHolder(
                   titleName: 'learned:   ',
                   titleNameValue: '  11',
                   fontSize1: 20.0,
@@ -127,11 +125,8 @@ class CollectionsEditDialog extends StatelessWidget {
                   fillColor: Color(0xffDA627D),
                   // onPressed: onSaveForm,
                   onPressed: () {
-                    context.bloc<CollectionsBloc>().add(
-                          CollectionsUpdated(
-                              id: collection.id,
-                              title: onSubmitTitleField,
-                              language: onSubmitLanguageField),
+                    context.bloc<CollectionDetailBloc>().add(
+                          CollectionDetailAdded(),
                         );
                     Navigator.pop(context);
                   },

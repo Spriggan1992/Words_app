@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/bloc/trainings/trainings_bloc.dart';
-import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/collection.dart';
 import 'package:words_app/models/fuiltersEnums.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/screens/games/bricks_game_screen/bricks_game.dart';
 import 'package:words_app/screens/games/pair_game_screen/pair_game.dart';
-import 'package:words_app/screens/games/right_wrong_game/correct_wrong_game.dart';
+import 'package:words_app/screens/screens.dart';
 
 /// Return amount of filtered words when difficulties is chosen.
 ///
@@ -77,7 +76,7 @@ void checkNavigation(
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => RightWrong(
+          builder: (context) => YesNoGame(
             words: state.filteredWords,
           ),
         ));

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/animations/shake_animation.dart';
-import 'package:words_app/bloc/collections/collections_bloc.dart';
-import 'package:words_app/bloc/words/words_bloc.dart';
+import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/helpers/functions.dart';
+import 'package:words_app/models/models.dart';
 
-import 'package:words_app/models/collection.dart';
+import 'package:words_app/widgets/widgets.dart';
 
-import 'package:words_app/widgets/my_separator.dart';
-import 'package:words_app/screens/words_screen/words_screen.dart';
-
+import '../../screens.dart';
 import 'btns.dart';
-import 'text_holder.dart';
+import 'collection_text_holder.dart';
 
 class CollectionCard extends StatelessWidget {
   CollectionCard({
@@ -118,7 +116,7 @@ class CollectionCard extends StatelessWidget {
                       ),
                       SizedBox(height: 5.0),
                       FittedBox(
-                        child: TextHolder(
+                        child: CollectionTextHolder(
                           titleNameValue:
                               languageMap[collections[index].language] ?? ' ',
                           fontSize1: 9.0,
@@ -126,14 +124,14 @@ class CollectionCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 5.0),
-                      TextHolder(
+                      CollectionTextHolder(
                         titleName: 'words: ',
                         titleNameValue: '16',
                         fontSize1: 9.0,
                         fontSize2: 15.0,
                       ),
                       SizedBox(height: 5.0),
-                      TextHolder(
+                      CollectionTextHolder(
                         titleName: 'learned: ',
                         titleNameValue: '11',
                         fontSize1: 9.0,
@@ -168,9 +166,10 @@ class CollectionCard extends StatelessWidget {
                           color: Colors.black54,
                           onPress: () {
                             deleteConfirmation(context, () {
-                              BlocProvider.of<CollectionsBloc>(context)
-                                ..add(CollectionsDeleted(
-                                    id: collections[index].id));
+                              ///FIXME:
+                              // BlocProvider.of<CollectionsBloc>(context)
+                              //   ..add(CollectionsDeleted(
+                              //       id: collections[index].id));
                               Navigator.pop(context);
                             }, 'Do you want to delete your collection?');
                           },

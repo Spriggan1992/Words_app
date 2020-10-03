@@ -100,7 +100,7 @@ class CardCreator extends StatelessWidget {
           context, isEditingMode, id, collectionId, word, state),
       body: FlipCard(
         //Card key  is used to pass the toggle card method into card
-        // key: cardKey,
+
         direction: FlipDirection.HORIZONTAL,
         speed: 500,
 

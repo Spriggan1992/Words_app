@@ -13,10 +13,12 @@ class CollectionsSuccess extends CollectionsState {
   final List<Collection> collections;
 
   // CollectionsSuccess([this.collections = const []]);
-  CollectionsSuccess(this.collections);
+  CollectionsSuccess(this.collections );
 
   @override
   List<Object> get props => [collections];
+
+  
 }
 
 class CollectionsFailure extends CollectionsState {}

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:words_app/bloc/collections/collections_bloc.dart';
-import '../../../models/collection.dart';
-import '../../words_screen/words_screen.dart';
-import 'collection_card.dart';
-import 'collection_edit_dialog.dart';
+import 'package:words_app/bloc/blocs.dart';
+import 'package:words_app/models/models.dart';
+import 'package:words_app/screens/screens.dart';
+import 'collection_widgets.dart';
 
 class Body extends StatelessWidget {
   final List<Collection> collections;

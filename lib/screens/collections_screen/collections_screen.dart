@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:words_app/bloc/collections/collections_bloc.dart';
-
-import 'package:words_app/widgets/base_appbar.dart';
-
-import 'package:words_app/widgets/reusable_main_button.dart';
-
-import 'components/body.dart';
-
-import 'components/collection_add_dialog.dart';
+import 'package:words_app/bloc/blocs.dart';
+import 'package:words_app/repositories/repositories.dart';
+import 'package:words_app/widgets/widgets.dart';
+import 'widgets/collection_widgets.dart';
 
 /// [CollectionsScreen] responsible for showing all collections  created by user
 /// it is separated into components for better modularity
@@ -50,6 +45,8 @@ class CollectionsScreen extends StatelessWidget {
                       textColor: Colors.white,
                       backgroundColor: Theme.of(context).buttonColor,
                       onPressed: () {
+                        ///TODO: Collection_detail
+
                         buildShowGeneralDialog(
                           context,
                         );
@@ -81,7 +78,10 @@ class CollectionsScreen extends StatelessWidget {
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
               content: StatefulBuilder(
                 builder: (context, setState) {
-                  return DialogAddCollection();
+                  return BlocProvider<CollectionDetailBloc>(
+                      create: (_) => CollectionDetailBloc(
+                          collectionsRepository: CollectionsRepository()),
+                      child: DialogAddCollection());
                 },
               ),
             ),

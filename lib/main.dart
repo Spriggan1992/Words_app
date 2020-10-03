@@ -2,34 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/screens/games/bricks_game_screen/bricks_game.dart';
-import 'package:words_app/screens/games/pair_game_screen/pair_game.dart';
-import 'package:words_app/screens/games/right_wrong_game/correct_wrong_game.dart';
+import 'package:words_app/screens/screens.dart';
 
-import 'bloc/card_creator/card_creator_bloc.dart';
-import 'bloc/collections/collections_bloc.dart';
-import 'bloc/trainings/trainings_bloc.dart';
-import 'bloc/words/words_bloc.dart';
+import 'bloc/blocs.dart';
 import 'cubit/card_creator/part_color/part_color_cubit.dart';
 import 'cubit/words/words_cubit.dart';
-import 'repositories/collections_repository.dart';
-import 'repositories/image_repository.dart';
-import 'repositories/bricks_provider.dart';
-import 'repositories/validation_provider.dart';
-import 'repositories/words_repository.dart';
-import 'screens/card_creator_screen//card_creator.dart';
-import 'screens/card_creator_screen/img_api.dart';
-import 'screens/collections_screen/collections_screen.dart';
-
-import 'screens/loging_screen/login_screen.dart';
-import 'screens/registration_screen/registration_screen.dart';
-import 'screens/result_screen/result_screen.dart';
-import 'screens/review_card_screen/review_card.dart';
-import 'screens/training_manager_screen/training_manager_screen.dart';
-import 'screens/welcome_screen/welcom_screen.dart';
-import 'screens/words_screen/words_screen.dart';
-
-// import 'package:hive/hive.dart';
+import 'repositories/repositories.dart';
 
 void main() => runApp(MultiBlocProvider(providers: [
       BlocProvider<CollectionsBloc>(
@@ -87,9 +65,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => WordsRepository(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => ValidationForm(),
-        ),
+        // ChangeNotifierProvider(
+        //   create: (_) => ValidationForm(),
+        // ),
         ChangeNotifierProvider(
           create: (_) => Bricks(),
         ),
@@ -139,14 +117,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: CollectionsScreen.id,
         routes: {
-          WelcomScreen.id: (_) => WelcomScreen(),
-          LoginScreen.id: (_) => LoginScreen(),
-          RegistrationScreen.id: (_) => RegistrationScreen(),
           CollectionsScreen.id: (_) => CollectionsScreen(),
           WordsScreen.id: (_) => WordsScreen(),
           CardCreator.id: (_) => CardCreator(),
           ReviewCard.id: (_) => ReviewCard(),
-          RightWrong.id: (_) => RightWrong(),
+          YesNoGame.id: (_) => YesNoGame(),
           BricksGame.id: (_) => BricksGame(),
           PairGame.id: (_) => PairGame(),
           Result.id: (_) => Result(),

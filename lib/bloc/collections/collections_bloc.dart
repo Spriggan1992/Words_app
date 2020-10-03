@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 import 'package:words_app/models/collection.dart';
-import 'package:words_app/repositories/collections_repository.dart';
+import 'package:words_app/repositories/collections/collections_repository.dart';
 
 part 'collections_event.dart';
 part 'collections_state.dart';
@@ -20,39 +21,25 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
   ) async* {
     if (event is CollectionsLoaded) {
       yield* _mapCollectionsLoadedToState();
-    } else if (event is CollectionsAdded) {
-      yield* _mapCollectionsAddedToState(event);
     } else if (event is CollectionsToggleAll) {
       yield* _mapCollectionsToggleAllToState(event);
-    } else if (event is CollectionsUpdated) {
-      yield* _mapCollectionsUpdateToState(event);
-    } else if (event is CollectionsDeleted) {
-      yield* _mapCollectionsDeletedToState(event);
     } else if (event is CollectionsSetToFalse) {
       yield* _mapCollectionsSetToFalseAllToState(event);
     }
+    // FIXME: refactor here
+    // else if (event is CollectionsUpdated) {
+    //   yield* _mapCollectionsUpdateToState(event);
+    // } else if (event is CollectionsDeleted) {
+    //   yield* _mapCollectionsDeletedToState(event);
+    // } else if (event is CollectionsAdded) {
+    //   yield* _mapCollectionsAddedToState(event);
+    // }
   }
 
   /// This method is responsible for loading initial words from
   Stream<CollectionsState> _mapCollectionsLoadedToState() async* {
     try {
       final collections = await collectionsRepository.fetchAndSetCollection();
-
-      yield CollectionsSuccess(collections);
-    } catch (_) {
-      yield CollectionsFailure();
-    }
-  }
-
-  Stream<CollectionsState> _mapCollectionsAddedToState(
-      CollectionsAdded event) async* {
-    try {
-      final collection = await collectionsRepository.addNewCollection(
-          collectionId: event.collection.id,
-          collectionTitle: event.collection.title,
-          languageTitle: event.collection.language);
-      List<Collection> collections =
-          List.from((state as CollectionsSuccess).collections)..add(collection);
       yield CollectionsSuccess(collections);
     } catch (_) {
       yield CollectionsFailure();
@@ -80,42 +67,56 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     yield CollectionsSuccess(updatedCollection);
   }
 
-  Stream<CollectionsState> _mapCollectionsUpdateToState(
-      CollectionsUpdated event) async* {
-    try {
-      final updatedCollections =
-          (state as CollectionsSuccess).collections.map((collection) {
-        return collection.id == event.id
-            ? collection.copyWith(
-                id: collection.id,
-                isEditingBtns: collection.isEditingBtns,
-                title: event.title,
-                language: event.language,
-                showBtns: collection.showBtns)
-            : collection;
-      }).toList();
-      await collectionsRepository.updateCollection(data: {
-        'id': event.id,
-        'title': event.title,
-        'language': event.language,
-      });
+  // FIXME: refactor me
+  // Stream<CollectionsState> _mapCollectionsAddedToState(
+  //     CollectionsAdded event) async* {
+  //   try {
+  //     final collection = await collectionsRepository.addNewCollection(
+  //         collection: event.collection);
+  //     List<Collection> collections =
+  //         List.from((state as CollectionsSuccess).collections)..add(collection);
+  //     yield CollectionsSuccess(collections);
+  //   } catch (_) {
+  //     yield CollectionsFailure();
+  //   }
+  // }
 
-      yield CollectionsSuccess(updatedCollections);
-    } catch (_) {}
-  }
+  // Stream<CollectionsState> _mapCollectionsUpdateToState(
+  //     CollectionsUpdated event) async* {
+  //   try {
+  //     final updatedCollections =
+  //         (state as CollectionsSuccess).collections.map((collection) {
+  //       return collection.id == event.id
+  //           ? collection.copyWith(
+  //               id: collection.id,
+  //               isEditingBtns: collection.isEditingBtns,
+  //               title: event.title,
+  //               language: event.language,
+  //             )
+  //           : collection;
+  //     }).toList();
+  //     await collectionsRepository.updateCollection(data: {
+  //       'id': event.id,
+  //       'title': event.title,
+  //       'language': event.language,
+  //     });
 
-  Stream<CollectionsState> _mapCollectionsDeletedToState(
-      CollectionsDeleted event) async* {
-    try {
-      final updatedCollection = (state as CollectionsSuccess)
-          .collections
-          .where((collection) => collection.id != event.id)
-          .toList();
-      yield CollectionsSuccess(updatedCollection);
+  //     yield CollectionsSuccess(updatedCollections);
+  //   } catch (_) {}
+  // }
 
-      collectionsRepository.deleteCollection(event.id);
-    } catch (_) {
-      yield CollectionsFailure();
-    }
-  }
+  // Stream<CollectionsState> _mapCollectionsDeletedToState(
+  //     CollectionsDeleted event) async* {
+  //   try {
+  //     final updatedCollection = (state as CollectionsSuccess)
+  //         .collections
+  //         .where((collection) => collection.id != event.id)
+  //         .toList();
+  //     yield CollectionsSuccess(updatedCollection);
+
+  //     collectionsRepository.deleteCollection(event.id);
+  //   } catch (_) {
+  //     yield CollectionsFailure();
+  //   }
+  // }
 }

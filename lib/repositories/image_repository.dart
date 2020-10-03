@@ -21,10 +21,6 @@ class ImageRepository {
       String data = response.body;
       var images = jsonDecode(data);
 
-      // id = (jsonDecode(data)['hits'][2]['id']).toString();
-      // img = (jsonDecode(data)['hits'][2]['previewURL']).toString();
-      // tag = (jsonDecode(data)['hits'][2]['tags']).toString();
-
       List<dynamic> imagesList = images['hits'];
 
       imagesList?.forEach(

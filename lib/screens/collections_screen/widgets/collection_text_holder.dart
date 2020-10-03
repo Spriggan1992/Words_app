@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class TextHolder extends StatelessWidget {
-  const TextHolder({
+class CollectionTextHolder extends StatelessWidget {
+  const CollectionTextHolder({
     this.titleName,
     this.titleNameValue,
     this.fontSize1,

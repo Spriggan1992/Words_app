@@ -1,43 +1,24 @@
 import 'dart:io';
 
 import 'package:sqflite/sqflite.dart';
+import 'package:words_app/config/paths.dart';
+import 'package:words_app/entities/collection_entity.dart';
 import 'package:words_app/utils/db_helper.dart';
-import '../models/collection.dart';
-import 'words_repository.dart';
+import '../../models/collection.dart';
+import '../words/words_repository.dart';
 
 class CollectionsRepository {
   WordsRepository wordsRepository;
-  List<Collection> _collections = [
-    Collection(title: "nouns", language: 'eng'),
-  ];
-  //  using spread operator to return copy of our list, to prevent access to original list
-  List<Collection> get wordsCollectionData {
-    return [..._collections];
-  }
+  List<Collection> _collections = [];
 
   /// This method is responsible for adding new  [Collection] to DB,
-  Future<Collection> addNewCollection(
-      {String collectionTitle,
-      String languageTitle,
-      String collectionId}) async {
-    final collection = Collection(
-      id: collectionId,
-      title: collectionTitle,
-      language: languageTitle,
-      showBtns: false,
-      isEditingBtns: false,
-      isSelected: false,
-    );
-
+  Future<Collection> addNewCollection({Collection collection}) async {
     /// This method is responsible for inserting [Collection] to DB,
     DBHelper.insert(
-      'collections',
-      {
-        'id': collection.id,
-        'title': collection.title,
-        'language': collection.language,
-      },
+      Paths.collections,
+      collection.toEntity().toDb(),
     );
+
     return collection;
   }
 
@@ -46,12 +27,7 @@ class CollectionsRepository {
     final dataList = await DBHelper.getData('collections');
     _collections = dataList
         .map(
-          (item) => Collection(
-              id: item['id'],
-              title: item['title'],
-              language: item['language'],
-              isEditingBtns: false,
-              showBtns: false),
+          (data) => Collection.fromEntity(CollectionEntity.fromDb(data)),
         )
         .toList();
     return _collections;
