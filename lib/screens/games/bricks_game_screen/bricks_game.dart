@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/word.dart';
@@ -93,7 +94,24 @@ class _BricksGameState extends State<BricksGame> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final providerData = Provider.of<Bricks>(context);
     return WillPopScope(
-      onWillPop: () async => onBackPressed(),
+      onWillPop: () async {
+        onBackPressed(
+          context,
+          () {
+            setState(() {
+              Navigator.pushNamedAndRemoveUntil(context, TrainingManager.id,
+                  ModalRoute.withName(TrainingManager.id));
+              providerData.initialData.clear();
+              providerData.cleanData();
+              providerData.resetWords();
+              providerData.answerWordArray.clear();
+              providerData.dynamicColor = DynamicColor.normal;
+            });
+          },
+        );
+        providerData.correct = 0;
+        providerData.wrong = 0;
+      },
       child: Scaffold(
         body: SafeArea(
             child: providerData.initialData.isNotEmpty
@@ -130,61 +148,8 @@ class _BricksGameState extends State<BricksGame> with TickerProviderStateMixin {
                       ],
                     ),
                   )
-                : Center(child: Text('You run out of words'))),
+                : SizedBox.shrink()),
       ),
     );
-  }
-
-  Future<bool> onBackPressed() {
-    final providerData = Provider.of<Bricks>(context, listen: false);
-    return showGeneralDialog(
-        barrierColor: Color(0xff906c7a).withOpacity(0.9),
-        transitionBuilder: (context, a1, a2, widget) {
-          final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
-          return Transform(
-              transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
-              child: Opacity(
-                    opacity: a1.value,
-                    child: new AlertDialog(
-                      title: new Text('Are you sure?'),
-                      content: new Text('Do you want to finish your traning?'),
-                      actions: <Widget>[
-                        new GestureDetector(
-                          onTap: () => Navigator.of(context).pop(false),
-                          child: Text("NO"),
-                        ),
-                        SizedBox(height: 16),
-                        new GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              // Navigator.of(context).maybePop(true);
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  TrainingManager.id,
-                                  ModalRoute.withName(TrainingManager.id));
-
-                              // Navigator.pushReplacementNamed(
-                              // context, TrainingManager.id);
-                              providerData.initialData.clear();
-                              providerData.cleanData();
-                              providerData.resetWords();
-                              providerData.answerWordArray.clear();
-                              providerData.dynamicColor = DynamicColor.normal;
-                            });
-                          },
-                          child: Text("YES"),
-                        ),
-                      ],
-                    ),
-                  ) ??
-                  false);
-        },
-        transitionDuration: Duration(milliseconds: 200),
-        barrierDismissible: false,
-        barrierLabel: '',
-        context: context,
-        pageBuilder: (context, animation1, animation2) {
-          return;
-        });
   }
 }

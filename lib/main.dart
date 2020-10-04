@@ -124,7 +124,7 @@ class MyApp extends StatelessWidget {
           YesNoGame.id: (_) => YesNoGame(),
           BricksGame.id: (_) => BricksGame(),
           PairGame.id: (_) => PairGame(),
-          Result.id: (_) => Result(),
+          ResultScreen.id: (_) => ResultScreen(),
           TrainingManager.id: (_) => TrainingManager(),
           ImageApi.id: (_) => ImageApi(),
         },

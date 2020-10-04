@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:words_app/helpers/functions.dart';
+import 'package:words_app/screens/screens.dart';
 
 import 'package:words_app/utils/size_config.dart';
 import 'package:words_app/widgets/base_appbar.dart';
@@ -34,6 +36,7 @@ class _YesNoGameState extends State<YesNoGame> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
     createData();
 
     _correctController = AnimationController(
@@ -73,6 +76,13 @@ class _YesNoGameState extends State<YesNoGame> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  void createData() {
+    targetWords = [...widget.words];
+    targetWords.shuffle();
+    ownLanguageWords = [...widget.words];
+    ownLanguageWords.shuffle();
+  }
+
   void toggleAnswerCorrect() {
     setState(() {
       isCorrect = true;
@@ -93,13 +103,6 @@ class _YesNoGameState extends State<YesNoGame> with TickerProviderStateMixin {
 
   void getData(List data) {}
 
-  void createData() {
-    targetWords = [...widget.words];
-    targetWords.shuffle();
-    ownLanguageWords = [...widget.words];
-    ownLanguageWords.shuffle();
-  }
-
   void removeTWords(value) {
     setState(() {
       targetWords.remove(value);
@@ -114,71 +117,87 @@ class _YesNoGameState extends State<YesNoGame> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
-    return Scaffold(
-      appBar: BaseAppBar(
-        title: Text('YES/NO'),
-        appBar: AppBar(),
+    return WillPopScope(
+      onWillPop: () async => onBackPressed(
+        context,
+        () {
+          setState(() {
+            Navigator.pushNamedAndRemoveUntil(context, TrainingManager.id,
+                ModalRoute.withName(TrainingManager.id));
+          });
+        },
       ),
-      body: Center(
-        child: Stack(
-          children: <Widget>[
-            Container(
-                child: targetWords.length > 0
-                    ? Stack(
-                        alignment: Alignment.center,
-                        children: deck(
-                            targetWords,
-                            removeTWords,
-                            ownLanguageWords,
-                            toggleAnswerCorrect,
-                            toggleAnswerWrong,
-                            defaultSize))
-                    : Text('fdskjajfds')),
-            Container(
-              child: Stack(
-                alignment: Alignment.center,
-                children: matchWords(ownLanguageWords, defaultSize),
-              ),
-            ),
-            YesNoBtns(
-              title: 'YES',
-              top: defaultSize * 42,
-              left: defaultSize * 32,
-              icon: Icons.redo,
-              animationController: _correctAnimation,
-            ),
-            YesNoBtns(
-              title: 'NO',
-              top: defaultSize * 42,
-              left: defaultSize * 6,
-              icon: Icons.undo,
-              animationController: _wrongAnimation,
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                margin: EdgeInsets.only(bottom: defaultSize * 2),
-                height: defaultSize * 7,
-                width: SizeConfig.blockSizeHorizontal * 90,
-                decoration: innerShadow,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ...List.generate(3, (index) {
-                      return YesNoTextHolder(
-                          title: [wrong, ' : ', correct][index].toString(),
-                          fontSize: defaultSize * 3,
-                          color: [
-                            Theme.of(context).accentColor,
-                            Colors.black,
-                            Colors.green
-                          ][index]);
-                    }),
-                  ],
+      child: Scaffold(
+        appBar: BaseAppBar(
+          title: Text('YES/NO'),
+          appBar: AppBar(),
+        ),
+        body: Center(
+          child: Stack(
+            children: <Widget>[
+              Container(
+                  // child: targetWords.length > 0
+                  // ?
+                  child: Stack(
+                      alignment: Alignment.center,
+                      children: deck(
+                        context,
+                        targetWords,
+                        removeTWords,
+                        ownLanguageWords,
+                        toggleAnswerCorrect,
+                        toggleAnswerWrong,
+                        defaultSize,
+                        correct,
+                        wrong,
+                      ))),
+              // : Text('Hey there')),
+              Container(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: matchWords(ownLanguageWords, defaultSize),
                 ),
               ),
-            )
-          ],
+              YesNoBtns(
+                title: 'YES',
+                top: defaultSize * 42,
+                left: defaultSize * 32,
+                icon: Icons.redo,
+                animationController: _correctAnimation,
+              ),
+              YesNoBtns(
+                title: 'NO',
+                top: defaultSize * 42,
+                left: defaultSize * 6,
+                icon: Icons.undo,
+                animationController: _wrongAnimation,
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  margin: EdgeInsets.only(bottom: defaultSize * 2),
+                  height: defaultSize * 7,
+                  width: SizeConfig.blockSizeHorizontal * 90,
+                  decoration: innerShadow,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ...List.generate(3, (index) {
+                        return YesNoTextHolder(
+                            title: [wrong, ' : ', correct][index].toString(),
+                            fontSize: defaultSize * 3,
+                            color: [
+                              Theme.of(context).accentColor,
+                              Colors.black,
+                              Colors.green
+                            ][index]);
+                      }),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -190,18 +209,22 @@ List matchWords(List<Word> words, double defaultSize) {
     (item) {
       return Positioned(
         top: defaultSize * 35.0,
-        child: Card(
-          elevation: 1,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(defaultSize * 0.5),
-              color: Colors.white,
-            ),
-            alignment: Alignment.center,
-            height: defaultSize * 4.0,
-            width: defaultSize * 25.0,
-            child: YesNoTextHolder(title: item.ownLang),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  blurRadius: 0.1,
+                  offset: Offset(1.5, 1.5),
+                  color: Colors.grey,
+                  spreadRadius: 0.1)
+            ],
+            borderRadius: BorderRadius.circular(defaultSize * 0.5),
+            color: Colors.white,
           ),
+          alignment: Alignment.center,
+          height: defaultSize * 4.0,
+          width: defaultSize * 25.0,
+          child: YesNoTextHolder(title: item.ownLang),
         ),
       );
     },
@@ -210,29 +233,30 @@ List matchWords(List<Word> words, double defaultSize) {
 }
 
 List<Widget> deck(
+  BuildContext context,
   List<Word> targetWords,
   Function removieItem,
   List<Word> ownLanguageWords,
   Function toogleAnswerCorrect,
   Function toogleAnswerWrong,
   double defaultSize,
+  int correct,
+  int wrong,
 ) {
   List<Widget> cardList = List();
-  int count = 0;
-  double padding = 40.0;
-  for (int i = 0; i < targetWords.length; i++) {
-    if (count >= 1) {
-      padding += 1;
-    } else if (count >= 2) {
-      padding += 3;
-    } else if (count >= 4) {
-      padding += 1;
-    } else {
-      padding += 0.4;
-    }
-    cardList.add(
+
+  double topPadding = 40.0;
+  double leftPadding = 100.0;
+  // while (targetWords.length != 0) {}
+  for (int i = 0; i < (targetWords.length < 4 ? targetWords.length : 4); i++) {
+    topPadding -= 4;
+    leftPadding += 2;
+
+    cardList.insert(
+      0,
       Positioned(
-        top: padding,
+        top: topPadding,
+        left: leftPadding,
         child: Dismissible(
           onDismissed: (DismissDirection derection) {
             if (derection == DismissDirection.startToEnd) {
@@ -241,12 +265,16 @@ List<Widget> deck(
               } else {
                 toogleAnswerWrong();
               }
-              removieItem(targetWords[i]);
+              goToResultScreen(targetWords, context,
+                  ResultScreen(correct: correct, wrong: wrong));
+              // redirectToResulScreen();
             }
             if (derection == DismissDirection.endToStart) {
               if (targetWords.last.id == ownLanguageWords.last.id) {
                 toogleAnswerWrong();
               } else {
+                goToResultScreen(targetWords, context,
+                    ResultScreen(correct: correct, wrong: wrong));
                 toogleAnswerCorrect();
               }
               removieItem(targetWords[i]);
@@ -286,7 +314,6 @@ List<Widget> deck(
         ),
       ),
     );
-    count++;
   }
 
   return cardList;

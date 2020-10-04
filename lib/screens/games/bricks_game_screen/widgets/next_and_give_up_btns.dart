@@ -48,7 +48,11 @@ class _NextAndGiveUpBtnsState extends State<NextAndGiveUpBtns> {
                     setState(() {
                       providerData.loadNextWord();
                       goToResultScreen(
-                          providerData.answerWordArray, context, Result());
+                          providerData.initialData,
+                          context,
+                          ResultScreen(
+                              correct: providerData.correct,
+                              wrong: providerData.wrong));
                     });
                   });
 

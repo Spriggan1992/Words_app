@@ -41,16 +41,6 @@ void checkNavigation(
   List<int> selectedDifficulties,
   FilterGames selectedGames,
 ) {
-  if (selectedDifficulties.isEmpty) {
-    scaffoldKey.currentState.showSnackBar(SnackBar(
-        duration: Duration(milliseconds: 1500),
-        content: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'You have to choose which words you want to learn',
-          ),
-        )));
-  }
   if (selectedListCollections.isEmpty) {
     scaffoldKey.currentState.showSnackBar(SnackBar(
         duration: Duration(milliseconds: 1500),
@@ -60,10 +50,32 @@ void checkNavigation(
             'You have to choose which collection',
           ),
         )));
+  } else if (selectedDifficulties.isEmpty) {
+    scaffoldKey.currentState.showSnackBar(SnackBar(
+        duration: Duration(milliseconds: 1500),
+        content: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'You have to choose which words you want to learn',
+          ),
+        )));
+  } else if (state.filteredWords.isEmpty) {
+    scaffoldKey.currentState.showSnackBar(SnackBar(
+        duration: Duration(milliseconds: 1500),
+        content: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            selectedListCollections.length > 1
+                ? 'There are no words in your collections'
+                : 'There are no words in your collection',
+          ),
+        )));
   }
+
   if (selectedGames == FilterGames.bricks &&
       selectedDifficulties.isNotEmpty &&
-      selectedListCollections.isNotEmpty) {
+      selectedListCollections.isNotEmpty &&
+      state.filteredWords.isNotEmpty) {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -72,7 +84,8 @@ void checkNavigation(
   }
   if (selectedGames == FilterGames.wrongCorrect &&
       selectedDifficulties.isNotEmpty &&
-      selectedListCollections.isNotEmpty) {
+      selectedListCollections.isNotEmpty &&
+      state.filteredWords.isNotEmpty) {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -83,7 +96,8 @@ void checkNavigation(
   }
   if (selectedGames == FilterGames.pair &&
       selectedDifficulties.isNotEmpty &&
-      selectedListCollections.isNotEmpty) {
+      selectedListCollections.isNotEmpty &&
+      state.filteredWords.isNotEmpty) {
     Navigator.push(
         context,
         MaterialPageRoute(

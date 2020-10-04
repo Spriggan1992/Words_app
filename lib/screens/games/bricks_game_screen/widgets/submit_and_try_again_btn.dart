@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/repositories/bricks_provider.dart';
+import 'package:words_app/screens/screens.dart';
 
 class SubmitAndTryAgainBtn extends StatelessWidget {
   const SubmitAndTryAgainBtn({
@@ -39,7 +41,8 @@ class SubmitAndTryAgainBtn extends StatelessWidget {
                   successAnimationController,
                   errorAnimationController,
                   slideTransitionController,
-                  shakeController);
+                  shakeController,
+                  context);
             },
             child: Text(providerData.dynamicColor == DynamicColor.wrong
                 ? 'Try Again'

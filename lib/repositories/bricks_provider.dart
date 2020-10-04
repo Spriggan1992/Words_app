@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/brick.dart';
 import 'package:words_app/models/word.dart';
+import 'package:words_app/screens/screens.dart';
 
 enum DynamicColor { normal, success, error, wrong }
 
@@ -8,6 +10,8 @@ class Bricks with ChangeNotifier {
   List<Word> initialData;
   List<String> answerWordArray = [];
   String answer;
+  int correct = 0;
+  int wrong = 0;
 
   /// DynamicColor: normal = white color;  success = successColorAnimation; error = errorColorAnimation, wrong = red color;
   DynamicColor dynamicColor = DynamicColor.normal;
@@ -129,19 +133,24 @@ class Bricks with ChangeNotifier {
   /// If answer match to matchedAnswer = right answer --> run success animation --> load next word
   /// If asnwer don't match to matchedAnswer = wrong answer --> run error animation --> start over
   void checkAnswer(
-      AnimationController successAnimationController,
-      AnimationController errorAnimationController,
-      AnimationController slideTransitionController,
-      List<Word> initialData) {
+    AnimationController successAnimationController,
+    AnimationController errorAnimationController,
+    AnimationController slideTransitionController,
+    List<Word> initialData,
+    BuildContext context,
+  ) {
     String matchedAnswer = answerWordArray.join('');
     if (answer.startsWith(matchedAnswer) == true) {
       dynamicColor = DynamicColor.success;
       runSuccessAnimation(successAnimationController);
+      correct++;
       successAnimationController.addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           runSlideAnimation(slideTransitionController);
           loadNextWord();
           dynamicColor = DynamicColor.normal;
+          goToResultScreen(initialData, context,
+              ResultScreen(correct: correct, wrong: wrong));
         }
       });
     } else {
@@ -152,11 +161,15 @@ class Bricks with ChangeNotifier {
           for (int i = 0; i < listBricks.length; i++) {
             listBricks[i].isVisible = true;
             answerWordArray.clear();
+            wrong++;
             dynamicColor = DynamicColor.normal;
+            goToResultScreen(initialData, context,
+                ResultScreen(correct: correct, wrong: wrong));
           }
         }
       });
     }
+
     notifyListeners();
   }
 
@@ -196,16 +209,15 @@ class Bricks with ChangeNotifier {
 
   /// Activate submit button
   void activateSubmitBtn(successAnimationController, errorAnimationController,
-      slideTransitionController, shakeController) {
+      slideTransitionController, shakeController, context) {
     if (answerWordArray.length != listBricks.length) {
       runShakeAnimation(shakeController);
     } else if (dynamicColor == DynamicColor.wrong) {
       activateTryAgan();
     } else {
       checkAnswer(successAnimationController, errorAnimationController,
-          slideTransitionController, initialData);
+          slideTransitionController, initialData, context);
     }
-    notifyListeners();
   }
 
   /// Show correct answer and start over to match bricks
@@ -214,6 +226,7 @@ class Bricks with ChangeNotifier {
     for (int i = 0; i < listBricks.length; i++) {
       listBricks[i].isVisible = false;
     }
+    wrong++;
     dynamicColor = DynamicColor.wrong;
     notifyListeners();
   }

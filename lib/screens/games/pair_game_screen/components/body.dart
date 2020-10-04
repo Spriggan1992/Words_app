@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/constants/constants.dart';
+import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/game_card.dart';
+import 'package:words_app/screens/screens.dart';
 
 class Body extends StatefulWidget {
   const Body({
@@ -91,6 +93,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
       getCards();
       allDone = 0;
     }
+    goToResultScreen(
+        cards, context, ResultScreen(correct: all, wrong: mistakes));
   }
 
   /// method resetCardsToggles fires right after animation finishes to clear cards of all toggles
@@ -139,76 +143,86 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: widget.defaultSize * 1.6,
-        vertical: widget.defaultSize,
+    return WillPopScope(
+      onWillPop: () async => onBackPressed(
+        context,
+        () {
+          Navigator.pushNamedAndRemoveUntil(context, TrainingManager.id,
+              ModalRoute.withName(TrainingManager.id));
+        },
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            width: widget.blockSizeHorizontal * 95,
-            height: widget.blockSizeVertical * 56,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Wrap(
-                spacing: widget.defaultSize * 1.5,
-                runSpacing: widget.defaultSize,
-                verticalDirection: VerticalDirection.down,
-                alignment: WrapAlignment.center,
-                children: List<Widget>.generate(
-                  cards.length,
-                  (index) {
-                    return AnimatedOpacity(
-                      opacity: cards[index].visible ? 1 : 0,
-                      duration: Duration(milliseconds: 400),
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            toggleCard(index);
-                          });
-                        },
-                        child: Chip(
-                          padding: EdgeInsets.all(10),
-                          label: Text(
-                            cards[index].word,
-                            style: TextStyle(fontSize: 24, color: Colors.black),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: widget.defaultSize * 1.6,
+          vertical: widget.defaultSize,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              width: widget.blockSizeHorizontal * 95,
+              height: widget.blockSizeVertical * 56,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Wrap(
+                  spacing: widget.defaultSize * 1.5,
+                  runSpacing: widget.defaultSize,
+                  verticalDirection: VerticalDirection.down,
+                  alignment: WrapAlignment.center,
+                  children: List<Widget>.generate(
+                    cards.length,
+                    (index) {
+                      return AnimatedOpacity(
+                        opacity: cards[index].visible ? 1 : 0,
+                        duration: Duration(milliseconds: 400),
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              toggleCard(index);
+                            });
+                          },
+                          child: Chip(
+                            padding: EdgeInsets.all(10),
+                            label: Text(
+                              cards[index].word,
+                              style:
+                                  TextStyle(fontSize: 24, color: Colors.black),
+                            ),
+                            backgroundColor: cards[index].isWrong == true
+                                ? animateColor.value
+                                : cards[index].color,
+                            elevation: 5,
                           ),
-                          backgroundColor: cards[index].isWrong == true
-                              ? animateColor.value
-                              : cards[index].color,
-                          elevation: 5,
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: widget.defaultSize * 2,
-          ),
-          Expanded(
-            child: Container(
-              decoration: innerShadow,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    'All: $all / $allPairs',
-                    style: TextStyle(fontSize: widget.defaultSize * 3.2),
-                  ),
-                  Text(
-                    'Wrong: $mistakes',
-                    style: TextStyle(fontSize: widget.defaultSize * 3.2),
-                  ),
-                ],
-              ),
+            SizedBox(
+              height: widget.defaultSize * 2,
             ),
-          )
-        ],
+            Expanded(
+              child: Container(
+                decoration: innerShadow,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      'All: $all / $allPairs',
+                      style: TextStyle(fontSize: widget.defaultSize * 3.2),
+                    ),
+                    Text(
+                      'Wrong: $mistakes',
+                      style: TextStyle(fontSize: widget.defaultSize * 3.2),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
