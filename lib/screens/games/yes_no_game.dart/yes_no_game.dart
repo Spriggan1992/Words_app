@@ -244,10 +244,9 @@ List<Widget> deck(
   int wrong,
 ) {
   List<Widget> cardList = List();
-
   double topPadding = 40.0;
   double leftPadding = 100.0;
-  // while (targetWords.length != 0) {}
+
   for (int i = 0; i < (targetWords.length < 4 ? targetWords.length : 4); i++) {
     topPadding -= 4;
     leftPadding += 2;
@@ -258,6 +257,7 @@ List<Widget> deck(
         top: topPadding,
         left: leftPadding,
         child: Dismissible(
+          direction: i == 0 ? DismissDirection.horizontal : null,
           onDismissed: (DismissDirection derection) {
             if (derection == DismissDirection.startToEnd) {
               if (targetWords.last.id == ownLanguageWords.last.id) {
@@ -265,19 +265,19 @@ List<Widget> deck(
               } else {
                 toogleAnswerWrong();
               }
+              removieItem(targetWords[i]);
               goToResultScreen(targetWords, context,
                   ResultScreen(correct: correct, wrong: wrong));
-              // redirectToResulScreen();
             }
             if (derection == DismissDirection.endToStart) {
               if (targetWords.last.id == ownLanguageWords.last.id) {
                 toogleAnswerWrong();
               } else {
-                goToResultScreen(targetWords, context,
-                    ResultScreen(correct: correct, wrong: wrong));
                 toogleAnswerCorrect();
               }
               removieItem(targetWords[i]);
+              goToResultScreen(targetWords, context,
+                  ResultScreen(correct: correct, wrong: wrong));
             }
           },
           key: UniqueKey(),
@@ -318,3 +318,90 @@ List<Widget> deck(
 
   return cardList;
 }
+// List<Widget> deck(
+//   BuildContext context,
+//   List<Word> targetWords,
+//   Function removieItem,
+//   List<Word> ownLanguageWords,
+//   Function toogleAnswerCorrect,
+//   Function toogleAnswerWrong,
+//   double defaultSize,
+//   int correct,
+//   int wrong,
+// ) {
+//   List<Widget> cardList = List();
+
+//   double topPadding = 40.0;
+//   double leftPadding = 100.0;
+//   // while (targetWords.length != 0) {}
+//   for (int i = 0; i < (targetWords.length < 4 ? targetWords.length : 4); i++) {
+//     topPadding -= 4;
+//     leftPadding += 2;
+
+//     cardList.insert(
+//       0,
+//       Positioned(
+//         top: topPadding,
+//         left: leftPadding,
+//         child: Dismissible(
+//           onDismissed: (DismissDirection derection) {
+//             if (derection == DismissDirection.startToEnd) {
+//               if (targetWords.last.id == ownLanguageWords.last.id) {
+//                 toogleAnswerCorrect();
+//               } else {
+//                 toogleAnswerWrong();
+//               }
+//               removieItem(targetWords[i]);
+//               goToResultScreen(targetWords, context,
+//                   ResultScreen(correct: correct, wrong: wrong));
+//               // redirectToResulScreen();
+//             }
+//             if (derection == DismissDirection.endToStart) {
+//               if (targetWords.last.id == ownLanguageWords.last.id) {
+//                 toogleAnswerWrong();
+//               } else {
+//                 toogleAnswerCorrect();
+//               }
+//               removieItem(targetWords[i]);
+//               goToResultScreen(targetWords, context,
+//                   ResultScreen(correct: correct, wrong: wrong));
+//             }
+//           },
+//           key: UniqueKey(),
+//           child: Card(
+//             elevation: 3,
+//             child: Stack(
+//               alignment: Alignment.topCenter,
+//               children: [
+//                 Container(
+//                   decoration: BoxDecoration(
+//                     borderRadius: BorderRadius.circular(defaultSize * 0.5),
+//                     color: Colors.white,
+//                   ),
+//                   width: defaultSize * 20,
+//                   height: defaultSize * 25,
+//                 ),
+//                 Positioned(
+//                   top: defaultSize * 4,
+//                   child: Container(
+//                     decoration: BoxDecoration(
+//                       boxShadow: [kBoxShadow],
+//                       borderRadius: BorderRadius.circular(defaultSize * 0.5),
+//                       color: Colors.white,
+//                     ),
+//                     alignment: Alignment.center,
+//                     width: defaultSize * 16,
+//                     height: defaultSize * 3,
+//                     child: YesNoTextHolder(title: targetWords[i].targetLang),
+//                   ),
+//                 )
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   return cardList;
+// }
