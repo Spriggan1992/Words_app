@@ -31,7 +31,7 @@ class DBHelper {
   /// Method  creates specified tables to DB,
   static _onCreate(sql.Database db, int version) async {
     await db.execute(
-        'CREATE TABLE collections(id TEXT PRIMARY KEY, title TEXT, language TEXT)');
+        'CREATE TABLE collections(id TEXT PRIMARY KEY, title TEXT, language TEXT, wordCount INTEGER DEFAULT 0)');
     await db.execute(
         'CREATE TABLE words(collectionId Text, id TEXT PRIMARY KEY, targetLang TEXT, ownLang TEXT, secondLang TEXT, thirdLang TEXT, partName TEXT, partColor TEXT, image TEXT, example TEXT, exampleTranslations TEXT, difficulty INTEGER)');
   }
@@ -53,8 +53,8 @@ class DBHelper {
 
   static Future<int> fetchWordCount(String id) async {
     final db = await DBHelper.database();
-    var wordCount = firstIntValue(
-        await db.rawQuery("SELECT COUNT(*) FROM words WHERE collectionId='$id'"));
+    var wordCount = firstIntValue(await db
+        .rawQuery("SELECT COUNT(*) FROM words WHERE collectionId='$id'"));
     return wordCount;
   }
 
@@ -84,6 +84,12 @@ class DBHelper {
     );
   }
 
+  static Future<void> updateCounter(String id) async {
+    final db = await DBHelper.database();
+    db.rawQuery(
+        "UPDATE collections SET wordCount = wordCount + 1 WHERE id='$id'");
+  }
+
   /// Delete collection method
   static Future<void> delete(String table, String id) async {
     final db = await DBHelper.database();
@@ -97,6 +103,4 @@ class DBHelper {
         ? db.query(table)
         : db.query(table, where: 'collectionId = ?', whereArgs: [collectionId]);
   }
-
-  
 }

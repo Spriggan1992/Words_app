@@ -37,6 +37,7 @@ class WordsRepository with ChangeNotifier {
       'exampleTranslations': word.exampleTranslations,
       'difficulty': word.difficulty,
     });
+    DBHelper.updateCounter(word.collectionId);
   }
 
   //TODO: populate

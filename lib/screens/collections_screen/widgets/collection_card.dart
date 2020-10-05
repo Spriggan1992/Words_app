@@ -166,10 +166,9 @@ class CollectionCard extends StatelessWidget {
                           color: Colors.black54,
                           onPress: () {
                             deleteConfirmation(context, () {
-                              ///FIXME:
-                              // BlocProvider.of<CollectionsBloc>(context)
-                              //   ..add(CollectionsDeleted(
-                              //       id: collections[index].id));
+                              BlocProvider.of<CollectionsBloc>(context)
+                                ..add(CollectionsDeleted(
+                                    id: collections[index].id));
                               Navigator.pop(context);
                             }, 'Do you want to delete your collection?');
                           },

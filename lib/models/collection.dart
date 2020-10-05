@@ -27,23 +27,22 @@ class Collection extends Equatable {
     title: $title,
     language: $language,
     isEditingBtns: $isEditingBtns,
+    wordCount: $wordCount,
   }''';
 
   factory Collection.fromEntity(CollectionEntity entity) {
     return Collection(
-      id: entity.id,
-      title: entity.title,
-      language: entity.language,
-      isEditingBtns: false,
-      
-    );
+        id: entity.id,
+        title: entity.title,
+        language: entity.language,
+        isEditingBtns: false,
+        wordCount: entity.wordCount);
   }
   CollectionEntity toEntity() {
     return CollectionEntity(
       id: id,
       title: title,
       language: language,
-      
     );
   }
 
@@ -53,7 +52,6 @@ class Collection extends Equatable {
     String language,
     bool isEditingBtns,
     int wordCount,
-    
   }) {
     return Collection(
       id: id ?? this.id,

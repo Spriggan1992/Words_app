@@ -4,18 +4,19 @@ class CollectionEntity extends Equatable {
   final String id;
   final String title;
   final String language;
+  final int wordCount;
 
-  CollectionEntity({this.id, this.title, this.language});
+  CollectionEntity({this.wordCount, this.id, this.title, this.language});
 
   @override
-  List<Object> get props => [id, title, language];
+  List<Object> get props => [id, title, language, wordCount];
 
   @override
   String toString() => '''UserEntity{
     id: $id,
     title: $title,
     language: $language
-
+    
   }''';
 
   Map<String, dynamic> toDb() {
@@ -31,6 +32,7 @@ class CollectionEntity extends Equatable {
       id: data['id'] ?? '',
       title: data['title'] ?? '',
       language: data['language'] ?? '',
+      wordCount: data['wordCount'] ?? 0,
     );
   }
 }

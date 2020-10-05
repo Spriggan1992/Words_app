@@ -125,8 +125,11 @@ class CollectionsEditDialog extends StatelessWidget {
                   fillColor: Color(0xffDA627D),
                   // onPressed: onSaveForm,
                   onPressed: () {
-                    context.bloc<CollectionDetailBloc>().add(
-                          CollectionDetailAdded(),
+                    context.bloc<CollectionsBloc>().add(
+                          CollectionsUpdated(
+                              id: collection.id,
+                              title: onSubmitTitleField,
+                              language: onSubmitLanguageField),
                         );
                     Navigator.pop(context);
                   },

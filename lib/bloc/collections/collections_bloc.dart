@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import 'package:words_app/models/collection.dart';
 import 'package:words_app/repositories/collections/collections_repository.dart';
@@ -25,15 +24,13 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
       yield* _mapCollectionsToggleAllToState(event);
     } else if (event is CollectionsSetToFalse) {
       yield* _mapCollectionsSetToFalseAllToState(event);
+    } else if (event is CollectionsUpdated) {
+      yield* _mapCollectionsUpdateToState(event);
+    } else if (event is CollectionsDeleted) {
+      yield* _mapCollectionsDeletedToState(event);
+    } else if (event is CollectionsAdded) {
+      yield* _mapCollectionsAddedToState(event);
     }
-    // FIXME: refactor here
-    // else if (event is CollectionsUpdated) {
-    //   yield* _mapCollectionsUpdateToState(event);
-    // } else if (event is CollectionsDeleted) {
-    //   yield* _mapCollectionsDeletedToState(event);
-    // } else if (event is CollectionsAdded) {
-    //   yield* _mapCollectionsAddedToState(event);
-    // }
   }
 
   /// This method is responsible for loading initial words from
@@ -42,13 +39,13 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
       List<Collection> collectionList = [];
       var collections = await collectionsRepository.fetchAndSetCollection();
       collections.forEach((collection) async {
-        final count = await collectionsRepository.getWordCount(collection.id);
+        // final count = await collectionsRepository.getWordCount(collection.id);
 
         collectionList.add(Collection(
             id: collection.id,
             language: collection.language,
             title: collection.title,
-            wordCount: count,
+            // wordCount: 4,
             isEditingBtns: collection.isEditingBtns));
       });
       yield CollectionsSuccess(collectionList);
@@ -78,56 +75,55 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     yield CollectionsSuccess(updatedCollection);
   }
 
-  // FIXME: refactor me
-  // Stream<CollectionsState> _mapCollectionsAddedToState(
-  //     CollectionsAdded event) async* {
-  //   try {
-  //     final collection = await collectionsRepository.addNewCollection(
-  //         collection: event.collection);
-  //     List<Collection> collections =
-  //         List.from((state as CollectionsSuccess).collections)..add(collection);
-  //     yield CollectionsSuccess(collections);
-  //   } catch (_) {
-  //     yield CollectionsFailure();
-  //   }
-  // }
+  Stream<CollectionsState> _mapCollectionsAddedToState(
+      CollectionsAdded event) async* {
+    try {
+      final collection = await collectionsRepository.addNewCollection(
+          collection: event.collection);
+      List<Collection> collections =
+          List.from((state as CollectionsSuccess).collections)..add(collection);
+      yield CollectionsSuccess(collections);
+    } catch (_) {
+      yield CollectionsFailure();
+    }
+  }
 
-  // Stream<CollectionsState> _mapCollectionsUpdateToState(
-  //     CollectionsUpdated event) async* {
-  //   try {
-  //     final updatedCollections =
-  //         (state as CollectionsSuccess).collections.map((collection) {
-  //       return collection.id == event.id
-  //           ? collection.copyWith(
-  //               id: collection.id,
-  //               isEditingBtns: collection.isEditingBtns,
-  //               title: event.title,
-  //               language: event.language,
-  //             )
-  //           : collection;
-  //     }).toList();
-  //     await collectionsRepository.updateCollection(data: {
-  //       'id': event.id,
-  //       'title': event.title,
-  //       'language': event.language,
-  //     });
+  Stream<CollectionsState> _mapCollectionsUpdateToState(
+      CollectionsUpdated event) async* {
+    try {
+      final updatedCollections =
+          (state as CollectionsSuccess).collections.map((collection) {
+        return collection.id == event.id
+            ? collection.copyWith(
+                id: collection.id,
+                isEditingBtns: collection.isEditingBtns,
+                title: event.title,
+                language: event.language,
+              )
+            : collection;
+      }).toList();
+      await collectionsRepository.updateCollection(data: {
+        'id': event.id,
+        'title': event.title,
+        'language': event.language,
+      });
 
-  //     yield CollectionsSuccess(updatedCollections);
-  //   } catch (_) {}
-  // }
+      yield CollectionsSuccess(updatedCollections);
+    } catch (_) {}
+  }
 
-  // Stream<CollectionsState> _mapCollectionsDeletedToState(
-  //     CollectionsDeleted event) async* {
-  //   try {
-  //     final updatedCollection = (state as CollectionsSuccess)
-  //         .collections
-  //         .where((collection) => collection.id != event.id)
-  //         .toList();
-  //     yield CollectionsSuccess(updatedCollection);
+  Stream<CollectionsState> _mapCollectionsDeletedToState(
+      CollectionsDeleted event) async* {
+    try {
+      final updatedCollection = (state as CollectionsSuccess)
+          .collections
+          .where((collection) => collection.id != event.id)
+          .toList();
+      yield CollectionsSuccess(updatedCollection);
 
-  //     collectionsRepository.deleteCollection(event.id);
-  //   } catch (_) {
-  //     yield CollectionsFailure();
-  //   }
-  // }
+      collectionsRepository.deleteCollection(event.id);
+    } catch (_) {
+      yield CollectionsFailure();
+    }
+  }
 }

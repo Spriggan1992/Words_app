@@ -25,7 +25,10 @@ class CollectionsScreen extends StatelessWidget {
             title: Text('collections'),
             appBar: AppBar(),
           ),
-          body: BlocBuilder<CollectionsBloc, CollectionsState>(
+          body: BlocConsumer<CollectionsBloc, CollectionsState>(
+            listener: (context, state) {
+              context.bloc<CollectionsBloc>().add(CollectionsLoaded());
+            },
             builder: (context, state) {
               if (state is CollectionsLoading) {
                 return Center(
@@ -45,8 +48,6 @@ class CollectionsScreen extends StatelessWidget {
                       textColor: Colors.white,
                       backgroundColor: Theme.of(context).buttonColor,
                       onPressed: () {
-                        ///TODO: Collection_detail
-
                         buildShowGeneralDialog(
                           context,
                         );
@@ -78,10 +79,7 @@ class CollectionsScreen extends StatelessWidget {
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
               content: StatefulBuilder(
                 builder: (context, setState) {
-                  return BlocProvider<CollectionDetailBloc>(
-                      create: (_) => CollectionDetailBloc(
-                          collectionsRepository: CollectionsRepository()),
-                      child: DialogAddCollection());
+                  return DialogAddCollection();
                 },
               ),
             ),

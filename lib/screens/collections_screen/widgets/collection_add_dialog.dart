@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/blocs.dart';
 
 import 'package:words_app/constants/constants.dart';
+import 'package:words_app/models/models.dart';
 import 'package:words_app/widgets/widgets.dart';
+
+import '../../screens.dart';
 
 class DialogAddCollection extends StatefulWidget {
   const DialogAddCollection({
@@ -77,26 +80,26 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
   @override
   Widget build(BuildContext context) {
     // Setup height for [heightCollectionName]
-    // myFocusNodeCollectionName.addListener(() {
-    //   setState(() {
-    //     if (myFocusNodeCollectionName.hasFocus ||
-    //         !isTextCollectionNameFiledEmpty) {
-    //       heightCollectionName = 0.0;
-    //     } else {
-    //       heightCollectionName = 1.2;
-    //     }
-    //   });
-    // });
+    myFocusNodeCollectionName.addListener(() {
+      setState(() {
+        if (myFocusNodeCollectionName.hasFocus ||
+            !isTextCollectionNameFiledEmpty) {
+          heightCollectionName = 0.0;
+        } else {
+          heightCollectionName = 1.2;
+        }
+      });
+    });
     // Setup height for [heightLanguage]
-    // myFocusNodeLanguage.addListener(() {
-    //   setState(() {
-    //     if (myFocusNodeLanguage.hasFocus || !isLanguageTextFileEmpty) {
-    //       heightLanguage = 0;
-    //     } else {
-    //       heightLanguage = 1.2;
-    //     }
-    //   });
-    // });
+    myFocusNodeLanguage.addListener(() {
+      setState(() {
+        if (myFocusNodeLanguage.hasFocus || !isLanguageTextFileEmpty) {
+          heightLanguage = 0;
+        } else {
+          heightLanguage = 1.2;
+        }
+      });
+    });
 
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -136,43 +139,17 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                   hintText: 'Collection name',
                   isDense: true),
               onChanged: (value) {
-                context
-                    .bloc<CollectionDetailBloc>()
-                    .add(CollectionTitleUpdated(title: value));
+                collectionTitle = value;
+                if (collectionTitle.length > 0) {
+                  isTextCollectionNameFiledEmpty = false;
+                } else {
+                  isTextCollectionNameFiledEmpty = true;
+                }
               },
             ),
           ),
           SizedBox(height: 20),
-          // Container(
-          //   decoration: innerShadow,
-          //   child: TextFormField(
-          //     focusNode: myFocusNodeLanguage,
-          //     textAlign: TextAlign.center,
-          //     decoration: InputDecoration(
-          //       fillColor: Colors.white.withOpacity(0.6),
-          //       filled: true,
-          //       labelStyle: TextStyle(
-          //         color: Colors.grey[500],
-          //         fontSize: 18,
-          //         height: heightLanguage,
-          //       ),
-          //       border: OutlineInputBorder(
-          //           borderRadius: BorderRadius.circular(10),
-          //           borderSide: BorderSide.none),
-          //       labelText: 'Language',
-          //       isDense: true,
-          //     ),
-          //     onChanged: (value) {
-          //       collectionLanguage = value;
-          //       if (collectionTitle.length > 0) {
-          //         isLanguageTextFileEmpty = false;
-          //       } else {
-          //         isLanguageTextFileEmpty = true;
-          //       }
-          //     },
-          //   ),
-          // ),
-          // SizedBox(height: 20),
+
           Container(
             alignment: Alignment.center,
             decoration: innerShadow,
@@ -199,9 +176,6 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                             state.didChange(newValue);
                           },
                         );
-                        context.bloc<CollectionDetailBloc>().add(
-                            CollectionLanguageUpdated(
-                                language: collectionLanguage));
                       },
                       items: _languages.map((String value) {
                         return DropdownMenuItem<String>(
@@ -240,28 +214,29 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                   ),
             ),
             onPressed: () {
-              // Collection collection = Collection(
-              //   language: languageMap[collectionLanguage],
-              //   title: collectionTitle,
-              // );
-              // FIXME: Collection_details
-              context.bloc<CollectionDetailBloc>().add(CollectionDetailAdded());
-              // context.bloc<WordsBloc>().add(
-              //       WordsLoaded(
-              //         id: collection.id,
-              //       ),
-              //     );
+              Collection collection = Collection(
+                language: languageMap[collectionLanguage],
+                title: collectionTitle,
+              );
+              context.bloc<CollectionsBloc>().add(
+                    CollectionsAdded(
+                      collection: collection,
+                    ),
+                  );
+              context.bloc<WordsBloc>().add(
+                    WordsLoaded(
+                      id: collection.id,
+                    ),
+                  );
 
-              // Navigator.pushNamed(
-              //   context,
-              //   WordsScreen.id,
-              //   arguments: {
-              //     "id": collection.id,
-              //     'title': collection.title,
-              //   },
-              // );
-              context.bloc<CollectionsBloc>().add(CollectionsLoaded());
-              Navigator.of(context).pop();
+              Navigator.pushNamed(
+                context,
+                WordsScreen.id,
+                arguments: {
+                  "id": collection.id,
+                  'title': collection.title,
+                },
+              );
             },
           )
         ],

@@ -16,10 +16,10 @@ import 'package:words_app/models/word.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/size_config.dart';
 import 'img_api.dart';
-import 'components/InnerShadowTextField.dart';
-import 'components/custom_radio.dart';
+import 'widgets/InnerShadowTextField.dart';
+import 'widgets/custom_radio.dart';
 
-import 'components/reusable_card.dart';
+import 'widgets/reusable_card.dart';
 
 class CardCreator extends StatelessWidget {
   static const id = 'card_creator';
