@@ -34,6 +34,7 @@ class CollectionsRepository {
     return _collections;
   }
 
+  /// This method returns quantity of words in collection by ID
   Future<int> getWordCount(String id) async {
     return await DBHelper.fetchWordCount(id);
   }
@@ -64,5 +65,4 @@ class CollectionsRepository {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
-
 }
