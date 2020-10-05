@@ -7,8 +7,10 @@ class Collection extends Equatable {
   final String title;
   final String language;
   final bool isEditingBtns;
+  final int wordCount;
 
   Collection({
+    this.wordCount,
     this.title,
     this.language,
     String id,
@@ -17,7 +19,7 @@ class Collection extends Equatable {
   //id for DB
 
   @override
-  List<Object> get props => [id, title, language, isEditingBtns];
+  List<Object> get props => [id, title, language, isEditingBtns, wordCount];
 
   @override
   String toString() => '''UserEntity{
@@ -25,7 +27,6 @@ class Collection extends Equatable {
     title: $title,
     language: $language,
     isEditingBtns: $isEditingBtns,
-    
   }''';
 
   factory Collection.fromEntity(CollectionEntity entity) {
@@ -34,6 +35,7 @@ class Collection extends Equatable {
       title: entity.title,
       language: entity.language,
       isEditingBtns: false,
+      
     );
   }
   CollectionEntity toEntity() {
@@ -41,6 +43,7 @@ class Collection extends Equatable {
       id: id,
       title: title,
       language: language,
+      
     );
   }
 
@@ -49,12 +52,15 @@ class Collection extends Equatable {
     String title,
     String language,
     bool isEditingBtns,
+    int wordCount,
+    
   }) {
     return Collection(
       id: id ?? this.id,
       title: title ?? this.title,
       language: language ?? this.language,
       isEditingBtns: isEditingBtns ?? this.isEditingBtns,
+      wordCount: wordCount ?? this.wordCount,
     );
   }
 }

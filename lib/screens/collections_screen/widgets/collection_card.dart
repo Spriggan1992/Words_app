@@ -126,7 +126,8 @@ class CollectionCard extends StatelessWidget {
                       SizedBox(height: 5.0),
                       CollectionTextHolder(
                         titleName: 'words: ',
-                        titleNameValue: '16',
+                        //TODO: COUNTER
+                        titleNameValue:  collections[index].wordCount.toString(),
                         fontSize1: 9.0,
                         fontSize2: 15.0,
                       ),

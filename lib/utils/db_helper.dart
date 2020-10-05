@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart'
     as sql; //medium between dart and data base stored on phone
 import 'package:path/path.dart' as path;
+import 'package:sqflite/utils/utils.dart';
 
 class DBHelper {
   // static sql.Database _db;
@@ -50,6 +51,13 @@ class DBHelper {
     );
   }
 
+  static Future<int> fetchWordCount(String id) async {
+    final db = await DBHelper.database();
+    var wordCount = firstIntValue(
+        await db.rawQuery("SELECT COUNT(*) FROM words WHERE collectionId='$id'"));
+    return wordCount;
+  }
+
   static Future<void> populateList(
       String table, Map<String, Object> data) async {
     //if table is created it's created with specified table structure
@@ -90,8 +98,5 @@ class DBHelper {
         : db.query(table, where: 'collectionId = ?', whereArgs: [collectionId]);
   }
 
-  static Future<List<Map<String, dynamic>>> countWords(String table) async {
-    final db = await DBHelper.database();
-    return db.query(table);
-  }
+  
 }

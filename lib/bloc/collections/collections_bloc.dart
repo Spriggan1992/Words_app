@@ -39,8 +39,19 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
   /// This method is responsible for loading initial words from
   Stream<CollectionsState> _mapCollectionsLoadedToState() async* {
     try {
-      final collections = await collectionsRepository.fetchAndSetCollection();
-      yield CollectionsSuccess(collections);
+      List<Collection> collectionList = [];
+      var collections = await collectionsRepository.fetchAndSetCollection();
+      collections.forEach((collection) async {
+        final count = await collectionsRepository.getWordCount(collection.id);
+
+        collectionList.add(Collection(
+            id: collection.id,
+            language: collection.language,
+            title: collection.title,
+            wordCount: count,
+            isEditingBtns: collection.isEditingBtns));
+      });
+      yield CollectionsSuccess(collectionList);
     } catch (_) {
       yield CollectionsFailure();
     }

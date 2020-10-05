@@ -34,6 +34,10 @@ class CollectionsRepository {
     return _collections;
   }
 
+  Future<int> getWordCount(String id) async {
+    return await DBHelper.fetchWordCount(id);
+  }
+
   /// This method is responsible for deleting [<Collection>] by id from DB
   void deleteCollection(String collectionId) async {
     // Here we receive all Word items by collectionId
@@ -61,8 +65,4 @@ class CollectionsRepository {
     );
   }
 
-  // Future<List<Word>> countWords(String collectionId) async {
-  //   final dataList = await DBHelper.getData();
-  //   return dataList;
-  // }
 }
