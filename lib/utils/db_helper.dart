@@ -26,6 +26,7 @@ class DBHelper {
     return await sql.openDatabase(path.join(dbPath, DB_NAME),
         version: 1, onCreate: _onCreate);
   }
+
   /// Method  creates specified tables to DB,
   static _onCreate(sql.Database db, int version) async {
     await db.execute(
@@ -87,5 +88,10 @@ class DBHelper {
     return collectionId == null
         ? db.query(table)
         : db.query(table, where: 'collectionId = ?', whereArgs: [collectionId]);
+  }
+
+  static Future<List<Map<String, dynamic>>> countWords(String table) async {
+    final db = await DBHelper.database();
+    return db.query(table);
   }
 }
