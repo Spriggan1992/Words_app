@@ -10,6 +10,7 @@ import 'package:words_app/utils/db_helper.dart';
 import 'package:words_app/models/word_model.dart';
 import 'package:words_app/utils/utilities.dart';
 
+import '../../utils/db_helper.dart';
 import '../repositories.dart';
 
 class WordsRepository extends BaseWordsRepository {
@@ -27,7 +28,7 @@ class WordsRepository extends BaseWordsRepository {
   @override
   Future<void> addNewWord({Word word}) async {
     DBHelper.insert(Paths.words, word.toEntity().toDb());
-    DBHelper.updateCounter(word.collectionId);
+    DBHelper.incrementCounter(word.collectionId);
   }
 
   //TODO: populate
@@ -96,7 +97,8 @@ class WordsRepository extends BaseWordsRepository {
     try {
       await word.image.delete();
     } on FileSystemException {}
-
+    print(word.id);
+    await DBHelper.dicrementtCounter(word.collectionId);
     DBHelper.delete('words', word.id);
   }
 

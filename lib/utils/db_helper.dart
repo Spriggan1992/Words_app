@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart'
     as sql; //medium between dart and data base stored on phone
 import 'package:path/path.dart' as path;
 import 'package:sqflite/utils/utils.dart';
+import 'package:words_app/config/paths.dart';
 
 class DBHelper {
   // static sql.Database _db;
@@ -84,10 +86,16 @@ class DBHelper {
     );
   }
 
-  static Future<void> updateCounter(String id) async {
+  static Future<void> incrementCounter(String id) async {
     final db = await DBHelper.database();
-    db.rawQuery(
+    await db.rawQuery(
         "UPDATE collections SET wordCount = wordCount + 1 WHERE id='$id'");
+  }
+
+  static Future<void> dicrementtCounter(String id) async {
+    final db = await DBHelper.database();
+    await db.rawQuery(
+        "UPDATE collections SET wordCount = wordCount - 1 WHERE id='$id'");
   }
 
   /// Delete collection method
