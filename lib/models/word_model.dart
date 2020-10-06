@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/entities/entites.dart';
-
+import 'package:words_app/utils/utilities.dart';
 import 'part.dart';
 
 // ignore: must_be_immutable
@@ -65,13 +65,19 @@ class Word extends Equatable with ChangeNotifier {
   }''';
 
   factory Word.fromEntity(WordEntity entity) {
+    // print(" Word.fromEntity $entity");
     return Word(
       collectionId: entity.collectionId,
       id: entity.id,
       targetLang: entity.targetLang,
+      ownLang: entity.ownLang,
       secondLang: entity.secondLang,
       thirdLang: entity.thirdLang,
-      image: entity.image,
+      part: Part(
+        partName: entity.partName,
+        partColor: Utilities.getColor(entity.partColor),
+      ),
+      image: File(entity.image),
       example: entity.example,
       exampleTranslations: entity.exampleTranslations,
     );
@@ -81,11 +87,15 @@ class Word extends Equatable with ChangeNotifier {
       collectionId: collectionId,
       id: id,
       targetLang: targetLang,
+      ownLang: ownLang,
       secondLang: secondLang,
       thirdLang: thirdLang,
-      image: image,
+      partName: part.partName,
+      partColor: part.partColor.toString(),
+      image: image?.path ?? '',
       example: example,
       exampleTranslations: exampleTranslations,
+      difficulty: difficulty,
     );
   }
 

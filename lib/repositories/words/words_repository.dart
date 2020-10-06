@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 import 'package:words_app/config/paths.dart';
+import 'package:words_app/entities/entites.dart';
 import 'package:words_app/utils/DummyData.dart';
 import 'package:words_app/utils/db_helper.dart';
 import 'package:words_app/models/part.dart';
@@ -33,18 +34,6 @@ class WordsRepository extends BaseWordsRepository {
     DBHelper.updateCounter(word.collectionId);
     return word;
   }
-  // 'collectionId': word.collectionId,
-  // 'id': word.id,
-  // 'targetLang': word.targetLang,
-  // 'ownLang': word.ownLang,
-  // 'secondLang': word.secondLang,
-  // 'thirdLang': word.thirdLang,
-  // 'partName': word.part.partName,
-  // 'partColor': word.part.partColor.toString(),
-  // 'image': word.image?.path ?? '',
-  // 'example': word.example,
-  // 'exampleTranslations': word.exampleTranslations,
-  // 'difficulty': word.difficulty,
 
   //TODO: populate
   // temporary method for pre-populating list
@@ -78,21 +67,8 @@ class WordsRepository extends BaseWordsRepository {
   Future<List<Word>> fetchAndSetWords(String collectionId) async {
     final dataList =
         await DBHelper.getData('words', collectionId: collectionId);
-
     _words = dataList.map((item) {
-      Word word = Word(
-        collectionId: item['collectionId'],
-        id: item['id'],
-        targetLang: item['targetLang'],
-        ownLang: item['ownLang'],
-        secondLang: item['secondLang'],
-        thirdLang: item['thirdLang'],
-        part: (Part(item['partName'], Utilities.getColor(item['partColor']))),
-        image: File(item['image']),
-        example: item['example'],
-        exampleTranslations: item['exampleTranslations'],
-        difficulty: item['difficulty'],
-      );
+      Word word = Word.fromEntity(WordEntity.fromDb(item));
       return word;
     }).toList();
 

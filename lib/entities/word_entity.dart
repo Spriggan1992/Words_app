@@ -10,8 +10,9 @@ class WordEntity extends Equatable {
   final String ownLang;
   final String secondLang;
   final String thirdLang;
-  final Part part;
-  final File image;
+  final String partName;
+  final String partColor;
+  final String image;
   final String example;
   final String exampleTranslations;
 
@@ -24,7 +25,8 @@ class WordEntity extends Equatable {
     this.secondLang,
     this.thirdLang,
     this.ownLang,
-    this.part,
+    this.partName,
+    this.partColor,
     this.image,
     this.example,
     this.exampleTranslations,
@@ -39,7 +41,8 @@ class WordEntity extends Equatable {
         ownLang,
         secondLang,
         thirdLang,
-        part,
+        partName,
+        partColor,
         image,
         example,
         exampleTranslations
@@ -52,6 +55,8 @@ class WordEntity extends Equatable {
     targetLang: $targetLang,
     secondLang: $secondLang,
     thirdLang: $thirdLang,
+    partName: $partName,
+    partColor: $partColor,
     image: $image,
     example: $example,
     exampleTranslations: $exampleTranslations
@@ -62,24 +67,31 @@ class WordEntity extends Equatable {
       'collectionId': collectionId,
       'id': id,
       'targetLang': targetLang,
+      'ownLang': ownLang,
       'secondLang': secondLang,
       'thirdLang': thirdLang,
-      'image': image,
+      'partName': partName,
+      'partColor': partColor,
+      'image': image ?? '',
       'example': example,
       'exampleTranslations': exampleTranslations,
+      'difficulty': difficulty,
     };
   }
 
   factory WordEntity.fromDb(Map<String, dynamic> data) {
     return WordEntity(
-      collectionId: ['collectionId'] ?? '',
-      id: ['id'] ?? '',
-      targetLang: ['targetLang'] ?? '',
-      secondLang: ['secondLang'] ?? '',
-      thirdLang: ['thirdLang'] ?? '',
-      image: ['image'] ?? '',
-      example: ['example'] ?? '',
-      exampleTranslations: ['exampleTranslations'] ?? '',
-    );
+        collectionId: data['collectionId'] ?? '',
+        id: data['id'] ?? '',
+        targetLang: data['targetLang'] ?? '',
+        ownLang: data['ownLang'] ?? '',
+        secondLang: data['secondLang'] ?? '',
+        thirdLang: data['thirdLang'] ?? '',
+        partName: data['partName'] ?? '',
+        partColor: data['partColor'] ?? '',
+        image: data['image'] ?? '',
+        example: data['example'] ?? '',
+        exampleTranslations: data['exampleTranslations'] ?? '',
+        difficulty: data['difficulty'] ?? '');
   }
 }

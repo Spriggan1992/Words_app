@@ -7,7 +7,7 @@ class DummyData {
     return [
       Word(
         id: '1',
-        part: Part('n', Color(0xffB6D7A8)),
+        part: Part(partName: 'n', partColor: Color(0xffB6D7A8)),
         targetLang: 'mother',
         ownLang: 'мама',
         secondLang: 'äiti',
@@ -18,7 +18,7 @@ class DummyData {
       ),
       Word(
         id: '2',
-        part: Part('n', Color(0xffB6D7A8)),
+        part: Part(partName: 'n', partColor: Color(0xffB6D7A8)),
         targetLang: 'father',
         ownLang: 'папа',
         secondLang: 'isä',
@@ -29,7 +29,7 @@ class DummyData {
       ),
       Word(
         id: '3',
-        part: Part('n', Color(0xffB6D7A8)),
+        part: Part(partName: 'n', partColor: Color(0xffB6D7A8)),
         targetLang: 'brother',
         ownLang: 'брат',
         secondLang: 'veli',
@@ -40,7 +40,7 @@ class DummyData {
       ),
       Word(
         id: '4',
-        part: Part('n', Color(0xffB6D7A8)),
+        part: Part(partName: 'n', partColor: Color(0xffB6D7A8)),
         targetLang: 'sister',
         ownLang: 'сестра',
         secondLang: 'sisko',
@@ -51,7 +51,7 @@ class DummyData {
       ),
       Word(
         id: '5',
-        part: Part('n', Color(0xffB6D7A8)),
+        part: Part(partName: 'n', partColor: Color(0xffB6D7A8)),
         targetLang: 'grandmother',
         ownLang: 'бабушка',
         secondLang: 'isoäiti',
@@ -62,7 +62,7 @@ class DummyData {
       ),
       Word(
         id: '6',
-        part: Part('n', Color(0xffB6D7A8)),
+        part: Part(partName: 'n', partColor: Color(0xffB6D7A8)),
         targetLang: 'grandfather',
         ownLang: 'дедушка',
         secondLang: 'isoisä',
@@ -73,7 +73,7 @@ class DummyData {
       ),
       Word(
         id: '7',
-        part: Part('n', Color(0xffB6D7A8)),
+        part: Part(partName: 'n', partColor: Color(0xffB6D7A8)),
         targetLang: 'uncle',
         ownLang: 'дядя',
         secondLang: 'setä',
@@ -84,7 +84,7 @@ class DummyData {
       ),
       Word(
         id: '8',
-        part: Part('n', Color(0xffB6D7A8)),
+        part: Part(partName: 'n', partColor: Color(0xffB6D7A8)),
         targetLang: 'aunt',
         ownLang: 'тетя',
         secondLang: 'täti',
@@ -95,7 +95,7 @@ class DummyData {
       ),
       Word(
         id: '9',
-        part: Part('n', Color(0xffB6D7A8)),
+        part: Part(partName: 'n', partColor: Color(0xffB6D7A8)),
         targetLang: 'gun',
         ownLang: 'пистолет',
         secondLang: 'pistooli',
@@ -106,7 +106,7 @@ class DummyData {
       ),
       Word(
         id: '10',
-        part: Part('n', Color(0xffB6D7A8)),
+        part: Part(partName: 'n', partColor: Color(0xffB6D7A8)),
         targetLang: 'subway',
         ownLang: 'метро',
         secondLang: 'metro',

@@ -38,8 +38,8 @@ class CardCreator extends StatelessWidget {
 
   String dropdownValue = 'One';
   Part part = Part(
-    'n',
-    Colors.white,
+    partName: 'n',
+    partColor: Colors.white,
   );
 
   bool isSelected = false;
