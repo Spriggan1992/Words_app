@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/blocs.dart';
-import 'package:words_app/repositories/repositories.dart';
 import 'package:words_app/widgets/widgets.dart';
 import 'widgets/collection_widgets.dart';
 
@@ -15,10 +14,10 @@ class CollectionsScreen extends StatelessWidget {
       top: false,
       child: WillPopScope(
         onWillPop: () async {
-          Navigator.pushNamedAndRemoveUntil(context, CollectionsScreen.id,
-              ModalRoute.withName(CollectionsScreen.id));
-          context.bloc<CollectionsBloc>().add(CollectionsSetToFalse());
-          return;
+          // Navigator.pushNamedAndRemoveUntil(context, CollectionsScreen.id,
+          //     ModalRoute.withName(CollectionsScreen.id));
+          // context.bloc<CollectionsBloc>().add(CollectionsSetToFalse());
+          return false;
         },
         child: Scaffold(
           appBar: BaseAppBar(
