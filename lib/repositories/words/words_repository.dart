@@ -3,42 +3,48 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
+import 'package:words_app/config/paths.dart';
 import 'package:words_app/utils/DummyData.dart';
 import 'package:words_app/utils/db_helper.dart';
 import 'package:words_app/models/part.dart';
-import 'package:words_app/models/word.dart';
+import 'package:words_app/models/word_model.dart';
 import 'package:words_app/utils/utilities.dart';
 
-class WordsRepository with ChangeNotifier {
+import '../repositories.dart';
+
+class WordsRepository extends BaseWordsRepository {
   List<Word> _words = [];
 
   List<Word> get words {
     return [..._words];
   }
 
-  Word findById(id) {
-    return _words.firstWhere((wordId) => wordId.id == id);
-  }
+  // Word findById(id) {
+  //   return _words.firstWhere((wordId) => wordId.id == id);
+  // }
+  @override
+  void dispose() {}
 
   //Card Creator
   /// This method is responsible for adding new word to DB.
-  Future<void> addNewWord(Word word) async {
-    DBHelper.insert('words', {
-      'collectionId': word.collectionId,
-      'id': word.id,
-      'targetLang': word.targetLang,
-      'ownLang': word.ownLang,
-      'secondLang': word.secondLang,
-      'thirdLang': word.thirdLang,
-      'partName': word.part.partName,
-      'partColor': word.part.partColor.toString(),
-      'image': word.image?.path ?? '',
-      'example': word.example,
-      'exampleTranslations': word.exampleTranslations,
-      'difficulty': word.difficulty,
-    });
+  @override
+  Future<Word> addNewWord({Word word}) async {
+    DBHelper.insert(Paths.words, word.toEntity().toDb());
     DBHelper.updateCounter(word.collectionId);
+    return word;
   }
+  // 'collectionId': word.collectionId,
+  // 'id': word.id,
+  // 'targetLang': word.targetLang,
+  // 'ownLang': word.ownLang,
+  // 'secondLang': word.secondLang,
+  // 'thirdLang': word.thirdLang,
+  // 'partName': word.part.partName,
+  // 'partColor': word.part.partColor.toString(),
+  // 'image': word.image?.path ?? '',
+  // 'example': word.example,
+  // 'exampleTranslations': word.exampleTranslations,
+  // 'difficulty': word.difficulty,
 
   //TODO: populate
   // temporary method for pre-populating list
@@ -159,7 +165,6 @@ class WordsRepository with ChangeNotifier {
 
   void toggleIsEditingMode() {
     isEditingMode = !isEditingMode;
-    notifyListeners();
   }
 
   List selectedData = [];
@@ -173,7 +178,6 @@ class WordsRepository with ChangeNotifier {
         selectedData.add(item);
       }
     });
-    notifyListeners();
   }
 
   void clearSelectedData() {
@@ -194,7 +198,5 @@ class WordsRepository with ChangeNotifier {
         }
       },
     );
-
-    notifyListeners();
   }
 }

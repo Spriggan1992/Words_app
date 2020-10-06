@@ -7,21 +7,19 @@ class Collection extends Equatable {
   final String title;
   final String language;
   final bool isEditingBtns;
-  final bool isEditingMode;
-  final bool isSelected;
+  final int wordCount;
 
-  Collection(
-      {this.title,
-      this.language,
-      String id,
-      this.isEditingBtns = false,
-      this.isEditingMode = false,
-      this.isSelected = false})
-      : this.id = id ?? Uuid().v4();
+  Collection({
+    this.wordCount,
+    this.title,
+    this.language,
+    String id,
+    this.isEditingBtns = false,
+  }) : this.id = id ?? Uuid().v4();
   //id for DB
 
   @override
-  List<Object> get props => [id, title, language, isEditingBtns, isEditingMode];
+  List<Object> get props => [id, title, language, isEditingBtns, wordCount];
 
   @override
   String toString() => '''UserEntity{
@@ -29,19 +27,16 @@ class Collection extends Equatable {
     title: $title,
     language: $language,
     isEditingBtns: $isEditingBtns,
-    isEditingMode: $isEditingMode,
-    isSelected: $isSelected
+    wordCount: $wordCount,
   }''';
 
   factory Collection.fromEntity(CollectionEntity entity) {
     return Collection(
-      id: entity.id,
-      title: entity.title,
-      language: entity.language,
-      isEditingBtns: false,
-      isEditingMode: false,
-      isSelected: false,
-    );
+        id: entity.id,
+        title: entity.title,
+        language: entity.language,
+        isEditingBtns: false,
+        wordCount: entity.wordCount);
   }
   CollectionEntity toEntity() {
     return CollectionEntity(
@@ -56,16 +51,14 @@ class Collection extends Equatable {
     String title,
     String language,
     bool isEditingBtns,
-    bool isEditingMode,
-    bool isSelected,
+    int wordCount,
   }) {
     return Collection(
       id: id ?? this.id,
       title: title ?? this.title,
       language: language ?? this.language,
       isEditingBtns: isEditingBtns ?? this.isEditingBtns,
-      isEditingMode: isEditingMode ?? this.isEditingMode,
-      isSelected: isSelected ?? this.isSelected,
+      wordCount: wordCount ?? this.wordCount,
     );
   }
 }

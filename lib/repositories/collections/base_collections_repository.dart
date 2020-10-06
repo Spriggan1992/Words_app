@@ -1,4 +1,4 @@
-import 'package:words_app/models/collection.dart';
+import 'package:words_app/models/collection_model.dart';
 import 'package:words_app/repositories/base_repository.dart';
 
 abstract class BaseCollectionsRepository extends BaseRepository {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/brick.dart';
-import 'package:words_app/models/word.dart';
+import 'package:words_app/models/word_model.dart';
 import 'package:words_app/screens/screens.dart';
 
 enum DynamicColor { normal, success, error, wrong }

@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:words_app/models/collection.dart';
-import 'package:words_app/models/word.dart';
+import 'package:words_app/models/collection_model.dart';
+import 'package:words_app/models/word_model.dart';
 import 'package:words_app/repositories/words/words_repository.dart';
 
 part 'words_event.dart';
@@ -256,9 +256,13 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (state is WordsSuccess) {
       final List<Word> updatedWord = List.from((state as WordsSuccess).words)
         ..add(event.word);
+      for (int i = 0; i < updatedWord.length; i++) {
+        print(updatedWord[i].image);
+      }
 
       yield WordsSuccess(words: updatedWord);
-      await wordsRepository.addNewWord(event.word);
+
+      await wordsRepository.addNewWord(word: event.word);
     }
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/helpers/functions.dart';
-import 'package:words_app/models/word.dart';
+import 'package:words_app/models/word_model.dart';
 import 'package:words_app/repositories/bricks_provider.dart';
 import 'package:words_app/screens/result_screen/result_screen.dart';
 import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';

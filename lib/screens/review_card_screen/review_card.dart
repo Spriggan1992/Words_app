@@ -14,7 +14,7 @@ import 'package:words_app/models/difficulty.dart';
 import '../../bloc/words/words_bloc.dart';
 import '../../widgets/base_appbar.dart';
 import '../../models/difficulty.dart';
-import '../../models/word.dart';
+import '../../models/word_model.dart';
 import '../../utils/size_config.dart';
 import 'components/word_card.dart';
 

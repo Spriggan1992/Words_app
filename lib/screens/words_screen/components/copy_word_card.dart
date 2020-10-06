@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/models/word.dart';
+import 'package:words_app/models/word_model.dart';
 import 'package:words_app/repositories/words/words_repository.dart';
 import 'package:words_app/screens/review_card_screen/review_card.dart';
 import 'package:words_app/utils/size_config.dart';

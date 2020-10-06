@@ -12,7 +12,7 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 
 import 'package:words_app/widgets/base_appbar.dart';
-import 'package:words_app/models/word.dart';
+import 'package:words_app/models/word_model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/utils/size_config.dart';
 import 'img_api.dart';

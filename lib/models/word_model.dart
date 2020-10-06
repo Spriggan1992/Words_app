@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import 'package:words_app/entities/entites.dart';
 
 import 'part.dart';
 
@@ -37,6 +38,56 @@ class Word extends Equatable with ChangeNotifier {
   final bool isSelected;
 
   final int difficulty;
+  @override
+  List<Object> get props => [
+        collectionId,
+        id,
+        targetLang,
+        ownLang,
+        secondLang,
+        thirdLang,
+        part,
+        image,
+        example,
+        exampleTranslations
+      ];
+
+  @override
+  String toString() => '''Word{
+    collectionId: $collectionId,
+    id: $id,
+    targetLang: $targetLang,
+    secondLang: $secondLang,
+    thirdLang: $thirdLang,
+    image: $image,
+    example: $example,
+    exampleTranslations: $exampleTranslations,
+  }''';
+
+  factory Word.fromEntity(WordEntity entity) {
+    return Word(
+      collectionId: entity.collectionId,
+      id: entity.id,
+      targetLang: entity.targetLang,
+      secondLang: entity.secondLang,
+      thirdLang: entity.thirdLang,
+      image: entity.image,
+      example: entity.example,
+      exampleTranslations: entity.exampleTranslations,
+    );
+  }
+  WordEntity toEntity() {
+    return WordEntity(
+      collectionId: collectionId,
+      id: id,
+      targetLang: targetLang,
+      secondLang: secondLang,
+      thirdLang: thirdLang,
+      image: image,
+      example: example,
+      exampleTranslations: exampleTranslations,
+    );
+  }
 
   Word copyWith({
     String collectionId,
@@ -67,19 +118,4 @@ class Word extends Equatable with ChangeNotifier {
       difficulty: difficulty ?? this.difficulty,
     );
   }
-
-  @override
-  List<Object> get props => [
-        targetLang,
-        ownLang,
-        secondLang,
-        thirdLang,
-        part,
-        image,
-        example,
-        exampleTranslations,
-        isSelected,
-        collectionId,
-        difficulty,
-      ];
 }

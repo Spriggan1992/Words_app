@@ -12,7 +12,7 @@ class CollectionEntity extends Equatable {
   List<Object> get props => [id, title, language, wordCount];
 
   @override
-  String toString() => '''UserEntity{
+  String toString() => '''CollectionEntity{
     id: $id,
     title: $title,
     language: $language

@@ -5,11 +5,11 @@ import 'package:words_app/widgets/base_appbar.dart';
 import 'package:words_app/widgets/reusable_main_button.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/helpers/functions.dart';
-import 'package:words_app/models/collection.dart';
+import 'package:words_app/models/collection_model.dart';
 
 import 'package:words_app/models/difficulty.dart';
 import 'package:words_app/models/fuiltersEnums.dart';
-import 'package:words_app/models/word.dart';
+import 'package:words_app/models/word_model.dart';
 import 'package:words_app/screens/games/bricks_game_screen//bricks_game.dart';
 import 'package:words_app/screens/games/pair_game_screen/pair_game.dart';
 

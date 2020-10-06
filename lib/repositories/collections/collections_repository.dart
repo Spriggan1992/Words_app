@@ -5,7 +5,7 @@ import 'package:words_app/config/paths.dart';
 import 'package:words_app/entities/collection_entity.dart';
 import 'package:words_app/models/models.dart';
 import 'package:words_app/utils/db_helper.dart';
-import '../../models/collection.dart';
+import '../../models/collection_model.dart';
 import '../words/words_repository.dart';
 
 class CollectionsRepository {
@@ -13,8 +13,9 @@ class CollectionsRepository {
   List<Collection> _collections = [];
 
   /// This method is responsible for adding new  [Collection] to DB,
+  ///
+  /// DBHelper.insert is responsible for inserting [Collection] to DB,
   Future<Collection> addNewCollection({Collection collection}) async {
-    /// This method is responsible for inserting [Collection] to DB,
     DBHelper.insert(
       Paths.collections,
       collection.toEntity().toDb(),
