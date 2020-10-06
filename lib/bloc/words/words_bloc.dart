@@ -70,7 +70,8 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
   /// Fetch data from db through repository
   Stream<WordsState> _mapWordsLoadedToState(WordsLoaded event) async* {
     try {
-      final words = await wordsRepository.fetchAndSetWords(event.id);
+      final words =
+          await wordsRepository.fetchAndSetWords(collectionId: event.id);
 
       yield WordsSuccess(words: words);
     } catch (_) {

@@ -58,8 +58,8 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
       // Extract Words from FuilteredCollections
       final List<Word> selectedFilteredList = [];
       for (var i = 0; i < event.selectedCollections.length; i++) {
-        var fetchedCollections = await wordsRepository
-            .fetchAndSetWords(event.selectedCollections[i].id);
+        var fetchedCollections = await wordsRepository.fetchAndSetWords(
+            collectionId: event.selectedCollections[i].id);
         fetchedCollections.forEach((element) {
           selectedFilteredList.add(element);
         });

@@ -1,13 +1,12 @@
 import 'dart:io';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:sqflite/sqflite.dart';
-import 'package:flutter/material.dart';
+
 import 'package:words_app/config/paths.dart';
 import 'package:words_app/entities/entites.dart';
 import 'package:words_app/utils/DummyData.dart';
 import 'package:words_app/utils/db_helper.dart';
-import 'package:words_app/models/part.dart';
+
 import 'package:words_app/models/word_model.dart';
 import 'package:words_app/utils/utilities.dart';
 
@@ -20,19 +19,15 @@ class WordsRepository extends BaseWordsRepository {
     return [..._words];
   }
 
-  // Word findById(id) {
-  //   return _words.firstWhere((wordId) => wordId.id == id);
-  // }
   @override
   void dispose() {}
 
   //Card Creator
   /// This method is responsible for adding new word to DB.
   @override
-  Future<Word> addNewWord({Word word}) async {
+  Future<void> addNewWord({Word word}) async {
     DBHelper.insert(Paths.words, word.toEntity().toDb());
     DBHelper.updateCounter(word.collectionId);
-    return word;
   }
 
   //TODO: populate
@@ -64,7 +59,8 @@ class WordsRepository extends BaseWordsRepository {
   }
 
   /// This method is responsible fetching data from db and setting to UI words_screen.
-  Future<List<Word>> fetchAndSetWords(String collectionId) async {
+  @override
+  Future<List<Word>> fetchAndSetWords({String collectionId}) async {
     final dataList =
         await DBHelper.getData('words', collectionId: collectionId);
     _words = dataList.map((item) {
@@ -76,22 +72,9 @@ class WordsRepository extends BaseWordsRepository {
   }
 
   ///update [Word] by ID receiving <Map>[data]
+  @override
   Future<void> updateWord({Word word, String wordId}) async {
     final db = await DBHelper.database();
-    Map<String, Object> data = {
-      // 'collectionId': word.collectionId,
-      // 'id': word.id,
-      // 'targetLang': word.targetLang,
-      // 'ownLang': word.ownLang,
-      // 'secondLang': word.secondLang,
-      // 'thirdLang': word.thirdLang,
-      // 'partName': word.part.partName,
-      // 'partColor': word.part.partColor.toString(),
-      // 'image': word.image?.path ?? '',
-      // 'example': word.example,
-      // 'exampleTranslations': word.exampleTranslations,
-      // 'difficulty': word.difficulty,
-    };
     db.update(
       Paths.words,
       word.toEntity().toDb(),
@@ -101,13 +84,15 @@ class WordsRepository extends BaseWordsRepository {
     );
   }
 
+  @override
   Future<bool> toggleIsEditMode(bool value) async {
     bool newValue = value ? true : false;
     return newValue;
   }
 
   /// Method removeWord removes single file from from phone folder
-  void removeWord(Word word) async {
+  @override
+  Future<void> removeWord(Word word) async {
     try {
       await word.image.delete();
     } on FileSystemException {}
@@ -136,32 +121,9 @@ class WordsRepository extends BaseWordsRepository {
   //   return croppedFile;
   // }
 
-  bool isEditingMode = false;
-  // bool isSelected = false;
-
-  void toggleIsEditingMode() {
-    isEditingMode = !isEditingMode;
-  }
-
-  List selectedData = [];
-
-  void addItemInList() {
-    words.forEach((item) {
-      if (selectedData.contains(item)) {
-        selectedData.remove(item);
-      }
-      if (item.isSelected == true) {
-        selectedData.add(item);
-      }
-    });
-  }
-
-  void clearSelectedData() {
-    selectedData.clear();
-  }
-
   // This method is used when we use selecting words feature. It delets as bunch of items
-  void removeSelectedWords() {
+  @override
+  Future<void> removeSelectedWords() async {
     words.forEach(
       (element) async {
         if (element.isSelected == true) {
@@ -170,7 +132,7 @@ class WordsRepository extends BaseWordsRepository {
             await element.image.delete();
           } on FileSystemException {}
           words.remove(element);
-          await DBHelper.delete('words', element.id);
+          await DBHelper.delete(Paths.words, element.id);
         }
       },
     );
