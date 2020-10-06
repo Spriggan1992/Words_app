@@ -114,12 +114,12 @@ class CollectionCard extends StatelessWidget {
                         color: Colors.grey,
                         height: 2.0,
                       ),
-                      SizedBox(height: 5.0),
+                      SizedBox(height: 20.0),
                       FittedBox(
                         child: CollectionTextHolder(
                           titleNameValue:
                               languageMap[collections[index].language] ?? ' ',
-                          fontSize1: 9.0,
+                          fontSize1: 15.0,
                           fontSize2: 15.0,
                         ),
                       ),
@@ -127,7 +127,7 @@ class CollectionCard extends StatelessWidget {
                       CollectionTextHolder(
                         titleName: 'words: ',
                         titleNameValue: collections[index].wordCount.toString(),
-                        fontSize1: 9.0,
+                        fontSize1: 15.0,
                         fontSize2: 15.0,
                       ),
                       SizedBox(height: 5.0),

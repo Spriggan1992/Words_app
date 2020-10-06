@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
@@ -36,6 +37,7 @@ class WordsScreen extends StatelessWidget {
         context.bloc<WordsBloc>().add(WordsTurnOffIsEditingMode());
         Navigator.pushNamedAndRemoveUntil(context, CollectionsScreen.id,
             ModalRoute.withName(CollectionsScreen.id));
+        context.bloc<CollectionsBloc>().add(CollectionsLoaded());
         return;
       },
       child: SafeArea(
@@ -159,7 +161,6 @@ class WordsScreen extends StatelessWidget {
                   },
                 ),
                 IconSlideAction(
-                  
                   caption: 'Delete',
                   color: Theme.of(context).accentColor,
                   icon: Icons.delete,

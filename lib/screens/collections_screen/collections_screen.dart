@@ -25,10 +25,7 @@ class CollectionsScreen extends StatelessWidget {
             title: Text('collections'),
             appBar: AppBar(),
           ),
-          body: BlocConsumer<CollectionsBloc, CollectionsState>(
-            listener: (context, state) {
-              context.bloc<CollectionsBloc>().add(CollectionsLoaded());
-            },
+          body: BlocBuilder<CollectionsBloc, CollectionsState>(
             builder: (context, state) {
               if (state is CollectionsLoading) {
                 return Center(

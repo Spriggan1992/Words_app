@@ -45,7 +45,7 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
             id: collection.id,
             language: collection.language,
             title: collection.title,
-            // wordCount: 4,
+            wordCount: collection.wordCount,
             isEditingBtns: collection.isEditingBtns));
       });
       yield CollectionsSuccess(collectionList);

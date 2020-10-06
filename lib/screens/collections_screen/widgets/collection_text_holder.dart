@@ -25,14 +25,12 @@ class CollectionTextHolder extends StatelessWidget {
             style: Theme.of(context)
                 .primaryTextTheme
                 .bodyText2
-                .merge(TextStyle(fontSize: 14, color: Colors.black)),
+                .merge(TextStyle(fontSize: fontSize1, color: Colors.black)),
           ),
           TextSpan(
             text: titleNameValue,
-            style: Theme.of(context)
-                .primaryTextTheme
-                .bodyText2
-                .merge(TextStyle(fontSize: 14, color: Color(0xFF34c7b3))),
+            style: Theme.of(context).primaryTextTheme.bodyText2.merge(
+                TextStyle(fontSize: fontSize1, color: Color(0xFF34c7b3))),
           ),
         ],
       ),
