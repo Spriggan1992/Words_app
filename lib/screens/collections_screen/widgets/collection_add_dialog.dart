@@ -26,7 +26,7 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
   double heightLanguage = 1.2;
   bool isTextCollectionNameFiledEmpty = true;
   bool isLanguageTextFileEmpty = true;
-  String collectionLanguage;
+  String collectionLanguage = 'english';
 
   var _languages = [
     "finnish",
@@ -167,9 +167,9 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                   isEmpty: collectionLanguage == '',
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
-                      value: collectionLanguage ?? 'english',
+                      value: collectionLanguage,
                       isDense: true,
-                      onChanged: (String newValue) {
+                      onChanged: (newValue) {
                         setState(
                           () {
                             collectionLanguage = newValue;
