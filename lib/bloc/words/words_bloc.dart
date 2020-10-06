@@ -194,7 +194,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     try {
       final updatedWord = (state as WordsSuccess).words.map((word) {
         if (word.id == event.word.id) {
-          wordsRepository.updateWord(word: event.word);
+          wordsRepository.updateWord(word: event.word, wordId: event.word.id);
         }
 
         return word.id == event.word.id

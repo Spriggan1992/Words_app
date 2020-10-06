@@ -76,27 +76,27 @@ class WordsRepository extends BaseWordsRepository {
   }
 
   ///update [Word] by ID receiving <Map>[data]
-  Future<void> updateWord({Word word}) async {
+  Future<void> updateWord({Word word, String wordId}) async {
     final db = await DBHelper.database();
     Map<String, Object> data = {
-      'collectionId': word.collectionId,
-      'id': word.id,
-      'targetLang': word.targetLang,
-      'ownLang': word.ownLang,
-      'secondLang': word.secondLang,
-      'thirdLang': word.thirdLang,
-      'partName': word.part.partName,
-      'partColor': word.part.partColor.toString(),
-      'image': word.image?.path ?? '',
-      'example': word.example,
-      'exampleTranslations': word.exampleTranslations,
-      'difficulty': word.difficulty,
+      // 'collectionId': word.collectionId,
+      // 'id': word.id,
+      // 'targetLang': word.targetLang,
+      // 'ownLang': word.ownLang,
+      // 'secondLang': word.secondLang,
+      // 'thirdLang': word.thirdLang,
+      // 'partName': word.part.partName,
+      // 'partColor': word.part.partColor.toString(),
+      // 'image': word.image?.path ?? '',
+      // 'example': word.example,
+      // 'exampleTranslations': word.exampleTranslations,
+      // 'difficulty': word.difficulty,
     };
     db.update(
-      'words',
-      data,
+      Paths.words,
+      word.toEntity().toDb(),
       where: 'id = ?',
-      whereArgs: [data['id']],
+      whereArgs: [wordId],
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
