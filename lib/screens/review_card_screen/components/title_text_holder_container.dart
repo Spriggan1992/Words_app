@@ -14,6 +14,10 @@ class TitleTextHolderContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: BoxConstraints(
+        maxHeight: defaultSize * 8,
+        minHeight: defaultSize * 4,
+      ),
       alignment: Alignment.center,
       width: defaultSize * 25,
       height: defaultSize * 4,
