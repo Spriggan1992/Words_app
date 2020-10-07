@@ -73,30 +73,35 @@ class WordCard extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 SizedBox(
-                                  height: defaultSize * 2,
+                                  height: defaultSize * 3,
                                 ),
-                                TitleTextHolderContainer(
-                                  defaultSize: defaultSize,
-                                  wordHolder: word.targetLang ?? '...',
+                                Expanded(
+                                  child: TitleTextHolderContainer(
+                                    defaultSize: defaultSize,
+                                    wordHolder: word.targetLang ?? '...',
+                                  ),
                                 ),
-                                SizedBox(height: defaultSize * 4),
-                                Container(
-                                  margin:
-                                      EdgeInsets.only(bottom: defaultSize * 1),
-                                  width: defaultSize * 19,
-                                  height: defaultSize * 19,
-                                  decoration: word.image.path == '' ||
-                                          word.image == null ||
-                                          word.image.path == null
-                                      ? BoxDecoration()
-                                      : BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                              defaultSize * 1),
-                                          image: DecorationImage(
-                                            image: FileImage(word.image),
-                                            fit: BoxFit.cover,
+                                SizedBox(height: defaultSize * 2),
+                                Flexible(
+                                  flex: 3,
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        bottom: defaultSize * 1),
+                                    width: defaultSize * 19,
+                                    height: defaultSize * 19,
+                                    decoration: word.image.path == '' ||
+                                            word.image == null ||
+                                            word.image.path == null
+                                        ? BoxDecoration()
+                                        : BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                                defaultSize * 1),
+                                            image: DecorationImage(
+                                              image: FileImage(word.image),
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
+                                  ),
                                 )
                               ],
                             )

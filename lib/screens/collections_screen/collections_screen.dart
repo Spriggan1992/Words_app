@@ -21,9 +21,81 @@ class CollectionsScreen extends StatelessWidget {
           return;
         },
         child: Scaffold(
+          // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: BaseAppBar(
             title: Text('collections'),
             appBar: AppBar(),
+          ),
+          // bottomNavigationBar: BaseBottomAppBar(
+          //   child1: ReusableBottomIconBtn(
+          //     color: Colors.white,
+          //     icons: Icons.arrow_back_ios,
+          //     onPress: () {},
+          //   ),
+          //   child2: ReusableBottomIconBtn(
+          //     color: Colors.white,
+          //     icons: Icons.home,
+          //     onPress: () {},
+          //   ),
+          // ),
+
+          // floatingActionButtonLocation:
+          //     FloatingActionButtonLocation.,
+          // floatingActionButton: ReusableFloatActionButton(),
+          bottomSheet: Container(
+            height: 60,
+
+            color: Theme.of(context).scaffoldBackgroundColor,
+            // color: Colors.white,
+            // color: Colors.transparent,
+            child: Stack(
+              alignment: AlignmentDirectional.center,
+              overflow: Overflow.visible,
+              // alignment: Alignment.bottomLeft,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                    child: Row(
+                  children: [
+                    SizedBox(width: 10),
+                    ReusableBottomIconBtn(
+                      color: Theme.of(context).accentColor,
+                      icons: Icons.arrow_back_ios,
+                      onPress: () {},
+                    ),
+                    SizedBox(width: 20),
+                    ReusableBottomIconBtn(
+                      color: Theme.of(context).accentColor,
+                      icons: Icons.home,
+                      onPress: () {},
+                    ),
+                  ],
+                )),
+                Positioned(
+                  top: -10,
+                  child: ReusableFloatActionButton(
+                      onPressed: () => buildShowGeneralDialog(context)),
+                ),
+                Container(
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ReusableBottomIconBtn(
+                      color: Theme.of(context).accentColor,
+                      icons: Icons.fitness_center,
+                      onPress: () {},
+                    ),
+                    SizedBox(width: 20),
+                    ReusableBottomIconBtn(
+                      color: Theme.of(context).accentColor,
+                      icons: Icons.settings,
+                      onPress: () {},
+                    ),
+                    SizedBox(width: 10),
+                  ],
+                )),
+              ],
+            ),
           ),
           body: BlocBuilder<CollectionsBloc, CollectionsState>(
             builder: (context, state) {
@@ -40,16 +112,17 @@ class CollectionsScreen extends StatelessWidget {
                         collections: state.collections,
                       ),
                     ),
-                    ReusableMainButton(
-                      titleText: 'Add Collection',
-                      textColor: Colors.white,
-                      backgroundColor: Theme.of(context).buttonColor,
-                      onPressed: () {
-                        buildShowGeneralDialog(
-                          context,
-                        );
-                      },
-                    )
+
+                    // ReusableMainButton(
+                    //   titleText: 'Add Collection',
+                    //   textColor: Colors.white,
+                    //   backgroundColor: Theme.of(context).buttonColor,
+                    //   onPressed: () {
+                    //     buildShowGeneralDialog(
+                    //       context,
+                    //     );
+                    //   },
+                    // )
                   ],
                 );
               } else {
