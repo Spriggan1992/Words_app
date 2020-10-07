@@ -104,34 +104,58 @@ class _ReviewCardState extends State<ReviewCard>
                 itemCount: widget.words.length,
                 itemBuilder: (context, index) {
                   bool active = index == page;
-                  final double top = active ? defaultSize * 1 : defaultSize * 4;
-                  return AnimatedContainer(
-                    duration: Duration(milliseconds: 1000),
-                    // curve: Curves.easeInOut,
-                    curve: Curves.easeOutQuint,
-                    margin: EdgeInsets.only(top: top, bottom: 10),
-
-                    child: FlipCard(
-                      onFlip: () {
-                        setState(() {
-                          toggleIsFront();
-                        });
-                      },
-                      direction: FlipDirection.HORIZONTAL,
-                      speed: 400,
-                      front: WordCard(
-                        word: widget.words[index],
-                        side: 'front',
-                        index: index,
-                        part: widget.words[index].part.partColor,
-                      ),
-                      back: WordCard(
-                        word: widget.words[index],
-                        index: index,
-                        part: widget.words[index].part.partColor,
-                      ),
+                  // final double top = active ? defaultSize * 1 : defaultSize * 4;
+                  // final double bottom =
+                  //     active ? defaultSize * 1 : defaultSize * 1;
+                  return FlipCard(
+                    onFlip: () {
+                      setState(() {
+                        toggleIsFront();
+                      });
+                    },
+                    direction: FlipDirection.HORIZONTAL,
+                    speed: 400,
+                    front: WordCard(
+                      word: widget.words[index],
+                      side: 'front',
+                      index: index,
+                      part: widget.words[index].part.partColor,
+                      active: active,
+                    ),
+                    back: WordCard(
+                      word: widget.words[index],
+                      index: index,
+                      part: widget.words[index].part.partColor,
+                      active: active,
                     ),
                   );
+                  // return AnimatedContainer(
+                  //   duration: Duration(milliseconds: 1000),
+                  //   // curve: Curves.easeInOut,
+                  //   curve: Curves.easeOutQuint,
+                  //   margin: EdgeInsets.only(top: top, bottom: bottom),
+
+                  //   child: FlipCard(
+                  //     onFlip: () {
+                  //       setState(() {
+                  //         toggleIsFront();
+                  //       });
+                  //     },
+                  //     direction: FlipDirection.HORIZONTAL,
+                  //     speed: 400,
+                  //     front: WordCard(
+                  //       word: widget.words[index],
+                  //       side: 'front',
+                  //       index: index,
+                  //       part: widget.words[index].part.partColor,
+                  //     ),
+                  //     back: WordCard(
+                  //       word: widget.words[index],
+                  //       index: index,
+                  //       part: widget.words[index].part.partColor,
+                  //     ),
+                  //   ),
+                  // );
                 },
               ),
             ),

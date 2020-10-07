@@ -16,21 +16,27 @@ class TitleTextHolderContainer extends StatelessWidget {
     return Container(
       constraints: BoxConstraints(
         maxHeight: defaultSize * 8,
-        minHeight: defaultSize * 4,
+        minHeight: wordHolder.length > 13 ? defaultSize * 7 : defaultSize * 4,
       ),
       alignment: Alignment.center,
-      width: defaultSize * 25,
+      width: defaultSize * 24,
       height: defaultSize * 4,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.white),
         color: Colors.white,
-        borderRadius: BorderRadius.circular(defaultSize),
+        borderRadius: BorderRadius.circular(defaultSize * 0.5),
         boxShadow: [kBoxShadow],
       ),
       child: Text(
         wordHolder,
+        textScaleFactor: wordHolder.length > 72 ? 0.7 : 1,
+        textAlign: TextAlign.center,
         style: Theme.of(context).primaryTextTheme.bodyText2.merge(
-              TextStyle(fontSize: defaultSize * 2.6, height: 1.2),
+              TextStyle(
+                  fontSize: wordHolder.length > 31
+                      ? defaultSize * 1.4
+                      : defaultSize * 2.6,
+                  height: 1.2),
             ),
       ),
     );

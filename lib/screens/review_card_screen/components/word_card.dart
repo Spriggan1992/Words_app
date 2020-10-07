@@ -12,32 +12,34 @@ class WordCard extends StatelessWidget {
     this.index,
     this.part,
     this.side,
-    // this.wordHolder,
+    this.active,
   }) : super(key: key);
 
   final int index;
   final Color part;
   final String side;
   final Word word;
-  // final String targetLang;
-  // final String secondLang;
-  // final String thirdLang;
+  final bool active;
 
   @override
   Widget build(BuildContext context) {
     double defaultSize = SizeConfig.defaultSize;
 
-    return Container(
+    return AnimatedContainer(
+      height: 400,
+      duration: Duration(milliseconds: 800),
+      curve: Curves.easeOutQuint,
       padding: EdgeInsets.only(
         right: defaultSize * 3,
         left: defaultSize * 3,
-        top: defaultSize * 2,
+        top: active
+            ? SizeConfig.blockSizeVertical * 2
+            : SizeConfig.blockSizeVertical * 7,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Container(
-            // width: SizeConfig.blockSizeHorizontal * 75,
             height: SizeConfig.blockSizeVertical * 45,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white),
@@ -75,11 +77,9 @@ class WordCard extends StatelessWidget {
                                 SizedBox(
                                   height: defaultSize * 3,
                                 ),
-                                Expanded(
-                                  child: TitleTextHolderContainer(
-                                    defaultSize: defaultSize,
-                                    wordHolder: word.targetLang ?? '...',
-                                  ),
+                                TitleTextHolderContainer(
+                                  defaultSize: defaultSize,
+                                  wordHolder: word.targetLang ?? '...',
                                 ),
                                 SizedBox(height: defaultSize * 2),
                                 Flexible(
@@ -132,10 +132,16 @@ class WordCard extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: defaultSize * 2),
-          Container(
-            height: SizeConfig.blockSizeVertical * 20,
+          AnimatedContainer(
+            duration: Duration(milliseconds: 800),
+            curve: Curves.easeOutQuint,
+            height: active
+                ? SizeConfig.blockSizeVertical * 20
+                : SizeConfig.blockSizeVertical * 16,
             decoration: innerShadow,
+            margin: EdgeInsets.only(
+              top: active ? defaultSize * 2 : defaultSize * 2,
+            ),
             child: Padding(
               padding:
                   EdgeInsets.only(top: defaultSize * 1, left: defaultSize * 1),
