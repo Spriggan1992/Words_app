@@ -3,6 +3,7 @@ import 'package:words_app/constants/constants.dart';
 import 'package:words_app/models/word_model.dart';
 import 'package:words_app/utils/size_config.dart';
 
+import 'highlight_text.dart';
 import 'title_text_holder_container.dart';
 
 class WordCard extends StatelessWidget {
@@ -149,16 +150,42 @@ class WordCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   side == 'front'
-                      ? Text(word.example ?? '...',
+                      ? HighlightText(
+                          text: word.example ?? '...',
+                          highlight: word.targetLang,
+                          highlightColor: Colors.red,
                           style: Theme.of(context)
                               .primaryTextTheme
                               .bodyText2
-                              .merge(TextStyle(fontSize: defaultSize * 2)))
-                      : Text(word.exampleTranslations ?? '...',
+                              .merge(
+                                TextStyle(fontSize: defaultSize * 2),
+                              ),
+                        )
+                      // Text(word.example ?? '...',
+                      //     style: Theme.of(context)
+                      //         .primaryTextTheme
+                      //         .bodyText2
+                      //         .merge(TextStyle(fontSize: defaultSize * 2)))
+                      : HighlightText(
+                          text: word.exampleTranslations ?? '...',
+                          highlight: word.ownLang,
+                          highlightColor: Colors.red,
                           style: Theme.of(context)
                               .primaryTextTheme
                               .bodyText2
-                              .merge(TextStyle(fontSize: defaultSize * 2)))
+                              .merge(
+                                TextStyle(fontSize: defaultSize * 2),
+                              ),
+                        )
+                  // Text(
+                  //     word.exampleTranslations ?? '...',
+                  //     style: Theme.of(context)
+                  //         .primaryTextTheme
+                  //         .bodyText2
+                  //         .merge(
+                  //           TextStyle(fontSize: defaultSize * 2),
+                  //         ),
+                  //   )
                 ],
               ),
             ),
