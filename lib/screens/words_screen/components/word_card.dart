@@ -16,6 +16,7 @@ class WordCard extends StatefulWidget {
     this.word,
     this.isEditingMode,
     this.words,
+    this.collectionId,
   });
   final bool isEditingMode;
   final int index;
@@ -23,6 +24,7 @@ class WordCard extends StatefulWidget {
   final Word word;
   final Collection collection;
   final List<Word> words;
+  final String collectionId;
 
   @override
   _WordCardState createState() => _WordCardState();
@@ -104,6 +106,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                         ReviewCard(
                       index: widget.index,
                       words: widget.words,
+                      collectionId: widget.collectionId,
                     ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
@@ -130,9 +133,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
             ),
             color: isExpanded
                 ? Color(0xFFCFD8DC)
-                : word.isSelected
-                    ? Colors.grey[400]
-                    : Colors.transparent,
+                : word.isSelected ? Colors.grey[400] : Colors.transparent,
           ),
           width: SizeConfig.blockSizeHorizontal * 100,
           child: Stack(

@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 
-class ReusableBottomIconBtn extends StatelessWidget {
-  const ReusableBottomIconBtn({
+class ReusableIconBtn extends StatelessWidget {
+  const ReusableIconBtn({
     this.onPress,
     this.color,
-    this.icons,
+    this.icon,
     Key key,
   }) : super(key: key);
 
-  final IconData icons;
+  final IconData icon;
   final Color color;
   final Function onPress;
   @override
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.only(right: 5),
-        // alignment: Alignment.center,
         child: IconButton(
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent,
           iconSize: 25,
-          icon: Icon(icons),
-          color: color,
+          icon: Icon(icon),
+          color: color ?? Theme.of(context).accentColor,
           onPressed: onPress,
         ));
   }

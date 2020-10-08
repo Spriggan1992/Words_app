@@ -11,7 +11,8 @@ class TrainingsLoaded extends TrainingsEvent {
   final List<Word> words;
   final String collectionId;
 
-  TrainingsLoaded({this.words, this.collectionId});
+  TrainingsLoaded({this.words = const [], this.collectionId = ''});
+
   List<Object> get props => [words, collectionId];
 }
 

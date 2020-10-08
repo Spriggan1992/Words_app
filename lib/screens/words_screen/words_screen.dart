@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:provider/provider.dart';
+
 import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
-import 'package:words_app/widgets/reusable_main_button.dart';
+import 'package:words_app/config/screenDefiner.dart';
+
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/helpers/functions.dart';
-import 'package:words_app/models/word_model.dart';
-import 'package:words_app/repositories/words/words_repository.dart';
+import 'package:words_app/models/models.dart';
+
 import 'package:words_app/screens/card_creator_screen/card_creator.dart';
 import 'package:words_app/screens/collections_screen/collections_screen.dart';
 import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
 import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/widgets/widgets.dart';
 import 'components/word_card.dart';
 
 class WordsScreen extends StatelessWidget {
@@ -44,7 +46,6 @@ class WordsScreen extends StatelessWidget {
         // Exclude top from SafeArea
         top: true,
         child: Scaffold(
-          // backgroundColor: Theme.of(context).backgroundColor,
           body: BlocBuilder<WordsBloc, WordsState>(
             builder: (context, state) {
               if (state is WordsLoading) {
@@ -80,11 +81,9 @@ class WordsScreen extends StatelessWidget {
               /// List words
               buildListView(state, isEditingMode, collectionId, collectionLang),
 
-              ReusableMainButton(
-                titleText: 'Add Word',
-                textColor: Colors.white,
-                backgroundColor: Theme.of(context).buttonColor,
-                onPressed: isEditingMode
+              BaseBottomAppbar(
+                screenDefiner: ScreenDefiner.words,
+                add: isEditingMode
                     ? () {}
                     : () {
                         Navigator.pushNamed(
@@ -101,6 +100,15 @@ class WordsScreen extends StatelessWidget {
                             isEditingMode: false,
                             collectionLaguage: collectionLang));
                       },
+                goToTrainings: () {
+                  context.bloc<TrainingsBloc>().add(TrainingsLoaded(
+                      words: state.words, collectionId: collectionId));
+                  Navigator.pushNamed(
+                    context,
+                    TrainingManager.id,
+                  );
+                },
+                trainingsWordCounter: "${state.words?.length ?? 0}",
               ),
             ],
           );
@@ -131,6 +139,7 @@ class WordsScreen extends StatelessWidget {
                 selectedList: state.selectedList,
                 word: state.words[index],
                 words: state.words,
+                collectionId: collectionId,
               ), //
               actionPane: SlidableDrawerActionPane(),
 
@@ -238,20 +247,7 @@ class WordsScreen extends StatelessWidget {
                     // Stack(
                     //   alignment: Alignment.topRight,
                     //   children: [
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            TrainingManager.id,
-                            arguments: {'words': state.selectedList},
-                          );
-                        },
-                        icon: Icon(Icons.fitness_center)),
-                    // Positioned(
-                    //   child: Text("${state.selectedList?.length ?? 0}"),
-                    // ),
-                    // ],
-                    // ),
+
                     IconButton(
                         onPressed: () {
                           context.bloc<WordsCubit>().toggleEditMode();
@@ -263,31 +259,11 @@ class WordsScreen extends StatelessWidget {
                   ],
                 )
               : Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              context.bloc<TrainingsBloc>().add(TrainingsLoaded(
-                                  words: state.words,
-                                  collectionId: collectionId));
-                              Navigator.pushNamed(
-                                context,
-                                TrainingManager.id,
-                                arguments: {'words': state.words},
-                              );
-                            },
-                            icon: Icon(
-                              Icons.fitness_center,
-                              color: Colors.white,
-                            )),
-                        Positioned(
-                          child: Text("${state.words?.length ?? 0}",
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                      ],
+                    ReusableIconBtn(
+                      icon: Icons.arrow_back_ios,
+                      onPress: () => Navigator.pop(context),
                     ),
                     IconButton(
                       icon: Icon(
