@@ -6,7 +6,7 @@ import 'package:words_app/widgets/widgets.dart';
 
 import 'collection_widgets.dart';
 
-class CollectionsEditDialog extends StatelessWidget {
+class CollectionsEditDialog extends StatefulWidget {
   const CollectionsEditDialog({
     this.index,
     this.onSaveForm,
@@ -19,10 +19,57 @@ class CollectionsEditDialog extends StatelessWidget {
   final Collection collection;
 
   @override
+  _CollectionsEditDialogState createState() => _CollectionsEditDialogState();
+}
+
+class _CollectionsEditDialogState extends State<CollectionsEditDialog> {
+  String onSubmitTitleField;
+  String onSubmitLanguageField;
+  @override
+  void initState() {
+    super.initState();
+    onSubmitLanguageField = widget.collection.language;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var _languages = [
+      'fi',
+      'en',
+      "zh",
+      'de',
+      'cz',
+      'da',
+      'es',
+      'fr',
+      'id',
+      'it',
+      'hu',
+      'nl',
+      'no',
+      'pl',
+      'ru',
+    ];
+    //cs, da, de, en, es, fr, id, it, hu, nl, no, pl, pt, ro, sk, fi, sv, tr, vi, th, bg, ru, el, ja, ko, zh
+    Map<String, String> languageMap = {
+      'fi': "finnish",
+      'en': "english",
+      "zh": "chinese",
+      'de': "german",
+      'cz': 'czech',
+      'da': 'danish',
+      'es': 'spanish',
+      'fr': 'french',
+      'id': 'indonesian',
+      'it': 'italian',
+      'hu': 'hungarian',
+      'nl': 'nederlands',
+      'no': 'norwegian',
+      'pl': 'polish',
+      'ru': 'russian',
+    };
     double screenWidth = MediaQuery.of(context).size.width;
-    String onSubmitTitleField;
-    String onSubmitLanguageField;
+
     return Container(
       height: 340,
       width: 80,
@@ -51,7 +98,8 @@ class CollectionsEditDialog extends StatelessWidget {
                       style: TextStyle(fontSize: 25),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(border: InputBorder.none),
-                      controller: TextEditingController(text: collection.title),
+                      controller:
+                          TextEditingController(text: widget.collection.title),
                       onChanged: (value) {
                         onSubmitTitleField = value;
                       }),
@@ -69,16 +117,37 @@ class CollectionsEditDialog extends StatelessWidget {
                 Flexible(
                   child: SizedBox(height: 30.0),
                 ),
+                // Container(
+                //   width: 200,
+                //   child: TextField(
+                //     style: TextStyle(fontSize: 25, color: Color(0xFF34c7b3)),
+                //     controller:
+                //         TextEditingController(text: collection.language),
+                //     textAlign: TextAlign.center,
+                //     decoration: InputDecoration(border: InputBorder.none),
+                //     onChanged: (value) {
+                //       onSubmitLanguageField = value;
+                //     },
+                //   ),
+                // ),
                 Container(
-                  width: 200,
-                  child: TextField(
-                    style: TextStyle(fontSize: 25, color: Color(0xFF34c7b3)),
-                    controller:
-                        TextEditingController(text: collection.language),
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(border: InputBorder.none),
+                  child: DropdownButton(
+                    // value: collection.language,
+                    items: _languages
+                        .map(
+                          (language) => DropdownMenuItem(
+                            value: language,
+                            child: Text(languageMap[language],
+                                style: TextStyle(
+                                    fontSize: 25, color: Color(0xFF34c7b3))),
+                          ),
+                        )
+                        .toList(),
+                    value: onSubmitLanguageField,
                     onChanged: (value) {
-                      onSubmitLanguageField = value;
+                      setState(() {
+                        onSubmitLanguageField = value;
+                      });
                     },
                   ),
                 ),
@@ -86,7 +155,7 @@ class CollectionsEditDialog extends StatelessWidget {
                 // Words Text Holder
                 CollectionTextHolder(
                   titleName: 'words:   ',
-                  titleNameValue: collection.wordCount.toString(),
+                  titleNameValue: widget.collection.wordCount.toString(),
                   fontSize1: 25.0,
                   fontSize2: 25.0,
                 ),
@@ -127,7 +196,7 @@ class CollectionsEditDialog extends StatelessWidget {
                   onPressed: () {
                     context.bloc<CollectionsBloc>().add(
                           CollectionsUpdated(
-                              id: collection.id,
+                              id: widget.collection.id,
                               title: onSubmitTitleField,
                               language: onSubmitLanguageField),
                         );
