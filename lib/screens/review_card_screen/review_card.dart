@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
+import 'package:words_app/screens/review_card_screen/widgets/word_widgets.dart';
 
 import 'package:words_app/widgets/base_appbar.dart';
-import 'package:words_app/constants/constants.dart';
 
 import 'package:words_app/models/difficulty.dart';
 
@@ -16,7 +15,6 @@ import '../../widgets/base_appbar.dart';
 import '../../models/difficulty.dart';
 import '../../models/word_model.dart';
 import '../../utils/size_config.dart';
-import 'components/word_card.dart';
 
 class ReviewCard extends StatefulWidget {
   static String id = 'review_card_screen';
