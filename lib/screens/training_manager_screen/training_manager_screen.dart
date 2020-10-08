@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/trainings/trainings_bloc.dart';
+import 'package:words_app/config/screenDefiner.dart';
 import 'package:words_app/widgets/base_appbar.dart';
-import 'package:words_app/widgets/reusable_main_button.dart';
+import 'package:words_app/widgets/base_bottom_appbar.dart';
+
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/collection_model.dart';
 
 import 'package:words_app/models/difficulty.dart';
 import 'package:words_app/models/fuiltersEnums.dart';
-import 'package:words_app/models/word_model.dart';
-import 'package:words_app/screens/games/bricks_game_screen//bricks_game.dart';
-import 'package:words_app/screens/games/pair_game_screen/pair_game.dart';
 
 import 'package:words_app/utils/size_config.dart';
 
@@ -389,17 +388,15 @@ class _TrainingManagerState extends State<TrainingManager> {
         ));
   }
 
-  Container buildMainBtn(
+  Widget buildMainBtn(
     BuildContext context,
     List<Collection> selectedListCollections,
     TrainingsSuccess state,
   ) {
     return Container(
-      child: ReusableMainButton(
-        titleText: 'Go to Trainig',
-        textColor: Colors.black,
-        backgroundColor: Theme.of(context).buttonColor,
-        onPressed: () {
+      child: BaseBottomAppbar(
+        screenDefiner: ScreenDefiner.trainingManager,
+        add: () {
           if (state.isEmptyCardWord == true &&
               selectedDifficulties.isNotEmpty) {
             showCustomDialog(context, () {

@@ -4,12 +4,16 @@ import 'dart:math' as math;
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
+import 'package:words_app/config/screenDefiner.dart';
+import 'package:words_app/screens/screens.dart';
 
 import 'package:words_app/widgets/base_appbar.dart';
 import 'package:words_app/constants/constants.dart';
 
 import 'package:words_app/models/difficulty.dart';
+import 'package:words_app/widgets/widgets.dart';
 
 import '../../bloc/words/words_bloc.dart';
 import '../../widgets/base_appbar.dart';
@@ -20,9 +24,10 @@ import 'components/word_card.dart';
 
 class ReviewCard extends StatefulWidget {
   static String id = 'review_card_screen';
-  ReviewCard({this.index, this.words});
+  ReviewCard({this.index, this.words, this.collectionId});
   final int index;
   final List<Word> words;
+  final String collectionId;
 
   @override
   _ReviewCardState createState() => _ReviewCardState();
@@ -86,6 +91,17 @@ class _ReviewCardState extends State<ReviewCard>
         actions: <Widget>[],
         appBar: AppBar(),
       ),
+      bottomSheet: BaseBottomAppbar(
+          screenDefiner: ScreenDefiner.reviewCard,
+          trainingsWordCounter: "${widget.words?.length ?? 0}",
+          goToTrainings: () {
+            context.bloc<TrainingsBloc>().add(TrainingsLoaded(
+                words: widget.words, collectionId: widget.collectionId));
+            Navigator.pushNamed(
+              context,
+              TrainingManager.id,
+            );
+          }),
       body: Column(
         children: <Widget>[
           Expanded(
@@ -161,7 +177,7 @@ class _ReviewCardState extends State<ReviewCard>
             ),
           ),
           Container(
-            margin: EdgeInsets.only(bottom: defaultSize * 2),
+            margin: EdgeInsets.only(bottom: defaultSize * 6),
             height: defaultSize * 5,
             width: SizeConfig.blockSizeHorizontal * 78,
             child: Row(

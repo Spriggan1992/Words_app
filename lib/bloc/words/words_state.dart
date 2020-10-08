@@ -13,7 +13,7 @@ class WordsSuccess extends WordsState {
   final List<Word> words;
   final List<Word> selectedList;
 
-  WordsSuccess({this.words, this.selectedList});
+  WordsSuccess({this.words = const [], this.selectedList});
   @override
   List<Object> get props => [words, selectedList];
 }
