@@ -29,6 +29,7 @@ class _CollectionsEditDialogState extends State<CollectionsEditDialog> {
   void initState() {
     super.initState();
     onSubmitLanguageField = widget.collection.language;
+    onSubmitTitleField = widget.collection.title;
   }
 
   @override
@@ -117,19 +118,7 @@ class _CollectionsEditDialogState extends State<CollectionsEditDialog> {
                 Flexible(
                   child: SizedBox(height: 30.0),
                 ),
-                // Container(
-                //   width: 200,
-                //   child: TextField(
-                //     style: TextStyle(fontSize: 25, color: Color(0xFF34c7b3)),
-                //     controller:
-                //         TextEditingController(text: collection.language),
-                //     textAlign: TextAlign.center,
-                //     decoration: InputDecoration(border: InputBorder.none),
-                //     onChanged: (value) {
-                //       onSubmitLanguageField = value;
-                //     },
-                //   ),
-                // ),
+
                 Container(
                   child: DropdownButton(
                     // value: collection.language,
@@ -160,13 +149,7 @@ class _CollectionsEditDialogState extends State<CollectionsEditDialog> {
                   fontSize2: 25.0,
                 ),
                 Flexible(child: SizedBox(height: 25.0)),
-                // Learned Text Holder
-                // CollectionTextHolder(
-                //   titleName: 'learned:   ',
-                //   titleNameValue: '  11',
-                //   fontSize1: 20.0,
-                //   fontSize2: 25.0,
-                // ),
+
                 Flexible(child: SizedBox(height: 40)),
               ],
             ),
