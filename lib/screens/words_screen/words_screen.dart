@@ -7,6 +7,7 @@ import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/config/screenDefiner.dart';
+import 'package:words_app/config/themes.dart';
 
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
@@ -229,9 +230,6 @@ class WordsScreen extends StatelessWidget {
                               .add(WordsAddSelectedAllToSelectedList());
                         },
                         icon: Icon(Icons.select_all)),
-                    // Stack(
-                    //   alignment: Alignment.topRight,
-                    //   children: [
                     IconButton(
                         onPressed: () => deleteConfirmation(context, () {
                               BlocProvider.of<WordsBloc>(context)
@@ -239,15 +237,6 @@ class WordsScreen extends StatelessWidget {
                               Navigator.pop(context);
                             }, 'Do you want to delete this word?'),
                         icon: Icon(Icons.delete)),
-                    //   Positioned(
-                    //     child: Text("${state.selectedList?.length ?? 0}"),
-                    //   ),
-                    // ],
-                    // ),
-                    // Stack(
-                    //   alignment: Alignment.topRight,
-                    //   children: [
-
                     IconButton(
                         onPressed: () {
                           context.bloc<WordsCubit>().toggleEditMode();
@@ -265,6 +254,7 @@ class WordsScreen extends StatelessWidget {
                       icon: Icons.arrow_back_ios,
                       onPress: () => Navigator.pop(context),
                     ),
+                    Spacer(),
                     IconButton(
                       icon: Icon(
                         Icons.refresh,
@@ -279,6 +269,16 @@ class WordsScreen extends StatelessWidget {
                             .bloc<WordsBloc>()
                             .add(WordsLoaded(id: collectionId));
                       },
+                    ),
+                    IconButton(
+                      icon: context.bloc<ThemeBloc>().state.themeData ==
+                              Themes.themeData[AppTheme.LightTheme]
+                          ? Icon(Icons.brightness_4)
+                          : Icon(Icons.brightness_5),
+                      color: Colors.white,
+                      iconSize: 25.0,
+                      onPressed: () =>
+                          context.bloc<ThemeBloc>().add(UpdatedTheme()),
                     ),
                   ],
                 )

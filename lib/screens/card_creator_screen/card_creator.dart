@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
+import 'package:words_app/config/screenDefiner.dart';
 import 'package:words_app/widgets/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
 
@@ -349,6 +350,7 @@ class CardCreator extends StatelessWidget {
     CardCreatorSuccess state,
   ) {
     return BaseAppBar(
+      screenDefiner: ScreenDefiner.cardCreator,
       title: Text('Create your word card'),
       appBar: AppBar(),
       actions: [
