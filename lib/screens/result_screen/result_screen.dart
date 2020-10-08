@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/config/screenDefiner.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/repositories/repositories.dart';
 import 'package:words_app/screens/screens.dart';
 import 'package:words_app/widgets/reusable_main_button.dart';
 import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/widgets/widgets.dart';
 
 class ResultScreen extends StatelessWidget {
   static String id = 'result_screenshot';
@@ -27,9 +29,9 @@ class ResultScreen extends StatelessWidget {
         return;
       },
       child: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            automaticallyImplyLeading: false,
+          appBar: BaseAppBar(
+            screenDefiner: ScreenDefiner.result,
+            appBar: AppBar(),
             title: Text('Result'),
           ),
           body: AspectRatio(
