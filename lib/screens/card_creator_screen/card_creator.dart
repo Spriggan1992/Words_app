@@ -293,21 +293,21 @@ class CardCreator extends StatelessWidget {
                           children: <Widget>[
                             /// [ownLang] text field
                             InnerShadowTextField(
-                              title: isEditingMode ? word.ownLang : '',
+                              title: isEditingMode ? word.ownLang : ' ',
                               hintText: 'translation',
                               onChanged: (value) => ownLang = value,
                               defaultSize: defaultSize,
                               fontSizeMultiplyer: 3.2,
                             ),
                             InnerShadowTextField(
-                              title: isEditingMode ? word.secondLang : '',
+                              title: isEditingMode ? word.secondLang : ' ',
                               hintText: '2nd language',
                               onChanged: (value) => secondLang = value,
                               defaultSize: defaultSize,
                               fontSizeMultiplyer: 3.2,
                             ),
                             InnerShadowTextField(
-                              title: isEditingMode ? word.thirdLang : '',
+                              title: isEditingMode ? word.thirdLang : ' ',
                               hintText: '3rd language',
                               onChanged: (value) => thirdLang = value,
                               defaultSize: defaultSize,

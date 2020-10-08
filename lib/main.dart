@@ -59,15 +59,6 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        // ChangeNotifierProvider(
-        //   create: (_) => CollectionsRepository(),
-        // ),
-        // ChangeNotifierProvider(
-        //   create: (_) => WordsRepository(),
-        // ),
-        // ChangeNotifierProvider(
-        //   create: (_) => ValidationForm(),
-        // ),
         ChangeNotifierProvider(
           create: (_) => Bricks(),
         ),

@@ -72,6 +72,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 
     /// Receiving word data from[ words_screen], using index to extract single item from array
     final word = widget.word;
+    // print("${word}");
 
     return ExpandableContainer(
       collapseHeight: defaultSize * 9,
@@ -202,7 +203,9 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                     alignment: Alignment.centerLeft,
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      word.ownLang ?? '', // Translation
+                      //FIXME: FLUTTER
+                      // word.ownLang ?? '', // Translation
+                      '${word.ownLang} ',
                       style: Theme.of(context).primaryTextTheme.bodyText2.merge(
                             TextStyle(
                               fontSize: defaultSize * 1.6,
@@ -250,7 +253,9 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                       alignment: Alignment.centerLeft,
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        word.secondLang ?? ' ',
+                        //FIXME: VERSION
+                        // word.secondLang == ' ' ? '' : word.secondLang,
+                        '${word.secondLang} ',
                         style:
                             Theme.of(context).primaryTextTheme.bodyText2.merge(
                                   TextStyle(

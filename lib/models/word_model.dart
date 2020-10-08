@@ -23,7 +23,12 @@ class Word extends Equatable with ChangeNotifier {
     int difficulty,
     // this.isEditingMode,
   })  : this.difficulty = difficulty ?? 2,
-        this.id = id ?? Uuid().v4();
+        this.id = id ?? Uuid().v4()
+  // this.targetLang = targetLang ?? "",
+  // this.secondLang = secondLang ?? "",
+  // this.thirdLang = thirdLang ?? "",
+  // this.ownLang = ownLang ?? ""
+  ;
   final String collectionId;
   final String id;
   final String targetLang;
