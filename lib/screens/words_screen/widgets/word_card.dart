@@ -39,7 +39,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
   Animation<double> textAnimation;
   Animation rotationAnimation;
   bool isExpanded = false;
-  bool isEditMode = false;
+  // bool isEditMode = false;
   @override
   void initState() {
     super.initState();
