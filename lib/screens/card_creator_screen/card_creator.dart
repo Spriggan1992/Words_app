@@ -146,7 +146,6 @@ class CardCreator extends StatelessWidget {
                               title: isEditingMode ? word.targetLang : '',
                               hintText: 'word',
                               onChanged: (value) => targetLang = value,
-                              defaultSize: defaultSize,
                               fontSizeMultiplyer: 3.2,
                             ),
                             Stack(
@@ -182,8 +181,13 @@ class CardCreator extends StatelessWidget {
                                                         name: targetLang,
                                                       ),
                                                     );
-                                                Navigator.pushNamed(
-                                                    context, ImageApi.id);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (_) => ImageApi(
+                                                            targetLang:
+                                                                targetLang ??
+                                                                    '')));
                                               },
                                               icon: Icon(
                                                 Icons.web_asset,
@@ -236,8 +240,14 @@ class CardCreator extends StatelessWidget {
                                                         name: targetLang,
                                                       ),
                                                     );
-                                                Navigator.pushNamed(
-                                                    context, ImageApi.id);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ImageApi(
+                                                                targetLang:
+                                                                    targetLang ??
+                                                                        '')));
                                               },
                                               icon: Icon(
                                                 Icons.web_asset,
@@ -266,7 +276,6 @@ class CardCreator extends StatelessWidget {
                 ),
                 InnerShadowTextField(
                   maxLines: SizeConfig.blockSizeVertical > 7 ? 6 : 5,
-                  defaultSize: defaultSize,
                   title: isEditingMode ? word.example : '',
                   hintText: 'example',
                   fontSizeMultiplyer: 2.4,
@@ -297,21 +306,18 @@ class CardCreator extends StatelessWidget {
                               title: isEditingMode ? word.ownLang : '',
                               hintText: 'translation',
                               onChanged: (value) => ownLang = value,
-                              defaultSize: defaultSize,
                               fontSizeMultiplyer: 3.2,
                             ),
                             InnerShadowTextField(
                               title: isEditingMode ? word.secondLang : '',
                               hintText: '2nd language',
                               onChanged: (value) => secondLang = value,
-                              defaultSize: defaultSize,
                               fontSizeMultiplyer: 3.2,
                             ),
                             InnerShadowTextField(
                               title: isEditingMode ? word.thirdLang : '',
                               hintText: '3rd language',
                               onChanged: (value) => thirdLang = value,
-                              defaultSize: defaultSize,
                               fontSizeMultiplyer: 3.2,
                             ),
                           ],
@@ -330,7 +336,6 @@ class CardCreator extends StatelessWidget {
                   title: isEditingMode ? word.exampleTranslations : ' ',
                   hintText: 'example',
                   onChanged: (value) => exampleTranslations = value,
-                  defaultSize: defaultSize,
                   fontSizeMultiplyer: 2.4,
                 ),
               ],

@@ -80,6 +80,8 @@ class Word extends Equatable with ChangeNotifier {
       image: File(entity.image),
       example: entity.example,
       exampleTranslations: entity.exampleTranslations,
+      difficulty: entity.difficulty,
+      isSelected: false,
     );
   }
   WordEntity toEntity() {

@@ -39,7 +39,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
   Animation<double> textAnimation;
   Animation rotationAnimation;
   bool isExpanded = false;
-  bool isEditMode = false;
+  // bool isEditMode = false;
   @override
   void initState() {
     super.initState();
@@ -72,6 +72,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    // widget.words.forEach((item) => print(item.isSelected));
     SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
 

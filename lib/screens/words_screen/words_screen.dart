@@ -3,9 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:words_app/bloc/blocs.dart';
-import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
-import 'package:words_app/bloc/trainings/trainings_bloc.dart';
-import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/config/screenDefiner.dart';
 import 'package:words_app/config/themes.dart';
 
@@ -15,12 +12,10 @@ import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/models.dart';
 
-import 'package:words_app/screens/card_creator_screen/card_creator.dart';
-import 'package:words_app/screens/collections_screen/collections_screen.dart';
-import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
+import 'package:words_app/screens/screens.dart';
 import 'package:words_app/utils/size_config.dart';
 import 'package:words_app/widgets/widgets.dart';
-import 'components/word_card.dart';
+import 'widgets/word_card.dart';
 
 class WordsScreen extends StatelessWidget {
   static String id = 'collection_manager_screen';
@@ -231,11 +226,16 @@ class WordsScreen extends StatelessWidget {
                         },
                         icon: Icon(Icons.select_all)),
                     IconButton(
-                        onPressed: () => deleteConfirmation(context, () {
-                              BlocProvider.of<WordsBloc>(context)
-                                  .add(WordsDeletedSelectedAll());
-                              Navigator.pop(context);
-                            }, 'Do you want to delete this word?'),
+                        onPressed:
+                            // state.selectedList.isEmpty &&
+                            //         state.selectedList == null
+                            //     ? () {}
+                            //     :
+                            () => deleteConfirmation(context, () {
+                                  BlocProvider.of<WordsBloc>(context)
+                                      .add(WordsDeletedSelectedAll());
+                                  Navigator.pop(context);
+                                }, 'Do you want to delete this word?'),
                         icon: Icon(Icons.delete)),
                     IconButton(
                         onPressed: () {

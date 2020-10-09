@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/screenDefiner.dart';
+import 'package:words_app/constants/constants.dart';
 import 'package:words_app/screens/screens.dart';
 import 'package:words_app/widgets/widgets.dart';
 
@@ -24,7 +24,7 @@ class BaseBottomAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
+      height: 45,
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Stack(
         alignment: AlignmentDirectional.center,
@@ -38,13 +38,15 @@ class BaseBottomAppbar extends StatelessWidget {
             ],
           )),
           Positioned(
-            top: -10,
-            child: screenDefiner == ScreenDefiner.reviewCard
-                ? SizedBox.shrink()
-                : ReusableFloatActionButton(
-                    onPressed: add,
-                  ),
-          ),
+              top: -15,
+              child: screenDefiner == ScreenDefiner.reviewCard
+                  ? SizedBox.shrink()
+                  : MainButton(onTap: add)),
+
+          //       ReusableFloatActionButton(
+          //           onPressed: add,
+          //         ),
+          // ),
           Container(
               child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
