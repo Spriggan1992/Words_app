@@ -161,11 +161,6 @@ class WordCard extends StatelessWidget {
                                 TextStyle(fontSize: defaultSize * 2),
                               ),
                         )
-                      // Text(word.example ?? '...',
-                      //     style: Theme.of(context)
-                      //         .primaryTextTheme
-                      //         .bodyText2
-                      //         .merge(TextStyle(fontSize: defaultSize * 2)))
                       : HighlightText(
                           text: word.exampleTranslations ?? '...',
                           highlight: word.ownLang,
@@ -177,15 +172,6 @@ class WordCard extends StatelessWidget {
                                 TextStyle(fontSize: defaultSize * 2),
                               ),
                         )
-                  // Text(
-                  //     word.exampleTranslations ?? '...',
-                  //     style: Theme.of(context)
-                  //         .primaryTextTheme
-                  //         .bodyText2
-                  //         .merge(
-                  //           TextStyle(fontSize: defaultSize * 2),
-                  //         ),
-                  //   )
                 ],
               ),
             ),
