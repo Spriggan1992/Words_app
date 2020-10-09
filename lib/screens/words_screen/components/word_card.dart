@@ -72,6 +72,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    // widget.words.forEach((item) => print(item.isSelected));
     SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
 
