@@ -80,7 +80,9 @@ class WordCard extends StatelessWidget {
                                 ),
                                 TitleTextHolderContainer(
                                   defaultSize: defaultSize,
-                                  wordHolder: word.targetLang ?? '...',
+                                  wordHolder: word.targetLang == ''
+                                      ? '...'
+                                      : word.targetLang,
                                 ),
                                 SizedBox(height: defaultSize * 2),
                                 Flexible(
@@ -114,15 +116,21 @@ class WordCard extends StatelessWidget {
                                 children: [
                                   TitleTextHolderContainer(
                                     defaultSize: defaultSize,
-                                    wordHolder: word.ownLang ?? '...',
+                                    wordHolder: word.ownLang == ''
+                                        ? '...'
+                                        : word.ownLang,
                                   ),
                                   TitleTextHolderContainer(
                                     defaultSize: defaultSize,
-                                    wordHolder: word.secondLang ?? '...',
+                                    wordHolder: word.secondLang == ''
+                                        ? '...'
+                                        : word.secondLang,
                                   ),
                                   TitleTextHolderContainer(
                                     defaultSize: defaultSize,
-                                    wordHolder: word.thirdLang ?? '...',
+                                    wordHolder: word.thirdLang == ''
+                                        ? '...'
+                                        : word.thirdLang,
                                   )
                                 ],
                               ),
@@ -151,7 +159,7 @@ class WordCard extends StatelessWidget {
                 children: <Widget>[
                   side == 'front'
                       ? HighlightText(
-                          text: word.example ?? '...',
+                          text: word.example == '' ? '...' : word.example,
                           highlight: word.targetLang,
                           highlightColor: Colors.red,
                           style: Theme.of(context)
@@ -162,7 +170,9 @@ class WordCard extends StatelessWidget {
                               ),
                         )
                       : HighlightText(
-                          text: word.exampleTranslations ?? '...',
+                          text: word.exampleTranslations == ''
+                              ? '...'
+                              : word.exampleTranslations,
                           highlight: word.ownLang,
                           highlightColor: Colors.red,
                           style: Theme.of(context)
