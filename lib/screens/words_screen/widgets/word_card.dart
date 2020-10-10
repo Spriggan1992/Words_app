@@ -18,6 +18,7 @@ class WordCard extends StatefulWidget {
     this.isEditingMode,
     this.words,
     this.collectionId,
+    this.collectionTitle,
   });
   final bool isEditingMode;
   final int index;
@@ -26,6 +27,7 @@ class WordCard extends StatefulWidget {
   final Collection collection;
   final List<Word> words;
   final String collectionId;
+  final String collectionTitle;
 
   @override
   _WordCardState createState() => _WordCardState();
@@ -111,6 +113,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                       index: widget.index,
                       words: widget.words,
                       collectionId: widget.collectionId,
+                      collectionTitle: widget.collectionTitle,
                     ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {

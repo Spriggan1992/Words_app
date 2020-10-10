@@ -75,7 +75,8 @@ class WordsScreen extends StatelessWidget {
                   isEditingMode, context, collectionTitle, collectionId, state),
 
               /// List words
-              buildListView(state, isEditingMode, collectionId, collectionLang),
+              buildListView(state, isEditingMode, collectionId, collectionLang,
+                  collectionTitle),
 
               BaseBottomAppbar(
                 screenDefiner: ScreenDefiner.words,
@@ -114,7 +115,7 @@ class WordsScreen extends StatelessWidget {
   }
 
   Expanded buildListView(WordsSuccess state, bool isEditingMode,
-      String collectionId, String collectionLang) {
+      String collectionId, String collectionLang, String collectionTitle) {
     return Expanded(
       child: Container(
         padding: EdgeInsets.only(bottom: 25.0),
@@ -130,13 +131,13 @@ class WordsScreen extends StatelessWidget {
               /// WORD CARD
 
               child: WordCard(
-                isEditingMode: isEditingMode,
-                index: index,
-                selectedList: state.selectedList,
-                word: state.words[index],
-                words: state.words,
-                collectionId: collectionId,
-              ), //
+                  isEditingMode: isEditingMode,
+                  index: index,
+                  selectedList: state.selectedList,
+                  word: state.words[index],
+                  words: state.words,
+                  collectionId: collectionId,
+                  collectionTitle: collectionTitle), //
               actionPane: SlidableDrawerActionPane(),
 
               secondaryActions: <Widget>[

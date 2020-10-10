@@ -22,10 +22,11 @@ import '../../utils/size_config.dart';
 
 class ReviewCard extends StatefulWidget {
   static String id = 'review_card_screen';
-  ReviewCard({this.index, this.words, this.collectionId});
+  ReviewCard({this.index, this.words, this.collectionId, this.collectionTitle});
   final int index;
   final List<Word> words;
   final String collectionId;
+  final String collectionTitle;
 
   @override
   _ReviewCardState createState() => _ReviewCardState();
@@ -84,7 +85,7 @@ class _ReviewCardState extends State<ReviewCard>
     return Scaffold(
       appBar: BaseAppBar(
         title: Text(
-          "Collection's name",
+          widget.collectionTitle,
         ),
         actions: <Widget>[],
         appBar: AppBar(),
