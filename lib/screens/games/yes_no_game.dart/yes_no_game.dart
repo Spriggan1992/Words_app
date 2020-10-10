@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:words_app/config/screenDefiner.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/screens/screens.dart';
 
@@ -40,11 +41,11 @@ class _YesNoGameState extends State<YesNoGame> with TickerProviderStateMixin {
     createData();
 
     _correctController = AnimationController(
-      duration: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 200),
       vsync: this,
     );
     _wrongController = AnimationController(
-      duration: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 200),
       vsync: this,
     );
     _correctAnimation = ColorTween(begin: Colors.black, end: Colors.green)
@@ -129,6 +130,7 @@ class _YesNoGameState extends State<YesNoGame> with TickerProviderStateMixin {
       ),
       child: Scaffold(
         appBar: BaseAppBar(
+          screenDefiner: ScreenDefiner.trainings,
           title: Text('YES/NO'),
           appBar: AppBar(),
         ),

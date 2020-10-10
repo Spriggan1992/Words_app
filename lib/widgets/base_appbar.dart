@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/screenDefiner.dart';
 import 'package:words_app/config/themes.dart';
+import 'package:words_app/helpers/functions.dart';
+import 'package:words_app/screens/screens.dart';
 import 'package:words_app/widgets/widgets.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -56,6 +58,15 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
     } else if (screenDefiner == ScreenDefiner.result) {
       return SizedBox.shrink();
+    } else if (screenDefiner == ScreenDefiner.trainings) {
+      return ReusableIconBtn(
+        color: Theme.of(context).accentColor,
+        icon: Icons.arrow_back_ios,
+        onPress: () => onBackPressed(context, () {
+          Navigator.pushNamedAndRemoveUntil(context, TrainingManager.id,
+              ModalRoute.withName(TrainingManager.id));
+        }),
+      );
     } else {
       return ReusableIconBtn(
         color: Theme.of(context).accentColor,
