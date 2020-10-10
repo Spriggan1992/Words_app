@@ -34,10 +34,9 @@ class Word extends Equatable with ChangeNotifier {
   final File image;
   final String example;
   final String exampleTranslations;
-
   final bool isSelected;
-
   final int difficulty;
+
   @override
   List<Object> get props => [
         collectionId,
@@ -49,7 +48,8 @@ class Word extends Equatable with ChangeNotifier {
         part,
         image,
         example,
-        exampleTranslations
+        exampleTranslations,
+        isSelected,
       ];
 
   @override

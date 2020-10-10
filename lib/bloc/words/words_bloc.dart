@@ -87,12 +87,6 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
             ? word.copyWith(isSelected: !event.word.isSelected)
             : word;
       }).toList();
-      for (int i = 0; i < (state as WordsSuccess).words.length; i++) {
-        if ((state as WordsSuccess).words[i].id == event.word.id) {
-          print(
-              'from bloc: ${(state as WordsSuccess).words[i].isSelected} -  $i');
-        }
-      }
 
       yield WordsSuccess(words: words);
     } catch (_) {
