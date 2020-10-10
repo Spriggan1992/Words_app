@@ -71,7 +71,10 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
         selectedFilteredList.forEach((word) {
           if (word.difficulty == event.selectedDifficulties[i]) {
             updatedFilteredList.add(word);
-            if (word.targetLang == null || word.ownLang == null) {
+            if (word.targetLang == null ||
+                word.ownLang == null ||
+                word.targetLang == '' ||
+                word.ownLang == '') {
               updatedIsEmptyCardWord = true;
               updatedFilteredList.remove(word);
             }
@@ -79,7 +82,9 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
           if (event.selectedDifficulties[i] == 3) {
             updatedFilteredList.add(word);
             if (word.targetLang == null ||
-                word.ownLang == null && event.selectedDifficulties.isNotEmpty) {
+                word.ownLang == null ||
+                word.targetLang == '' ||
+                word.ownLang == '' && event.selectedDifficulties.isNotEmpty) {
               updatedIsEmptyCardWord = true;
               updatedFilteredList.remove(word);
             } else {
