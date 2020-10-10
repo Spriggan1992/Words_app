@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/constants/constants.dart';
+import 'package:words_app/config/constants.dart';
 
 class TitleTextHolderContainer extends StatelessWidget {
   const TitleTextHolderContainer({

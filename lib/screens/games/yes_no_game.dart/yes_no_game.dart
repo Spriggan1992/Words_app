@@ -6,8 +6,8 @@ import 'package:words_app/screens/screens.dart';
 import 'package:words_app/utils/size_config.dart';
 import 'package:words_app/widgets/base_appbar.dart';
 
-import 'package:words_app/constants/constants.dart';
-import 'package:words_app/models/word_model.dart';
+import 'package:words_app/config/constants.dart';
+import 'package:words_app/models/word.dart';
 
 import 'widgets/yes_no_btns.dart';
 import 'widgets/yes_no_text_holder.dart';

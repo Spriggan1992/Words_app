@@ -56,17 +56,6 @@ class CollectionsScreen extends StatelessWidget {
                         collections: state.collections,
                       ),
                     ),
-
-                    // ReusableMainButton(
-                    //   titleText: 'Add Collection',
-                    //   textColor: Colors.white,
-                    //   backgroundColor: Theme.of(context).buttonColor,
-                    //   onPressed: () {
-                    //     buildShowGeneralDialog(
-                    //       context,
-                    //     );
-                    //   },
-                    // )
                   ],
                 );
               } else {

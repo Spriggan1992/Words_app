@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:words_app/config/screenDefiner.dart';
-import 'package:words_app/constants/constants.dart';
+
 import 'package:words_app/screens/screens.dart';
 import 'package:words_app/widgets/widgets.dart';
 
@@ -14,11 +12,13 @@ class BaseBottomAppbar extends StatelessWidget {
     this.screenDefiner,
     this.goToTrainings,
     this.trainingsWordCounter,
+    this.goToCollection,
   }) : super(key: key);
 
   final Function add;
   final ScreenDefiner screenDefiner;
   final Function goToTrainings;
+  final Function goToCollection;
   final String trainingsWordCounter;
 
   @override
@@ -42,11 +42,6 @@ class BaseBottomAppbar extends StatelessWidget {
               child: screenDefiner == ScreenDefiner.reviewCard
                   ? SizedBox.shrink()
                   : MainButton(onTap: add)),
-
-          //       ReusableFloatActionButton(
-          //           onPressed: add,
-          //         ),
-          // ),
           Container(
               child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -91,31 +86,14 @@ class BaseBottomAppbar extends StatelessWidget {
 
   Widget buildHomeBtn(BuildContext context, ScreenDefiner screenDefiner) {
     return ReusableIconBtn(
-      color: Theme.of(context).accentColor,
-      icon: Icons.home,
-      onPress: screenDefiner == ScreenDefiner.collections
-          ? null
-          : () => Navigator.push(
-              context, MaterialPageRoute(builder: (_) => CollectionsScreen())),
-    );
-  }
-
-  Widget buildBackBtn(BuildContext context, ScreenDefiner screenDefiner) {
-    if (screenDefiner == ScreenDefiner.collections) {
-      return Transform.rotate(
-        angle: 180 * pi / 180,
-        child: ReusableIconBtn(
-          color: Theme.of(context).accentColor,
-          icon: Icons.exit_to_app,
-          onPress: () => SystemNavigator.pop(),
-        ),
-      );
-    } else {
-      return ReusableIconBtn(
         color: Theme.of(context).accentColor,
-        icon: Icons.arrow_back_ios,
-        onPress: () => Navigator.pop(context),
-      );
-    }
+        icon: Icons.home,
+        onPress: screenDefiner == ScreenDefiner.collections
+            ? null
+            : () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => CollectionsScreen()));
+                goToCollection();
+              });
   }
 }

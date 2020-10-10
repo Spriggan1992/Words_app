@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:words_app/models/collection_model.dart';
+import 'package:words_app/models/collection.dart';
 import 'package:words_app/repositories/collections/collections_repository.dart';
 
 part 'collections_event.dart';

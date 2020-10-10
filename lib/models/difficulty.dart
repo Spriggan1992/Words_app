@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/constants/constants.dart';
+import 'package:words_app/config/constants.dart';
 
 class Difficulty {
   final int difficulty;
@@ -16,7 +16,11 @@ class Difficulty {
 class DifficultyList {
   List<Difficulty> difficultyList = [
     Difficulty(difficulty: 0, name: 'know', color: kDifficultyKnowColor),
-    Difficulty(difficulty: 1, name: "know a little", color: kDifficultyKnowALittleColor),
-    Difficulty(difficulty: 2, name: "don't know", color: kDifficultyDontKnowColor),
+    Difficulty(
+        difficulty: 1,
+        name: "know a little",
+        color: kDifficultyKnowALittleColor),
+    Difficulty(
+        difficulty: 2, name: "don't know", color: kDifficultyDontKnowColor),
   ];
 }

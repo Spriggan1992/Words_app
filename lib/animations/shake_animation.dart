@@ -43,13 +43,6 @@ class _ShakeAnimationState extends State<ShakeAnimation>
     rotateAnimation = tweenSequence.animate(_controller);
     super.initState();
     _controller.repeat(reverse: true);
-    // _controller.addStatusListener((status) {
-    //   if (status == AnimationStatus.completed) {
-    //     print(status);
-    //   } else {
-    //     print(status);
-    //   }
-    // });
   }
 
   @override

@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:words_app/models/collection_model.dart';
-import 'package:words_app/models/word_model.dart';
+import 'package:words_app/models/collection.dart';
+import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/words/words_repository.dart';
 
 part 'words_event.dart';

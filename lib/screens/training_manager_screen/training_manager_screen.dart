@@ -4,14 +4,10 @@ import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/config/screenDefiner.dart';
 import 'package:words_app/widgets/base_appbar.dart';
 import 'package:words_app/widgets/base_bottom_appbar.dart';
-
-import 'package:words_app/constants/constants.dart';
+import 'package:words_app/config/constants.dart';
 import 'package:words_app/helpers/functions.dart';
-import 'package:words_app/models/collection_model.dart';
-
+import 'package:words_app/models/collection.dart';
 import 'package:words_app/models/difficulty.dart';
-import 'package:words_app/models/fuiltersEnums.dart';
-
 import 'package:words_app/utils/size_config.dart';
 
 import 'helper.dart';
@@ -60,6 +56,7 @@ class _TrainingManagerState extends State<TrainingManager> {
             key: _scaffoldKey,
             backgroundColor: Color(0xFFeae2da),
             appBar: BaseAppBar(
+              screenDefiner: ScreenDefiner.trainingManager,
               title: Text('Training Manager'),
               appBar: AppBar(),
             ),

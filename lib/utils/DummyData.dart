@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/models/part.dart';
-import 'package:words_app/models/word_model.dart';
+import 'package:words_app/models/word.dart';
 
 class DummyData {
   static List<Word> get words {

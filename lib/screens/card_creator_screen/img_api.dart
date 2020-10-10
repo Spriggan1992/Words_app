@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
-import 'package:words_app/constants/constants.dart';
+import 'package:words_app/config/constants.dart';
 import 'package:words_app/models/image_data.dart';
 import 'package:words_app/utils/size_config.dart';
 import 'package:words_app/widgets/widgets.dart';

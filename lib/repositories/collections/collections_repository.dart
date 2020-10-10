@@ -5,7 +5,7 @@ import 'package:words_app/config/paths.dart';
 import 'package:words_app/entities/collection_entity.dart';
 import 'package:words_app/models/models.dart';
 import 'package:words_app/utils/db_helper.dart';
-import '../../models/collection_model.dart';
+import '../../models/collection.dart';
 import '../words/words_repository.dart';
 
 class CollectionsRepository {

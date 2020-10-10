@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:words_app/models/image_data.dart';
-import 'package:words_app/models/word_model.dart';
+import 'package:words_app/models/word.dart';
 import 'package:words_app/repositories/image_repository.dart';
 
 part 'card_creator_event.dart';
@@ -71,7 +71,6 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
       CardCreatorUpdateImagesFromAPI event) async* {
     try {
       final File file = await imageRepository.getImageFileFromUrl(event.url);
-      // final File croppedFile = await imageRepository.getImageFile();
       yield CardCreatorSuccess(image: file);
     } catch (_) {
       yield CardCreatorFailure(message: "something went wrong with me");

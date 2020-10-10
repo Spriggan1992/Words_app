@@ -56,6 +56,11 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPress: () => SystemNavigator.pop(),
         ),
       );
+    } else if (screenDefiner == ScreenDefiner.trainingManager) {
+      return ReusableIconBtn(
+          color: Theme.of(context).accentColor,
+          icon: Icons.arrow_back_ios,
+          onPress: () => Navigator.pop(context));
     } else if (screenDefiner == ScreenDefiner.result) {
       return SizedBox.shrink();
     } else if (screenDefiner == ScreenDefiner.trainings) {

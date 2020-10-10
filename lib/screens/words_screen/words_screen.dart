@@ -6,7 +6,7 @@ import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/screenDefiner.dart';
 import 'package:words_app/config/themes.dart';
 
-import 'package:words_app/constants/constants.dart';
+import 'package:words_app/config/constants.dart';
 import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/helpers/functions.dart';
@@ -97,6 +97,10 @@ class WordsScreen extends StatelessWidget {
                             isEditingMode: false,
                             collectionLaguage: collectionLang));
                       },
+                goToCollection: () {
+                  context.bloc<CollectionsBloc>().add(CollectionsLoaded());
+                  context.bloc<WordsCubit>().toggleEditModeToFalse();
+                },
                 goToTrainings: () {
                   context.bloc<TrainingsBloc>().add(TrainingsLoaded(
                       words: state.words, collectionId: collectionId));
@@ -104,6 +108,8 @@ class WordsScreen extends StatelessWidget {
                     context,
                     TrainingManager.id,
                   );
+                  context.bloc<WordsCubit>().toggleEditModeToFalse();
+                  context.bloc<WordsBloc>().add(WordsTurnOffIsEditingMode());
                 },
                 trainingsWordCounter: "${state.words?.length ?? 0}",
               ),
@@ -253,7 +259,15 @@ class WordsScreen extends StatelessWidget {
                   children: [
                     ReusableIconBtn(
                       icon: Icons.arrow_back_ios,
-                      onPress: () => Navigator.pop(context),
+                      onPress: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            CollectionsScreen.id,
+                            ModalRoute.withName(CollectionsScreen.id));
+                        context
+                            .bloc<CollectionsBloc>()
+                            .add(CollectionsLoaded());
+                      },
                     ),
                     Spacer(),
                     IconButton(

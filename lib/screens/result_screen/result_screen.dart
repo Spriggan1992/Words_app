@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/config/screenDefiner.dart';
-import 'package:words_app/constants/constants.dart';
+import 'package:words_app/config/constants.dart';
 import 'package:words_app/repositories/repositories.dart';
 import 'package:words_app/screens/screens.dart';
 import 'package:words_app/widgets/reusable_main_button.dart';

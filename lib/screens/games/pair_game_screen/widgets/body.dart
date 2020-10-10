@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/constants/constants.dart';
+import 'package:words_app/config/constants.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/game_card.dart';
 import 'package:words_app/screens/screens.dart';

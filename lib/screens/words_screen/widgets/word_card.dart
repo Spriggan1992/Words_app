@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
-import 'package:words_app/models/collection_model.dart';
-import '../../../models/word_model.dart';
+import 'package:words_app/models/collection.dart';
+import '../../../models/word.dart';
 import '../../../utils/size_config.dart';
 import '../../review_card_screen/review_card.dart';
 import 'expandable_container.dart';
@@ -74,7 +74,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    // widget.words.forEach((item) => print(item.isSelected));
     SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
 

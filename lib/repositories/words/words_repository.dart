@@ -7,7 +7,7 @@ import 'package:words_app/entities/entites.dart';
 import 'package:words_app/utils/DummyData.dart';
 import 'package:words_app/utils/db_helper.dart';
 
-import 'package:words_app/models/word_model.dart';
+import 'package:words_app/models/word.dart';
 import 'package:words_app/utils/utilities.dart';
 
 import '../../utils/db_helper.dart';
