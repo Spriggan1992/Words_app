@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:words_app/utils/size_config.dart';
 
 class Btns extends StatelessWidget {
   const Btns({
@@ -18,6 +19,7 @@ class Btns extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double defaultSize = SizeConfig.defaultSize;
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -25,10 +27,11 @@ class Btns extends StatelessWidget {
       ),
       child: IconButton(
         padding: EdgeInsets.all(padding),
-        constraints: BoxConstraints(minHeight: 20, minWidth: 20),
+        constraints: BoxConstraints(
+            minHeight: defaultSize * 2, minWidth: defaultSize * 2),
         icon: Icon(
           icon,
-          size: 18,
+          size: defaultSize * 1.8,
           color: color,
         ),
         onPressed: onPress,

@@ -1,11 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/screenDefiner.dart';
 import 'package:words_app/screens/screens.dart';
+import 'package:words_app/utils/size_config.dart';
 import 'package:words_app/widgets/widgets.dart';
 import 'widgets/collection_widgets.dart';
 
@@ -15,13 +14,11 @@ class CollectionsScreen extends StatelessWidget {
   static String id = 'list_collection';
 
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return SafeArea(
       top: false,
       child: WillPopScope(
         onWillPop: () async {
-          // Navigator.pushNamedAndRemoveUntil(context, CollectionsScreen.id,
-          //     ModalRoute.withName(CollectionsScreen.id));
-          // context.bloc<CollectionsBloc>().add(CollectionsSetToFalse());
           return false;
         },
         child: Scaffold(

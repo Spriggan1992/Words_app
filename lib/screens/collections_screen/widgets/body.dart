@@ -4,6 +4,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/models/models.dart';
 import 'package:words_app/screens/screens.dart';
+import 'package:words_app/utils/size_config.dart';
 import 'collection_widgets.dart';
 
 class Body extends StatelessWidget {
@@ -16,7 +17,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print(widget.collections);
+    final double defaultSize = SizeConfig.defaultSize;
     return GestureDetector(
       onTap: () {
         context.bloc<CollectionsBloc>().add(CollectionsSetToFalse());
@@ -24,7 +25,8 @@ class Body extends StatelessWidget {
       child: AnimationLimiter(
         child: Container(
           color: Theme.of(context).scaffoldBackgroundColor,
-          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+          padding: EdgeInsets.symmetric(
+              horizontal: defaultSize * 1, vertical: defaultSize * 0.5),
           child: CustomScrollView(
             slivers: <Widget>[
               SliverGrid(
@@ -34,7 +36,6 @@ class Body extends StatelessWidget {
                     position: index,
                     duration: Duration(milliseconds: 400),
                     child: ScaleAnimation(
-                      // scale: 0.5,
                       child: FadeInAnimation(
                         child: CollectionCard(
                           collections: collections,
