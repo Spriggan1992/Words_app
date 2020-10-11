@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/bloc/blocs.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:words_app/config/constants.dart';
 import 'package:words_app/models/models.dart';
+import 'package:words_app/utils/size_config.dart';
 import 'package:words_app/widgets/widgets.dart';
 
 import 'collection_widgets.dart';
@@ -69,21 +71,21 @@ class _CollectionsEditDialogState extends State<CollectionsEditDialog> {
       'pl': 'polish',
       'ru': 'russian',
     };
-    double screenWidth = MediaQuery.of(context).size.width;
 
+    final double defaultSize = SizeConfig.defaultSize;
     return Container(
-      height: 340,
-      width: 80,
+      height: SizeConfig.blockSizeVertical * 50,
+      width: SizeConfig.blockSizeHorizontal * 56,
       child: Stack(
         alignment: Alignment.center,
         overflow: Overflow.visible,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 20),
-            height: 300,
-            width: screenWidth * 0.6,
+            margin: EdgeInsets.only(top: defaultSize * 2),
+            height: SizeConfig.blockSizeVertical * 45,
+            width: SizeConfig.blockSizeHorizontal * 60,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(defaultSize * 1),
               color: Colors.white,
             ),
             child: Column(
@@ -93,10 +95,10 @@ class _CollectionsEditDialogState extends State<CollectionsEditDialog> {
                 // Title Text Field
                 Container(
                   alignment: Alignment.center,
-                  width: 200,
+                  width: defaultSize * 20,
                   child: TextField(
                       expands: false,
-                      style: TextStyle(fontSize: 25),
+                      style: TextStyle(fontSize: defaultSize * 2.5),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(border: InputBorder.none),
                       controller:
@@ -105,10 +107,10 @@ class _CollectionsEditDialogState extends State<CollectionsEditDialog> {
                         onSubmitTitleField = value;
                       }),
                 ),
-                Flexible(child: SizedBox(height: 10)),
+                Flexible(child: SizedBox(height: defaultSize * 1)),
                 Flexible(
                   child: MySeparator(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: EdgeInsets.symmetric(horizontal: defaultSize * 1),
                     dWidth: 3.0,
                     dCount: 5.0,
                     color: Colors.grey,
@@ -116,7 +118,7 @@ class _CollectionsEditDialogState extends State<CollectionsEditDialog> {
                   ),
                 ),
                 Flexible(
-                  child: SizedBox(height: 30.0),
+                  child: SizedBox(height: defaultSize * 3),
                 ),
 
                 Container(
@@ -128,7 +130,8 @@ class _CollectionsEditDialogState extends State<CollectionsEditDialog> {
                             value: language,
                             child: Text(languageMap[language],
                                 style: TextStyle(
-                                    fontSize: 25, color: Color(0xFF34c7b3))),
+                                    fontSize: defaultSize * 2.5,
+                                    color: kLanguagePickerColor)),
                           ),
                         )
                         .toList(),
@@ -140,23 +143,23 @@ class _CollectionsEditDialogState extends State<CollectionsEditDialog> {
                     },
                   ),
                 ),
-                Flexible(child: SizedBox(height: 5.0)),
+                Flexible(child: SizedBox(height: defaultSize * 0.5)),
                 // Words Text Holder
                 CollectionTextHolder(
                   titleName: 'words:   ',
                   titleNameValue: widget.collection.wordCount.toString(),
-                  fontSize1: 25.0,
-                  fontSize2: 25.0,
+                  fontSize1: defaultSize * 2.5,
+                  fontSize2: defaultSize * 2.5,
                 ),
-                Flexible(child: SizedBox(height: 25.0)),
+                Flexible(child: SizedBox(height: defaultSize * 2.5)),
 
-                Flexible(child: SizedBox(height: 40)),
+                Flexible(child: SizedBox(height: defaultSize * 4)),
               ],
             ),
           ),
           Positioned.fill(
-            top: 270,
-            right: 10,
+            top: defaultSize * 27,
+            right: defaultSize * 1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[],
@@ -165,8 +168,8 @@ class _CollectionsEditDialogState extends State<CollectionsEditDialog> {
           Positioned(
             // bottom: 300,
             // left: 50,
-            top: 5.0,
-            left: 138,
+            top: defaultSize * 0.5,
+            left: defaultSize * 14.5,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
@@ -174,7 +177,7 @@ class _CollectionsEditDialogState extends State<CollectionsEditDialog> {
 
                 CustomRoundBtn(
                   icon: Icons.check,
-                  fillColor: Color(0xffDA627D),
+                  fillColor: Theme.of(context).accentColor,
                   // onPressed: onSaveForm,
                   onPressed: () {
                     context.bloc<CollectionsBloc>().add(
@@ -189,7 +192,7 @@ class _CollectionsEditDialogState extends State<CollectionsEditDialog> {
 
                 // Close btn
                 CustomRoundBtn(
-                  fillColor: Color(0xff450920),
+                  fillColor: Theme.of(context).primaryColor,
                   icon: Icons.close,
                   onPressed: () => Navigator.of(context).pop(),
                   color: Theme.of(context).primaryColor,

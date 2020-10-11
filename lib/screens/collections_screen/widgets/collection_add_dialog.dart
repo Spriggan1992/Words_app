@@ -4,6 +4,7 @@ import 'package:words_app/bloc/blocs.dart';
 
 import 'package:words_app/config/constants.dart';
 import 'package:words_app/models/models.dart';
+import 'package:words_app/utils/size_config.dart';
 import 'package:words_app/widgets/widgets.dart';
 
 import '../../screens.dart';
@@ -18,14 +19,8 @@ class DialogAddCollection extends StatefulWidget {
 }
 
 class _DialogAddCollectionState extends State<DialogAddCollection> {
-  FocusNode myFocusNodeCollectionName;
-  FocusNode myFocusNodeLanguage;
   String collectionTitle;
   // String collectionLanguage;
-  double heightCollectionName = 0;
-  double heightLanguage = 1.2;
-  bool isTextCollectionNameFiledEmpty = true;
-  bool isLanguageTextFileEmpty = true;
   String collectionLanguage = 'english';
 
   var _languages = [
@@ -63,184 +58,159 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
     'polish': 'pl',
     'russian': 'ru',
   };
-  @override
-  void initState() {
-    super.initState();
-    myFocusNodeLanguage = FocusNode();
-    myFocusNodeCollectionName = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    myFocusNodeLanguage.dispose();
-    myFocusNodeCollectionName.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    // Setup height for [heightCollectionName]
-    myFocusNodeCollectionName.addListener(() {
-      setState(() {
-        if (myFocusNodeCollectionName.hasFocus ||
-            !isTextCollectionNameFiledEmpty) {
-          heightCollectionName = 0.0;
-        } else {
-          heightCollectionName = 1.2;
-        }
-      });
-    });
-    // Setup height for [heightLanguage]
-    myFocusNodeLanguage.addListener(() {
-      setState(() {
-        if (myFocusNodeLanguage.hasFocus || !isLanguageTextFileEmpty) {
-          heightLanguage = 0;
-        } else {
-          heightLanguage = 1.2;
-        }
-      });
-    });
-
-    Size size = MediaQuery.of(context).size;
+    final double defaultSize = SizeConfig.defaultSize;
     return Container(
-      height: size.height * 0.43,
-      width: size.width * 0.8,
+      height: SizeConfig.blockSizeHorizontal * 70,
+      width: SizeConfig.blockSizeHorizontal * 80,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              CustomRoundBtn(
-                fillColor: Color(0xff450920),
-                icon: Icons.close,
-                onPressed: () => Navigator.of(context).pop(),
-                color: Theme.of(context).primaryColor,
-              ),
-            ],
-          ),
-          SizedBox(height: 20.0),
-          Container(
-            decoration: innerShadow,
-            child: TextField(
-              style: kHintStyle,
-              textAlign: TextAlign.left,
-              decoration: InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 13, horizontal: 10),
-                  filled: true,
-                  hintStyle: Theme.of(context).primaryTextTheme.bodyText2.merge(
-                        kHintStyle,
-                      ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none),
-                  hintText: 'Collection name',
-                  isDense: true),
-              onChanged: (value) {
-                collectionTitle = value;
-                if (collectionTitle.length > 0) {
-                  isTextCollectionNameFiledEmpty = false;
-                } else {
-                  isTextCollectionNameFiledEmpty = true;
-                }
-              },
-            ),
-          ),
-          SizedBox(height: 20),
-
-          Container(
-            alignment: Alignment.center,
-            decoration: innerShadow,
-            child: FormField<String>(
-              builder: (FormFieldState<String> state) {
-                return InputDecorator(
-                  decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  isEmpty: collectionLanguage == '',
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: collectionLanguage,
-                      isDense: true,
-                      onChanged: (newValue) {
-                        setState(
-                          () {
-                            collectionLanguage = newValue;
-                            state.didChange(newValue);
-                          },
-                        );
-                      },
-                      items: _languages.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                            style: Theme.of(context)
-                                .primaryTextTheme
-                                .bodyText2
-                                .merge(
-                                  kHintStyle,
-                                ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          SizedBox(height: 20),
-
-          /// Create collection Btn
-          RaisedButton(
-            highlightElevation: 5,
-            elevation: 10,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            padding: EdgeInsets.all(0),
-            color: Color(0xffDA627D),
-            child: Text(
-              'CREATE COLLECTION',
-              style: Theme.of(context).primaryTextTheme.bodyText2.merge(
-                    TextStyle(color: Colors.white),
-                  ),
-            ),
-            onPressed: () {
-              Collection collection = Collection(
-                language: languageMap[collectionLanguage],
-                title: collectionTitle,
-              );
-              context.bloc<CollectionsBloc>().add(
-                    CollectionsAdded(
-                      collection: collection,
-                    ),
-                  );
-              context.bloc<WordsBloc>().add(
-                    WordsLoaded(
-                      id: collection.id,
-                    ),
-                  );
-
-              Navigator.pushNamed(
-                context,
-                WordsScreen.id,
-                arguments: {
-                  "id": collection.id,
-                  'title': collection.title,
-                },
-              );
-            },
-          )
+          buildCloseBtn(context),
+          SizedBox(height: defaultSize * 2),
+          buildCollectionTitleField(defaultSize, context),
+          SizedBox(height: defaultSize * 2),
+          buildLanguagePicker(defaultSize),
+          SizedBox(height: defaultSize * 2),
+          buildCreateCollectionBtn(defaultSize, context)
         ],
       ),
+    );
+  }
+
+  Widget buildCloseBtn(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        CustomRoundBtn(
+          fillColor: Color(0xff450920),
+          icon: Icons.close,
+          onPressed: () => Navigator.of(context).pop(),
+          color: Theme.of(context).primaryColor,
+        ),
+      ],
+    );
+  }
+
+  Container buildCollectionTitleField(
+    double defaultSize,
+    BuildContext context,
+  ) {
+    return Container(
+      decoration: innerShadow,
+      child: TextField(
+        style: kHintStyle,
+        textAlign: TextAlign.left,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(
+                vertical: defaultSize * 1.3, horizontal: defaultSize * 1),
+            filled: true,
+            hintStyle: Theme.of(context).primaryTextTheme.bodyText2.merge(
+                  kHintStyle,
+                ),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(defaultSize * 1),
+                borderSide: BorderSide.none),
+            hintText: 'Collection name',
+            isDense: true),
+        onChanged: (value) {
+          collectionTitle = value;
+        },
+      ),
+    );
+  }
+
+  Container buildLanguagePicker(double defaultSize) {
+    return Container(
+      alignment: Alignment.center,
+      decoration: innerShadow,
+      child: FormField<String>(
+        builder: (FormFieldState<String> state) {
+          return InputDecorator(
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(
+                  vertical: defaultSize * 1, horizontal: defaultSize * 2),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(defaultSize * 1),
+                borderSide: BorderSide.none,
+              ),
+            ),
+            isEmpty: collectionLanguage == '',
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: collectionLanguage,
+                isDense: true,
+                onChanged: (newValue) {
+                  setState(
+                    () {
+                      collectionLanguage = newValue;
+                      state.didChange(newValue);
+                    },
+                  );
+                },
+                items: _languages.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: Theme.of(context).primaryTextTheme.bodyText2.merge(
+                            kHintStyle,
+                          ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  RaisedButton buildCreateCollectionBtn(
+    double defaultSize,
+    BuildContext context,
+  ) {
+    return RaisedButton(
+      highlightElevation: 5,
+      elevation: 10,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(defaultSize * 1)),
+      padding: EdgeInsets.zero,
+      color: Color(0xffDA627D),
+      child: Text(
+        'CREATE COLLECTION',
+        style: Theme.of(context).primaryTextTheme.bodyText2.merge(
+              TextStyle(color: Colors.white),
+            ),
+      ),
+      onPressed: () {
+        Collection collection = Collection(
+          language: languageMap[collectionLanguage],
+          title: collectionTitle,
+        );
+        context.bloc<CollectionsBloc>().add(
+              CollectionsAdded(
+                collection: collection,
+              ),
+            );
+        context.bloc<WordsBloc>().add(
+              WordsLoaded(
+                id: collection.id,
+              ),
+            );
+
+        Navigator.pushNamed(
+          context,
+          WordsScreen.id,
+          arguments: {
+            "id": collection.id,
+            'title': collection.title,
+          },
+        );
+      },
     );
   }
 }
