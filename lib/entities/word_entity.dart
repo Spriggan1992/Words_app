@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
-import 'package:words_app/models/models.dart';
 
 class WordEntity extends Equatable {
   final String collectionId;

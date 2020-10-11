@@ -37,9 +37,9 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
           .where((collection) => collection.id == event.collectionId)
           .toList();
       yield TrainingsSuccess(
-        filteredCollections: filteredCollections,
-        filteredWords: updatedWords,
-        collections: updatedCollections,
+        filteredCollections: filteredCollections ?? [],
+        filteredWords: updatedWords ?? [],
+        collections: updatedCollections ?? [],
         isEmptyCardWord: updatedIsEmptyCardWord,
       );
     } catch (_) {

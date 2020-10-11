@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:words_app/models/models.dart';
 
 class CustomRadio extends StatefulWidget {
   final Function getPart;
@@ -45,8 +46,10 @@ class CustomRadioState extends State<CustomRadio> {
                 radioButtonList
                     .forEach((element) => element.isSelected = false);
                 radioButtonList[index].isSelected = true;
-                widget.getPart(radioButtonList[index].buttonText);
-                widget.getColor(radioButtonList[index].color);
+                Part part = Part(
+                    partName: radioButtonList[index].buttonText,
+                    partColor: radioButtonList[index].color);
+                widget.getPart(part);
               },
             );
           },

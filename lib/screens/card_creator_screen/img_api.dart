@@ -16,24 +16,24 @@ class _ImageApiState extends State<ImageApi> {
       child: Scaffold(
         body: BlocBuilder<CardCreatorBloc, CardCreatorState>(
           builder: (context, state) {
-            if (state is CardCreatorLoading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is CardCreatorSuccess) {
-              return InputField(
-                imageData: state.imageData,
-              );
-            }
-            if (state is CardCreatorFailure) {
-              return Center(
-                child: Text(
-                  "${state.message}",
-                  style: TextStyle(fontSize: 50),
-                ),
-              );
-            }
+            // if (state is CardCreatorLoading) {
+            //   return Center(
+            //     child: CircularProgressIndicator(),
+            //   );
+            // }
+            // if (state is CardCreatorSuccess) {
+            //   return InputField(
+            //     imageData: state.imageData,
+            //   );
+            // }
+            // if (state is CardCreatorFailure) {
+            //   return Center(
+            //     child: Text(
+            //       "${state.message}",
+            //       style: TextStyle(fontSize: 50),
+            //     ),
+            //   );
+            // }
           },
         ),
       ),

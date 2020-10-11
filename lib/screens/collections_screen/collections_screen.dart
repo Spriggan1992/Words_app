@@ -1,6 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/blocs.dart';
+import 'package:words_app/config/screenDefiner.dart';
+import 'package:words_app/screens/screens.dart';
 import 'package:words_app/widgets/widgets.dart';
 import 'widgets/collection_widgets.dart';
 
@@ -20,81 +25,21 @@ class CollectionsScreen extends StatelessWidget {
           return false;
         },
         child: Scaffold(
-          // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: BaseAppBar(
+            screenDefiner: ScreenDefiner.collections,
             title: Text('collections'),
             appBar: AppBar(),
           ),
-          // bottomNavigationBar: BaseBottomAppBar(
-          //   child1: ReusableBottomIconBtn(
-          //     color: Colors.white,
-          //     icons: Icons.arrow_back_ios,
-          //     onPress: () {},
-          //   ),
-          //   child2: ReusableBottomIconBtn(
-          //     color: Colors.white,
-          //     icons: Icons.home,
-          //     onPress: () {},
-          //   ),
-          // ),
-
-          // floatingActionButtonLocation:
-          //     FloatingActionButtonLocation.,
-          // floatingActionButton: ReusableFloatActionButton(),
-          bottomSheet: Container(
-            height: 60,
-
-            color: Theme.of(context).scaffoldBackgroundColor,
-            // color: Colors.white,
-            // color: Colors.transparent,
-            child: Stack(
-              alignment: AlignmentDirectional.center,
-              overflow: Overflow.visible,
-              // alignment: Alignment.bottomLeft,
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    child: Row(
-                  children: [
-                    SizedBox(width: 10),
-                    ReusableBottomIconBtn(
-                      color: Theme.of(context).accentColor,
-                      icons: Icons.arrow_back_ios,
-                      onPress: () {},
-                    ),
-                    SizedBox(width: 20),
-                    ReusableBottomIconBtn(
-                      color: Theme.of(context).accentColor,
-                      icons: Icons.home,
-                      onPress: () {},
-                    ),
-                  ],
-                )),
-                Positioned(
-                  top: -10,
-                  child: ReusableFloatActionButton(
-                      onPressed: () => buildShowGeneralDialog(context)),
-                ),
-                Container(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ReusableBottomIconBtn(
-                      color: Theme.of(context).accentColor,
-                      icons: Icons.fitness_center,
-                      onPress: () {},
-                    ),
-                    SizedBox(width: 20),
-                    ReusableBottomIconBtn(
-                      color: Theme.of(context).accentColor,
-                      icons: Icons.settings,
-                      onPress: () {},
-                    ),
-                    SizedBox(width: 10),
-                  ],
-                )),
-              ],
-            ),
+          bottomSheet: BaseBottomAppbar(
+            screenDefiner: ScreenDefiner.collections,
+            add: () => buildShowGeneralDialog(context),
+            goToTrainings: () {
+              Navigator.pushNamed(
+                context,
+                TrainingManager.id,
+              );
+              context.bloc<TrainingsBloc>().add(TrainingsLoaded());
+            },
           ),
           body: BlocBuilder<CollectionsBloc, CollectionsState>(
             builder: (context, state) {

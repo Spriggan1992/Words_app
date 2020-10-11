@@ -49,75 +49,42 @@ void main() => runApp(MultiBlocProvider(providers: [
           return PartColorCubit();
         },
       ),
+      BlocProvider<ThemeBloc>(
+        create: (context) {
+          return ThemeBloc()..add(LoadedTheme());
+        },
+      ),
     ], child: MyApp()));
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Create this textTheme  because there're  two fonts in  app app
-    final textTheme = Theme.of(context).textTheme;
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
           create: (_) => Bricks(),
         ),
       ],
-      child: MaterialApp(
-        theme: ThemeData.light().copyWith(
-          //primary font is Montserrat and font for appbar titles is Anybody
-          primaryTextTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
-            // responsible for title colors in the app, AppBar title color and style
-            headline6: TextStyle(
-              color: Color(0xffA53860),
-              fontFamily: 'Anybody',
-              fontStyle: FontStyle.italic,
-              fontSize: 20,
-            ),
-            // bodyText1: TextStyle(
-            //   color: Color(0xFFDA627D),
-            // ),
-
-            // to apply it on Text, you need specify Theme.of(context).primaryTextField.bodyText2
-            bodyText2: GoogleFonts.montserrat(
-                textStyle: TextStyle(
-              color: Colors.black,
-            )),
-            // bodyText2: TextStyle(
-            //   color: Colors.green,
-            //   fontSize: 40,
-            // ),
-          ),
-          //resposible for appBArColor
-          primaryColor: Color(0xff450920),
-          buttonColor: Color(0xFFDA627D),
-          accentColor: Color(0xFFDA627D),
-          backgroundColor: Color(0xffEAE2DA),
-          scaffoldBackgroundColor: Color(0xffEAE2DA),
-          bottomAppBarColor: Color(0xffA53860),
-
-//          primaryTextTheme:
-//              //this responsible for appBAr title
-//              TextTheme(
-//            headline6: TextStyle(
-//              color: Color(0xffA53860),
-//            ),
-//          ),
-        ),
-        title: 'Word App',
-        debugShowCheckedModeBanner: false,
-        initialRoute: CollectionsScreen.id,
-        routes: {
-          CollectionsScreen.id: (_) => CollectionsScreen(),
-          WordsScreen.id: (_) => WordsScreen(),
-          CardCreator.id: (_) => CardCreator(),
-          ReviewCard.id: (_) => ReviewCard(),
-          YesNoGame.id: (_) => YesNoGame(),
-          BricksGame.id: (_) => BricksGame(),
-          PairGame.id: (_) => PairGame(),
-          ResultScreen.id: (_) => ResultScreen(),
-          TrainingManager.id: (_) => TrainingManager(),
-          ImageApi.id: (_) => ImageApi(),
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            title: 'Word App',
+            debugShowCheckedModeBanner: false,
+            initialRoute: CollectionsScreen.id,
+            theme: state.themeData,
+            routes: {
+              CollectionsScreen.id: (_) => CollectionsScreen(),
+              WordsScreen.id: (_) => WordsScreen(),
+              // CardCreator.id: (_) => CardCreator(),
+              ReviewCard.id: (_) => ReviewCard(),
+              YesNoGame.id: (_) => YesNoGame(),
+              BricksGame.id: (_) => BricksGame(),
+              PairGame.id: (_) => PairGame(),
+              ResultScreen.id: (_) => ResultScreen(),
+              TrainingManager.id: (_) => TrainingManager(),
+              ImageApi.id: (_) => ImageApi(),
+            },
+          );
         },
       ),
     );
