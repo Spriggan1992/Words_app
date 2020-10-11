@@ -14,6 +14,7 @@ import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/models.dart';
+import 'package:words_app/repositories/image_repository.dart';
 
 import 'package:words_app/screens/card_creator_screen/card_creator.dart';
 import 'package:words_app/screens/collections_screen/collections_screen.dart';
@@ -87,19 +88,31 @@ class WordsScreen extends StatelessWidget {
                 add: isEditingMode
                     ? () {}
                     : () {
-                        Navigator.pushNamed(
+                        // Navigator.pushNamed(
+                        //   context,
+                        //   CardCreator.id,
+                        //   arguments: {
+                        //     'isEditingMode': false,
+                        //     'collectionId': collectionId,
+                        //     'lang': collectionLang,
+                        //   },
+                        // );
+                        Navigator.push(
                           context,
-                          CardCreator.id,
-                          arguments: {
-                            'isEditingMode': false,
-                            'collectionId': collectionId,
-                            'lang': collectionLang,
-                          },
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider<CardCreatorBloc>(
+                              create: (context) => CardCreatorBloc(
+                                collectionId: collectionId,
+                                imageRepository: ImageRepository(),
+                              ),
+                              child: CardCreator(),
+                            ),
+                          ),
                         );
-                        context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
-                            word: Word(),
-                            isEditingMode: false,
-                            collectionLaguage: collectionLang));
+                        // context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
+                        //     word: Word(),
+                        //     isEditingMode: false,
+                        //     collectionLaguage: collectionLang));
                       },
                 goToTrainings: () {
                   context.bloc<TrainingsBloc>().add(TrainingsLoaded(
@@ -150,24 +163,37 @@ class WordsScreen extends StatelessWidget {
                   color: Colors.black26,
                   icon: Icons.edit,
                   onTap: () {
-                    Navigator.pushNamed(
+                    Navigator.push(
                       context,
-                      CardCreator.id,
-                      arguments: {
-                        'isEditingMode': true,
-                        'word': state.words[index],
-                        'collectionId': collectionId,
-                      },
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider<CardCreatorBloc>(
+                          create: (context) => CardCreatorBloc(
+                            collectionId: collectionId,
+                            imageRepository: ImageRepository(),
+                          ),
+                          child: CardCreator(word: state.words[index]),
+                        ),
+                      ),
                     );
-                    context
-                        .bloc<PartColorCubit>()
-                        .changeColor(state.words[index].part.partColor);
-                    context.bloc<CardCreatorBloc>().add(
-                          CardCreatorLoaded(
-                              word: state.words[index],
-                              isEditingMode: true,
-                              collectionLaguage: collectionLang),
-                        );
+
+                    // Navigator.pushNamed(
+                    //   context,
+                    //   CardCreator.id,
+                    //   arguments: {
+                    //     'isEditingMode': true,
+                    //     'word': state.words[index],
+                    //     'collectionId': collectionId,
+                    //   },
+                    // );
+                    // context
+                    //     .bloc<PartColorCubit>()
+                    //     .changeColor(state.words[index].part.partColor);
+                    // context.bloc<CardCreatorBloc>().add(
+                    //       CardCreatorLoaded(
+                    //           word: state.words[index],
+                    //           isEditingMode: true,
+                    //           collectionLaguage: collectionLang),
+                    //     );
                   },
                 ),
                 IconSlideAction(

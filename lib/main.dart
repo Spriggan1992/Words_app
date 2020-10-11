@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
             routes: {
               CollectionsScreen.id: (_) => CollectionsScreen(),
               WordsScreen.id: (_) => WordsScreen(),
-              CardCreator.id: (_) => CardCreator(),
+              // CardCreator.id: (_) => CardCreator(),
               ReviewCard.id: (_) => ReviewCard(),
               YesNoGame.id: (_) => YesNoGame(),
               BricksGame.id: (_) => BricksGame(),
