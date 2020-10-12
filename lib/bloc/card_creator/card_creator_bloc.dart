@@ -60,6 +60,24 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
     );
   }
 
+  Stream<CardCreatorState> _mapCardCreatorTargetLanguageUpdatedToState(
+      CardCreatorTargetLanguageUpdate event) async* {
+    print(event.targetLanguage);
+    if (state.word == null) {
+      final Word word = Word(
+        collectionId: _collectionId,
+        targetLang: event.targetLanguage,
+      );
+      yield state.update(word: word);
+    } else {
+      yield state.update(
+        word: state.word.copyWith(
+          ownLang: event.targetLanguage,
+        ),
+      );
+    }
+  }
+
   Stream<CardCreatorState> _mapCardCreatorOwnLanguageUpdatedToState(
       CardCreatorOwnLanguageUpdate event) async* {
     if (state.word == null) {
@@ -89,23 +107,6 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
       yield state.update(
         word: state.word.copyWith(
           part: event.part,
-        ),
-      );
-    }
-  }
-
-  Stream<CardCreatorState> _mapCardCreatorTargetLanguageUpdatedToState(
-      CardCreatorTargetLanguageUpdate event) async* {
-    if (state.word == null) {
-      final Word word = Word(
-        collectionId: _collectionId,
-        ownLang: event.targetLanguage,
-      );
-      yield state.update(word: word);
-    } else {
-      yield state.update(
-        word: state.word.copyWith(
-          ownLang: event.targetLanguage,
         ),
       );
     }
