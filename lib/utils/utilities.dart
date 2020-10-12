@@ -8,7 +8,6 @@ class Utilities {
   ///This method is returning [Color] object which previously was stored in String.
   static Color getColor(String color) {
     String valueString = color.split('(0x')[1].split(')')[0];
-    print(valueString);
     int value = int.parse(valueString, radix: 16);
     return Color(value);
   }
@@ -23,7 +22,7 @@ class Utilities {
     //to get current app folder path.
     final appDir = await syspaths.getApplicationDocumentsDirectory();
     //creating savedImage in path on the phone
-    final savedImage = await File('${appDir.path}/$name');
+    final savedImage = File('${appDir.path}/$name');
     //write data from byteData to savedImage
     await savedImage.writeAsBytes(byteData.buffer
         .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));

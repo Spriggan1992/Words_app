@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart'
     as sql; //medium between dart and data base stored on phone
 import 'package:path/path.dart' as path;
+import 'package:sqflite/utils/utils.dart';
+import 'package:words_app/config/paths.dart';
 
 class DBHelper {
   // static sql.Database _db;
@@ -27,11 +30,12 @@ class DBHelper {
         version: 1, onCreate: _onCreate);
   }
 
+  /// Method  creates specified tables to DB,
   static _onCreate(sql.Database db, int version) async {
     await db.execute(
-        'CREATE TABLE collections(id TEXT PRIMARY KEY, title TEXT, language TEXT)');
+        'CREATE TABLE collections(id TEXT PRIMARY KEY, title TEXT, language TEXT, wordCount INTEGER DEFAULT 0)');
     await db.execute(
-        'CREATE TABLE words(collectionId Text, id TEXT PRIMARY KEY, targetLang TEXT, ownLang TEXT, secondLang TEXT, thirdLang TEXT, partName TEXT, partColor TEXT, image TEXT, example TEXT, exampleTranslations TEXT)');
+        'CREATE TABLE words(collectionId Text, id TEXT PRIMARY KEY, targetLang TEXT, ownLang TEXT, secondLang TEXT, thirdLang TEXT, partName TEXT, partColor TEXT, image TEXT, example TEXT, exampleTranslations TEXT, difficulty INTEGER)');
   }
 
   //method's will all be static So we don't need to create an instance of it, to work with it
@@ -47,6 +51,13 @@ class DBHelper {
       data,
       conflictAlgorithm: sql.ConflictAlgorithm.replace,
     );
+  }
+
+  static Future<int> fetchWordCount(String id) async {
+    final db = await DBHelper.database();
+    var wordCount = firstIntValue(await db
+        .rawQuery("SELECT COUNT(*) FROM words WHERE collectionId='$id'"));
+    return wordCount;
   }
 
   static Future<void> populateList(
@@ -75,7 +86,19 @@ class DBHelper {
     );
   }
 
-  //TODO: create ui delete collection method
+  static Future<void> incrementCounter(String id) async {
+    final db = await DBHelper.database();
+    await db.rawQuery(
+        "UPDATE collections SET wordCount = wordCount + 1 WHERE id='$id'");
+  }
+
+  static Future<void> dicrementtCounter(String id) async {
+    final db = await DBHelper.database();
+    await db.rawQuery(
+        "UPDATE collections SET wordCount = wordCount - 1 WHERE id='$id'");
+  }
+
+  /// Delete collection method
   static Future<void> delete(String table, String id) async {
     final db = await DBHelper.database();
     db.delete(table, where: 'id = ?', whereArgs: [id]);

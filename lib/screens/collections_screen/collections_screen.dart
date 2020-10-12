@@ -1,14 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:words_app/bloc/collections/collections_bloc.dart';
-
-import 'package:words_app/components/base_appbar.dart';
-
-import 'package:words_app/components/reusable_main_button.dart';
-
-import 'components/body.dart';
-
-import 'components/collection_add_dialog.dart';
+import 'package:words_app/bloc/blocs.dart';
+import 'package:words_app/config/screenDefiner.dart';
+import 'package:words_app/screens/screens.dart';
+import 'package:words_app/widgets/widgets.dart';
+import 'widgets/collection_widgets.dart';
 
 /// [CollectionsScreen] responsible for showing all collections  created by user
 /// it is separated into components for better modularity
@@ -20,15 +19,27 @@ class CollectionsScreen extends StatelessWidget {
       top: false,
       child: WillPopScope(
         onWillPop: () async {
-          Navigator.pushNamedAndRemoveUntil(context, CollectionsScreen.id,
-              ModalRoute.withName(CollectionsScreen.id));
-          context.bloc<CollectionsBloc>().add(CollectionsSetToFalse());
-          return;
+          // Navigator.pushNamedAndRemoveUntil(context, CollectionsScreen.id,
+          //     ModalRoute.withName(CollectionsScreen.id));
+          // context.bloc<CollectionsBloc>().add(CollectionsSetToFalse());
+          return false;
         },
         child: Scaffold(
           appBar: BaseAppBar(
-            title: Text('words_collection'),
+            screenDefiner: ScreenDefiner.collections,
+            title: Text('collections'),
             appBar: AppBar(),
+          ),
+          bottomSheet: BaseBottomAppbar(
+            screenDefiner: ScreenDefiner.collections,
+            add: () => buildShowGeneralDialog(context),
+            goToTrainings: () {
+              Navigator.pushNamed(
+                context,
+                TrainingManager.id,
+              );
+              context.bloc<TrainingsBloc>().add(TrainingsLoaded());
+            },
           ),
           body: BlocBuilder<CollectionsBloc, CollectionsState>(
             builder: (context, state) {
@@ -45,20 +56,21 @@ class CollectionsScreen extends StatelessWidget {
                         collections: state.collections,
                       ),
                     ),
-                    ReusableMainButton(
-                      titleText: 'Add Collection',
-                      textColor: Colors.white,
-                      backgroundColor: Theme.of(context).accentColor,
-                      onPressed: () {
-                        buildShowGeneralDialog(
-                          context,
-                        );
-                      },
-                    )
+
+                    // ReusableMainButton(
+                    //   titleText: 'Add Collection',
+                    //   textColor: Colors.white,
+                    //   backgroundColor: Theme.of(context).buttonColor,
+                    //   onPressed: () {
+                    //     buildShowGeneralDialog(
+                    //       context,
+                    //     );
+                    //   },
+                    // )
                   ],
                 );
               } else {
-                return Text('Somthing went wrong.....');
+                return Text('Somthing went wrong...');
               }
             },
           ),

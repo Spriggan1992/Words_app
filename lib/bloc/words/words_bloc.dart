@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:words_app/models/collection.dart';
-import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/words_repository.dart';
+import 'package:words_app/models/collection_model.dart';
+import 'package:words_app/models/word_model.dart';
+import 'package:words_app/repositories/words/words_repository.dart';
 
 part 'words_event.dart';
 part 'words_state.dart';
@@ -12,6 +12,7 @@ part 'words_state.dart';
 class WordsBloc extends Bloc<WordsEvent, WordsState> {
   WordsBloc({this.wordsRepository}) : super(WordsLoading());
   final WordsRepository wordsRepository;
+
   Collection collection;
   Stream<WordsState> mapEventToState(
     WordsEvent event,
@@ -46,12 +47,32 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     if (event is WordsAdded) {
       yield* _mapWordsAddedToState(event);
     }
+    if (event is WordsPopulate) {
+      yield* _mapWordsPopulatedToState(event);
+    }
+    // if (event is WordsAdded) {
+    //   yield* _mapWordsUpdatedWordDifficultyToState(event);
+    // }
+  }
+
+  /// call populate method
+  Stream<WordsState> _mapWordsPopulatedToState(WordsPopulate event) async* {
+    try {
+      List<Word> dummyDataList = await wordsRepository.populateList(event.id);
+
+      // yield WordsSuccess(
+      //     words: [...(state as WordsSuccess).words, ...dummyDataList]);
+    } catch (_) {
+      yield WordsFailure();
+    }
   }
 
   /// Fetch data from db through repository
   Stream<WordsState> _mapWordsLoadedToState(WordsLoaded event) async* {
     try {
-      final words = await wordsRepository.fetchAndSetWords(event.id);
+      final words =
+          await wordsRepository.fetchAndSetWords(collectionId: event.id);
+
       yield WordsSuccess(words: words);
     } catch (_) {
       yield WordsFailure();
@@ -173,9 +194,8 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
       WordsUpdatedWord event) async* {
     try {
       final updatedWord = (state as WordsSuccess).words.map((word) {
-        print("from IF ${event.word.id}");
         if (word.id == event.word.id) {
-          wordsRepository.updateWord(word: event.word);
+          wordsRepository.updateWord(word: event.word, wordId: event.word.id);
         }
 
         return word.id == event.word.id
@@ -190,7 +210,8 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
                 part: event.word.part,
                 secondLang: event.word.secondLang,
                 targetLang: event.word.targetLang,
-                thirdLang: event.word.thirdLang)
+                thirdLang: event.word.thirdLang,
+              )
             : word;
       }).toList();
       yield WordsSuccess(words: updatedWord);
@@ -199,15 +220,51 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     }
   }
 
+  // /// This method is responsible for editing [Word] on dismissable swipe, edit button
+  // ///, and save it to UI wordsList  and DB
+  // Stream<WordsState> _mapWordsUpdatedWordDifficultyToState(
+  //     WordsUpdatedWord event) async* {
+  //   try {
+  //     final updatedWord = (state as WordsSuccess).words.map((word) {
+  //       print("from IF ${event.word.id}");
+  //       if (word.id == event.word.id) {
+  //         wordsRepository.updateWord(word: event.word);
+  //       }
+
+  //       return word.id == event.word.id
+  //           ? word.copyWith(
+  //               collectionId: word.collectionId,
+  //               id: event.word.id,
+  //               example: event.word.example,
+  //               isSelected: false,
+  //               exampleTranslations: event.word.exampleTranslations,
+  //               image: event.word.image,
+  //               ownLang: event.word.ownLang,
+  //               part: event.word.part,
+  //               secondLang: event.word.secondLang,
+  //               targetLang: event.word.targetLang,
+  //               thirdLang: event.word.thirdLang,
+  //             )
+  //           : word;
+  //     }).toList();
+  //     yield WordsSuccess(words: updatedWord);
+  //   } catch (_) {
+  //     yield WordsFailure();
+  //   }
+  // }
+
   /// This method is responsible for adding [Word] on preees of bottom Add Word buttton, edit button , to UI and DB
   Stream<WordsState> _mapWordsAddedToState(WordsAdded event) async* {
     if (state is WordsSuccess) {
       final List<Word> updatedWord = List.from((state as WordsSuccess).words)
         ..add(event.word);
-      print('FROM _mapWordsAddedToState:  ${event.word.collectionId}');
+      for (int i = 0; i < updatedWord.length; i++) {
+        print(updatedWord[i].image);
+      }
 
       yield WordsSuccess(words: updatedWord);
-      await wordsRepository.addNewWord(event.word);
+
+      await wordsRepository.addNewWord(word: event.word);
     }
   }
 }

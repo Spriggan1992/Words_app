@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:provider/provider.dart';
+
+import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
+import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
-import 'package:words_app/components/reusable_main_button.dart';
+import 'package:words_app/config/screenDefiner.dart';
+import 'package:words_app/config/themes.dart';
+
+import 'package:words_app/constants/constants.dart';
 import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/helpers/functions.dart';
-import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/words_repository.dart';
+import 'package:words_app/models/models.dart';
+import 'package:words_app/repositories/image_repository.dart';
+
 import 'package:words_app/screens/card_creator_screen/card_creator.dart';
 import 'package:words_app/screens/collections_screen/collections_screen.dart';
 import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
 import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/widgets/widgets.dart';
 import 'components/word_card.dart';
 
 class WordsScreen extends StatelessWidget {
@@ -25,6 +32,7 @@ class WordsScreen extends StatelessWidget {
     Map args = ModalRoute.of(context).settings.arguments;
     String collectionId = args['id'];
     String collectionTitle = args['title'];
+    String collectionLang = args['lang'];
 
     return WillPopScope(
       /// Overriding Back navigation logic --> exit from EditMode
@@ -33,13 +41,13 @@ class WordsScreen extends StatelessWidget {
         context.bloc<WordsBloc>().add(WordsTurnOffIsEditingMode());
         Navigator.pushNamedAndRemoveUntil(context, CollectionsScreen.id,
             ModalRoute.withName(CollectionsScreen.id));
+        context.bloc<CollectionsBloc>().add(CollectionsLoaded());
         return;
       },
       child: SafeArea(
         // Exclude top from SafeArea
         top: true,
         child: Scaffold(
-          backgroundColor: Color(0xFFeae2da),
           body: BlocBuilder<WordsBloc, WordsState>(
             builder: (context, state) {
               if (state is WordsLoading) {
@@ -49,7 +57,8 @@ class WordsScreen extends StatelessWidget {
               }
               if (state is WordsSuccess) {
                 /// Use cubit to switch editing mode(For selecting words);
-                return buildBody(collectionTitle, collectionId, state);
+                return buildBody(
+                    collectionTitle, collectionId, state, collectionLang);
               }
               return Text('Somthing went wrong....');
             },
@@ -59,8 +68,8 @@ class WordsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildBody(
-      String collectionTitle, String collectionId, WordsSuccess state) {
+  Widget buildBody(String collectionTitle, String collectionId,
+      WordsSuccess state, String collectionLang) {
     return Container(
       child: BlocBuilder<WordsCubit, bool>(
         builder: (context, isEditingMode) {
@@ -72,26 +81,48 @@ class WordsScreen extends StatelessWidget {
                   isEditingMode, context, collectionTitle, collectionId, state),
 
               /// List words
-              buildListView(state, isEditingMode, collectionId),
+              buildListView(state, isEditingMode, collectionId, collectionLang),
 
-              ReusableMainButton(
-                titleText: 'Add Word',
-                textColor: Colors.white,
-                backgroundColor: Theme.of(context).accentColor,
-                onPressed: isEditingMode
+              BaseBottomAppbar(
+                screenDefiner: ScreenDefiner.words,
+                add: isEditingMode
                     ? () {}
                     : () {
-                        Navigator.pushNamed(
+                        // Navigator.pushNamed(
+                        //   context,
+                        //   CardCreator.id,
+                        //   arguments: {
+                        //     'isEditingMode': false,
+                        //     'collectionId': collectionId,
+                        //     'lang': collectionLang,
+                        //   },
+                        // );
+                        Navigator.push(
                           context,
-                          CardCreator.id,
-                          arguments: {
-                            'isEditingMode': false,
-                            'collectionId': collectionId,
-                          },
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider<CardCreatorBloc>(
+                              create: (context) => CardCreatorBloc(
+                                collectionId: collectionId,
+                                imageRepository: ImageRepository(),
+                              ),
+                              child: CardCreator(),
+                            ),
+                          ),
                         );
-                        context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
-                            word: Word(), isEditingMode: false));
+                        // context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
+                        //     word: Word(),
+                        //     isEditingMode: false,
+                        //     collectionLaguage: collectionLang));
                       },
+                goToTrainings: () {
+                  context.bloc<TrainingsBloc>().add(TrainingsLoaded(
+                      words: state.words, collectionId: collectionId));
+                  Navigator.pushNamed(
+                    context,
+                    TrainingManager.id,
+                  );
+                },
+                trainingsWordCounter: "${state.words?.length ?? 0}",
               ),
             ],
           );
@@ -100,8 +131,8 @@ class WordsScreen extends StatelessWidget {
     );
   }
 
-  Expanded buildListView(
-      WordsSuccess state, bool isEditingMode, String collectionId) {
+  Expanded buildListView(WordsSuccess state, bool isEditingMode,
+      String collectionId, String collectionLang) {
     return Expanded(
       child: Container(
         padding: EdgeInsets.only(bottom: 25.0),
@@ -122,33 +153,52 @@ class WordsScreen extends StatelessWidget {
                 selectedList: state.selectedList,
                 word: state.words[index],
                 words: state.words,
+                collectionId: collectionId,
               ), //
               actionPane: SlidableDrawerActionPane(),
+
               secondaryActions: <Widget>[
                 IconSlideAction(
                   caption: 'Edit',
-                  color: Colors.black45,
+                  color: Colors.black26,
                   icon: Icons.edit,
                   onTap: () {
-                    Navigator.pushNamed(
+                    Navigator.push(
                       context,
-                      CardCreator.id,
-                      arguments: {
-                        'isEditingMode': true,
-                        'word': state.words[index],
-                        'collectionId': collectionId
-                      },
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider<CardCreatorBloc>(
+                          create: (context) => CardCreatorBloc(
+                            collectionId: collectionId,
+                            imageRepository: ImageRepository(),
+                          ),
+                          child: CardCreator(word: state.words[index]),
+                        ),
+                      ),
                     );
-                    context
-                        .bloc<PartColorCubit>()
-                        .changeColor(state.words[index].part.partColor);
-                    context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
-                        word: state.words[index], isEditingMode: true));
+
+                    // Navigator.pushNamed(
+                    //   context,
+                    //   CardCreator.id,
+                    //   arguments: {
+                    //     'isEditingMode': true,
+                    //     'word': state.words[index],
+                    //     'collectionId': collectionId,
+                    //   },
+                    // );
+                    // context
+                    //     .bloc<PartColorCubit>()
+                    //     .changeColor(state.words[index].part.partColor);
+                    // context.bloc<CardCreatorBloc>().add(
+                    //       CardCreatorLoaded(
+                    //           word: state.words[index],
+                    //           isEditingMode: true,
+                    //           collectionLaguage: collectionLang),
+                    //     );
                   },
                 ),
                 IconSlideAction(
                   caption: 'Delete',
-                  color: Colors.red,
+                  color: Theme.of(context).accentColor,
                   icon: Icons.delete,
                   onTap: () => deleteConfirmation(context, () {
                     context
@@ -184,11 +234,7 @@ class WordsScreen extends StatelessWidget {
                 ? Text('')
                 : Text(
                     "${collectionTitle ?? ''}",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Theme.of(context).accentColor,
-                      fontFamily: 'Anybody',
-                    ),
+                    style: kAppBarTextStyle,
                   ),
           ),
           isEditingMode
@@ -210,9 +256,6 @@ class WordsScreen extends StatelessWidget {
                               .add(WordsAddSelectedAllToSelectedList());
                         },
                         icon: Icon(Icons.select_all)),
-                    // Stack(
-                    //   alignment: Alignment.topRight,
-                    //   children: [
                     IconButton(
                         onPressed: () => deleteConfirmation(context, () {
                               BlocProvider.of<WordsBloc>(context)
@@ -220,28 +263,6 @@ class WordsScreen extends StatelessWidget {
                               Navigator.pop(context);
                             }, 'Do you want to delete this word?'),
                         icon: Icon(Icons.delete)),
-                    //   Positioned(
-                    //     child: Text("${state.selectedList?.length ?? 0}"),
-                    //   ),
-                    // ],
-                    // ),
-                    // Stack(
-                    //   alignment: Alignment.topRight,
-                    //   children: [
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            TrainingManager.id,
-                            arguments: {'words': state.selectedList},
-                          );
-                        },
-                        icon: Icon(Icons.fitness_center)),
-                    // Positioned(
-                    //   child: Text("${state.selectedList?.length ?? 0}"),
-                    // ),
-                    // ],
-                    // ),
                     IconButton(
                         onPressed: () {
                           context.bloc<WordsCubit>().toggleEditMode();
@@ -253,39 +274,37 @@ class WordsScreen extends StatelessWidget {
                   ],
                 )
               : Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                TrainingManager.id,
-                                arguments: {'words': state.words},
-                              );
-                            },
-                            icon: Icon(
-                              Icons.fitness_center,
-                              color: Colors.white,
-                            )),
-                        Positioned(
-                          child: Text("${state.words?.length ?? 0}",
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                      ],
+                    ReusableIconBtn(
+                      icon: Icons.arrow_back_ios,
+                      onPress: () => Navigator.pop(context),
                     ),
+                    Spacer(),
                     IconButton(
                       icon: Icon(
                         Icons.refresh,
                         color: Colors.white,
                       ),
-                      onPressed: () async {
-                        await Provider.of<WordsRepository>(context,
-                                listen: false)
-                            .populateList(collectionId);
+                      onPressed: () {
+                        //FIXME: Temp used to populate words  delete it later
+                        context
+                            .bloc<WordsBloc>()
+                            .add(WordsPopulate(id: collectionId));
+                        context
+                            .bloc<WordsBloc>()
+                            .add(WordsLoaded(id: collectionId));
                       },
+                    ),
+                    IconButton(
+                      icon: context.bloc<ThemeBloc>().state.themeData ==
+                              Themes.themeData[AppTheme.LightTheme]
+                          ? Icon(Icons.brightness_4)
+                          : Icon(Icons.brightness_5),
+                      color: Colors.white,
+                      iconSize: 25.0,
+                      onPressed: () =>
+                          context.bloc<ThemeBloc>().add(UpdatedTheme()),
                     ),
                   ],
                 )

@@ -1,17 +1,12 @@
-import 'dart:async';
-
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
-import 'package:words_app/models/collection.dart';
-
-import '../../../models/word.dart';
-
+import 'package:words_app/models/collection_model.dart';
+import '../../../models/word_model.dart';
 import '../../../utils/size_config.dart';
 import '../../review_card_screen/review_card.dart';
-import 'dialog_window.dart';
 import 'expandable_container.dart';
 
 class WordCard extends StatefulWidget {
@@ -22,6 +17,7 @@ class WordCard extends StatefulWidget {
     this.word,
     this.isEditingMode,
     this.words,
+    this.collectionId,
   });
   final bool isEditingMode;
   final int index;
@@ -29,6 +25,7 @@ class WordCard extends StatefulWidget {
   final Word word;
   final Collection collection;
   final List<Word> words;
+  final String collectionId;
 
   @override
   _WordCardState createState() => _WordCardState();
@@ -39,6 +36,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
   // Animation pageAnimation;
   AnimationController expandController;
   Animation<double> animation;
+  Animation<double> textAnimation;
   Animation rotationAnimation;
   bool isExpanded = false;
   bool isEditMode = false;
@@ -50,6 +48,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     animation =
         CurvedAnimation(parent: expandController, curve: Curves.fastOutSlowIn);
+    textAnimation = Tween(begin: 15.0, end: 20.0).animate(expandController);
     rotationAnimation =
         Tween<double>(begin: 0.0, end: 0.5).animate(expandController);
   }
@@ -78,6 +77,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 
     /// Receiving word data from[ words_screen], using index to extract single item from array
     final word = widget.word;
+    // print("${word}");
 
     return ExpandableContainer(
       collapseHeight: defaultSize * 9,
@@ -110,6 +110,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                         ReviewCard(
                       index: widget.index,
                       words: widget.words,
+                      collectionId: widget.collectionId,
                     ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
@@ -134,9 +135,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
               bottom: BorderSide(
                   color: isExpanded ? Colors.black26 : Colors.transparent),
             ),
-            //change color inside expanded container
-            // color: isExpanded ? Color(0xFFCFD8DC) : Colors.transparent,
-            // T
             color: isExpanded
                 ? Color(0xFFCFD8DC)
                 : word.isSelected ? Colors.grey[400] : Colors.transparent,
@@ -146,138 +144,12 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
             alignment: Alignment.topLeft,
             overflow: Overflow.clip,
             children: <Widget>[
-              //Part of speech
-              AnimatedPositioned(
-                top: word.part.partName.length > 1
-                    ? defaultSize * 3.5
-                    : defaultSize * 3.0,
-                left: defaultSize,
-                duration: Duration(milliseconds: 300),
-                child: Container(
-                  width: isExpanded ? defaultSize : defaultSize * 4,
-                  height: defaultSize * 8,
-                  child: Text(
-                    word.part.partName,
-                    maxLines: 4,
-                    style: TextStyle(
-                      fontSize: word.part.partName.length > 1
-                          ? defaultSize * 1.5
-                          : defaultSize * 2.0,
-                      color: word.part.partColor,
-                    ),
-                  ),
-                ),
-              ),
-
-              // TargetLang holder
-              AnimatedPositioned(
-                curve: Curves.easeIn,
-                left: isExpanded ? defaultSize * 3.7 : defaultSize * 6.0,
-                top: defaultSize * 1.7,
-                duration: Duration(milliseconds: 300),
-                child: Container(
-                  width: isExpanded ? defaultSize * 32 : defaultSize * 30,
-                  height: defaultSize * 3,
-                  child: FittedBox(
-                    alignment: Alignment.centerLeft,
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      word.targetLang ?? '', //Main word
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          // fontSize: 20.0,
-                          fontSize: defaultSize * 2),
-                    ),
-                  ),
-                ),
-              ),
-
-              // OwnLang holder
-              AnimatedPositioned(
-                curve: Curves.easeIn,
-                left: isExpanded ? defaultSize * 3.7 : defaultSize * 6.0,
-                top: defaultSize * 5.0,
-                duration: Duration(milliseconds: 300),
-                child: Container(
-                  height: defaultSize * 3,
-                  width: isExpanded ? defaultSize * 32 : defaultSize * 30,
-                  child: FittedBox(
-                    alignment: Alignment.centerLeft,
-                    fit: BoxFit.scaleDown,
-                    child: Text(word.ownLang ?? '', // Translation
-                        style: TextStyle(
-                          fontSize: defaultSize * 1.6,
-                          fontFamily: 'italic',
-                        )),
-                  ),
-                ),
-              ),
-              // Arrow Icon
-              widget.isEditingMode
-                  ? Container()
-                  : Positioned(
-                      left: defaultSize * 36,
-                      top: defaultSize * 0.9,
-                      child: RotationTransition(
-                        turns: rotationAnimation,
-                        child: Container(
-                          child: IconButton(
-                            icon: Icon(Icons.arrow_drop_down),
-                            iconSize: 30,
-                            color:
-                                isExpanded ? Color(0xFF34c7b3) : Colors.black,
-                            onPressed: () {
-                              runExpandContainerAnimation();
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-              // Container with Word2 and Image
-              Positioned(
-                left: defaultSize * 3.7,
-                top: defaultSize * 8.5,
-                child: ScaleTransition(
-                  scale: animation,
-                  child:
-                      // Word2
-                      Container(
-                    width: isExpanded ? defaultSize * 32 : defaultSize * 30,
-                    height: defaultSize * 2,
-                    child: FittedBox(
-                      alignment: Alignment.centerLeft,
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        word.secondLang ?? ' ',
-                        style: TextStyle(fontSize: defaultSize * 1.6),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              // Example
-              Positioned(
-                left: defaultSize * 3.7,
-                top: defaultSize * 12,
-                child: ScaleTransition(
-                  scale: CurvedAnimation(
-                      parent: expandController, curve: Curves.fastOutSlowIn),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(defaultSize * 0.5),
-                      color: Colors.white,
-                    ),
-                    width: defaultSize * 32,
-                    height: defaultSize * 10,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                          'example : ${word.example} \n translationExample: ${word.exampleTranslations}'),
-                    ),
-                  ),
-                ),
-              )
+              buildSpeechPart(defaultSize, word),
+              buildTargetLangContainer(defaultSize, word, context),
+              buildOwnLangContainer(defaultSize, word, context),
+              buildSecondWordContainer(defaultSize, word, context),
+              buildArrowBtnContainer(defaultSize),
+              buildExampleContainer(defaultSize, word)
             ],
           ),
         ),
@@ -285,18 +157,158 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
     );
   }
 
-  Future showDialogWindow(BuildContext context, int index) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-          content: StatefulBuilder(builder: (context, setState) {
-            return DialogWindow(index: index);
-          }),
-        );
-      },
+  Positioned buildSpeechPart(double defaultSize, Word word) {
+    return Positioned(
+      // curve: Curves.easeIn,
+      top: defaultSize * 2.2,
+      left: defaultSize * 1.5,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        width: isExpanded ? defaultSize : defaultSize * 4,
+        height: defaultSize * 8,
+        child: Text(
+          "${word.part.partName}",
+          style: TextStyle(
+            fontSize: word.part.partName.length > 1
+                ? defaultSize * 1.5
+                : defaultSize * 2.0,
+            color: word.part.partColor,
+          ),
+        ),
+      ),
+    );
+  }
+
+  AnimatedPositioned buildTargetLangContainer(
+    double defaultSize,
+    Word word,
+    BuildContext context,
+  ) {
+    return AnimatedPositioned(
+      curve: Curves.easeIn,
+      left: isExpanded ? defaultSize * 3.7 : defaultSize * 6.0,
+      top: defaultSize * 1.7,
+      duration: Duration(milliseconds: 300),
+      child: Container(
+        height: defaultSize * 3,
+        width: isExpanded ? defaultSize * 32 : defaultSize * 30,
+        child: AutoSizeText(
+          // TODO : difficulty problem
+          "${word.targetLang}" ?? '',
+          maxLines: 2, //Main word
+          style: Theme.of(context).primaryTextTheme.bodyText2.merge(TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: defaultSize * 2,
+              )),
+        ),
+      ),
+    );
+  }
+
+  AnimatedPositioned buildOwnLangContainer(
+      double defaultSize, Word word, BuildContext context) {
+    return AnimatedPositioned(
+      curve: Curves.easeIn,
+      left: isExpanded ? defaultSize * 3.7 : defaultSize * 6.0,
+      top: defaultSize * 5.3,
+      duration: Duration(milliseconds: 300),
+      child: Container(
+        height: defaultSize * 3,
+        width: isExpanded ? defaultSize * 32 : defaultSize * 30,
+        child: AutoSizeText(
+          word.ownLang ?? '', // Translation
+          maxLines: 2,
+          style: Theme.of(context).primaryTextTheme.bodyText2.merge(
+                TextStyle(
+                  color: Theme.of(context).accentColor,
+                  fontSize: defaultSize * 1.6,
+                  fontFamily: 'italic',
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+        ),
+      ),
+    );
+  }
+
+  Positioned buildSecondWordContainer(
+      double defaultSize, Word word, BuildContext context) {
+    return Positioned(
+      left: defaultSize * 3.7,
+      top: defaultSize * 8.5,
+      child: ScaleTransition(
+        scale: animation,
+        child:
+            // Word2
+            Container(
+          width: isExpanded ? defaultSize * 32 : defaultSize * 30,
+          height: defaultSize * 2,
+          child: FittedBox(
+            alignment: Alignment.centerLeft,
+            fit: BoxFit.scaleDown,
+            child: Text(
+              word.secondLang ?? ' ',
+              style: Theme.of(context).primaryTextTheme.bodyText2.merge(
+                    TextStyle(
+                      color: Colors.black54,
+                      fontSize: defaultSize * 1.3,
+                    ),
+                  ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildArrowBtnContainer(
+    double defaultSize,
+  ) {
+    if (widget.isEditingMode) {
+      return Container();
+    } else
+      return Positioned(
+        left: defaultSize * 36,
+        top: defaultSize * 0.9,
+        child: RotationTransition(
+          turns: rotationAnimation,
+          child: Container(
+            child: IconButton(
+              icon: Icon(Icons.arrow_drop_down),
+              iconSize: 30,
+              color: isExpanded ? Color(0xFF34c7b3) : Colors.black,
+              onPressed: () {
+                runExpandContainerAnimation();
+              },
+            ),
+          ),
+        ),
+      );
+  }
+
+  Positioned buildExampleContainer(double defaultSize, Word word) {
+    return Positioned(
+      left: defaultSize * 3.7,
+      top: defaultSize * 12,
+      child: ScaleTransition(
+        scale: CurvedAnimation(
+            parent: expandController, curve: Curves.fastOutSlowIn),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(defaultSize * 0.5),
+            color: Colors.white,
+          ),
+          width: defaultSize * 32,
+          height: defaultSize * 10,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              '${word.example}\n${word.exampleTranslations}',
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

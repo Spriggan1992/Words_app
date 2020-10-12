@@ -1,0 +1,119 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:words_app/bloc/blocs.dart';
+import 'package:words_app/config/screenDefiner.dart';
+import 'package:words_app/screens/screens.dart';
+import 'package:words_app/widgets/widgets.dart';
+
+class BaseBottomAppbar extends StatelessWidget {
+  const BaseBottomAppbar({
+    Key key,
+    this.add,
+    this.screenDefiner,
+    this.goToTrainings,
+    this.trainingsWordCounter,
+  }) : super(key: key);
+
+  final Function add;
+  final ScreenDefiner screenDefiner;
+  final Function goToTrainings;
+  final String trainingsWordCounter;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        overflow: Overflow.visible,
+        children: [
+          Container(
+              child: Row(
+            children: [
+              SizedBox(width: 70),
+              buildHomeBtn(context, screenDefiner),
+            ],
+          )),
+          Positioned(
+            top: -10,
+            child: screenDefiner == ScreenDefiner.reviewCard
+                ? SizedBox.shrink()
+                : ReusableFloatActionButton(
+                    onPressed: add,
+                  ),
+          ),
+          Container(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              buildTrainingBtn(context, goToTrainings, trainingsWordCounter),
+              SizedBox(width: 70),
+            ],
+          )),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTrainingBtn(
+    BuildContext context,
+    Function goToTrainings,
+    String trainingsWordCounter,
+  ) {
+    if (screenDefiner == ScreenDefiner.words ||
+        screenDefiner == ScreenDefiner.reviewCard) {
+      return Stack(
+        alignment: Alignment.topRight,
+        children: [
+          ReusableIconBtn(
+              onPress: goToTrainings,
+              color: Theme.of(context).accentColor,
+              icon: Icons.fitness_center),
+          Positioned(
+            right: 10.0,
+            child: Text(trainingsWordCounter,
+                style: TextStyle(color: Theme.of(context).accentColor)),
+          ),
+        ],
+      );
+    } else
+      return ReusableIconBtn(
+        color: Theme.of(context).accentColor,
+        icon: Icons.fitness_center,
+        onPress: goToTrainings,
+      );
+  }
+
+  Widget buildHomeBtn(BuildContext context, ScreenDefiner screenDefiner) {
+    return ReusableIconBtn(
+      color: Theme.of(context).accentColor,
+      icon: Icons.home,
+      onPress: screenDefiner == ScreenDefiner.collections
+          ? null
+          : () => Navigator.push(
+              context, MaterialPageRoute(builder: (_) => CollectionsScreen())),
+    );
+  }
+
+  Widget buildBackBtn(BuildContext context, ScreenDefiner screenDefiner) {
+    if (screenDefiner == ScreenDefiner.collections) {
+      return Transform.rotate(
+        angle: 180 * pi / 180,
+        child: ReusableIconBtn(
+          color: Theme.of(context).accentColor,
+          icon: Icons.exit_to_app,
+          onPress: () => SystemNavigator.pop(),
+        ),
+      );
+    } else {
+      return ReusableIconBtn(
+        color: Theme.of(context).accentColor,
+        icon: Icons.arrow_back_ios,
+        onPress: () => Navigator.pop(context),
+      );
+    }
+  }
+}

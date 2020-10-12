@@ -1,5 +1,6 @@
 part of 'collections_bloc.dart';
 
+
 abstract class CollectionsState extends Equatable {
   const CollectionsState();
 
