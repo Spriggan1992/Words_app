@@ -6,7 +6,7 @@ import 'package:words_app/config/screenDefiner.dart';
 import 'package:words_app/screens/screens.dart';
 import 'package:words_app/config/size_config.dart';
 import 'package:words_app/widgets/widgets.dart';
-import 'widgets/collection_widgets.dart';
+import 'widgets/widgets.dart';
 
 /// [CollectionsScreen] responsible for showing all collections  created by user
 /// it is separated into components for better modularity

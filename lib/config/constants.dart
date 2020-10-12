@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:words_app/widgets/concave_decoration.dart';
 
 const Color kLanguagePickerColor = Color(0xFF34c7b3);
+const Color kWordsAppbarSelectedColor = Color(0xFF9E9E9E);
 
 // USED Constants
 const Color kDifficultyKnowColor = Color(0xFFd4f1c7);

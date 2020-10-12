@@ -6,7 +6,7 @@ import 'package:words_app/models/models.dart';
 import 'package:words_app/config/size_config.dart';
 import 'package:words_app/widgets/widgets.dart';
 
-import 'collection_widgets.dart';
+import 'widgets.dart';
 
 class CollectionsEditDialog extends StatefulWidget {
   const CollectionsEditDialog({
