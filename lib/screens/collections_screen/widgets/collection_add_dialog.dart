@@ -4,7 +4,7 @@ import 'package:words_app/bloc/blocs.dart';
 
 import 'package:words_app/config/constants.dart';
 import 'package:words_app/models/models.dart';
-import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/config/size_config.dart';
 import 'package:words_app/widgets/widgets.dart';
 
 import '../../screens.dart';
@@ -19,9 +19,9 @@ class DialogAddCollection extends StatefulWidget {
 }
 
 class _DialogAddCollectionState extends State<DialogAddCollection> {
-  String collectionTitle;
+  String _collectionTitle;
   // String collectionLanguage;
-  String collectionLanguage = 'english';
+  String _collectionLanguage = 'english';
 
   var _languages = [
     "finnish",
@@ -68,24 +68,24 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          buildCloseBtn(context),
+          _buildCloseBtn(context),
           SizedBox(height: defaultSize * 2),
-          buildCollectionTitleField(defaultSize, context),
+          _buildCollectionTitleField(defaultSize, context),
           SizedBox(height: defaultSize * 2),
-          buildLanguagePicker(defaultSize),
+          _buildLanguagePicker(defaultSize),
           SizedBox(height: defaultSize * 2),
-          buildCreateCollectionBtn(defaultSize, context)
+          _buildCreateCollectionBtn(defaultSize, context)
         ],
       ),
     );
   }
 
-  Widget buildCloseBtn(BuildContext context) {
+  Widget _buildCloseBtn(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         CustomRoundBtn(
-          fillColor: Color(0xff450920),
+          fillColor: Theme.of(context).primaryColor,
           icon: Icons.close,
           onPressed: () => Navigator.of(context).pop(),
           color: Theme.of(context).primaryColor,
@@ -94,7 +94,7 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
     );
   }
 
-  Container buildCollectionTitleField(
+  Container _buildCollectionTitleField(
     double defaultSize,
     BuildContext context,
   ) {
@@ -116,13 +116,13 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
             hintText: 'Collection name',
             isDense: true),
         onChanged: (value) {
-          collectionTitle = value;
+          _collectionTitle = value;
         },
       ),
     );
   }
 
-  Container buildLanguagePicker(double defaultSize) {
+  Container _buildLanguagePicker(double defaultSize) {
     return Container(
       alignment: Alignment.center,
       decoration: innerShadow,
@@ -137,15 +137,15 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
                 borderSide: BorderSide.none,
               ),
             ),
-            isEmpty: collectionLanguage == '',
+            isEmpty: _collectionLanguage == '',
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                value: collectionLanguage,
+                value: _collectionLanguage,
                 isDense: true,
                 onChanged: (newValue) {
                   setState(
                     () {
-                      collectionLanguage = newValue;
+                      _collectionLanguage = newValue;
                       state.didChange(newValue);
                     },
                   );
@@ -169,7 +169,7 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
     );
   }
 
-  RaisedButton buildCreateCollectionBtn(
+  RaisedButton _buildCreateCollectionBtn(
     double defaultSize,
     BuildContext context,
   ) {
@@ -188,8 +188,8 @@ class _DialogAddCollectionState extends State<DialogAddCollection> {
       ),
       onPressed: () {
         Collection collection = Collection(
-          language: languageMap[collectionLanguage],
-          title: collectionTitle,
+          language: languageMap[_collectionLanguage],
+          title: _collectionTitle,
         );
         context.bloc<CollectionsBloc>().add(
               CollectionsAdded(

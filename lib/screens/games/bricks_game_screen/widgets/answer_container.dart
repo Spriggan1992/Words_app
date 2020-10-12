@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/config/constants.dart';
 import 'package:words_app/repositories/bricks_provider.dart';
-import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/config/size_config.dart';
 
 class AnswerContainer extends StatefulWidget {
   AnswerContainer(

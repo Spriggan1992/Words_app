@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/repositories/bricks_provider.dart';
 import 'package:words_app/screens/result_screen/result_screen.dart';
-import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/config/size_config.dart';
 
 class NextAndGiveUpBtns extends StatefulWidget {
   const NextAndGiveUpBtns({

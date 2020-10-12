@@ -4,7 +4,7 @@ import 'package:words_app/animations/shake_animation.dart';
 import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/models.dart';
-import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/config/size_config.dart';
 
 import 'package:words_app/widgets/widgets.dart';
 
@@ -89,18 +89,18 @@ class CollectionCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      buildCollectionTitle(defaultSize, context),
-                      buildMySeparator(defaultSize),
+                      _buildCollectionTitle(defaultSize, context),
+                      _buildMySeparator(defaultSize),
                       SizedBox(height: defaultSize * 2),
-                      buildLanguageMap(defaultSize),
+                      _buildLanguagePicker(defaultSize),
                       SizedBox(height: 5.0),
-                      buildWordCounter(defaultSize)
+                      _buildWordCounter(defaultSize)
                     ],
                   ),
                 ),
               ),
             ),
-            buildEditDeleteBtns(
+            _buildEditDeleteBtns(
                 context,
                 collections[index].isEditingBtns,
                 defaultSize,
@@ -112,7 +112,7 @@ class CollectionCard extends StatelessWidget {
     );
   }
 
-  Container buildCollectionTitle(double defaultSize, BuildContext context) {
+  Container _buildCollectionTitle(double defaultSize, BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: defaultSize * 1),
       alignment: Alignment.center,
@@ -138,7 +138,7 @@ class CollectionCard extends StatelessWidget {
     );
   }
 
-  CollectionTextHolder buildWordCounter(double defaultSize) {
+  CollectionTextHolder _buildWordCounter(double defaultSize) {
     return CollectionTextHolder(
       titleName: 'words: ',
       titleNameValue: collections[index].wordCount.toString(),
@@ -147,7 +147,7 @@ class CollectionCard extends StatelessWidget {
     );
   }
 
-  FittedBox buildLanguageMap(double defaultSize) {
+  FittedBox _buildLanguagePicker(double defaultSize) {
     return FittedBox(
       child: CollectionTextHolder(
         titleNameValue: languageMap[collections[index].language] ?? ' ',
@@ -157,7 +157,7 @@ class CollectionCard extends StatelessWidget {
     );
   }
 
-  MySeparator buildMySeparator(double defaultSize) {
+  MySeparator _buildMySeparator(double defaultSize) {
     return MySeparator(
       padding: EdgeInsets.symmetric(
           horizontal: defaultSize * 1, vertical: defaultSize * 0.5),
@@ -168,7 +168,7 @@ class CollectionCard extends StatelessWidget {
     );
   }
 
-  Widget buildEditDeleteBtns(BuildContext context, bool isEditingBtns,
+  Widget _buildEditDeleteBtns(BuildContext context, bool isEditingBtns,
       double defaultSize, Function showDialog, String id) {
     return isEditingBtns
         ? Positioned(

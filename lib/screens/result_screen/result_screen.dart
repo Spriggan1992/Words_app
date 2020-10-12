@@ -5,7 +5,7 @@ import 'package:words_app/config/constants.dart';
 import 'package:words_app/repositories/repositories.dart';
 import 'package:words_app/screens/screens.dart';
 import 'package:words_app/widgets/reusable_main_button.dart';
-import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/config/size_config.dart';
 import 'package:words_app/widgets/widgets.dart';
 
 class ResultScreen extends StatelessWidget {

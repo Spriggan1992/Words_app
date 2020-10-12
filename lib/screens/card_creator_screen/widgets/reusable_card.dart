@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/config/size_config.dart';
 
 class ReusableCard extends StatelessWidget {
   const ReusableCard({

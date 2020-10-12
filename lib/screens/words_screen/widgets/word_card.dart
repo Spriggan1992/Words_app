@@ -5,7 +5,7 @@ import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/models/collection.dart';
 import '../../../models/word.dart';
-import '../../../utils/size_config.dart';
+import '../../../config/size_config.dart';
 import '../../review_card_screen/review_card.dart';
 import 'expandable_container.dart';
 

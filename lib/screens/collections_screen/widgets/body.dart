@@ -4,7 +4,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/models/models.dart';
 import 'package:words_app/screens/screens.dart';
-import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/config/size_config.dart';
 import 'collection_widgets.dart';
 
 class Body extends StatelessWidget {

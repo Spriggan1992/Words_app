@@ -5,7 +5,7 @@ import 'package:words_app/models/word.dart';
 import 'package:words_app/widgets/base_appbar.dart';
 import 'package:words_app/screens/games/pair_game_screen/widgets/body.dart';
 
-import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/config/size_config.dart';
 
 class PairGame extends StatefulWidget {
   PairGame({this.words});

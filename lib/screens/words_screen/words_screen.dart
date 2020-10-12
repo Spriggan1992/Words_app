@@ -13,7 +13,7 @@ import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/models.dart';
 
 import 'package:words_app/screens/screens.dart';
-import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/config/size_config.dart';
 import 'package:words_app/widgets/widgets.dart';
 import 'widgets/word_card.dart';
 

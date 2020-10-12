@@ -18,7 +18,7 @@ import '../../bloc/words/words_bloc.dart';
 import '../../widgets/base_appbar.dart';
 import '../../models/difficulty.dart';
 import '../../models/word.dart';
-import '../../utils/size_config.dart';
+import '../../config/size_config.dart';
 
 class ReviewCard extends StatefulWidget {
   static String id = 'review_card_screen';

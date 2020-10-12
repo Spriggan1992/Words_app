@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/screenDefiner.dart';
 import 'package:words_app/screens/screens.dart';
-import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/config/size_config.dart';
 import 'package:words_app/widgets/widgets.dart';
 import 'widgets/collection_widgets.dart';
 
@@ -29,7 +29,7 @@ class CollectionsScreen extends StatelessWidget {
           ),
           bottomSheet: BaseBottomAppbar(
             screenDefiner: ScreenDefiner.collections,
-            add: () => buildShowGeneralDialog(context),
+            add: () => _buildShowGeneralDialog(context),
             goToTrainings: () {
               Navigator.pushNamed(
                 context,
@@ -65,7 +65,7 @@ class CollectionsScreen extends StatelessWidget {
     );
   }
 
-  Future buildShowGeneralDialog(BuildContext context) {
+  Future _buildShowGeneralDialog(BuildContext context) {
     return showGeneralDialog(
       barrierColor: Color(0xff906c7a),
       transitionBuilder: (context, a1, a2, widget) {

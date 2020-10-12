@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:words_app/config/config.dart';
 
 class CollectionTextHolder extends StatelessWidget {
   const CollectionTextHolder({
@@ -30,7 +31,7 @@ class CollectionTextHolder extends StatelessWidget {
           TextSpan(
             text: titleNameValue,
             style: Theme.of(context).primaryTextTheme.bodyText2.merge(
-                TextStyle(fontSize: fontSize1, color: Color(0xFF34c7b3))),
+                TextStyle(fontSize: fontSize1, color: kLanguagePickerColor)),
           ),
         ],
       ),

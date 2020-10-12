@@ -3,7 +3,7 @@ import 'package:words_app/config/screenDefiner.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/screens/screens.dart';
 
-import 'package:words_app/utils/size_config.dart';
+import 'package:words_app/config/size_config.dart';
 import 'package:words_app/widgets/base_appbar.dart';
 
 import 'package:words_app/config/constants.dart';
