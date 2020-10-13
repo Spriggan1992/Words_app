@@ -2,14 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:words_app/bloc/blocs.dart';
-import 'package:words_app/config/config.dart';
 
 import 'package:words_app/cubit/words/words_cubit.dart';
-
-import 'package:words_app/models/models.dart';
-import 'package:words_app/screens/screens.dart';
-
-import 'package:words_app/widgets/widgets.dart';
 
 import 'widgets.dart';
 

@@ -41,6 +41,7 @@ class _ShakeAnimationState extends State<ShakeAnimation>
     _controller = AnimationController(
         vsync: this, duration: Duration(milliseconds: 3000));
     rotateAnimation = tweenSequence.animate(_controller);
+
     super.initState();
     _controller.repeat(reverse: true);
   }

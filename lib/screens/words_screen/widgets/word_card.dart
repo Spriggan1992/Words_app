@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
@@ -72,7 +71,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
 
     /// Receiving word data from[ words_screen], using index to extract single item from array

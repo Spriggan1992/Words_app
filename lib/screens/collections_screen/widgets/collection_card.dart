@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:words_app/animations/shake_animation.dart';
 import 'package:words_app/bloc/blocs.dart';
-import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/models/models.dart';
 import 'package:words_app/config/size_config.dart';
-
 import 'package:words_app/widgets/widgets.dart';
-
 import '../../screens.dart';
-import 'btns.dart';
-import 'collection_text_holder.dart';
+import 'widgets.dart';
 
 class CollectionCard extends StatelessWidget {
   CollectionCard({
@@ -89,126 +84,51 @@ class CollectionCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      _buildCollectionTitle(defaultSize, context),
-                      _buildMySeparator(defaultSize),
+                      // Title
+                      CollectionCardTitle(title: collections[index].title),
+                      // Separator
+                      MySeparator(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: defaultSize * 1,
+                            vertical: defaultSize * 0.5),
+                        dWidth: defaultSize * 0.2,
+                        dCount: defaultSize * 0.4,
+                        color: Colors.grey,
+                        height: defaultSize * 0.2,
+                      ),
                       SizedBox(height: defaultSize * 2),
-                      _buildLanguagePicker(defaultSize),
+                      // Language picker
+                      FittedBox(
+                        child: CollectionTextHolder(
+                          titleNameValue:
+                              languageMap[collections[index].language] ?? ' ',
+                          fontSize1: defaultSize * 1.5,
+                          fontSize2: defaultSize * 1.5,
+                        ),
+                      ),
                       SizedBox(height: 5.0),
-                      _buildWordCounter(defaultSize)
+                      // Words counter
+                      CollectionTextHolder(
+                        titleName: 'words: ',
+                        titleNameValue: collections[index].wordCount.toString(),
+                        fontSize1: defaultSize * 1.5,
+                        fontSize2: defaultSize * 1.5,
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-            _buildEditDeleteBtns(
-                context,
-                collections[index].isEditingBtns,
-                defaultSize,
-                () => showEditDialog(collections[index]),
-                collections[index].id)
+            // Btns
+            CollectionCardEditDeleteBtns(
+                id: collections[index].id,
+                isEditingBtns: collections[index].isEditingBtns,
+                showDialog: () => showEditDialog(
+                      collections[index],
+                    )),
           ],
         ),
       ),
     );
-  }
-
-  Container _buildCollectionTitle(double defaultSize, BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: defaultSize * 1),
-      alignment: Alignment.center,
-      height: defaultSize * 3,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(defaultSize * 1),
-          topRight: Radius.circular(defaultSize * 1),
-        ),
-      ),
-      child: FittedBox(
-        child: Padding(
-          padding: EdgeInsets.all(defaultSize * 1),
-          child: Text(
-            collections[index].title ?? '',
-            style: Theme.of(context)
-                .primaryTextTheme
-                .bodyText2
-                .merge(TextStyle(fontSize: defaultSize * 4)),
-          ),
-        ),
-      ),
-    );
-  }
-
-  CollectionTextHolder _buildWordCounter(double defaultSize) {
-    return CollectionTextHolder(
-      titleName: 'words: ',
-      titleNameValue: collections[index].wordCount.toString(),
-      fontSize1: defaultSize * 1.5,
-      fontSize2: defaultSize * 1.5,
-    );
-  }
-
-  FittedBox _buildLanguagePicker(double defaultSize) {
-    return FittedBox(
-      child: CollectionTextHolder(
-        titleNameValue: languageMap[collections[index].language] ?? ' ',
-        fontSize1: defaultSize * 1.5,
-        fontSize2: defaultSize * 1.5,
-      ),
-    );
-  }
-
-  MySeparator _buildMySeparator(double defaultSize) {
-    return MySeparator(
-      padding: EdgeInsets.symmetric(
-          horizontal: defaultSize * 1, vertical: defaultSize * 0.5),
-      dWidth: defaultSize * 0.2,
-      dCount: defaultSize * 0.4,
-      color: Colors.grey,
-      height: defaultSize * 0.2,
-    );
-  }
-
-  Widget _buildEditDeleteBtns(BuildContext context, bool isEditingBtns,
-      double defaultSize, Function showDialog, String id) {
-    return isEditingBtns
-        ? Positioned(
-            top: defaultSize * (-0.1),
-            left: defaultSize * 7.6,
-            child: Row(
-              children: <Widget>[
-                // Edit btn
-                Btns(
-                    backgroundColor: Colors.white,
-                    icon: Icons.edit,
-                    color: Colors.black54,
-                    onPress: () {
-                      BlocProvider.of<CollectionsBloc>(context)
-                          .add(CollectionsToggleAll());
-                      showDialog();
-                    }),
-
-                Btns(
-                  backgroundColor: Colors.white,
-                  icon: Icons.delete,
-                  color: Colors.black54,
-                  onPress: () {
-                    deleteConfirmation(context, () {
-                      BlocProvider.of<CollectionsBloc>(context)
-                        ..add(CollectionsDeleted(id: id));
-                      Navigator.pop(context);
-                    }, 'Do you want to delete your collection?');
-                  },
-                ),
-                SizedBox(width: defaultSize * 0.5),
-              ],
-            ).shakeAnimation,
-          )
-        : Container();
-  }
-}
-
-extension AnimationExtension on Widget {
-  Widget get shakeAnimation {
-    return ShakeAnimation(child: this);
   }
 }
