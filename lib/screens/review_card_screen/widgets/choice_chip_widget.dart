@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:words_app/config/config.dart';
 import 'package:words_app/models/difficulty.dart';
 
 class ChoiceChipWidget extends StatefulWidget {
@@ -14,17 +15,20 @@ class _ChoiceChipWidgetState extends State<ChoiceChipWidget> {
   String selectedChoice = "";
 
   _buildChoiceList() {
+    final defaultSize = SizeConfig.defaultSize;
     List<Widget> choices = List();
     widget.difficultyList.forEach((item) {
       choices.add(Container(
-        padding: const EdgeInsets.all(5.0),
+        padding: EdgeInsets.all(defaultSize * 0.5),
         child: ChoiceChip(
           elevation: 5,
           label: Text(item.name),
           labelStyle: TextStyle(
-              color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.bold),
+              color: Colors.black,
+              fontSize: defaultSize * 1.4,
+              fontWeight: FontWeight.bold),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
+            borderRadius: BorderRadius.circular(defaultSize * 0.5),
           ),
           backgroundColor: item.color,
           selectedColor: Theme.of(context).accentColor,

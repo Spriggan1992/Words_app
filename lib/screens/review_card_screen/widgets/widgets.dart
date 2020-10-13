@@ -1,5 +1,9 @@
-export 'back_container.dart';
 export 'choice_chip_widget.dart';
 export 'highlight_text.dart';
 export 'title_text_holder_container.dart';
 export 'word_card.dart';
+export 'word_card_card_container.dart';
+export 'word_card_example_field.dart';
+export 'card_container_speech_part.dart';
+export 'card_container_card_back_side.dart';
+export 'card_container_card_front_side.dart';
