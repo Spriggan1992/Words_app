@@ -40,7 +40,6 @@ void checkNavigation(
   BuildContext context,
   GlobalKey<ScaffoldState> scaffoldKey,
   List<int> selectedDifficulties,
-  FilterGames selectedGames,
 ) {
   if (selectedListCollections.isEmpty) {
     scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -73,7 +72,7 @@ void checkNavigation(
         )));
   }
 
-  if (selectedGames == FilterGames.bricks &&
+  if (state.selectedGames == FilterGames.bricks &&
       selectedDifficulties.isNotEmpty &&
       selectedListCollections.isNotEmpty &&
       state.filteredWords.isNotEmpty) {
@@ -83,7 +82,7 @@ void checkNavigation(
           builder: (context) => BricksGame(words: state.filteredWords),
         ));
   }
-  if (selectedGames == FilterGames.wrongCorrect &&
+  if (state.selectedGames == FilterGames.wrongCorrect &&
       selectedDifficulties.isNotEmpty &&
       selectedListCollections.isNotEmpty &&
       state.filteredWords.isNotEmpty) {
@@ -95,7 +94,7 @@ void checkNavigation(
           ),
         ));
   }
-  if (selectedGames == FilterGames.pair &&
+  if (state.selectedGames == FilterGames.pair &&
       selectedDifficulties.isNotEmpty &&
       selectedListCollections.isNotEmpty &&
       state.filteredWords.isNotEmpty) {

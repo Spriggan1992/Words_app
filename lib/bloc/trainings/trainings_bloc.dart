@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:words_app/models/collection.dart';
-import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/collections/collections_repository.dart';
-import 'package:words_app/repositories/words/words_repository.dart';
+import 'package:words_app/models/models.dart';
+import 'package:words_app/repositories/repositories.dart';
+import 'package:words_app/screens/training_manager_screen/helper.dart';
 
 part 'trainings_event.dart';
 part 'trainings_state.dart';
@@ -24,6 +23,12 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
     if (event is TrainingsFiltered) {
       yield* _mapTrainingsFilteredToState(event);
     }
+    if (event is TrainingsUpdatedSelectedGames) {
+      yield* _mapTrainingsUpdatedSelectedGamesToState(event);
+    }
+    if (event is TrainingsAddRemoveCollectionFilter) {
+      yield* _mapTrainingsAddRemoveCollectionFilterToState(event);
+    }
   }
 
   Stream<TrainingsState> _mapTrainingsLoadedToState(
@@ -37,11 +42,11 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
           .where((collection) => collection.id == event.collectionId)
           .toList();
       yield TrainingsSuccess(
-        filteredCollections: filteredCollections ?? [],
-        filteredWords: updatedWords ?? [],
-        collections: updatedCollections ?? [],
-        isEmptyCardWord: updatedIsEmptyCardWord,
-      );
+          filteredCollections: filteredCollections ?? [],
+          filteredWords: updatedWords ?? [],
+          collections: updatedCollections ?? [],
+          isEmptyCardWord: updatedIsEmptyCardWord,
+          selectedGames: FilterGames.bricks);
     } catch (_) {
       yield TrainingsFailure();
     }
@@ -51,14 +56,15 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
       TrainingsFiltered event) async* {
     try {
       final List<Collection> updatedFilteredCollections =
-          List.from(event.selectedCollections);
+          event.selectedCollections;
       final List<Collection> updatedCollections =
           List.from((state as TrainingsSuccess).collections);
+      final updatedSelectedGames = (state as TrainingsSuccess).selectedGames;
 
       // Extract Words from FuilteredCollections
       final List<Word> selectedFilteredList = [];
       for (var i = 0; i < event.selectedCollections.length; i++) {
-        var fetchedCollections = await wordsRepository.fetchAndSetWords(
+        List<Word> fetchedCollections = await wordsRepository.fetchAndSetWords(
             collectionId: event.selectedCollections[i].id);
         fetchedCollections.forEach((element) {
           selectedFilteredList.add(element);
@@ -98,7 +104,47 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
           filteredWords: updatedFilteredList,
           collections: updatedCollections,
           filteredCollections: updatedFilteredCollections,
-          isEmptyCardWord: updatedIsEmptyCardWord);
+          isEmptyCardWord: updatedIsEmptyCardWord,
+          selectedGames: updatedSelectedGames);
+    } catch (_) {
+      TrainingsFailure();
+    }
+  }
+
+  Stream<TrainingsState> _mapTrainingsUpdatedSelectedGamesToState(
+      TrainingsUpdatedSelectedGames event) async* {
+    try {
+      final data = (state as TrainingsSuccess);
+      yield TrainingsSuccess(
+          collections: data.collections,
+          filteredCollections: data.filteredCollections,
+          filteredWords: data.filteredWords,
+          isEmptyCardWord: data.isEmptyCardWord,
+          selectedGames: event.selectedGames);
+    } catch (_) {
+      TrainingsFailure();
+    }
+  }
+
+  Stream<TrainingsState> _mapTrainingsAddRemoveCollectionFilterToState(
+      TrainingsAddRemoveCollectionFilter event) async* {
+    try {
+      final updatedFilteredList =
+          (state as TrainingsSuccess).filteredCollections;
+      final data = (state as TrainingsSuccess);
+
+      if (event.isCollection == true) {
+        updatedFilteredList.add(event.collection);
+      }
+      if (event.isCollection == false) {
+        updatedFilteredList.remove(event.collection);
+      }
+      yield TrainingsSuccess(
+          collections: data.collections,
+          filteredCollections: updatedFilteredList,
+          filteredWords: data.filteredWords,
+          isEmptyCardWord: data.isEmptyCardWord,
+          selectedGames: data.selectedGames);
     } catch (_) {
       TrainingsFailure();
     }

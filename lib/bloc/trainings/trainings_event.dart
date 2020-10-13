@@ -27,11 +27,21 @@ class TrainingsFiltered extends TrainingsEvent {
   List<Object> get props => [selectedCollections, selectedDifficulties];
 }
 
-class TrainingsSelectCollections extends TrainingsEvent {
-  final List<Collection> collections;
+class TrainingsUpdatedSelectedGames extends TrainingsEvent {
+  final FilterGames selectedGames;
 
-  TrainingsSelectCollections({this.collections});
+  TrainingsUpdatedSelectedGames({this.selectedGames});
 
   @override
-  List<Object> get props => [collections];
+  List<Object> get props => [selectedGames];
+}
+
+class TrainingsAddRemoveCollectionFilter extends TrainingsEvent {
+  final bool isCollection;
+  final Collection collection;
+
+  TrainingsAddRemoveCollectionFilter({this.isCollection, this.collection});
+
+  @override
+  List<Object> get props => [isCollection, collection];
 }

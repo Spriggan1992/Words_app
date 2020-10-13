@@ -14,19 +14,21 @@ class TrainingsSuccess extends TrainingsState {
   final bool isEmptyCardWord;
   final List<Collection> collections;
   final List<Collection> filteredCollections;
+  final FilterGames selectedGames;
 
-  TrainingsSuccess({
-    this.filteredWords = const [],
-    this.collections = const [],
-    this.filteredCollections = const [],
-    this.isEmptyCardWord,
-  });
+  TrainingsSuccess(
+      {this.filteredWords = const [],
+      this.collections = const [],
+      this.filteredCollections = const [],
+      this.isEmptyCardWord,
+      this.selectedGames = FilterGames.bricks});
   @override
   List<Object> get props => [
         filteredWords,
         collections,
         filteredCollections,
         isEmptyCardWord,
+        selectedGames
       ];
 }
 
