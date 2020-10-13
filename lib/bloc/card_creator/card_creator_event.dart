@@ -71,25 +71,26 @@ class CardCreatorThirdLanguageUpdate extends CardCreatorEvent {
       'CardCreatorThirdLanguageUpdate { thirdLanguage: $thirdLanguage }';
 }
 
-class CardCreatorTargetExampleUpdate extends CardCreatorEvent {
-  final String targetExample;
+class CardCreatorExampleUpdate extends CardCreatorEvent {
+  final String example;
 
-  CardCreatorTargetExampleUpdate({@required this.targetExample});
-  List<Object> get props => [targetExample];
+  CardCreatorExampleUpdate({@required this.example});
+  List<Object> get props => [example];
 
   @override
   String toString() =>
-      'CardCreatorTargetExampleUpdate { targetExample: $targetExample }';
+      'CardCreatorTargetExampleUpdate { targetExample: $example }';
 }
 
 class CardCreatorOwnExapleUpdate extends CardCreatorEvent {
-  final String ownExample;
+  final String exampleTranslation;
 
-  CardCreatorOwnExapleUpdate({@required this.ownExample});
-  List<Object> get props => [ownExample];
+  CardCreatorOwnExapleUpdate({@required this.exampleTranslation});
+  List<Object> get props => [exampleTranslation];
 
   @override
-  String toString() => 'CardCreatorOwnExapleUpdate { ownExample: $ownExample }';
+  String toString() =>
+      'CardCreatorOwnExapleUpdate { ownExample: $exampleTranslation }';
 }
 
 class CardCreatorUpdateImgFromCamera extends CardCreatorEvent {}

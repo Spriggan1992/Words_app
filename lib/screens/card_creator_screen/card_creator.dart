@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:words_app/widgets/base_appbar.dart';
 import 'package:words_app/models/word_model.dart';
 import 'package:words_app/utils/size_config.dart';
+import 'img_api.dart';
 import 'widgets/InnerShadowTextField.dart';
 import 'widgets/custom_radio.dart';
 import 'widgets/reusable_card.dart';
@@ -104,46 +105,9 @@ class _CardCreatorState extends State<CardCreator> {
                                     ),
                                   ),
                                 ),
-                                // Container(
-                                //   decoration: innerShadow,
-                                //   child: TextField(
-                                //     controller: TextEditingController(
-                                //       text: state.word == null
-                                //           ? ""
-                                //           : state.word.targetLang,
-                                //     ),
-                                //     style: TextStyle(
-                                //       color: Colors.black,
-                                //       fontSize: defaultSize * 3.2,
-                                //     ),
-
-                                //     maxLines: 1,
-                                //     decoration: InputDecoration(
-                                //       contentPadding:
-                                //           EdgeInsets.all(defaultSize),
-                                //       hintStyle: TextStyle(
-                                //         color:
-                                //             Color(0xFFDA627D).withOpacity(0.5),
-                                //       ),
-                                //       hintText: 'word',
-                                //       border: OutlineInputBorder(
-                                //         borderRadius: BorderRadius.circular(10),
-                                //         borderSide: BorderSide.none,
-                                //       ),
-                                //     ),
-                                //     // onChanged: (value) => thirdLang = value,
-                                //     onChanged: (value) {
-                                //       print("fuck ${value}");
-                                //       context.bloc<CardCreatorBloc>().add(
-                                //             CardCreatorTargetLanguageUpdate(
-                                //                 targetLanguage: value),
-                                //           );
-                                //     },
-                                //   ),
-                                // ),
                                 InnerShadowTextField(
                                   title: state.word == null
-                                      ? " "
+                                      ? ""
                                       : state.word.targetLang,
                                   // title: 'hopes',
                                   hintText: 'word',
@@ -185,16 +149,16 @@ class _CardCreatorState extends State<CardCreator> {
                                                 ),
                                                 IconButton(
                                                   onPressed: () {
-                                                    context
-                                                        .bloc<CardCreatorBloc>()
-                                                        .add(
-                                                          CardCreatorDownloadImagesFromAPI(
-                                                              // name: state.word
-                                                              //     .targetLang,
-                                                              ),
-                                                        );
-                                                    // Navigator.pushNamed(
-                                                    //     context, ImageApi.id);
+                                                    // context
+                                                    //     .bloc<CardCreatorBloc>()
+                                                    //     .add(
+                                                    //       CardCreatorDownloadImagesFromAPI(
+                                                    //           // name: state.word
+                                                    //           //     .targetLang,
+                                                    //           ),
+                                                    //     );
+                                                    Navigator.pushNamed(
+                                                        context, ImageApi.id);
                                                   },
                                                   icon: Icon(
                                                     Icons.web_asset,
@@ -211,12 +175,12 @@ class _CardCreatorState extends State<CardCreator> {
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(14),
-                                              // child: state.image.path == ''
-                                              //     ? Container()
-                                              //     : Image.file(
-                                              //         state.image,
-                                              //         fit: BoxFit.cover,
-                                              //       ),
+                                              child: state.word.image.path == ''
+                                                  ? Container()
+                                                  : Image.file(
+                                                      state.word.image,
+                                                      fit: BoxFit.cover,
+                                                    ),
                                             ),
                                           ),
 
@@ -281,12 +245,12 @@ class _CardCreatorState extends State<CardCreator> {
                     InnerShadowTextField(
                       maxLines: SizeConfig.blockSizeVertical > 7 ? 6 : 5,
                       defaultSize: defaultSize,
-                      title: state.word == null ? " " : state.word.example,
+                      title: state.word == null ? "" : state.word.example,
                       hintText: 'example',
                       fontSizeMultiplyer: 2.4,
                       onChanged: (value) => context
                           .bloc<CardCreatorBloc>()
-                          .add(CardCreatorOwnExapleUpdate(ownExample: value)),
+                          .add(CardCreatorExampleUpdate(example: value)),
                     ),
                   ],
                 ),
@@ -311,7 +275,7 @@ class _CardCreatorState extends State<CardCreator> {
                                 /// [ownLang] text field
                                 InnerShadowTextField(
                                   title: state.word == null
-                                      ? " "
+                                      ? ""
                                       : state.word.ownLang,
                                   hintText: 'own language',
                                   onChanged: (value) => context
@@ -324,7 +288,7 @@ class _CardCreatorState extends State<CardCreator> {
                                 InnerShadowTextField(
                                   // title: state.word.secondLang,
                                   title: state.word == null
-                                      ? " "
+                                      ? ""
                                       : state.word.secondLang,
                                   hintText: '2nd language',
                                   onChanged: (value) => context
@@ -336,8 +300,8 @@ class _CardCreatorState extends State<CardCreator> {
                                 ),
                                 InnerShadowTextField(
                                   title: state.word == null
-                                      ? " "
-                                      : state.word.targetLang,
+                                      ? ""
+                                      : state.word.thirdLang,
                                   hintText: '3rd language',
                                   onChanged: (value) => context
                                       .bloc<CardCreatorBloc>()
@@ -361,12 +325,12 @@ class _CardCreatorState extends State<CardCreator> {
                       maxLines: SizeConfig.blockSizeVertical > 7.5 ? 6 : 5,
                       // title: state.word.exampleTranslations,
                       title: state.word == null
-                          ? " "
+                          ? ""
                           : state.word.exampleTranslations,
                       hintText: 'example',
-                      onChanged: (value) => context
-                          .bloc<CardCreatorBloc>()
-                          .add(CardCreatorOwnExapleUpdate(ownExample: value)),
+                      onChanged: (value) => context.bloc<CardCreatorBloc>().add(
+                          CardCreatorOwnExapleUpdate(
+                              exampleTranslation: value)),
                       defaultSize: defaultSize,
                       fontSizeMultiplyer: 2.4,
                     ),

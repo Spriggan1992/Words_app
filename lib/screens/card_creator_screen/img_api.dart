@@ -14,8 +14,13 @@ class _ImageApiState extends State<ImageApi> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: BlocBuilder<CardCreatorBloc, CardCreatorState>(
+        body: BlocConsumer<CardCreatorBloc, CardCreatorState>(
+          listener: (context, state) {},
           builder: (context, state) {
+            return InputField(
+              search: state.word?.targetLang,
+            );
+
             // if (state is CardCreatorLoading) {
             //   return Center(
             //     child: CircularProgressIndicator(),
@@ -42,8 +47,9 @@ class _ImageApiState extends State<ImageApi> {
 }
 
 class InputField extends StatelessWidget {
+  final String search;
   final List<ImgData> imageData;
-
+  const InputField({this.imageData, this.search});
   List<Widget> buildimageList(BuildContext context) {
     List<Widget> list = [];
     imageData?.forEach((item) {
@@ -81,7 +87,6 @@ class InputField extends StatelessWidget {
     return list;
   }
 
-  const InputField({this.imageData});
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -95,6 +100,7 @@ class InputField extends StatelessWidget {
               SizedBox(
                 width: 200,
                 child: TextField(
+                  controller: TextEditingController(text: search ?? ""),
                   textAlign: TextAlign.center,
                   onSubmitted: (value) {
                     submitImgName(context, value);

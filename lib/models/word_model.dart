@@ -62,6 +62,7 @@ class Word extends Equatable with ChangeNotifier {
     collectionId: $collectionId,
     id: $id,
     targetLang: $targetLang,
+    ownlang: $ownLang
     secondLang: $secondLang,
     thirdLang: $thirdLang,
     image: $image,

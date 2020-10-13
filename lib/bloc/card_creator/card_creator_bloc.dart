@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:words_app/bloc/card_creator_back/card_creator_bloc.dart';
 import 'package:words_app/models/image_data.dart';
 import 'package:words_app/models/models.dart';
 import 'package:words_app/models/word_model.dart';
@@ -35,21 +36,17 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
       yield* _mapCardCreatorThirdLanguageUpdatedToState(event);
     } else if (event is CardCreatorOwnExapleUpdate) {
       yield* _mapCardCreatorOwnExampleUpdatedToState(event);
-    } else if (event is CardCreatorTargetExampleUpdate) {
-      yield* _mapCardCreatorTargetExampleUpdatedToState(event);
+    } else if (event is CardCreatorExampleUpdate) {
+      yield* _mapCardCreatorExampleUpdatedToState(event);
     } else if (event is CardCreatorPartUpdate) {
       yield* _mapCardCreatorPartUpdatedToState(event);
+    } else if (event is CardCreatorUpdateImgFromCamera) {
+      yield* _mapCardCreatorUpdatedImageFromCameraToState();
+    } else if (event is CardCreatorDownloadImagesFromAPI) {
+      yield* _mapCardCreatorDownloadImagesFromAPIInitialToState(event);
+    } else if (event is CardCreatorUpdateImagesFromAPI) {
+      yield* _mapCardCreatorUpdatedImageFromApiToState(event);
     }
-
-    // if (event is CardCreatorUpdateImgFromCamera) {
-    //   yield* _mapCardCreatorUpdatedImageFromCameraToState();
-    // }
-    // if (event is CardCreatorDownloadImagesFromAPI) {
-    //   yield* _mapCardCreatorDownloadImagesFromAPIInitialToState(event);
-    // }
-    // if (event is CardCreatorUpdateImagesFromAPI) {
-    //   yield* _mapCardCreatorUpdatedImageFromApiToState(event);
-    // }
   }
 
   /// Method receives String [collectionLang] and pass it to the CardCreatorSuccess state.
@@ -72,7 +69,24 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
     } else {
       yield state.update(
         word: state.word.copyWith(
-          ownLang: event.targetLanguage,
+          targetLang: event.targetLanguage,
+        ),
+      );
+    }
+  }
+
+  Stream<CardCreatorState> _mapCardCreatorExampleUpdatedToState(
+      CardCreatorExampleUpdate event) async* {
+    if (state.word == null) {
+      final Word word = Word(
+        collectionId: _collectionId,
+        example: event.example,
+      );
+      yield state.update(word: word);
+    } else {
+      yield state.update(
+        word: state.word.copyWith(
+          example: event.example,
         ),
       );
     }
@@ -117,13 +131,13 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
     if (state.word == null) {
       final Word word = Word(
         collectionId: _collectionId,
-        ownLang: event.secondLanguage,
+        secondLang: event.secondLanguage,
       );
       yield state.update(word: word);
     } else {
       yield state.update(
         word: state.word.copyWith(
-          ownLang: event.secondLanguage,
+          secondLang: event.secondLanguage,
         ),
       );
     }
@@ -134,13 +148,13 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
     if (state.word == null) {
       final Word word = Word(
         collectionId: _collectionId,
-        ownLang: event.thirdLanguage,
+        thirdLang: event.thirdLanguage,
       );
       yield state.update(word: word);
     } else {
       yield state.update(
         word: state.word.copyWith(
-          ownLang: event.thirdLanguage,
+          thirdLang: event.thirdLanguage,
         ),
       );
     }
@@ -151,67 +165,65 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
     if (state.word == null) {
       final Word word = Word(
         collectionId: _collectionId,
-        ownLang: event.ownExample,
+        exampleTranslations: event.exampleTranslation,
       );
       yield state.update(word: word);
     } else {
       yield state.update(
         word: state.word.copyWith(
-          ownLang: event.ownExample,
+          exampleTranslations: event.exampleTranslation,
         ),
       );
     }
   }
 
-  Stream<CardCreatorState> _mapCardCreatorTargetExampleUpdatedToState(
-      CardCreatorTargetExampleUpdate event) async* {
-    if (state.word == null) {
-      final Word word = Word(
-        collectionId: _collectionId,
-        ownLang: event.targetExample,
-      );
-      yield state.update(word: word);
-    } else {
-      yield state.update(
-        word: state.word.copyWith(
-          ownLang: event.targetExample,
-        ),
-      );
+  Stream<CardCreatorState>
+      _mapCardCreatorUpdatedImageFromCameraToState() async* {
+    try {
+      final File croppedFile = await _imageRepository.getImageFile();
+      if (state.word == null) {
+        final Word word = Word(
+          collectionId: _collectionId,
+          image: croppedFile,
+        );
+        yield state.update(word: word);
+      } else {
+        yield state.update(
+          word: state.word.copyWith(
+            image: croppedFile,
+          ),
+        );
+      }
+    } catch (_) {
+      yield CardCreatorState.failure(
+          word: state.word,
+          errorMessage:
+              'There was an error in  _mapCardCreatorUpdatedImageFromCameraToState');
     }
   }
 
-  // Stream<CardCreatorState>
-  //     _mapCardCreatorUpdatedImageFromCameraToState() async* {
-  //   try {
-  //     final File croppedFile = await imageRepository.getImageFile();
-  //     yield CardCreatorSuccess(image: croppedFile);
-  //   } catch (_) {
-  //     yield CardCreatorFailure(message: "something went wrong with me");
-  //   }
-  // }
+  Stream<CardCreatorState> _mapCardCreatorDownloadImagesFromAPIInitialToState(
+      CardCreatorDownloadImagesFromAPI event) async* {
+    // try {
+    //   String collectionLang = (state as CardCreatorSuccess).collectionLang;
+    //   List<ImgData> imageData = await imageRepository.getNetworkImg(
+    //       word: event.name, collectionLang: collectionLang);
 
-  // Stream<CardCreatorState> _mapCardCreatorDownloadImagesFromAPIInitialToState(
-  //     CardCreatorDownloadImagesFromAPI event) async* {
-  //   try {
-  //     String collectionLang = (state as CardCreatorSuccess).collectionLang;
-  //     List<ImgData> imageData = await imageRepository.getNetworkImg(
-  //         word: event.name, collectionLang: collectionLang);
+    //   yield CardCreatorSuccess(
+    //       imageData: imageData, collectionLang: collectionLang);
+    // } on NetworkException {
+    //   yield CardCreatorFailure(message: "No such data you looser");
+    // }
+  }
 
-  //     yield CardCreatorSuccess(
-  //         imageData: imageData, collectionLang: collectionLang);
-  //   } on NetworkException {
-  //     yield CardCreatorFailure(message: "No such data you looser");
-  //   }
-  // }
-
-  // Stream<CardCreatorState> _mapCardCreatorUpdatedImageFromApiToState(
-  //     CardCreatorUpdateImagesFromAPI event) async* {
-  //   try {
-  //     final File file = await imageRepository.getImageFileFromUrl(event.url);
-  //     // final File croppedFile = await imageRepository.getImageFile();
-  //     yield CardCreatorSuccess(image: file);
-  //   } catch (_) {
-  //     yield CardCreatorFailure(message: "something went wrong with me");
-  //   }
-  // }
+  Stream<CardCreatorState> _mapCardCreatorUpdatedImageFromApiToState(
+      CardCreatorUpdateImagesFromAPI event) async* {
+    // try {
+    //   final File file = await imageRepository.getImageFileFromUrl(event.url);
+    //   // final File croppedFile = await imageRepository.getImageFile();
+    //   yield CardCreatorSuccess(image: file);
+    // } catch (_) {
+    //   yield CardCreatorFailure(message: "something went wrong with me");
+    // }
+  }
 }
