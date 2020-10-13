@@ -21,7 +21,7 @@ class OwnLang extends StatelessWidget {
           height: defaultSize * 3,
           width: isExpanded ? defaultSize * 32 : defaultSize * 30,
           child: AutoSizeText(
-            word.ownLang ?? '', // Translation
+            word.ownLang ?? '',
             maxLines: 2,
             style: Theme.of(context).primaryTextTheme.bodyText2.merge(
                   TextStyle(

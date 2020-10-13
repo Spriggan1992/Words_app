@@ -12,29 +12,25 @@ class SecondLang extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final defaultSize = SizeConfig.defaultSize;
-    return Container(
-      child: Positioned(
-        left: defaultSize * 3.7,
-        top: defaultSize * 8.5,
-        child: ScaleTransition(
-          scale: animation,
-          child:
-              // Word2
-              Container(
-            width: isExpanded ? defaultSize * 32 : defaultSize * 30,
-            height: defaultSize * 2,
-            child: FittedBox(
-              alignment: Alignment.centerLeft,
-              fit: BoxFit.scaleDown,
-              child: Text(
-                word.secondLang ?? ' ',
-                style: Theme.of(context).primaryTextTheme.bodyText2.merge(
-                      TextStyle(
-                        color: Colors.black54,
-                        fontSize: defaultSize * 1.3,
-                      ),
+    return Positioned(
+      left: defaultSize * (-4),
+      top: defaultSize * 7.3,
+      child: ScaleTransition(
+        scale: animation,
+        child: Container(
+          width: isExpanded ? defaultSize * 32 : defaultSize * 30,
+          height: defaultSize * 4,
+          child: FittedBox(
+            alignment: Alignment.centerLeft,
+            fit: BoxFit.scaleDown,
+            child: Text(
+              word.secondLang ?? '',
+              style: Theme.of(context).primaryTextTheme.bodyText2.merge(
+                    TextStyle(
+                      color: Colors.black54,
+                      fontSize: defaultSize * 2.8,
                     ),
-              ),
+                  ),
             ),
           ),
         ),

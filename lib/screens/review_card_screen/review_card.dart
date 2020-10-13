@@ -1,32 +1,21 @@
 import 'dart:async';
-
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/blocs.dart';
-import 'package:words_app/bloc/words/words_bloc.dart';
-import 'package:words_app/config/screenDefiner.dart';
-import 'package:words_app/screens/review_card_screen/widgets/word_widgets.dart';
+import 'package:words_app/config/config.dart';
+import 'package:words_app/models/models.dart';
 import 'package:words_app/screens/screens.dart';
-
-import 'package:words_app/widgets/base_appbar.dart';
-
-import 'package:words_app/models/difficulty.dart';
 import 'package:words_app/widgets/widgets.dart';
-
-import '../../bloc/words/words_bloc.dart';
-import '../../widgets/base_appbar.dart';
-import '../../models/difficulty.dart';
-import '../../models/word.dart';
-import '../../config/size_config.dart';
+import 'widgets/widgets.dart';
 
 class ReviewCard extends StatefulWidget {
   static String id = 'review_card_screen';
-  ReviewCard({this.index, this.words, this.collectionId, this.collectionTitle});
   final int index;
   final List<Word> words;
   final String collectionId;
   final String collectionTitle;
+  ReviewCard({this.index, this.words, this.collectionId, this.collectionTitle});
 
   @override
   _ReviewCardState createState() => _ReviewCardState();
@@ -37,24 +26,24 @@ class _ReviewCardState extends State<ReviewCard>
   PageController _pageController;
 
   /// Initial index of page;
-  int initialPage;
+  int _initialPage;
 
   /// If `true` show front - examples text
-  bool isFront = true;
-  String selectedChoice = "";
+  bool _isFront = true;
+  String _selectedChoice = '';
 
   /// Initial page from index
-  int page;
-  List<Difficulty> difficultyList = DifficultyList().difficultyList;
+  int _page;
+  List<Difficulty> _difficultyList = DifficultyList().difficultyList;
 
   @override
   void initState() {
     super.initState();
     getCurrInd();
     _pageController =
-        PageController(viewportFraction: 0.8, initialPage: initialPage);
+        PageController(viewportFraction: 0.8, initialPage: _initialPage);
 
-    page = widget.index;
+    _page = widget.index;
   }
 
   @override
@@ -63,15 +52,15 @@ class _ReviewCardState extends State<ReviewCard>
     super.dispose();
   }
 
-  /// Set up [isFront] `true` or `false`
+  /// Set up [_isFront] `true` or `false`
   void toggleIsFront() {
-    isFront = !isFront;
+    _isFront = !_isFront;
     setState(() {});
   }
 
-  /// Pass throught [initialPage] what we get from [screens/manager_collection/components/word_card.dart]
+  /// Pass throught [_initialPage] what we get from [screens/manager_collection/components/word_card.dart]
   void getCurrInd() {
-    initialPage = widget.index;
+    _initialPage = widget.index;
     Timer(Duration(milliseconds: 500), () {
       setState(() {});
     });
@@ -80,8 +69,6 @@ class _ReviewCardState extends State<ReviewCard>
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    double defaultSize = SizeConfig.defaultSize;
-
     return Scaffold(
       appBar: BaseAppBar(
         title: Text(
@@ -101,134 +88,111 @@ class _ReviewCardState extends State<ReviewCard>
               TrainingManager.id,
             );
           }),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Container(
-              child: PageView.builder(
-                onPageChanged: (value) {
+      body: buildBody(context),
+    );
+  }
+
+  Column buildBody(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: Container(
+            child: PageView.builder(
+              onPageChanged: (value) {
+                setState(
+                  () {
+                    _initialPage = value;
+                    _page = _pageController.page.round();
+                    _selectedChoice = '';
+                  },
+                );
+              },
+              controller: _pageController,
+              itemCount: widget.words.length,
+              itemBuilder: (context, index) {
+                bool active = index == _page;
+                return FlipCard(
+                  onFlip: () {
+                    setState(() {
+                      toggleIsFront();
+                    });
+                  },
+                  direction: FlipDirection.HORIZONTAL,
+                  speed: 400,
+                  front: WordCard(
+                    word: widget.words[index],
+                    side: 'front',
+                    index: index,
+                    part: widget.words[index].part.partColor,
+                    active: active,
+                  ),
+                  back: WordCard(
+                    word: widget.words[index],
+                    index: index,
+                    part: widget.words[index].part.partColor,
+                    active: active,
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        buildDifficulties(context)
+      ],
+    );
+  }
+
+  Container buildDifficulties(BuildContext context) {
+    double defaultSize = SizeConfig.defaultSize;
+    return Container(
+      margin: EdgeInsets.only(bottom: defaultSize * 6),
+      height: defaultSize * 5,
+      width: SizeConfig.blockSizeHorizontal * 78,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          ...List.generate(
+            _difficultyList.length,
+            (index) => Container(
+              padding: const EdgeInsets.all(5.0),
+              child: ChoiceChip(
+                labelPadding:
+                    EdgeInsets.symmetric(horizontal: defaultSize * 0.7),
+                elevation: 5,
+                padding: EdgeInsets.symmetric(
+                  horizontal: defaultSize * 0.6,
+                  vertical: defaultSize,
+                ),
+                label: Text(_difficultyList[index].name),
+                labelStyle: Theme.of(context).primaryTextTheme.bodyText2.merge(
+                      TextStyle(
+                        color: Colors.black,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                backgroundColor: _difficultyList[index].color,
+                selected: _selectedChoice == _difficultyList[index].name,
+                onSelected: (selected) {
                   setState(
                     () {
-                      initialPage = value;
-                      page = _pageController.page.round();
-                      selectedChoice = '';
+                      _selectedChoice = _difficultyList[index].name;
                     },
                   );
-                },
-                controller: _pageController,
-                itemCount: widget.words.length,
-                itemBuilder: (context, index) {
-                  bool active = index == page;
-                  // final double top = active ? defaultSize * 1 : defaultSize * 4;
-                  // final double bottom =
-                  //     active ? defaultSize * 1 : defaultSize * 1;
-                  return FlipCard(
-                    onFlip: () {
-                      setState(() {
-                        toggleIsFront();
-                      });
-                    },
-                    direction: FlipDirection.HORIZONTAL,
-                    speed: 400,
-                    front: WordCard(
-                      word: widget.words[index],
-                      side: 'front',
-                      index: index,
-                      part: widget.words[index].part.partColor,
-                      active: active,
-                    ),
-                    back: WordCard(
-                      word: widget.words[index],
-                      index: index,
-                      part: widget.words[index].part.partColor,
-                      active: active,
-                    ),
-                  );
-                  // return AnimatedContainer(
-                  //   duration: Duration(milliseconds: 1000),
-                  //   // curve: Curves.easeInOut,
-                  //   curve: Curves.easeOutQuint,
-                  //   margin: EdgeInsets.only(top: top, bottom: bottom),
-
-                  //   child: FlipCard(
-                  //     onFlip: () {
-                  //       setState(() {
-                  //         toggleIsFront();
-                  //       });
-                  //     },
-                  //     direction: FlipDirection.HORIZONTAL,
-                  //     speed: 400,
-                  //     front: WordCard(
-                  //       word: widget.words[index],
-                  //       side: 'front',
-                  //       index: index,
-                  //       part: widget.words[index].part.partColor,
-                  //     ),
-                  //     back: WordCard(
-                  //       word: widget.words[index],
-                  //       index: index,
-                  //       part: widget.words[index].part.partColor,
-                  //     ),
-                  //   ),
-                  // );
+                  context.bloc<WordsBloc>().add(
+                        WordsUpdatedWord(
+                          word: widget.words[_page].copyWith(
+                              difficulty: _difficultyList[index].difficulty),
+                        ),
+                      );
+                  context.bloc<WordsBloc>().add(WordsLoaded());
                 },
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(bottom: defaultSize * 6),
-            height: defaultSize * 5,
-            width: SizeConfig.blockSizeHorizontal * 78,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ...List.generate(
-                  difficultyList.length,
-                  (index) => Container(
-                    padding: const EdgeInsets.all(5.0),
-                    child: ChoiceChip(
-                      labelPadding:
-                          EdgeInsets.symmetric(horizontal: defaultSize * 0.7),
-                      elevation: 5,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: defaultSize * 0.6,
-                        vertical: defaultSize,
-                      ),
-                      label: Text(difficultyList[index].name),
-                      labelStyle:
-                          Theme.of(context).primaryTextTheme.bodyText2.merge(
-                                TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      backgroundColor: difficultyList[index].color,
-                      selected: selectedChoice == difficultyList[index].name,
-                      onSelected: (selected) {
-                        setState(
-                          () {
-                            selectedChoice = difficultyList[index].name;
-                          },
-                        );
-                        context.bloc<WordsBloc>().add(
-                              WordsUpdatedWord(
-                                word: widget.words[page].copyWith(
-                                    difficulty:
-                                        difficultyList[index].difficulty),
-                              ),
-                            );
-                        context.bloc<WordsBloc>().add(WordsLoaded());
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
         ],
       ),
     );

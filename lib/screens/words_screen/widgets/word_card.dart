@@ -34,8 +34,8 @@ class WordCard extends StatefulWidget {
 }
 
 class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
-  AnimationController expandController;
-  Animation<double> animation;
+  AnimationController _expandController;
+  Animation<double> _animation;
   Animation<double> textAnimation;
   Animation rotationAnimation;
   bool isExpanded = false;
@@ -43,21 +43,21 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    expandController =
+    _expandController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    animation =
-        CurvedAnimation(parent: expandController, curve: Curves.fastOutSlowIn);
-    textAnimation = Tween(begin: 15.0, end: 20.0).animate(expandController);
+    _animation =
+        CurvedAnimation(parent: _expandController, curve: Curves.fastOutSlowIn);
+    textAnimation = Tween(begin: 15.0, end: 20.0).animate(_expandController);
     rotationAnimation =
-        Tween<double>(begin: 0.0, end: 0.5).animate(expandController);
+        Tween<double>(begin: 0.0, end: 0.5).animate(_expandController);
   }
 
   void runExpandContainerAnimation() {
     setState(() {
       if (!isExpanded) {
-        expandController.forward();
+        _expandController.forward();
       } else {
-        expandController.reverse();
+        _expandController.reverse();
       }
       isExpanded = !isExpanded;
     });
@@ -65,7 +65,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    expandController.dispose();
+    _expandController.dispose();
     super.dispose();
   }
 
@@ -155,7 +155,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                 word: word,
               ),
               SecondLang(
-                  animation: animation, isExpanded: isExpanded, word: word),
+                  animation: _animation, isExpanded: isExpanded, word: word),
               ArrowBtn(
                 isExpanded: isExpanded,
                 isEditingMode: widget.isEditingMode,
@@ -163,7 +163,7 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
                 runAnimation: runExpandContainerAnimation,
               ),
               Example(
-                expandController: expandController,
+                expandController: _expandController,
                 word: word,
               ),
             ],

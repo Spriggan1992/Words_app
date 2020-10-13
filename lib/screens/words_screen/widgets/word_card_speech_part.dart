@@ -12,7 +12,6 @@ class SpeechPart extends StatelessWidget {
     final defaultSize = SizeConfig.defaultSize;
     return Container(
       child: Positioned(
-        // curve: Curves.easeIn,
         top: defaultSize * 2.2,
         left: defaultSize * 1.5,
         child: AnimatedContainer(
