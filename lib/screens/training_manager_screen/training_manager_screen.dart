@@ -30,7 +30,7 @@ class _TrainingManagerState extends State<TrainingManager> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
+    // SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
     // Map args = ModalRoute.of(context).settings.arguments;
     // String collectionId = args['id'];
@@ -86,7 +86,7 @@ class _TrainingManagerState extends State<TrainingManager> {
                     ),
                   ),
                 ),
-                MainBtn(
+                BottomAppbar(
                   scaffoldKey: _scaffoldKey,
                   selectedDifficulties: _selectedDifficulties,
                   state: state,

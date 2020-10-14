@@ -1,22 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/config/screenDefiner.dart';
-import 'package:words_app/helpers/functions.dart';
-import 'package:words_app/models/word.dart';
-import 'package:words_app/repositories/bricks_provider.dart';
-import 'package:words_app/screens/result_screen/result_screen.dart';
-import 'package:words_app/screens/training_manager_screen/training_manager_screen.dart';
+import 'package:words_app/config/config.dart';
+import 'package:words_app/models/models.dart';
+import 'package:words_app/repositories/repositories.dart';
 import 'package:words_app/widgets/widgets.dart';
 
-import 'widgets/answer_container.dart';
-import 'widgets/card_container.dart';
-import 'widgets/next_and_give_up_btns.dart';
-import 'widgets/submit_and_try_again_btn.dart';
-import 'widgets/target_word_container.dart';
 import 'animation_utils.dart';
+import 'widgets/widgets.dart';
 
 class BricksGame extends StatefulWidget {
   static String id = 'bricks_game';
@@ -97,28 +87,17 @@ class _BricksGameState extends State<BricksGame> with TickerProviderStateMixin {
     final providerData = Provider.of<Bricks>(context);
     return WillPopScope(
       onWillPop: () async {
-        onBackPressed(
-          context,
-          () {
-            setState(() {
-              Navigator.pushNamedAndRemoveUntil(context, TrainingManager.id,
-                  ModalRoute.withName(TrainingManager.id));
-              providerData.initialData.clear();
-              providerData.cleanData();
-              providerData.resetWords();
-              providerData.answerWordArray.clear();
-              providerData.dynamicColor = DynamicColor.normal;
-            });
-          },
-        );
         providerData.correct = 0;
         providerData.wrong = 0;
+        providerData.backAndClearData(context);
+        return;
       },
       child: Scaffold(
         appBar: BaseAppBar(
-          screenDefiner: ScreenDefiner.trainings,
+          screenDefiner: ScreenDefiner.bricks,
           appBar: AppBar(),
           title: Text('Bricks'),
+          back: () => providerData.backAndClearData(context),
         ),
         body: providerData.initialData.isNotEmpty
             ? Center(

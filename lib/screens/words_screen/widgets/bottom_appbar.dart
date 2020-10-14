@@ -46,6 +46,7 @@ class WordsBottomAppbar extends StatelessWidget {
         goToCollection: () {
           context.bloc<CollectionsBloc>().add(CollectionsLoaded());
           context.bloc<WordsCubit>().toggleEditModeToFalse();
+          Navigator.pushNamed(context, CollectionsScreen.id);
         },
         goToTrainings: () {
           context.bloc<TrainingsBloc>().add(

@@ -78,6 +78,8 @@ class _ReviewCardState extends State<ReviewCard>
         appBar: AppBar(),
       ),
       bottomSheet: BaseBottomAppbar(
+          goToCollection: () =>
+              Navigator.pushNamed(context, CollectionsScreen.id),
           screenDefiner: ScreenDefiner.reviewCard,
           trainingsWordCounter: "${widget.words?.length ?? 0}",
           goToTrainings: () {

@@ -15,9 +15,15 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final AppBar appBar;
   final List<Widget> actions;
   final ScreenDefiner screenDefiner;
+  final Function back;
 
   const BaseAppBar(
-      {Key key, this.title, this.appBar, this.actions, this.screenDefiner})
+      {Key key,
+      this.title,
+      this.appBar,
+      this.actions,
+      this.screenDefiner,
+      this.back})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -72,6 +78,11 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
               ModalRoute.withName(TrainingManager.id));
         }),
       );
+    } else if (screenDefiner == ScreenDefiner.bricks) {
+      return ReusableIconBtn(
+          color: Theme.of(context).accentColor,
+          icon: Icons.arrow_back_ios,
+          onPress: back);
     } else {
       return ReusableIconBtn(
         color: Theme.of(context).accentColor,

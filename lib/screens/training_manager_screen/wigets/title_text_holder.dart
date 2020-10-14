@@ -11,7 +11,6 @@ class TitleTextHolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
     return Container(
       child: Text(

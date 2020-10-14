@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/config/config.dart';
 import 'package:words_app/helpers/functions.dart';
-import 'package:words_app/repositories/bricks_provider.dart';
-import 'package:words_app/screens/result_screen/result_screen.dart';
-import 'package:words_app/config/size_config.dart';
+import 'package:words_app/repositories/repositories.dart';
+import 'package:words_app/screens/screens.dart';
 
 class NextAndGiveUpBtns extends StatefulWidget {
   const NextAndGiveUpBtns({

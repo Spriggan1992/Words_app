@@ -5,5 +5,6 @@ enum ScreenDefiner {
   reviewCard,
   trainingManager,
   result,
-  trainings
+  trainings,
+  bricks,
 }

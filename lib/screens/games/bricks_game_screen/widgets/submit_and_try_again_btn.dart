@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:words_app/repositories/bricks_provider.dart';
+import 'package:words_app/repositories/repositories.dart';
 
 class SubmitAndTryAgainBtn extends StatelessWidget {
   const SubmitAndTryAgainBtn({

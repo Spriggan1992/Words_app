@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/config.dart';
 import 'package:words_app/helpers/functions.dart';
+import 'package:words_app/screens/screens.dart';
 import 'package:words_app/widgets/widgets.dart';
 
 import '../helper.dart';
 
-class MainBtn extends StatelessWidget {
-  const MainBtn({
+class BottomAppbar extends StatelessWidget {
+  const BottomAppbar({
     Key key,
     this.selectedDifficulties,
     GlobalKey<ScaffoldState> scaffoldKey,
@@ -22,6 +23,8 @@ class MainBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: BaseBottomAppbar(
+        goToCollection: () =>
+            Navigator.pushNamed(context, CollectionsScreen.id),
         screenDefiner: ScreenDefiner.trainingManager,
         add: () {
           if (state.isEmptyCardWord == true &&

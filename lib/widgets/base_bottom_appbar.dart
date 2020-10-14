@@ -91,8 +91,6 @@ class BaseBottomAppbar extends StatelessWidget {
         onPress: screenDefiner == ScreenDefiner.collections
             ? null
             : () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => CollectionsScreen()));
                 goToCollection();
               });
   }

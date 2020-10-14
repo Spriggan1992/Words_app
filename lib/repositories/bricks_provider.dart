@@ -242,4 +242,19 @@ class Bricks with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  /// Clear all data when pressing comeback button in appbar
+  void backAndClearData(BuildContext context) {
+    onBackPressed(
+      context,
+      () {
+        Navigator.pushNamed(context, TrainingManager.id);
+        initialData.clear();
+        cleanData();
+        resetWords();
+        answerWordArray.clear();
+        dynamicColor = DynamicColor.normal;
+      },
+    );
+  }
 }

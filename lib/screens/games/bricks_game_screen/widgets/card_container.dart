@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/config/constants.dart';
-import 'package:words_app/repositories/bricks_provider.dart';
-import 'package:words_app/config/size_config.dart';
+import 'package:words_app/config/config.dart';
+import 'package:words_app/repositories/repositories.dart';
 
 class CardContainer extends StatelessWidget {
   const CardContainer({
@@ -14,30 +13,32 @@ class CardContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
     final providerData = Provider.of<Bricks>(context, listen: false);
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: defaultSize * 12, vertical: defaultSize * 1.5),
-      height: SizeConfig.blockSizeVertical * 35,
+      height: SizeConfig.blockSizeVertical * 31,
       width: SizeConfig.blockSizeHorizontal * 100,
       child: SlideTransition(
         position: slideTransitionAnimation,
-        child: Container(
-            decoration: BoxDecoration(
-              boxShadow: [kBoxShadow],
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.white,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                boxShadow: [kBoxShadow],
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.white,
+              ),
             ),
-            child: Container(
+            Positioned(
+              top: defaultSize * 4,
+              child: Container(
+                width: SizeConfig.blockSizeHorizontal * 35,
+                height: SizeConfig.blockSizeVertical * 5,
                 alignment: Alignment.center,
-                margin: EdgeInsets.only(
-                  right: SizeConfig.blockSizeHorizontal * 4,
-                  left: SizeConfig.blockSizeHorizontal * 4,
-                  top: defaultSize * 3.0,
-                  bottom: defaultSize * 15.0,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: defaultSize),
                 decoration: BoxDecoration(
                   boxShadow: [kBoxShadow],
                   borderRadius: BorderRadius.circular(5),
@@ -45,7 +46,11 @@ class CardContainer extends StatelessWidget {
                 ),
                 child: Text(
                   providerData.initialData.last.ownLang,
-                ))),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
