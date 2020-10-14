@@ -8,7 +8,7 @@ class CollectionsFuilterShowColldection extends StatelessWidget {
     @required this.state,
   }) : super(key: key);
 
-  final TrainingsSuccess state;
+  final TrainingsState state;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class CollectionsFuilterShowColldection extends StatelessWidget {
         child: SingleChildScrollView(
           physics: ScrollPhysics(parent: BouncingScrollPhysics()),
           clipBehavior: Clip.hardEdge,
-          child: state.filteredCollections.isEmpty
+          child: state.selectedCollections.isEmpty
               ? Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -31,7 +31,7 @@ class CollectionsFuilterShowColldection extends StatelessWidget {
               : Wrap(
                   spacing: defaultSize * 0.3,
                   alignment: WrapAlignment.center,
-                  children: state.filteredCollections.map((item) {
+                  children: state.selectedCollections.map((item) {
                     return Chip(
                       label: Text(item.title, style: TextStyle(fontSize: 10)),
                     );

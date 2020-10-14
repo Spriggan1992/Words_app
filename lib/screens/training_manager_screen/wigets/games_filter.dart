@@ -12,7 +12,7 @@ class GamesFilter extends StatefulWidget {
   }) : super(key: key);
 
   final List<IconData> iconsList;
-  final TrainingsSuccess state;
+  final TrainingsState state;
 
   @override
   _GamesFilterState createState() => _GamesFilterState();
@@ -49,7 +49,7 @@ class _GamesFilterState extends State<GamesFilter> {
               onSelected: (selected) {
                 context
                     .bloc<TrainingsBloc>()
-                    .add(TrainingsUpdatedSelectedGames(selectedGames: item));
+                    .add(TrainingsSelectedGames(selectedGame: item));
                 // selectedGames = item;
               },
             ),

@@ -8,11 +8,11 @@ class MetricsContainer extends StatelessWidget {
   const MetricsContainer({
     Key key,
     this.state,
-    this.selectedDifficulties,
+    // this.selectedDifficulties,
   }) : super(key: key);
 
-  final TrainingsSuccess state;
-  final List<int> selectedDifficulties;
+  final TrainingsState state;
+  // final List<int> selectedDifficulties;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class MetricsContainer extends StatelessWidget {
               children: [
                 Text('know:'),
                 Text(countWordsByDifficulty(
-                    state.filteredWords, 0, selectedDifficulties))
+                    state.filteredWords, 0, state.selectedDifficulties))
               ],
             ),
             Row(
@@ -35,7 +35,7 @@ class MetricsContainer extends StatelessWidget {
               children: [
                 Text('know a little:'),
                 Text(countWordsByDifficulty(
-                    state.filteredWords, 1, selectedDifficulties))
+                    state.filteredWords, 1, state.selectedDifficulties))
               ],
             ),
             Row(
@@ -43,7 +43,7 @@ class MetricsContainer extends StatelessWidget {
               children: [
                 Text("don't know"),
                 Text(countWordsByDifficulty(
-                    state.filteredWords, 2, selectedDifficulties))
+                    state.filteredWords, 2, state.selectedDifficulties))
               ],
             ),
             Row(
@@ -51,7 +51,7 @@ class MetricsContainer extends StatelessWidget {
               children: [
                 Text("Total:"),
                 Text(countWordsByDifficulty(
-                    state.filteredWords, 3, selectedDifficulties))
+                    state.filteredWords, 3, state.selectedDifficulties))
               ],
             )
           ],

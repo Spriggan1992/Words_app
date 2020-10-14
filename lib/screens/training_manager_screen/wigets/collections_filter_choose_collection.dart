@@ -8,12 +8,12 @@ class CollectionsFilterChooseCollection extends StatefulWidget {
     Key key,
     @required this.defaultSize,
     @required this.state,
-    this.selectedDifficulties,
+    // this.selectedDifficulties,
   }) : super(key: key);
 
   final double defaultSize;
-  final List<int> selectedDifficulties;
-  final TrainingsSuccess state;
+  // final List<int> selectedDifficulties;
+  final TrainingsState state;
 
   @override
   _CollectionsFilterChooseCollectionState createState() =>
@@ -55,9 +55,9 @@ class _CollectionsFilterChooseCollectionState
       FlatButton(
         onPressed: () {
           setState(() {});
-          context.bloc<TrainingsBloc>().add(TrainingsFiltered(
-              selectedDifficulties: widget.selectedDifficulties,
-              selectedCollections: widget.state.filteredCollections));
+          // context.bloc<TrainingsBloc>().add(TrainingsFiltered(
+          //     selectedDifficulties: widget.selectedDifficulties,
+          //     selectedCollections: widget.state.selectedCollections));
 
           Navigator.pop(
             context,
@@ -80,11 +80,11 @@ class _CollectionsFilterChooseCollectionState
             itemBuilder: (context, index) {
               return CheckboxListTile(
                 title: Text(widget.state.collections[index].title),
-                value: widget.state.filteredCollections
+                value: widget.state.selectedCollections
                     .contains(widget.state.collections[index]),
                 onChanged: (value) {
                   context.bloc<TrainingsBloc>().add(
-                      TrainingsAddRemoveCollectionFilter(
+                      TrainingsSelectedCollections(
                           isCollection: value,
                           collection: widget.state.collections[index]));
                   setState(() {});

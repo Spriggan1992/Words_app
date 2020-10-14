@@ -18,7 +18,7 @@ class TrainingManager extends StatefulWidget {
 
 class _TrainingManagerState extends State<TrainingManager> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  List<int> _selectedDifficulties = [];
+  // List<int> _selectedDifficulties = [];
   List<Difficulty> _difficulty = DifficultyList().difficultyList;
 
   // Data for creating dynamic icons for games buttons
@@ -37,66 +37,53 @@ class _TrainingManagerState extends State<TrainingManager> {
     // List<Word> words = args['words'];
 
     return BlocBuilder<TrainingsBloc, TrainingsState>(
-      builder: (context, state) {
-        if (state is TrainingsLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (state is TrainingsSuccess) {
-          return Scaffold(
-            key: _scaffoldKey,
-            backgroundColor: Color(0xFFeae2da),
-            appBar: BaseAppBar(
-              screenDefiner: ScreenDefiner.trainingManager,
-              title: Text('Trainings'),
-              appBar: AppBar(),
-            ),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: defaultSize * 3),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TitleTextHolder(title: '1. I want to play ...'),
-                        GamesFilter(
-                          iconsList: _iconsList,
-                          state: state,
-                        ),
-                        TitleTextHolder(
-                            title: '2. I want to use words from ...'),
-                        CollectionsFilter(
-                          selectedDifficulties: _selectedDifficulties,
-                          state: state,
-                        ),
-                        TitleTextHolder(
-                            title: '3. I want to study words that I ...'),
-                        DifficultiesFilter(
-                            difficulty: _difficulty,
-                            selectedDifficulties: _selectedDifficulties,
-                            state: state),
-                        MetricsContainer(
-                            selectedDifficulties: _selectedDifficulties,
-                            state: state)
-                      ],
+        builder: (context, state) {
+      return Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: Color(0xFFeae2da),
+        appBar: BaseAppBar(
+          screenDefiner: ScreenDefiner.trainingManager,
+          title: Text('Trainings'),
+          appBar: AppBar(),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: defaultSize * 3),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TitleTextHolder(title: '1. I want to play ...'),
+                    GamesFilter(
+                      iconsList: _iconsList,
+                      state: state,
                     ),
-                  ),
+                    TitleTextHolder(title: '2. I want to use words from ...'),
+                    CollectionsFilter(
+                      // selectedDifficulties: _selectedDifficulties,
+                      state: state,
+                    ),
+                    TitleTextHolder(
+                        title: '3. I want to study words that I ...'),
+                    DifficultiesFilter(difficulty: _difficulty, state: state),
+                    MetricsContainer(
+                        // selectedDifficulties: _selectedDifficulties,
+                        state: state)
+                  ],
                 ),
-                BottomAppbar(
-                  scaffoldKey: _scaffoldKey,
-                  selectedDifficulties: _selectedDifficulties,
-                  state: state,
-                ),
-              ],
+              ),
             ),
-          );
-        }
-        return Text('Somthing went wrong....');
-      },
-    );
+            BottomAppbar(
+              scaffoldKey: _scaffoldKey,
+              // selectedDifficulties: _selectedDifficulties,
+              state: state,
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

@@ -8,9 +8,9 @@ import 'package:words_app/screens/screens.dart';
 
 enum FilterGames { bricks, pair, wrongCorrect }
 
-/// Return amount of filtered words when difficulties is chosen.
+/// Return quntity of filtered words when difficulties is chosen.
 ///
-/// path:'/training_manager_screen'
+/// path:'training_manager_screen'
 String countWordsByDifficulty(
   List<Word> listWord,
   int difficulty,
@@ -36,7 +36,7 @@ String countWordsByDifficulty(
 /// Navigate to games depending on which game is selected, collection and difficulty
 void checkNavigation(
   List<Collection> selectedListCollections,
-  TrainingsSuccess state,
+  TrainingsState state,
   BuildContext context,
   GlobalKey<ScaffoldState> scaffoldKey,
   List<int> selectedDifficulties,

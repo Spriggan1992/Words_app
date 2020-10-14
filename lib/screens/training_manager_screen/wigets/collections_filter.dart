@@ -7,11 +7,11 @@ import 'widgets.dart';
 class CollectionsFilter extends StatelessWidget {
   const CollectionsFilter({
     Key key,
-    @required this.selectedDifficulties,
+    // @required this.selectedDifficulties,
     this.state,
   }) : super(key: key);
-  final TrainingsSuccess state;
-  final List<int> selectedDifficulties;
+  final TrainingsState state;
+  // final List<int> selectedDifficulties;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,9 @@ class CollectionsFilter extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CollectionsFilterChooseCollection(
-              defaultSize: defaultSize,
-              state: state,
-              selectedDifficulties: selectedDifficulties),
+            defaultSize: defaultSize,
+            state: state,
+          ),
           SizedBox(width: defaultSize * 2),
           CollectionsFuilterShowColldection(state: state)
         ],

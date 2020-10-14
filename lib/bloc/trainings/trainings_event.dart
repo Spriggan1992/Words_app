@@ -16,32 +16,62 @@ class TrainingsLoaded extends TrainingsEvent {
   List<Object> get props => [words, collectionId];
 }
 
-class TrainingsFiltered extends TrainingsEvent {
-  final List<int> selectedDifficulties;
-  final List<Collection> selectedCollections;
+// class TrainingsFiltered extends TrainingsEvent {
+//   final List<int> selectedDifficulties;
+//   final List<Collection> selectedCollections;
 
-  // final int difficulty;
+//   // final int difficulty;
 
-  TrainingsFiltered({this.selectedDifficulties, this.selectedCollections});
-  @override
-  List<Object> get props => [selectedCollections, selectedDifficulties];
-}
+//   TrainingsFiltered({this.selectedDifficulties, this.selectedCollections});
+//   @override
+//   List<Object> get props => [selectedCollections, selectedDifficulties];
+// }
 
-class TrainingsUpdatedSelectedGames extends TrainingsEvent {
-  final FilterGames selectedGames;
+// class TrainingsUpdatedSelectedGames extends TrainingsEvent {
+//   final FilterGames selectedGames;
 
-  TrainingsUpdatedSelectedGames({this.selectedGames});
+//   TrainingsUpdatedSelectedGames({this.selectedGames});
 
-  @override
-  List<Object> get props => [selectedGames];
-}
+//   @override
+//   List<Object> get props => [selectedGames];
+// }
 
-class TrainingsAddRemoveCollectionFilter extends TrainingsEvent {
+// class TrainingsAddRemoveCollectionFilter extends TrainingsEvent {
+//   final bool isCollection;
+//   final Collection collection;
+
+//   TrainingsAddRemoveCollectionFilter({this.isCollection, this.collection});
+
+//   @override
+//   List<Object> get props => [isCollection, collection];
+// }
+
+class TrainingsSelectedCollections extends TrainingsEvent {
   final bool isCollection;
   final Collection collection;
 
-  TrainingsAddRemoveCollectionFilter({this.isCollection, this.collection});
+  TrainingsSelectedCollections({this.isCollection, this.collection});
 
   @override
   List<Object> get props => [isCollection, collection];
 }
+
+class TrainingsSelectedDifficulties extends TrainingsEvent {
+  final List<int> difficulties;
+
+  TrainingsSelectedDifficulties({this.difficulties});
+
+  @override
+  List<Object> get props => [difficulties];
+}
+
+class TrainingsSelectedGames extends TrainingsEvent {
+  final FilterGames selectedGame;
+
+  TrainingsSelectedGames({this.selectedGame});
+
+  @override
+  List<Object> get props => [selectedGame];
+}
+
+class TrainingsSubmitted extends TrainingsEvent {}

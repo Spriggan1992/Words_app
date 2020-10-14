@@ -18,7 +18,7 @@ class BottomAppbar extends StatelessWidget {
 
   final List<int> selectedDifficulties;
   final GlobalKey<ScaffoldState> _scaffoldKey;
-  final TrainingsSuccess state;
+  final TrainingsState state;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +31,7 @@ class BottomAppbar extends StatelessWidget {
               selectedDifficulties.isNotEmpty) {
             showCustomDialog(context, () {
               checkNavigation(
-                state.filteredCollections,
+                state.selectedCollections,
                 state,
                 context,
                 _scaffoldKey,
@@ -40,7 +40,7 @@ class BottomAppbar extends StatelessWidget {
             });
           } else {
             checkNavigation(
-              state.filteredCollections,
+              state.selectedCollections,
               state,
               context,
               _scaffoldKey,
