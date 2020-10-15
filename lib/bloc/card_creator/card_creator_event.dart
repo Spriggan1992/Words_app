@@ -95,20 +95,14 @@ class CardCreatorOwnExapleUpdate extends CardCreatorEvent {
 
 class CardCreatorUpdateImgFromCamera extends CardCreatorEvent {}
 
-class CardCreatorDownloadImagesFromAPI extends CardCreatorEvent {
-  final String name;
-
-  CardCreatorDownloadImagesFromAPI({this.name});
-
-  List<Object> get props => [name];
-}
-
-class CardCreatorUpdateImagesFromAPI extends CardCreatorEvent {
+class CardCreatorUpdateImgFromApi extends CardCreatorEvent {
   final String url;
 
-  CardCreatorUpdateImagesFromAPI({this.url = 'cat'});
-
+  CardCreatorUpdateImgFromApi({@required this.url});
   List<Object> get props => [url];
+
+  @override
+  String toString() => 'CardCreatorUpdateImgFromApi { image: $url }';
 }
 
 class CardCreatorAdded extends CardCreatorEvent {}

@@ -1,28 +1,30 @@
-part of 'card_creator_bloc.dart';
+part of 'image_api_bloc.dart';
 
 @immutable
-class CardCreatorState {
-  final Word word;
+class ImageApiState {
   final String collectionId;
   final bool isSubmiting;
   final bool isSuccess;
   final bool isFailure;
   final String errorMessage;
   final List<ImgData> imageData;
+  final String search;
+  final File image;
 
-  CardCreatorState({
-    this.word,
+  ImageApiState({
+    this.search,
     this.collectionId,
     this.isSubmiting,
     this.isSuccess,
     this.isFailure,
     this.errorMessage,
     this.imageData,
+    this.image,
   });
 
-  factory CardCreatorState.empty() {
-    return CardCreatorState(
-        word: null,
+  factory ImageApiState.empty({String search}) {
+    return ImageApiState(
+        search: null,
         collectionId: '',
         isSubmiting: false,
         isSuccess: false,
@@ -30,9 +32,9 @@ class CardCreatorState {
         errorMessage: "",
         imageData: []);
   }
-  factory CardCreatorState.submitting({@required Word word}) {
-    return CardCreatorState(
-      word: word,
+  factory ImageApiState.submitting({@required String search}) {
+    return ImageApiState(
+      search: search,
       isSubmiting: true,
       isSuccess: false,
       isFailure: false,
@@ -40,9 +42,9 @@ class CardCreatorState {
       imageData: [],
     );
   }
-  factory CardCreatorState.success({@required Word word}) {
-    return CardCreatorState(
-      word: word,
+  factory ImageApiState.success({@required String search}) {
+    return ImageApiState(
+      search: search,
       isSubmiting: false,
       isSuccess: true,
       isFailure: false,
@@ -50,10 +52,10 @@ class CardCreatorState {
       imageData: [],
     );
   }
-  factory CardCreatorState.failure(
-      {@required Word word, @required String errorMessage}) {
-    return CardCreatorState(
-      word: word,
+  factory ImageApiState.failure(
+      {@required String search, @required String errorMessage}) {
+    return ImageApiState(
+      search: search,
       isSubmiting: false,
       isSuccess: false,
       isFailure: true,
@@ -61,46 +63,51 @@ class CardCreatorState {
       imageData: [],
     );
   }
-  CardCreatorState update(
-      {Word word,
+  ImageApiState update(
+      {String search,
       bool isSubmiting,
       bool isSuccess,
       bool isFailure,
       String errorMessage,
-      List<ImgData> imageData}) {
+      List<ImgData> imageData,
+      File image}) {
     return copyWith(
-        word: word,
+        search: search,
         isSubmiting: isSubmiting,
         isSuccess: isSuccess,
         isFailure: isFailure,
         errorMessage: errorMessage,
-        imageData: imageData);
+        imageData: imageData,
+        image: image);
   }
 
-  CardCreatorState copyWith(
-      {Word word,
+  ImageApiState copyWith(
+      {String search,
       bool isSubmiting,
       bool isSuccess,
       bool isFailure,
       String errorMessage,
-      List<ImgData> imageData}) {
-    return CardCreatorState(
-      word: word ?? this.word,
+      List<ImgData> imageData,
+      File image}) {
+    return ImageApiState(
+      search: search ?? this.search,
       isSubmiting: isSubmiting ?? this.isSubmiting,
       isSuccess: isSuccess ?? this.isSuccess,
       isFailure: isFailure ?? this.isFailure,
       errorMessage: errorMessage ?? this.errorMessage,
       imageData: imageData ?? this.imageData,
+      image: image ?? this.image,
     );
   }
 
   @override
-  String toString() => '''CardCreatorState
-      word: $word, 
+  String toString() => '''ImageApiState
+      search: $search, 
       isSubmiting: $isSubmiting,
       isSuccess: $isSuccess, 
       isFailure: $isFailure, 
       errorMessage: $errorMessage, 
       imageData: $imageData,
+      image: $image,
   ''';
 }

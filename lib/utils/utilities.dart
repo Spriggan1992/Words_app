@@ -12,7 +12,7 @@ class Utilities {
     return Color(value);
   }
 
-  ///Method to work with asset [image], to save it  as file
+  ///Method to work with asset [url], to save it  as file
   static Future<File> assetToFile(String path,
       {String imageName = 'noimage'}) async {
     //loading data from file in assets

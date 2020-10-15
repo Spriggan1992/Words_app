@@ -71,7 +71,6 @@ class Word extends Equatable with ChangeNotifier {
   }''';
 
   factory Word.fromEntity(WordEntity entity) {
-    // print(" Word.fromEntity $entity");
     return Word(
       collectionId: entity.collectionId,
       id: entity.id,

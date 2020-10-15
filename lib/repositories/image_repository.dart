@@ -50,7 +50,6 @@ class ImageRepository {
     String name = p.basename(imageFile.path);
 
 //    final imageFile2 = await assetToFile('images/noimages.png');
-//    print(imageFile2.path);
     //This check is needed if we didn't take a picture  and used back button in camera;
 
     if (imageFile == null) {
@@ -68,7 +67,6 @@ class ImageRepository {
     try {
       croppedFile.delete();
     } on FileSystemDeleteEvent {}
-    // print('name: $name path: $path file size: ${file.length()}');
     return file;
   }
 
@@ -77,9 +75,7 @@ class ImageRepository {
     String path = directory.path;
     String name = p.basename(url);
     File file = File("$path/$name");
-    // print(
-    //   "path: $path name $name",
-    // );
+
     http.Response response = await http.get(url);
 
     if (response.statusCode == 200) {

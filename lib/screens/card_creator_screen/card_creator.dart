@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
+import 'package:words_app/bloc/image_api/image_api_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/config/screenDefiner.dart';
+import 'package:words_app/repositories/repositories.dart';
 import 'package:words_app/widgets/custom_round_btn.dart';
 import 'package:words_app/constants/constants.dart';
 import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
@@ -54,10 +56,11 @@ class _CardCreatorState extends State<CardCreator> {
               );
             },
           );
+        } else if (state.isSubmiting) {
+          return CircularProgressIndicator();
         }
       },
       builder: (context, state) {
-        print(state.word);
         return Scaffold(
           appBar: buildBaseAppBar(
             context,
@@ -148,7 +151,7 @@ class _CardCreatorState extends State<CardCreator> {
                                                   color: Color(0xFFDA627D),
                                                 ),
                                                 IconButton(
-                                                  onPressed: () {
+                                                  onPressed: () async {
                                                     // context
                                                     //     .bloc<CardCreatorBloc>()
                                                     //     .add(
@@ -157,8 +160,28 @@ class _CardCreatorState extends State<CardCreator> {
                                                     //           //     .targetLang,
                                                     //           ),
                                                     //     );
-                                                    Navigator.pushNamed(
-                                                        context, ImageApi.id);
+                                                    var url =
+                                                        await Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            BlocProvider<
+                                                                ImageApiBloc>(
+                                                          create: (context) =>
+                                                              ImageApiBloc(
+                                                                  ImageRepository(),
+                                                                  state)
+                                                                ..add(
+                                                                    ImageApiLoaded()),
+                                                          child: ImageApi(),
+                                                        ),
+                                                      ),
+                                                    );
+                                                    context
+                                                        .bloc<CardCreatorBloc>()
+                                                        .add(
+                                                            CardCreatorUpdateImgFromApi(
+                                                                url: url));
                                                   },
                                                   icon: Icon(
                                                     Icons.web_asset,
@@ -205,15 +228,29 @@ class _CardCreatorState extends State<CardCreator> {
                                                   color: Color(0xFFDA627D),
                                                 ),
                                                 IconButton(
-                                                  onPressed: () {
+                                                  onPressed: () async {
+                                                    var url =
+                                                        await Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            BlocProvider<
+                                                                ImageApiBloc>(
+                                                          create: (context) =>
+                                                              ImageApiBloc(
+                                                                  ImageRepository(),
+                                                                  state)
+                                                                ..add(
+                                                                    ImageApiLoaded()),
+                                                          child: ImageApi(),
+                                                        ),
+                                                      ),
+                                                    );
                                                     context
                                                         .bloc<CardCreatorBloc>()
                                                         .add(
-                                                          CardCreatorDownloadImagesFromAPI(
-                                                              // name: state.word
-                                                              //     .targetLang,
-                                                              ),
-                                                        );
+                                                            CardCreatorUpdateImgFromApi(
+                                                                url: url));
                                                     // Navigator.pushNamed(
                                                     //     context, ImageApi.id);
                                                   },
@@ -628,6 +665,8 @@ class _CardCreatorState extends State<CardCreator> {
           icon: Icons.check,
           fillColor: Theme.of(context).accentColor,
           onPressed: () {
+            print(state.word);
+            print(_isEditing);
             _isEditing
                 ? context
                     .bloc<WordsBloc>()

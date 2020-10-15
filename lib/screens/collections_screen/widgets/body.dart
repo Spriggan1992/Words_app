@@ -16,7 +16,6 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print(widget.collections);
     return GestureDetector(
       onTap: () {
         context.bloc<CollectionsBloc>().add(CollectionsSetToFalse());

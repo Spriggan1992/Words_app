@@ -97,7 +97,7 @@ class WordsRepository extends BaseWordsRepository {
     try {
       await word.image.delete();
     } on FileSystemException {}
-    print(word.id);
+   
     await DBHelper.dicrementtCounter(word.collectionId);
     DBHelper.delete('words', word.id);
   }
@@ -107,7 +107,6 @@ class WordsRepository extends BaseWordsRepository {
   //   final picker = ImagePicker();
   //   PickedFile imageFile =
   //       await picker.getImage(source: ImageSource.camera, maxWidth: 600);
-  //   // print('getImageFile ${imageFile.path}');
 
   //   //This if block checks   if we didn't take a picture  and used back button in camera;
   //   if (imageFile == null) {

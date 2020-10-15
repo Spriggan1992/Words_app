@@ -226,7 +226,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
   //     WordsUpdatedWord event) async* {
   //   try {
   //     final updatedWord = (state as WordsSuccess).words.map((word) {
-  //       print("from IF ${event.word.id}");
+  //
   //       if (word.id == event.word.id) {
   //         wordsRepository.updateWord(word: event.word);
   //       }

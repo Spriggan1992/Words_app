@@ -77,7 +77,6 @@ class _WordCardState extends State<WordCard> with TickerProviderStateMixin {
 
     /// Receiving word data from[ words_screen], using index to extract single item from array
     final word = widget.word;
-    // print("${word}");
 
     return ExpandableContainer(
       collapseHeight: defaultSize * 9,

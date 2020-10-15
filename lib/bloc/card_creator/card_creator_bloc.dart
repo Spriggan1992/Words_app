@@ -42,11 +42,14 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
       yield* _mapCardCreatorPartUpdatedToState(event);
     } else if (event is CardCreatorUpdateImgFromCamera) {
       yield* _mapCardCreatorUpdatedImageFromCameraToState();
-    } else if (event is CardCreatorDownloadImagesFromAPI) {
-      yield* _mapCardCreatorDownloadImagesFromAPIInitialToState(event);
-    } else if (event is CardCreatorUpdateImagesFromAPI) {
+    } else if (event is CardCreatorUpdateImgFromApi) {
       yield* _mapCardCreatorUpdatedImageFromApiToState(event);
     }
+    // else if (event is CardCreatorDownloadImagesFromAPI) {
+    //   yield* _mapCardCreatorDownloadImagesFromAPIInitialToState(event);
+    // } else if (event is CardCreatorUpdateImagesFromAPI) {
+    //   yield* _mapCardCreatorUpdatedImageFromApiToState(event);
+    // }
   }
 
   /// Method receives String [collectionLang] and pass it to the CardCreatorSuccess state.
@@ -59,7 +62,6 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
 
   Stream<CardCreatorState> _mapCardCreatorTargetLanguageUpdatedToState(
       CardCreatorTargetLanguageUpdate event) async* {
-    print(event.targetLanguage);
     if (state.word == null) {
       final Word word = Word(
         collectionId: _collectionId,
@@ -202,28 +204,28 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
     }
   }
 
-  Stream<CardCreatorState> _mapCardCreatorDownloadImagesFromAPIInitialToState(
-      CardCreatorDownloadImagesFromAPI event) async* {
-    // try {
-    //   String collectionLang = (state as CardCreatorSuccess).collectionLang;
-    //   List<ImgData> imageData = await imageRepository.getNetworkImg(
-    //       word: event.name, collectionLang: collectionLang);
-
-    //   yield CardCreatorSuccess(
-    //       imageData: imageData, collectionLang: collectionLang);
-    // } on NetworkException {
-    //   yield CardCreatorFailure(message: "No such data you looser");
-    // }
-  }
-
   Stream<CardCreatorState> _mapCardCreatorUpdatedImageFromApiToState(
-      CardCreatorUpdateImagesFromAPI event) async* {
-    // try {
-    //   final File file = await imageRepository.getImageFileFromUrl(event.url);
-    //   // final File croppedFile = await imageRepository.getImageFile();
-    //   yield CardCreatorSuccess(image: file);
-    // } catch (_) {
-    //   yield CardCreatorFailure(message: "something went wrong with me");
-    // }
+      CardCreatorUpdateImgFromApi event) async* {
+    try {
+      final File file = await _imageRepository.getImageFileFromUrl(event.url);
+      if (state.word == null) {
+        final Word word = Word(
+          collectionId: _collectionId,
+          image: file,
+        );
+        yield state.update(word: word);
+      } else {
+        yield state.update(
+          word: state.word.copyWith(
+            image: file,
+          ),
+        );
+      }
+    } catch (_) {
+      yield CardCreatorState.failure(
+          word: state.word,
+          errorMessage:
+              'There was an error in  _mapCardCreatorUpdatedImageFromApiToState');
+    }
   }
 }
