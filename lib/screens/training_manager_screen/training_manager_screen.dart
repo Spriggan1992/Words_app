@@ -38,21 +38,16 @@ class _TrainingManagerState extends State<TrainingManager> {
 
     return BlocConsumer<TrainingsBloc, TrainingsState>(
         listener: ((context, failureState) {
-      // if (failureState.isFailure) {
-      //   _scaffoldKey.currentState.showSnackBar(SnackBar(
-      //       duration: Duration(milliseconds: 1500),
-      //       content: Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child: Text(
-      //           failureState.errorMessage,
-      //         ),
-      //       )));
-      // }
-      // if (failureState.selectedDifficulties.isEmpty &&
-      //     failureState.selectedCollections.isEmpty &&
-      //     failureState.filteredWords.isEmpty) {
-      //   failureState.update(isFailure: false);
-      // }
+      if (failureState.isFailure) {
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+            duration: Duration(milliseconds: 1500),
+            content: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                failureState.errorMessage,
+              ),
+            )));
+      }
     }), builder: (context, state) {
       return Scaffold(
         key: _scaffoldKey,

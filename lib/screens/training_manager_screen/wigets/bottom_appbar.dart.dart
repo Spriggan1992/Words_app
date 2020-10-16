@@ -23,42 +23,43 @@ class BottomAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: BaseBottomAppbar(
-        goToCollection: () =>
-            Navigator.pushNamed(context, CollectionsScreen.id),
-        screenDefiner: ScreenDefiner.trainingManager,
-        add: () {
-          context.bloc<TrainingsBloc>().add(TrainingsSubmitted());
-          print('collection length: ${state.selectedCollections.length}');
-          print('success: ${state.isSuccess}');
-          print('failure: ${state.isFailure}');
-          context.bloc<TrainingsBloc>().add(TrainingsSubmitted());
-          if (state.isFailure) {
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
-                duration: Duration(milliseconds: 1500),
-                content: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    state.errorMessage,
-                  ),
-                )));
+          goToCollection: () =>
+              Navigator.pushNamed(context, CollectionsScreen.id),
+          screenDefiner: ScreenDefiner.trainingManager,
+          add: () {
+            // context.bloc<TrainingsBloc>().add(TrainingsSubmitted());
+            // print('collection length: ${state.selectedCollections.length}');
+            // print('success: ${state.isSuccess}');
+            // print('failure: ${state.isFailure}');
+
+            // if (state.isFailure) {
+            //   _scaffoldKey.currentState.showSnackBar(SnackBar(
+            //       duration: Duration(milliseconds: 1500),
+            //       content: Padding(
+            //         padding: const EdgeInsets.all(8.0),
+            //         child: Text(
+            //           state.errorMessage,
+            //         ),
+            //       )));
+            // }
+            // if (state.isEmptyCardWord) {
+            //   showCustomDialog(context, () {
+            //     checkNavigation(
+            //       state,
+            //       context,
+            //       _scaffoldKey,
+            //     );
+            //   });
+            // // } else {
+            context.bloc<TrainingsBloc>().add(TrainingsSubmitted());
+            checkNavigation(
+              state,
+              context,
+              _scaffoldKey,
+            );
           }
-          // if (state.isEmptyCardWord) {
-          //   showCustomDialog(context, () {
-          //     checkNavigation(
-          //       state,
-          //       context,
-          //       _scaffoldKey,
-          //     );
-          //   });
-          // } else {
-          //   checkNavigation(
-          //     state,
-          //     context,
-          //     _scaffoldKey,
-          //   );
-          // }
-        },
-      ),
+          // },
+          ),
     );
   }
 }

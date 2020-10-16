@@ -14,7 +14,7 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
   final CollectionsRepository collectionsRepository;
 
   TrainingsBloc({this.wordsRepository, this.collectionsRepository})
-      : super(TrainingsState());
+      : super(TrainingsLoading());
 
   @override
   Stream<TrainingsState> mapEventToState(
@@ -23,15 +23,6 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
     if (event is TrainingsLoaded) {
       yield* _mapTrainingsLoadedToState(event);
     }
-    // if (event is TrainingsFiltered) {
-    //   yield* _mapTrainingsFilteredToState(event);
-    // }
-    // if (event is TrainingsUpdatedSelectedGames) {
-    //   yield* _mapTrainingsUpdatedSelectedGamesToState(event);
-    // }
-    // if (event is TrainingsAddRemoveCollectionFilter) {
-    //   yield* _mapTrainingsAddRemoveCollectionFilterToState(event);
-    // }
     if (event is TrainingsSelectedCollections) {
       yield* _mapTrainingsSelectedCollectionsToState(event);
     }
@@ -51,12 +42,13 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
 
   Stream<TrainingsState> _mapTrainingsLoadedToState(
       TrainingsLoaded event) async* {
+    final trainigState = (state as TrainingsSuccess);
     final List<Collection> updatedCollections =
         await collectionsRepository.fetchAndSetCollection();
     final List<Collection> selectedCollections = updatedCollections
         .where((collection) => collection.id == event.collectionId)
         .toList();
-    yield state.update(
+    yield trainigState.update(
       selectedDifficulties: [],
       isEmptyCardWord: false,
       filteredWords: event.words,
@@ -64,7 +56,6 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
       selectedGames: FilterGames.bricks,
       collections: updatedCollections ?? [],
       isFailure: false,
-      isSuccess: false,
     );
     // yield TrainingsSuccess(
     //     filteredCollections: filteredCollections ?? [],
@@ -94,9 +85,9 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
         data['updatedFilteredWordsList'];
     final bool updatedIsEmptyCardWord = data['updatedIsEmptyCardWord'];
     yield state.update(
-        filteredWords: updatedFilteredWordsList,
-        isEmptyCardWord: updatedIsEmptyCardWord,
-        isFailure: false);
+      filteredWords: updatedFilteredWordsList,
+      isEmptyCardWord: updatedIsEmptyCardWord,
+    );
   }
 
   Future<List<Word>> _mapWordsList() async {
@@ -146,45 +137,29 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
 
   Stream<TrainingsState> _mapTrainingsSubmittedToState() async* {
     // try {
-    if (state.selectedDifficulties.isNotEmpty &&
-        state.selectedCollections.isNotEmpty &&
-        state.filteredWords.isNotEmpty) {
-      yield TrainingsState.success(
-        collections: state.collections,
-        filteredWords: state.filteredWords,
-        isEmptyCardWord: state.isEmptyCardWord,
-        selectedCollections: state.selectedCollections,
-        selectedDifficulties: state.selectedDifficulties,
-        selectedGames: state.selectedGames,
-      );
-    } else {
-      String error = await returnErrorMessage();
-      yield TrainingsState.failure(
-        collections: state.collections,
-        filteredWords: state.filteredWords,
-        isEmptyCardWord: state.isEmptyCardWord,
-        selectedCollections: state.selectedCollections,
-        selectedDifficulties: state.selectedDifficulties,
-        selectedGames: state.selectedGames,
-        errorMessage: error,
-      );
-    }
-    // } catch (_) {
-    //   String error = await returnErrorMessage();
-    //   yield TrainingsState.failure(
+    // if (state.selectedDifficulties.isNotEmpty &&
+    //     state.selectedCollections.isNotEmpty &&
+    //     state.filteredWords.isNotEmpty) {
+    //   yield TrainingsState.success(
     //     collections: state.collections,
     //     filteredWords: state.filteredWords,
     //     isEmptyCardWord: state.isEmptyCardWord,
     //     selectedCollections: state.selectedCollections,
     //     selectedDifficulties: state.selectedDifficulties,
     //     selectedGames: state.selectedGames,
-    //     errorMessage: error,
     //   );
-    // yield state.update(
-    //     isFailure: false,
-    //     isSubmitting: false,
-    //     isSuccess: false,
-    //     errorMessage: '');
+    // } else {
+    String error = await returnErrorMessage();
+    yield TrainingsState.failure(
+      collections: state.collections,
+      filteredWords: state.filteredWords,
+      isEmptyCardWord: state.isEmptyCardWord,
+      selectedCollections: state.selectedCollections,
+      selectedDifficulties: state.selectedDifficulties,
+      selectedGames: state.selectedGames,
+      errorMessage: error,
+    );
+    yield state.update(isFailure: false, errorMessage: '');
   }
 
   Stream<TrainingsState> _mapTrainingsUpdatedDifficultiesToState(
@@ -199,39 +174,16 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
   }
 
   Future<String> returnErrorMessage() async {
-    String error;
-    bool selectedCollections = state.selectedCollections.isEmpty;
-    bool selectedDifficulties = state.selectedDifficulties.isEmpty;
-    bool filteredWords = state.filteredWords.isEmpty;
-
-    switch (selectedCollections) {
-      case true:
-        error = 'You have to choose which collection';
-        break;
+    String error = '';
+    if (state.selectedCollections.isEmpty) {
+      return error = 'You have to choose which collection';
     }
-    switch (selectedDifficulties) {
-      case true:
-        error = 'You have to choose which words you want to learn';
-        break;
+    if (state.selectedDifficulties.isEmpty) {
+      return error = 'You have to choose which words you want to learn';
     }
-    switch (filteredWords) {
-      case true:
-        error = 'There are no words in your collections';
-        break;
+    if (state.filteredWords.isEmpty) {
+      return error = 'There are no words';
     }
-
     return error;
-
-    //   if (state.selectedCollections.isEmpty) {
-    //     return error = 'You have to choose which collection';
-    //   }
-    //   if (state.selectedDifficulties.isEmpty) {
-    //     return error = 'You have to choose which words you want to learn';
-    //   }
-    //   if (state.filteredWords.isEmpty) {
-    //     return error = 'There are no words in your collections';
-
-    //   }
-    //   return error;
   }
 }

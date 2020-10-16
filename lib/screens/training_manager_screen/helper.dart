@@ -40,17 +40,17 @@ void checkNavigation(
   BuildContext context,
   GlobalKey<ScaffoldState> scaffoldKey,
 ) {
-  context.bloc<TrainingsBloc>().add(TrainingsSubmitted());
-  if (state.isFailure) {
-    scaffoldKey.currentState.showSnackBar(SnackBar(
-        duration: Duration(milliseconds: 1500),
-        content: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            state.errorMessage,
-          ),
-        )));
-  }
+  // context.bloc<TrainingsBloc>().add(TrainingsSubmitted());
+  // if (state.isFailure) {
+  //   scaffoldKey.currentState.showSnackBar(SnackBar(
+  //       duration: Duration(milliseconds: 1500),
+  //       content: Padding(
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: Text(
+  //           state.errorMessage,
+  //         ),
+  //       )));
+  // }
   // if (selectedListCollections.isEmpty) {
   //   scaffoldKey.currentState.showSnackBar(SnackBar(
   //       duration: Duration(milliseconds: 1500),
