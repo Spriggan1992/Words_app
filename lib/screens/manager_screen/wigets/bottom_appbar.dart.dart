@@ -4,9 +4,8 @@ import 'package:words_app/config/config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:words_app/screens/screens.dart';
+import 'package:words_app/screens/training_manager_screen/helper.dart';
 import 'package:words_app/widgets/widgets.dart';
-
-import '../helper.dart';
 
 class BottomAppbar extends StatelessWidget {
   const BottomAppbar({

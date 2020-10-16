@@ -83,7 +83,7 @@ class _ReviewCardState extends State<ReviewCard>
           screenDefiner: ScreenDefiner.reviewCard,
           trainingsWordCounter: "${widget.words?.length ?? 0}",
           goToTrainings: () {
-            context.bloc<TrainingsBloc>().add(TrainingsLoaded(
+            context.bloc<TrainingManagerBloc>().add(TrainingManagerLoaded(
                 words: widget.words, collectionId: widget.collectionId));
             Navigator.pushNamed(
               context,

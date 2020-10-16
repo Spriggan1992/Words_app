@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:words_app/bloc/trainings/trainings_bloc.dart';
-import 'package:words_app/models/collection.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/models/word.dart';
+import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/screens/games/bricks_game_screen/bricks_game.dart';
 import 'package:words_app/screens/games/pair_game_screen/pair_game.dart';
 import 'package:words_app/screens/screens.dart';
 
-enum FilterGames { bricks, pair, wrongCorrect }
+enum FilterGames { bricks, pair, yesNo }
+
+final List<IconData> iconsList = [
+  Icons.fitness_center,
+  Icons.directions_bike,
+  Icons.photo_album,
+];
 
 /// Return quntity of filtered words when difficulties is chosen.
 ///
@@ -34,68 +38,28 @@ String countWordsByDifficulty(
   return counter.toString();
 }
 
-/// Navigate to games depending on which game is selected, collection and difficulty
-void checkNavigation(
-  TrainingsState state,
-  BuildContext context,
-  GlobalKey<ScaffoldState> scaffoldKey,
-) {
-  // context.bloc<TrainingsBloc>().add(TrainingsSubmitted());
-  // if (state.isFailure) {
-  //   scaffoldKey.currentState.showSnackBar(SnackBar(
-  //       duration: Duration(milliseconds: 1500),
-  //       content: Padding(
-  //         padding: const EdgeInsets.all(8.0),
-  //         child: Text(
-  //           state.errorMessage,
-  //         ),
-  //       )));
-  // }
-  // if (selectedListCollections.isEmpty) {
-  //   scaffoldKey.currentState.showSnackBar(SnackBar(
-  //       duration: Duration(milliseconds: 1500),
-  //       content: Padding(
-  //         padding: const EdgeInsets.all(8.0),
-  //         child: Text(
-  //           'You have to choose which collection',
-  //         ),
-  //       )));
-  // } else if (selectedDifficulties.isEmpty) {
-  //   scaffoldKey.currentState.showSnackBar(SnackBar(
-  //       duration: Duration(milliseconds: 1500),
-  //       content: Padding(
-  //         padding: const EdgeInsets.all(8.0),
-  //         child: Text(
-  //           'You have to choose which words you want to learn',
-  //         ),
-  //       )));
-  // } else if (state.filteredWords.isEmpty) {
-  //   scaffoldKey.currentState.showSnackBar(SnackBar(
-  //       duration: Duration(milliseconds: 1500),
-  //       content: Padding(
-  //         padding: const EdgeInsets.all(8.0),
-  //         child: Text(
-  //           selectedListCollections.length > 1
-  //               ? 'There are no words in your collections'
-  //               : 'There are no words in your collection',
-  //         ),
-  //       )));
-  // }
-
-  if (state.selectedGames == FilterGames.bricks &&
+bool checkState(TrainingManagerState state, FilterGames selectedGames) {
+  if (state.selectedGames == selectedGames &&
       state.selectedDifficulties.isNotEmpty &&
       state.selectedCollections.isNotEmpty &&
       state.filteredWords.isNotEmpty) {
+    return true;
+  }
+  return false;
+}
+
+/// Navigate to games depending on which game is selected, collection and difficulty
+void checkNavigation(
+  TrainingManagerState state,
+  BuildContext context,
+) {
+  if (checkState(state, FilterGames.bricks))
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => BricksGame(words: state.filteredWords),
         ));
-  }
-  if (state.selectedGames == FilterGames.wrongCorrect &&
-      state.selectedDifficulties.isNotEmpty &&
-      state.selectedCollections.isNotEmpty &&
-      state.filteredWords.isNotEmpty) {
+  if (checkState(state, FilterGames.yesNo))
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -103,11 +67,7 @@ void checkNavigation(
             words: state.filteredWords,
           ),
         ));
-  }
-  if (state.selectedGames == FilterGames.pair &&
-      state.selectedDifficulties.isNotEmpty &&
-      state.selectedCollections.isNotEmpty &&
-      state.filteredWords.isNotEmpty) {
+  if (checkState(state, FilterGames.pair))
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -115,5 +75,4 @@ void checkNavigation(
             words: state.filteredWords,
           ),
         ));
-  }
 }

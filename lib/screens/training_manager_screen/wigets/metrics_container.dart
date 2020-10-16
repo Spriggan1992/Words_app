@@ -11,7 +11,7 @@ class MetricsContainer extends StatelessWidget {
     // this.selectedDifficulties,
   }) : super(key: key);
 
-  final TrainingsState state;
+  final TrainingManagerState state;
   // final List<int> selectedDifficulties;
 
   @override

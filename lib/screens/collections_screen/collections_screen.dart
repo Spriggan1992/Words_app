@@ -35,7 +35,7 @@ class CollectionsScreen extends StatelessWidget {
                 context,
                 TrainingManager.id,
               );
-              context.bloc<TrainingsBloc>().add(TrainingsLoaded());
+              context.bloc<TrainingManagerBloc>().add(TrainingManagerLoaded());
             },
           ),
           body: BlocBuilder<CollectionsBloc, CollectionsState>(

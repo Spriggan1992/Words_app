@@ -49,8 +49,8 @@ class WordsBottomAppbar extends StatelessWidget {
           Navigator.pushNamed(context, CollectionsScreen.id);
         },
         goToTrainings: () {
-          context.bloc<TrainingsBloc>().add(
-              TrainingsLoaded(words: state.words, collectionId: collectionId));
+          context.bloc<TrainingManagerBloc>().add(TrainingManagerLoaded(
+              words: state.words, collectionId: collectionId));
           Navigator.pushNamed(
             context,
             TrainingManager.id,

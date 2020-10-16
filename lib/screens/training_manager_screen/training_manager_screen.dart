@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:words_app/bloc/trainings/trainings_bloc.dart';
+import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/config.dart';
 
 import 'package:words_app/models/models.dart';
@@ -22,11 +22,6 @@ class _TrainingManagerState extends State<TrainingManager> {
   List<Difficulty> _difficulty = DifficultyList().difficultyList;
 
   // Data for creating dynamic icons for games buttons
-  List<IconData> _iconsList = [
-    Icons.fitness_center,
-    Icons.directions_bike,
-    Icons.photo_album,
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +31,7 @@ class _TrainingManagerState extends State<TrainingManager> {
     // String collectionId = args['id'];
     // List<Word> words = args['words'];
 
-    return BlocConsumer<TrainingsBloc, TrainingsState>(
+    return BlocConsumer<TrainingManagerBloc, TrainingManagerState>(
         listener: ((context, failureState) {
       if (failureState.isFailure) {
         _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -49,52 +44,51 @@ class _TrainingManagerState extends State<TrainingManager> {
             )));
       }
     }), builder: (context, state) {
-      return Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: Color(0xFFeae2da),
-        appBar: BaseAppBar(
-          screenDefiner: ScreenDefiner.trainingManager,
-          title: Text('Trainings'),
-          appBar: AppBar(),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: defaultSize * 3),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TitleTextHolder(title: '1. I want to play ...'),
-                    GamesFilter(
-                      iconsList: _iconsList,
-                      state: state,
-                    ),
-                    TitleTextHolder(title: '2. I want to use words from ...'),
-                    CollectionsFilter(
-                      // selectedDifficulties: _selectedDifficulties,
-                      state: state,
-                    ),
-                    TitleTextHolder(
-                        title: '3. I want to study words that I ...'),
-                    DifficultiesFilter(difficulty: _difficulty, state: state),
-                    MetricsContainer(
-                        // selectedDifficulties: _selectedDifficulties,
-                        state: state)
-                  ],
+      if (state.selectedCollections == null) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      } else
+        return Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: Color(0xFFeae2da),
+          appBar: BaseAppBar(
+            screenDefiner: ScreenDefiner.trainingManager,
+            title: Text('Trainings'),
+            appBar: AppBar(),
+          ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: defaultSize * 3),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TitleTextHolder(title: '1. I want to play ...'),
+                      GamesFilter(
+                        state: state,
+                      ),
+                      TitleTextHolder(title: '2. I want to use words from ...'),
+                      CollectionsFilter(
+                        state: state,
+                      ),
+                      TitleTextHolder(
+                          title: '3. I want to study words that I ...'),
+                      DifficultiesFilter(difficulty: _difficulty, state: state),
+                      MetricsContainer(state: state)
+                    ],
+                  ),
                 ),
               ),
-            ),
-            BottomAppbar(
-              scaffoldKey: _scaffoldKey,
-              // selectedDifficulties: _selectedDifficulties,
-              state: state,
-            ),
-          ],
-        ),
-      );
+              BottomAppbar(
+                state: state,
+              ),
+            ],
+          ),
+        );
     });
   }
 }

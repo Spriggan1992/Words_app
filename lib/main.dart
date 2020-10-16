@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:words_app/screens/screens.dart';
 
@@ -31,11 +30,12 @@ void main() => runApp(MultiBlocProvider(providers: [
           );
         },
       ),
-      BlocProvider<TrainingsBloc>(
+      BlocProvider<TrainingManagerBloc>(
         create: (context) {
-          return TrainingsBloc(
+          return TrainingManagerBloc(
             wordsRepository: WordsRepository(),
             collectionsRepository: CollectionsRepository(),
+            trainingManagerRepository: TrainingManagerRepository(),
           );
         },
       ),

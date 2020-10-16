@@ -8,7 +8,7 @@ class CollectionsFuilterShowColldection extends StatelessWidget {
     @required this.state,
   }) : super(key: key);
 
-  final TrainingsState state;
+  final TrainingManagerState state;
 
   @override
   Widget build(BuildContext context) {
