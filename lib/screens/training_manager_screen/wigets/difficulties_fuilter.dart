@@ -24,44 +24,44 @@ class DifficultiesFilter extends StatelessWidget {
       children: [
         buildKnowLittleDontKnowBtns(defaultSize, context, selectedDifficulties),
         SizedBox(height: 5),
-        buildAllBtn(defaultSize, context, selectedDifficulties)
+        // buildAllBtn(defaultSize, context, selectedDifficulties)
       ],
     ));
   }
 
-  ChoiceChip buildAllBtn(double defaultSize, BuildContext context,
-      List<int> selectedDifficulties) {
-    return ChoiceChip(
-      labelPadding:
-          EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 37),
-      elevation: 5,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12.0),
-      label: Text('all'),
-      labelStyle: TextStyle(
-          fontSize: defaultSize * 1.6,
-          color: Colors.black,
-          fontWeight: FontWeight.w900),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(defaultSize * 0.5),
-      ),
-      backgroundColor: Colors.white,
-      selected: state.selectedDifficulties.contains(3),
-      onSelected: (selected) async {
-        print(state.selectedDifficulties);
+  // ChoiceChip buildAllBtn(double defaultSize, BuildContext context,
+  //     List<int> selectedDifficulties) {
+  //   return ChoiceChip(
+  //     labelPadding:
+  //         EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal * 37),
+  //     elevation: 5,
+  //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12.0),
+  //     label: Text('all'),
+  //     labelStyle: TextStyle(
+  //         fontSize: defaultSize * 1.6,
+  //         color: Colors.black,
+  //         fontWeight: FontWeight.w900),
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.circular(defaultSize * 0.5),
+  //     ),
+  //     backgroundColor: Colors.white,
+  //     selected: state.selectedDifficulties.contains(3),
+  //     onSelected: (selected) async {
+  //       print(state.selectedDifficulties);
 
-        /// Add difficulties filter to the List[selectedDifficulties]
+  //       /// Add difficulties filter to the List[selectedDifficulties]
 
-        if (selectedDifficulties.contains(3)) {
-          selectedDifficulties.remove(3);
-        } else {
-          selectedDifficulties.clear();
-          selectedDifficulties.add(3);
-        }
-        context.bloc<TrainingsBloc>().add(
-            TrainingsSelectedDifficulties(difficulties: selectedDifficulties));
-      },
-    );
-  }
+  //       if (selectedDifficulties.contains(3)) {
+  //         selectedDifficulties.remove(3);
+  //       } else {
+  //         selectedDifficulties.clear();
+  //         selectedDifficulties.add(3);
+  //       }
+  //       context.bloc<TrainingsBloc>().add(
+  //           TrainingsSelectedDifficulties(difficulties: selectedDifficulties));
+  //     },
+  //   );
+  // }
 
   Row buildKnowLittleDontKnowBtns(double defaultSize, BuildContext context,
       List<int> selectedDifficulties) {
@@ -84,22 +84,9 @@ class DifficultiesFilter extends StatelessWidget {
             backgroundColor: item.color,
             selected: state.selectedDifficulties.contains(item.difficulty),
             onSelected: (selected) {
-              /// Add difficulties filter to the List[selectedDifficulties]
-              if (selectedDifficulties.contains(3)) {
-                selectedDifficulties.clear();
-                if (selectedDifficulties.contains(item.difficulty)) {
-                  selectedDifficulties.remove(item.difficulty);
-                } else {
-                  selectedDifficulties.add(item.difficulty);
-                }
-              } else {
-                selectedDifficulties.contains(item.difficulty)
-                    ? selectedDifficulties.remove(item.difficulty)
-                    : selectedDifficulties.add(item.difficulty);
-              }
-              print(state.selectedDifficulties);
-              context.bloc<TrainingsBloc>().add(TrainingsSelectedDifficulties(
-                  difficulties: selectedDifficulties));
+              context.bloc<TrainingsBloc>().add(
+                  TrainingsUpdatedDifficulties(difficulty: item.difficulty));
+              context.bloc<TrainingsBloc>().add(TrainingsFiltered());
             },
           ),
         );

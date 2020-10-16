@@ -56,14 +56,7 @@ class TrainingsSelectedCollections extends TrainingsEvent {
   List<Object> get props => [isCollection, collection];
 }
 
-class TrainingsSelectedDifficulties extends TrainingsEvent {
-  final List<int> difficulties;
-
-  TrainingsSelectedDifficulties({this.difficulties});
-
-  @override
-  List<Object> get props => [difficulties];
-}
+class TrainingsFiltered extends TrainingsEvent {}
 
 class TrainingsSelectedGames extends TrainingsEvent {
   final FilterGames selectedGame;
@@ -72,6 +65,15 @@ class TrainingsSelectedGames extends TrainingsEvent {
 
   @override
   List<Object> get props => [selectedGame];
+}
+
+class TrainingsUpdatedDifficulties extends TrainingsEvent {
+  final int difficulty;
+
+  TrainingsUpdatedDifficulties({this.difficulty});
+
+  @override
+  List<Object> get props => [difficulty];
 }
 
 class TrainingsSubmitted extends TrainingsEvent {}

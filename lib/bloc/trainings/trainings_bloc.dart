@@ -35,17 +35,17 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
     if (event is TrainingsSelectedCollections) {
       yield* _mapTrainingsSelectedCollectionsToState(event);
     }
-    if (event is TrainingsSelectedDifficulties) {
-      yield* _mapTrainingsSelectedDifficultiesToState(event);
-    }
-    if (event is TrainingsSelectedDifficulties) {
-      yield* _mapTrainingsSelectedDifficultiesToState(event);
+    if (event is TrainingsFiltered) {
+      yield* _mapTrainingsFilteredToState();
     }
     if (event is TrainingsSelectedGames) {
       yield* _mapTrainingsSelectedGamesToState(event);
     }
     if (event is TrainingsSubmitted) {
       yield* _mapTrainingsSubmittedToState();
+    }
+    if (event is TrainingsUpdatedDifficulties) {
+      yield* _mapTrainingsUpdatedDifficultiesToState(event);
     }
   }
 
@@ -60,9 +60,11 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
       selectedDifficulties: [],
       isEmptyCardWord: false,
       filteredWords: event.words,
-      selectedCollections: selectedCollections,
+      selectedCollections: selectedCollections ?? [],
       selectedGames: FilterGames.bricks,
       collections: updatedCollections ?? [],
+      isFailure: false,
+      isSuccess: false,
     );
     // yield TrainingsSuccess(
     //     filteredCollections: filteredCollections ?? [],
@@ -72,144 +74,29 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
     //     selectedGames: FilterGames.bricks);
   }
 
-  // Stream<TrainingsState> _mapTrainingsFilteredToState(
-  //     TrainingsFiltered event) async* {
-  //   final List<Word> selectedFilteredList = [];
-  //   for (var i = 0; i < event.selectedCollections.length; i++) {
-  //     List<Word> fetchedCollections = await wordsRepository.fetchAndSetWords(
-  //         collectionId: event.selectedCollections[i].id);
-  //     fetchedCollections.forEach((element) {
-  //       selectedFilteredList.add(element);
-  //     });
-  //   }
-  //   // Update Words by difficulties
-  //   final List<Word> updatedFilteredList = [];
-  //   bool updatedIsEmptyCardWord = false;
-  //   for (var i = 0; i < event.selectedDifficulties.length; i++) {
-  //     selectedFilteredList.forEach((word) {
-  //       if (word.difficulty == event.selectedDifficulties[i]) {
-  //         updatedFilteredList.add(word);
-  //         if (word.targetLang == null ||
-  //             word.ownLang == null ||
-  //             word.targetLang == '' ||
-  //             word.ownLang == '') {
-  //           updatedIsEmptyCardWord = true;
-  //           updatedFilteredList.remove(word);
-  //         }
-  //       }
-  //       if (event.selectedDifficulties[i] == 3) {
-  //         updatedFilteredList.add(word);
-  //         if (word.targetLang == null ||
-  //             word.ownLang == null ||
-  //             word.targetLang == '' ||
-  //             word.ownLang == '' && event.selectedDifficulties.isNotEmpty) {
-  //           updatedIsEmptyCardWord = true;
-  //           updatedFilteredList.remove(word);
-  //         } else {
-  //           updatedIsEmptyCardWord = false;
-  //         }
-  //       }
-  //     });
-  //   }
-  //   updatedFilteredList..shuffle();
-  //   yield state.update(
-  //     filteredWords: updatedFilteredList,
-  //     selectedCollections: event.selectedCollections,
-  //     isEmptyCardWord: updatedIsEmptyCardWord,
-  //   );
-  // }
-
-  // Stream<TrainingsState> _mapTrainingsUpdatedSelectedGamesToState(
-  //     TrainingsUpdatedSelectedGames event) async* {
-  //   try {
-  //     final data = (state as TrainingsSuccess);
-  //     yield TrainingsSuccess(
-  //         collections: data.collections,
-  //         selectedCollections: data.selectedCollections,
-  //         filteredWords: data.filteredWords,
-  //         isEmptyCardWord: data.isEmptyCardWord,
-  //         selectedGames: event.selectedGames);
-  //   } catch (_) {
-  //     TrainingsFailure();
-  //   }
-  // }
-
-  // Stream<TrainingsState> _mapTrainingsAddRemoveCollectionFilterToState(
-  //     TrainingsAddRemoveCollectionFilter event) async* {
-  //   try {
-  //     final updatedFilteredList =
-  //         (state as TrainingsSuccess).selectedCollections;
-  //     final data = (state as TrainingsSuccess);
-
-  //     if (event.isCollection == true) {
-  //       updatedFilteredList.add(event.collection);
-  //     }
-  //     if (event.isCollection == false) {
-  //       updatedFilteredList.remove(event.collection);
-  //     }
-  //     yield TrainingsSuccess(
-  //         collections: data.collections,
-  //         selectedCollections: updatedFilteredList,
-  //         filteredWords: data.filteredWords,
-  //         isEmptyCardWord: data.isEmptyCardWord,
-  //         selectedGames: data.selectedGames);
-  //   } catch (_) {
-  //     TrainingsFailure();
-  //   }
-  // }
-
   Stream<TrainingsState> _mapTrainingsSelectedCollectionsToState(
       TrainingsSelectedCollections event) async* {
-    List<Collection> updatedSelectedCollections = [];
+    List<Collection> updatedSelectedCollections = [
+      ...state.selectedCollections
+    ];
     event.isCollection
         ? updatedSelectedCollections.add(event.collection)
         : updatedSelectedCollections.remove(event.collection);
 
-    yield TrainingsState.success(
-      collections: state.collections,
-      filteredWords: state.filteredWords,
-      isEmptyCardWord: state.isEmptyCardWord,
+    yield state.update(
       selectedCollections: updatedSelectedCollections,
-      selectedDifficulties: state.selectedDifficulties,
-      selectedGames: state.selectedGames,
     );
   }
 
-  Stream<TrainingsState> _mapTrainingsSelectedDifficultiesToState(
-      TrainingsSelectedDifficulties event) async* {
-    // final List<int> difficulties =
-    //     await addAndRemoveDifficulty(event.difficulty);
-
-    yield state.update(selectedDifficulties: event.difficulties);
+  Stream<TrainingsState> _mapTrainingsFilteredToState() async* {
     final Map<String, dynamic> data = await _mapWordsToSelectedFilteredList();
     final List<Word> updatedFilteredWordsList =
         data['updatedFilteredWordsList'];
     final bool updatedIsEmptyCardWord = data['updatedIsEmptyCardWord'];
     yield state.update(
         filteredWords: updatedFilteredWordsList,
-        isEmptyCardWord: updatedIsEmptyCardWord);
-  }
-
-  Future<List<int>> addAndRemoveDifficulty(int difficulty) async {
-    final List<int> difficulties = [];
-    if (difficulties.contains(difficulty)) {
-      difficulties.remove(difficulty);
-    } else {
-      difficulties.add(difficulty);
-    }
-    print('addAndRemoveDifficulty: $difficulties');
-    // if (state.selectedDifficulties.contains(3)) {
-    //   difficulties.remove(3);
-    // } else {
-    //   difficulties.clear();
-    //   difficulties.add(3);
-    // }
-    // if (state.selectedDifficulties.contains(difficulty)) {
-    //   difficulties.remove(difficulty);
-    // } else {
-    //   difficulties.add(difficulty);
-    // }
-    return difficulties;
+        isEmptyCardWord: updatedIsEmptyCardWord,
+        isFailure: false);
   }
 
   Future<List<Word>> _mapWordsList() async {
@@ -243,22 +130,13 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
               word.ownLang == '') {
             updatedIsEmptyCardWord = true;
             updatedFilteredWordsList.remove(word);
-          }
-        }
-        if (state.selectedDifficulties[i] == 3) {
-          updatedFilteredWordsList.add(word);
-          if (word.targetLang == null ||
-              word.ownLang == null ||
-              word.targetLang == '' ||
-              word.ownLang == '' && state.selectedDifficulties.isNotEmpty) {
-            updatedIsEmptyCardWord = true;
-            updatedFilteredWordsList.remove(word);
           } else {
             updatedIsEmptyCardWord = false;
           }
         }
       });
     }
+
     updatedFilteredWordsList..shuffle();
     return {
       'updatedFilteredWordsList': updatedFilteredWordsList,
@@ -267,12 +145,19 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
   }
 
   Stream<TrainingsState> _mapTrainingsSubmittedToState() async* {
-    try {
-      if (state.selectedDifficulties.isNotEmpty &&
-          state.selectedCollections.isNotEmpty) {
-        yield TrainingsState.success();
-      }
-    } catch (_) {
+    // try {
+    if (state.selectedDifficulties.isNotEmpty &&
+        state.selectedCollections.isNotEmpty &&
+        state.filteredWords.isNotEmpty) {
+      yield TrainingsState.success(
+        collections: state.collections,
+        filteredWords: state.filteredWords,
+        isEmptyCardWord: state.isEmptyCardWord,
+        selectedCollections: state.selectedCollections,
+        selectedDifficulties: state.selectedDifficulties,
+        selectedGames: state.selectedGames,
+      );
+    } else {
       String error = await returnErrorMessage();
       yield TrainingsState.failure(
         collections: state.collections,
@@ -284,17 +169,69 @@ class TrainingsBloc extends Bloc<TrainingsEvent, TrainingsState> {
         errorMessage: error,
       );
     }
+    // } catch (_) {
+    //   String error = await returnErrorMessage();
+    //   yield TrainingsState.failure(
+    //     collections: state.collections,
+    //     filteredWords: state.filteredWords,
+    //     isEmptyCardWord: state.isEmptyCardWord,
+    //     selectedCollections: state.selectedCollections,
+    //     selectedDifficulties: state.selectedDifficulties,
+    //     selectedGames: state.selectedGames,
+    //     errorMessage: error,
+    //   );
+    // yield state.update(
+    //     isFailure: false,
+    //     isSubmitting: false,
+    //     isSuccess: false,
+    //     errorMessage: '');
+  }
+
+  Stream<TrainingsState> _mapTrainingsUpdatedDifficultiesToState(
+      TrainingsUpdatedDifficulties event) async* {
+    final List<int> updetedSelectedDifficulties = [
+      ...state.selectedDifficulties
+    ];
+    updetedSelectedDifficulties.contains(event.difficulty)
+        ? updetedSelectedDifficulties.remove(event.difficulty)
+        : updetedSelectedDifficulties.add(event.difficulty);
+    yield state.update(selectedDifficulties: updetedSelectedDifficulties);
   }
 
   Future<String> returnErrorMessage() async {
     String error;
-    if (state.selectedCollections.isEmpty) {
-      error = 'You have to choose which collection';
-    } else if (state.selectedDifficulties.isEmpty) {
-      error = 'You have to choose which words you want to learn';
-    } else if (state.filteredWords.isEmpty) {
-      error = 'There are no words in your collections';
+    bool selectedCollections = state.selectedCollections.isEmpty;
+    bool selectedDifficulties = state.selectedDifficulties.isEmpty;
+    bool filteredWords = state.filteredWords.isEmpty;
+
+    switch (selectedCollections) {
+      case true:
+        error = 'You have to choose which collection';
+        break;
     }
+    switch (selectedDifficulties) {
+      case true:
+        error = 'You have to choose which words you want to learn';
+        break;
+    }
+    switch (filteredWords) {
+      case true:
+        error = 'There are no words in your collections';
+        break;
+    }
+
     return error;
+
+    //   if (state.selectedCollections.isEmpty) {
+    //     return error = 'You have to choose which collection';
+    //   }
+    //   if (state.selectedDifficulties.isEmpty) {
+    //     return error = 'You have to choose which words you want to learn';
+    //   }
+    //   if (state.filteredWords.isEmpty) {
+    //     return error = 'There are no words in your collections';
+
+    //   }
+    //   return error;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/bloc/trainings/trainings_bloc.dart';
 import 'package:words_app/models/collection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/models/word.dart';
 import 'package:words_app/screens/games/bricks_game_screen/bricks_game.dart';
 import 'package:words_app/screens/games/pair_game_screen/pair_game.dart';
@@ -35,46 +36,55 @@ String countWordsByDifficulty(
 
 /// Navigate to games depending on which game is selected, collection and difficulty
 void checkNavigation(
-  List<Collection> selectedListCollections,
   TrainingsState state,
   BuildContext context,
   GlobalKey<ScaffoldState> scaffoldKey,
-  List<int> selectedDifficulties,
 ) {
-  if (selectedListCollections.isEmpty) {
+  context.bloc<TrainingsBloc>().add(TrainingsSubmitted());
+  if (state.isFailure) {
     scaffoldKey.currentState.showSnackBar(SnackBar(
         duration: Duration(milliseconds: 1500),
         content: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            'You have to choose which collection',
-          ),
-        )));
-  } else if (selectedDifficulties.isEmpty) {
-    scaffoldKey.currentState.showSnackBar(SnackBar(
-        duration: Duration(milliseconds: 1500),
-        content: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'You have to choose which words you want to learn',
-          ),
-        )));
-  } else if (state.filteredWords.isEmpty) {
-    scaffoldKey.currentState.showSnackBar(SnackBar(
-        duration: Duration(milliseconds: 1500),
-        content: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            selectedListCollections.length > 1
-                ? 'There are no words in your collections'
-                : 'There are no words in your collection',
+            state.errorMessage,
           ),
         )));
   }
+  // if (selectedListCollections.isEmpty) {
+  //   scaffoldKey.currentState.showSnackBar(SnackBar(
+  //       duration: Duration(milliseconds: 1500),
+  //       content: Padding(
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: Text(
+  //           'You have to choose which collection',
+  //         ),
+  //       )));
+  // } else if (selectedDifficulties.isEmpty) {
+  //   scaffoldKey.currentState.showSnackBar(SnackBar(
+  //       duration: Duration(milliseconds: 1500),
+  //       content: Padding(
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: Text(
+  //           'You have to choose which words you want to learn',
+  //         ),
+  //       )));
+  // } else if (state.filteredWords.isEmpty) {
+  //   scaffoldKey.currentState.showSnackBar(SnackBar(
+  //       duration: Duration(milliseconds: 1500),
+  //       content: Padding(
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: Text(
+  //           selectedListCollections.length > 1
+  //               ? 'There are no words in your collections'
+  //               : 'There are no words in your collection',
+  //         ),
+  //       )));
+  // }
 
   if (state.selectedGames == FilterGames.bricks &&
-      selectedDifficulties.isNotEmpty &&
-      selectedListCollections.isNotEmpty &&
+      state.selectedDifficulties.isNotEmpty &&
+      state.selectedCollections.isNotEmpty &&
       state.filteredWords.isNotEmpty) {
     Navigator.push(
         context,
@@ -83,8 +93,8 @@ void checkNavigation(
         ));
   }
   if (state.selectedGames == FilterGames.wrongCorrect &&
-      selectedDifficulties.isNotEmpty &&
-      selectedListCollections.isNotEmpty &&
+      state.selectedDifficulties.isNotEmpty &&
+      state.selectedCollections.isNotEmpty &&
       state.filteredWords.isNotEmpty) {
     Navigator.push(
         context,
@@ -95,8 +105,8 @@ void checkNavigation(
         ));
   }
   if (state.selectedGames == FilterGames.pair &&
-      selectedDifficulties.isNotEmpty &&
-      selectedListCollections.isNotEmpty &&
+      state.selectedDifficulties.isNotEmpty &&
+      state.selectedCollections.isNotEmpty &&
       state.filteredWords.isNotEmpty) {
     Navigator.push(
         context,

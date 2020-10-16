@@ -36,8 +36,24 @@ class _TrainingManagerState extends State<TrainingManager> {
     // String collectionId = args['id'];
     // List<Word> words = args['words'];
 
-    return BlocBuilder<TrainingsBloc, TrainingsState>(
-        builder: (context, state) {
+    return BlocConsumer<TrainingsBloc, TrainingsState>(
+        listener: ((context, failureState) {
+      // if (failureState.isFailure) {
+      //   _scaffoldKey.currentState.showSnackBar(SnackBar(
+      //       duration: Duration(milliseconds: 1500),
+      //       content: Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child: Text(
+      //           failureState.errorMessage,
+      //         ),
+      //       )));
+      // }
+      // if (failureState.selectedDifficulties.isEmpty &&
+      //     failureState.selectedCollections.isEmpty &&
+      //     failureState.filteredWords.isEmpty) {
+      //   failureState.update(isFailure: false);
+      // }
+    }), builder: (context, state) {
       return Scaffold(
         key: _scaffoldKey,
         backgroundColor: Color(0xFFeae2da),

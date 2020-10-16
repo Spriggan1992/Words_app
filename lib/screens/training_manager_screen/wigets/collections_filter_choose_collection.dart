@@ -8,11 +8,9 @@ class CollectionsFilterChooseCollection extends StatefulWidget {
     Key key,
     @required this.defaultSize,
     @required this.state,
-    // this.selectedDifficulties,
   }) : super(key: key);
 
   final double defaultSize;
-  // final List<int> selectedDifficulties;
   final TrainingsState state;
 
   @override
@@ -54,14 +52,7 @@ class _CollectionsFilterChooseCollectionState
     return [
       FlatButton(
         onPressed: () {
-          setState(() {});
-          // context.bloc<TrainingsBloc>().add(TrainingsFiltered(
-          //     selectedDifficulties: widget.selectedDifficulties,
-          //     selectedCollections: widget.state.selectedCollections));
-
-          Navigator.pop(
-            context,
-          );
+          Navigator.pop(context);
         },
         child: Text('OK'),
       )
@@ -87,6 +78,7 @@ class _CollectionsFilterChooseCollectionState
                       TrainingsSelectedCollections(
                           isCollection: value,
                           collection: widget.state.collections[index]));
+                  context.bloc<TrainingsBloc>().add(TrainingsFiltered());
                   setState(() {});
                 },
               );

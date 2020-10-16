@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/config.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/helpers/functions.dart';
 import 'package:words_app/screens/screens.dart';
 import 'package:words_app/widgets/widgets.dart';
@@ -10,13 +11,12 @@ import '../helper.dart';
 class BottomAppbar extends StatelessWidget {
   const BottomAppbar({
     Key key,
-    this.selectedDifficulties,
     GlobalKey<ScaffoldState> scaffoldKey,
     this.state,
   })  : _scaffoldKey = scaffoldKey,
         super(key: key);
 
-  final List<int> selectedDifficulties;
+  // final List<int> selectedDifficulties;
   final GlobalKey<ScaffoldState> _scaffoldKey;
   final TrainingsState state;
   @override
@@ -27,26 +27,36 @@ class BottomAppbar extends StatelessWidget {
             Navigator.pushNamed(context, CollectionsScreen.id),
         screenDefiner: ScreenDefiner.trainingManager,
         add: () {
-          if (state.isEmptyCardWord == true &&
-              selectedDifficulties.isNotEmpty) {
-            showCustomDialog(context, () {
-              checkNavigation(
-                state.selectedCollections,
-                state,
-                context,
-                _scaffoldKey,
-                selectedDifficulties,
-              );
-            });
-          } else {
-            checkNavigation(
-              state.selectedCollections,
-              state,
-              context,
-              _scaffoldKey,
-              selectedDifficulties,
-            );
+          context.bloc<TrainingsBloc>().add(TrainingsSubmitted());
+          print('collection length: ${state.selectedCollections.length}');
+          print('success: ${state.isSuccess}');
+          print('failure: ${state.isFailure}');
+          context.bloc<TrainingsBloc>().add(TrainingsSubmitted());
+          if (state.isFailure) {
+            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                duration: Duration(milliseconds: 1500),
+                content: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    state.errorMessage,
+                  ),
+                )));
           }
+          // if (state.isEmptyCardWord) {
+          //   showCustomDialog(context, () {
+          //     checkNavigation(
+          //       state,
+          //       context,
+          //       _scaffoldKey,
+          //     );
+          //   });
+          // } else {
+          //   checkNavigation(
+          //     state,
+          //     context,
+          //     _scaffoldKey,
+          //   );
+          // }
         },
       ),
     );
