@@ -79,7 +79,8 @@ class TrainingManagerBloc
 
   Stream<TrainingManagerState> _mapTrainingManagerFilteredToState() async* {
     final Map<String, dynamic> data =
-        await trainingManagerRepository.mapWordsToSelectedFilteredList();
+        await trainingManagerRepository.mapWordsToSelectedFilteredList(
+            state: state, wordsRepository: wordsRepository);
     final List<Word> updatedFilteredWordsList =
         data['updatedFilteredWordsList'];
     final bool updatedIsEmptyCardWord = data['updatedIsEmptyCardWord'];
@@ -96,7 +97,8 @@ class TrainingManagerBloc
 
   Stream<TrainingManagerState> _mapTrainingManagerSubmittedToState() async* {
     try {
-      String error = await trainingManagerRepository.returnErrorMessage();
+      String error =
+          await trainingManagerRepository.returnErrorMessage(state: state);
       yield TrainingManagerState.failure(
         collections: state.collections,
         filteredWords: state.filteredWords,

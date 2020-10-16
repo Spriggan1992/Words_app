@@ -24,8 +24,9 @@ class TrainingManagerRepository extends BaseTrainingManagerRepository {
 
   @override
   Future<Map<String, dynamic>> mapWordsToSelectedFilteredList(
-      {TrainingManagerState state}) async {
-    final List<Word> filteredList = await mapWordsList();
+      {TrainingManagerState state, WordsRepository wordsRepository}) async {
+    final List<Word> filteredList =
+        await mapWordsList(state: state, wordsRepository: wordsRepository);
     final List<Word> updatedFilteredWordsList = [];
     bool updatedIsEmptyCardWord = false;
     for (var i = 0; i < state.selectedDifficulties.length; i++) {
