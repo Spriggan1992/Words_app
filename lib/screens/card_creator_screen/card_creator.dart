@@ -16,7 +16,7 @@ import 'package:words_app/widgets/base_appbar.dart';
 import 'package:words_app/models/word.dart';
 import 'package:uuid/uuid.dart';
 import 'package:words_app/config/size_config.dart';
-import 'img_api.dart';
+import '../image_api_screen/img_api.dart';
 import 'widgets/InnerShadowTextField.dart';
 import 'widgets/custom_radio.dart';
 

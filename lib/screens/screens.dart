@@ -7,4 +7,4 @@ export 'result_screen/result_screen.dart';
 export 'review_card_screen/review_card.dart';
 export 'training_manager_screen/training_manager_screen.dart';
 export 'words_screen/words_screen.dart';
-export 'card_creator_screen/img_api.dart';
+export 'image_api_screen/img_api.dart';
