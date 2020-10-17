@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
+import 'package:words_app/bloc/image_api/image_api_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/config/screenDefiner.dart';
+import 'package:words_app/repositories/image_repository.dart';
 import 'package:words_app/widgets/custom_round_btn.dart';
 import 'package:words_app/config/constants.dart';
 
@@ -173,21 +175,34 @@ class CardCreator extends StatelessWidget {
                                               color: Color(0xFFDA627D),
                                             ),
                                             IconButton(
-                                              onPressed: () {
-                                                context
-                                                    .bloc<CardCreatorBloc>()
-                                                    .add(
-                                                      CardCreatorDownloadImagesFromAPI(
-                                                        name: targetLang,
+                                              onPressed: () async {
+                                                // context
+                                                //     .bloc<CardCreatorBloc>()
+                                                //     .add(
+                                                //       CardCreatorDownloadImagesFromAPI(
+                                                //         name: targetLang,
+                                                //       ),
+                                                //     );
+
+                                                await Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BlocProvider<
+                                                            ImageApiBloc>(
+                                                      create: (context) =>
+                                                          ImageApiBloc(
+                                                              ImageRepository(),
+                                                              state,
+                                                              targetLang)
+                                                            ..add(
+                                                                ImageApiLoaded()),
+                                                      child: ImageApi(
+                                                        targetLang: targetLang,
                                                       ),
-                                                    );
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (_) => ImageApi(
-                                                            targetLang:
-                                                                targetLang ??
-                                                                    '')));
+                                                    ),
+                                                  ),
+                                                );
                                               },
                                               icon: Icon(
                                                 Icons.web_asset,

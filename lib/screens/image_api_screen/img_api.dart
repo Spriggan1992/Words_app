@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
+import 'package:words_app/bloc/image_api/image_api_bloc.dart';
 import 'package:words_app/config/constants.dart';
-import 'package:words_app/models/image_data.dart';
 import 'package:words_app/config/size_config.dart';
 import 'package:words_app/widgets/widgets.dart';
 
@@ -33,29 +33,36 @@ class _ImageApiState extends State<ImageApi> {
     return SafeArea(
       child: Scaffold(
         appBar: BaseAppBar(title: Text('Image Picker'), appBar: AppBar()),
-        body: BlocBuilder<CardCreatorBloc, CardCreatorState>(
+        body: BlocConsumer<ImageApiBloc, ImageApiState>(
+          listener: (context, state) {
+            if (state.isSuccess) {
+              Navigator.of(context).pop(state.image);
+            } else if (state.isFailure) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Error'),
+                    content: Text(state.errorMessage),
+                    actions: <Widget>[
+                      FlatButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text('OK'),
+                      )
+                    ],
+                  );
+                },
+              );
+            } else if (state.isSubmiting) {
+              return CircularProgressIndicator();
+            }
+          },
           builder: (context, state) {
-            if (state is CardCreatorLoading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is CardCreatorSuccess) {
-              return InputField(
-                imageData: state.imageData,
-                textController: _controller,
-                keyboardVisible: _keyboardVisible,
-              );
-            }
-            if (state is CardCreatorFailure) {
-              return Center(
-                child: Text(
-                  "${state.message}",
-                  style: TextStyle(fontSize: 50),
-                ),
-              );
-            }
-            return Center(child: CircularProgressIndicator());
+            return InputField(
+              state: state,
+              textController: _controller,
+              keyboardVisible: _keyboardVisible,
+            );
           },
         ),
       ),
@@ -64,14 +71,14 @@ class _ImageApiState extends State<ImageApi> {
 }
 
 class InputField extends StatelessWidget {
-  final List<ImgData> imageData;
+  final ImageApiState state;
   final TextEditingController textController;
   final bool keyboardVisible;
-  const InputField({this.imageData, this.textController, this.keyboardVisible});
+  const InputField({this.state, this.textController, this.keyboardVisible});
 
   List<Widget> buildimageList(BuildContext context) {
     List<Widget> list = [];
-    imageData?.forEach((item) {
+    state.imageData?.forEach((item) {
       list.add(
         GestureDetector(
           onTap: () {

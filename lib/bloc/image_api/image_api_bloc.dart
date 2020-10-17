@@ -14,11 +14,12 @@ part 'image_api_state.dart';
 
 class ImageApiBloc extends Bloc<ImageApiEvent, ImageApiState> {
   final ImageRepository _imageRepository;
-  final CardCreatorState _cardCreatorState;
-  ImageApiBloc(
-      ImageRepository imageRepository, CardCreatorState cardCreatorState)
+  final String search;
+  // final CardCreatorState _cardCreatorState;
+  ImageApiBloc(ImageRepository imageRepository,
+      CardCreatorState cardCreatorState, this.search)
       : _imageRepository = imageRepository,
-        _cardCreatorState = cardCreatorState,
+        // _cardCreatorState = cardCreatorState,
         super(ImageApiState.empty());
 
   @override
@@ -40,18 +41,7 @@ class ImageApiBloc extends Bloc<ImageApiEvent, ImageApiState> {
   /// Method receives String [collectionLang] and pass it to the CardCreatorSuccess state.
   Stream<ImageApiState> _mapCardCreatorLoadedToState(
       ImageApiLoaded event) async* {
-    if (_cardCreatorState.word?.targetLang != null) {
-      try {
-        List<ImgData> imageData = await _imageRepository.getNetworkImg(
-            word: _cardCreatorState.word?.targetLang, collectionLang: 'en');
-        yield state.update(
-            imageData: imageData, search: _cardCreatorState.word?.targetLang);
-      } catch (e) {}
-    } else {
-      yield state.update(
-        search: '',
-      );
-    }
+    yield state.update(search: search);
   }
 
   Stream<ImageApiState> _mapImageApiSearchUpdatedToState(
