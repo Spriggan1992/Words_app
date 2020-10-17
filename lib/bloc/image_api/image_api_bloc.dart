@@ -46,6 +46,7 @@ class ImageApiBloc extends Bloc<ImageApiEvent, ImageApiState> {
 
   Stream<ImageApiState> _mapImageApiSearchUpdatedToState(
       ImageApiSearchUpdated event) async* {
+    print(event.search);
     if (state.search == null) {
       final search = event.search;
       yield state.update(search: search);

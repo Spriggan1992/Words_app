@@ -151,6 +151,11 @@ class InputField extends StatelessWidget {
                         borderSide: BorderSide.none,
                       ),
                     ),
+                    onChanged: (value) {
+                      context
+                          .bloc<ImageApiBloc>()
+                          .add(ImageApiSearchUpdated(search: value));
+                    },
                     onSubmitted: (value) {
                       submitImgName(context, value);
                     },
@@ -180,8 +185,6 @@ class InputField extends StatelessWidget {
   }
 
   void submitImgName(BuildContext context, String imgName) {
-    context
-        .bloc<CardCreatorBloc>()
-        .add(CardCreatorDownloadImagesFromAPI(name: imgName));
+    context.bloc<ImageApiBloc>().add(ImageApiDownloadImagesFromAPI());
   }
 }
