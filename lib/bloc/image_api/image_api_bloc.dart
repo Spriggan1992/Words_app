@@ -32,10 +32,9 @@ class ImageApiBloc extends Bloc<ImageApiEvent, ImageApiState> {
       yield* _mapImageApiSearchUpdatedToState(event);
     } else if (event is ImageApiDownloadImagesFromAPI) {
       yield* _mapImageApiDownloadImagesFromAPIInitialToState(event);
+    } else if (event is ImageApiUpdateImagesFromAPI) {
+      yield* _mapImageApiUpdatedImageFromApiToState(event);
     }
-    // else if (event is ImageApiUpdateImagesFromAPI) {
-    //   yield* _mapImageApiUpdatedImageFromApiToState(event);
-    // }
   }
 
   /// Method receives String [collectionLang] and pass it to the CardCreatorSuccess state.
@@ -66,6 +65,18 @@ class ImageApiBloc extends Bloc<ImageApiEvent, ImageApiState> {
           search: '',
           errorMessage:
               'something went Wrong in _mapImageApiDownloadImagesFromAPIInitialToState');
+    }
+  }
+
+  Stream<ImageApiState> _mapImageApiUpdatedImageFromApiToState(
+      ImageApiUpdateImagesFromAPI event) async* {
+    try {
+      final File file = await _imageRepository.getImageFileFromUrl(event.url);
+      yield state.update(image: file);
+    } catch (_) {
+      yield ImageApiState.failure(
+          search: state.search,
+          errorMessage: '_mapImageApiUpdatedImageFromApiToState');
     }
   }
 }

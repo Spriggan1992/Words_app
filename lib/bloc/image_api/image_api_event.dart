@@ -36,6 +36,7 @@ class ImageApiUpdateImagesFromAPI extends ImageApiEvent {
 
   List<Object> get props => [url];
 }
+
 // class CardCreatorTargetLanguageUpdate extends ImageApiEvent {
 //   final String targetLanguage;
 
