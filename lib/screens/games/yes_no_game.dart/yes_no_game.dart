@@ -102,8 +102,6 @@ class _YesNoGameState extends State<YesNoGame> with TickerProviderStateMixin {
     });
   }
 
-  void getData(List data) {}
-
   void removeTWords(value) {
     setState(() {
       targetWords.remove(value);
@@ -162,14 +160,14 @@ class _YesNoGameState extends State<YesNoGame> with TickerProviderStateMixin {
               ),
               YesNoBtns(
                 title: 'YES',
-                top: defaultSize * 42,
+                top: SizeConfig.blockSizeVertical * 60,
                 left: defaultSize * 32,
                 icon: Icons.redo,
                 animationController: _correctAnimation,
               ),
               YesNoBtns(
                 title: 'NO',
-                top: defaultSize * 42,
+                top: SizeConfig.blockSizeVertical * 60,
                 left: defaultSize * 6,
                 icon: Icons.undo,
                 animationController: _wrongAnimation,
@@ -210,7 +208,7 @@ List matchWords(List<Word> words, double defaultSize) {
   var matches = words.map(
     (item) {
       return Positioned(
-        top: defaultSize * 35.0,
+        top: SizeConfig.blockSizeVertical * 47,
         child: Container(
           decoration: BoxDecoration(
             boxShadow: [
@@ -246,12 +244,12 @@ List<Widget> deck(
   int wrong,
 ) {
   List<Widget> cardList = List();
-  double topPadding = 40.0;
-  double leftPadding = 100.0;
+  double topPadding = SizeConfig.blockSizeVertical * 10;
+  double leftPadding = defaultSize * 10.5;
 
   for (int i = 0; i < (targetWords.length < 4 ? targetWords.length : 4); i++) {
-    topPadding -= 4;
-    leftPadding += 2;
+    topPadding -= defaultSize * 0.35;
+    leftPadding += defaultSize * 0.25;
 
     cardList.insert(
       0,
@@ -262,7 +260,7 @@ List<Widget> deck(
           direction: i == 0 ? DismissDirection.horizontal : null,
           onDismissed: (DismissDirection derection) {
             if (derection == DismissDirection.startToEnd) {
-              if (targetWords.last.id == ownLanguageWords.last.id) {
+              if (targetWords.first.id == ownLanguageWords.last.id) {
                 toogleAnswerCorrect();
               } else {
                 toogleAnswerWrong();

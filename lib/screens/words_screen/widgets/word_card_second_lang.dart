@@ -13,7 +13,7 @@ class SecondLang extends StatelessWidget {
   Widget build(BuildContext context) {
     final defaultSize = SizeConfig.defaultSize;
     return Positioned(
-      left: defaultSize * (-4),
+      left: defaultSize * 3.7,
       top: defaultSize * 7.3,
       child: ScaleTransition(
         scale: animation,
@@ -28,7 +28,7 @@ class SecondLang extends StatelessWidget {
               style: Theme.of(context).primaryTextTheme.bodyText2.merge(
                     TextStyle(
                       color: Colors.black54,
-                      fontSize: defaultSize * 2.8,
+                      fontSize: defaultSize * 1.5,
                     ),
                   ),
             ),
