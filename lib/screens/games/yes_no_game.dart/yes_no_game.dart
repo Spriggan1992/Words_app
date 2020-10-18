@@ -29,8 +29,7 @@ class _YesNoGameState extends State<YesNoGame> with TickerProviderStateMixin {
   Animation<Color> _wrongAnimation;
   List<Word> targetWords;
   List<Word> ownLanguageWords;
-  bool isCorrect = false;
-  bool isWrong = false;
+
   int correct = 0;
   int wrong = 0;
 
@@ -86,8 +85,6 @@ class _YesNoGameState extends State<YesNoGame> with TickerProviderStateMixin {
 
   void toggleAnswerCorrect() {
     setState(() {
-      isCorrect = true;
-      isWrong = false;
       correct++;
       _correctController.forward();
     });
@@ -95,8 +92,6 @@ class _YesNoGameState extends State<YesNoGame> with TickerProviderStateMixin {
 
   void toggleAnswerWrong() {
     setState(() {
-      isCorrect = false;
-      isWrong = true;
       wrong++;
       _wrongController.forward();
     });
@@ -207,6 +202,7 @@ class _YesNoGameState extends State<YesNoGame> with TickerProviderStateMixin {
 List matchWords(List<Word> words, double defaultSize) {
   var matches = words.map(
     (item) {
+      // print('ownLang: ${item.id} + ${item.ownLang}');
       return Positioned(
         top: SizeConfig.blockSizeVertical * 47,
         child: Container(
@@ -229,6 +225,7 @@ List matchWords(List<Word> words, double defaultSize) {
       );
     },
   ).toList();
+
   return matches;
 }
 
@@ -250,6 +247,7 @@ List<Widget> deck(
   for (int i = 0; i < (targetWords.length < 4 ? targetWords.length : 4); i++) {
     topPadding -= defaultSize * 0.35;
     leftPadding += defaultSize * 0.25;
+    // print('targetLang: ${targetWords[i].targetLang}');
 
     cardList.insert(
       0,
@@ -270,7 +268,7 @@ List<Widget> deck(
                   ResultScreen(correct: correct, wrong: wrong));
             }
             if (derection == DismissDirection.endToStart) {
-              if (targetWords.last.id == ownLanguageWords.last.id) {
+              if (targetWords.first.id == ownLanguageWords.last.id) {
                 toogleAnswerWrong();
               } else {
                 toogleAnswerCorrect();
@@ -315,7 +313,9 @@ List<Widget> deck(
       ),
     );
   }
-
+  // print('targetWords.first.id: ${targetWords.first.id}');
+  // print('ownLanguageWords.last.id: ${ownLanguageWords.last.id}');
+  // print('last targetWLang index: ${targetWords.first.targetLang}');
   return cardList;
 }
 // List<Widget> deck(
