@@ -4,6 +4,7 @@ import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/screens/games/bricks_game_screen/bricks_game.dart';
 import 'package:words_app/screens/games/pair_game_screen/pair_game.dart';
 import 'package:words_app/screens/screens.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum FilterGames { bricks, pair, yesNo }
 
@@ -61,12 +62,14 @@ void checkNavigation(
         ));
   if (checkState(state, FilterGames.yesNo))
     Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => YesNoGame(
-            words: state.filteredWords,
-          ),
-        ));
+      context,
+      MaterialPageRoute(
+        builder: (context) => YesNoGame(
+          words: state.filteredWords,
+        ),
+      ),
+    );
+  context.bloc<YesNoGameBloc>().add(YesNoGameLoaded());
   if (checkState(state, FilterGames.pair))
     Navigator.push(
         context,

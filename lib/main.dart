@@ -54,6 +54,12 @@ void main() => runApp(MultiBlocProvider(providers: [
           return ThemeBloc()..add(LoadedTheme());
         },
       ),
+      BlocProvider<YesNoGameBloc>(
+        create: (context) {
+          return YesNoGameBloc(
+              trainingManagerBloc: context.bloc<TrainingManagerBloc>());
+        },
+      ),
     ], child: MyApp()));
 
 class MyApp extends StatelessWidget {
