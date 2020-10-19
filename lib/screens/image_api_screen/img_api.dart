@@ -81,11 +81,8 @@ class InputField extends StatelessWidget {
     state.imageData?.forEach((item) {
       list.add(
         GestureDetector(
-          onTap: () async {
-            context
-                .bloc<ImageApiBloc>()
-                .add(ImageApiUpdateImagesFromAPI(url: item.url));
-            Navigator.pop(context, state.image);
+          onTap: () {
+            Navigator.pop(context, item.url);
           },
           child: Stack(
             children: [

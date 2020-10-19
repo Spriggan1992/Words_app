@@ -237,21 +237,11 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
   }
 
   Stream<CardCreatorState> _mapCardCreatorAdedToState() async* {
-    if (state.word == null) {
-      Word word = Word(
-        collectionId: _collectionId,
-        part: Part(partName: 'n', partColor: Color(0xffB6D7A8)),
-        targetLang: '',
-        ownLang: '',
-        secondLang: '',
-        thirdLang: '',
-        example: '',
-        exampleTranslations: '',
-        difficulty: 2,
-      );
-      print(word);
-      await _wordsRepository.addNewWord(word: word);
-    }
-    _wordsRepository.addNewWord(word: state.word);
+    yield state.update(
+      isFailure: false,
+      isSubmiting: false,
+      isSuccess: false,
+      word: null,
+    );
   }
 }

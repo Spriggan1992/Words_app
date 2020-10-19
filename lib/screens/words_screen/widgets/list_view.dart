@@ -66,9 +66,8 @@ class WordsListView extends StatelessWidget {
                         .changeColor(state.words[index].part.partColor);
                     context.bloc<CardCreatorBloc>().add(
                           CardCreatorLoaded(
-                              word: state.words[index],
-                              isEditingMode: true,
-                              collectionLaguage: collectionLang),
+                            word: state.words[index],
+                          ),
                         );
                   },
                 ),

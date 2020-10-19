@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/bloc/image_api/image_api_bloc.dart';
@@ -10,13 +8,11 @@ import 'package:words_app/widgets/custom_round_btn.dart';
 import 'package:words_app/config/constants.dart';
 
 import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
-import 'package:words_app/models/part.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 
 import 'package:words_app/widgets/base_appbar.dart';
 import 'package:words_app/models/word.dart';
-import 'package:uuid/uuid.dart';
 import 'package:words_app/config/size_config.dart';
 import '../image_api_screen/img_api.dart';
 import 'widgets/InnerShadowTextField.dart';
@@ -25,65 +21,54 @@ import 'widgets/custom_radio.dart';
 import 'widgets/reusable_card.dart';
 
 class CardCreator extends StatelessWidget {
+  final Word word;
+
   static const id = 'card_creator';
 
-  //variables to work with card
-  String targetLang;
-  String ownLang;
-  String secondLang;
-  String thirdLang;
-  String example = 'tämä on tarkea sano';
-  String exampleTranslations = 'Это важное слово. It is important word';
-
-  File image;
-  // this variable will be created when state initiate
-  File defaultImage;
-
-  String dropdownValue = 'One';
-  Part part = Part(
-    partName: 'n',
-    partColor: Colors.white,
-  );
-
-  bool isSelected = false;
+  CardCreator({Key key, this.word});
+  bool get _isEditingMode {
+    return word != null;
+  }
 
   @override
   Widget build(BuildContext context) {
-    Map args = ModalRoute.of(context).settings.arguments;
-
-    /// Pass [Word] from path[words_screen] for passing it to the controllers for text
-    final Word word = args['word'] ?? Word();
-
-    /// To allow card_creator to be used on add word and on edit word event
-    final bool isEditingMode = args['isEditingMode'];
-    final String id = word.id;
-    final String collectionId = args['collectionId'];
-    // final String collectionLang = args['lang'];
     SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize;
 
-    return BlocBuilder<CardCreatorBloc, CardCreatorState>(
+    return BlocConsumer<CardCreatorBloc, CardCreatorState>(
+      listener: (context, state) {
+        print(state.word);
+        if (state.isFailure) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Error'),
+                content: Text(state.errorMessage),
+                actions: <Widget>[
+                  FlatButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('OK'),
+                  )
+                ],
+              );
+            },
+          );
+        } else if (state.isSubmiting) {
+          return CircularProgressIndicator();
+        }
+      },
       builder: (context, state) {
-        if (state is CardCreatorLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (state is CardCreatorSuccess) {
-          return buildBody(
-            context,
-            isEditingMode,
-            id,
-            collectionId,
-            word,
-            state,
-            defaultSize,
-            // collectionLang,
-          );
-        }
-        if (state is CardCreatorFailure) {
-          return Center(child: Text("${state.message}"));
-        }
+        return buildBody(
+          context,
+          _isEditingMode,
+          id,
+          state.collectionId,
+          word,
+          state,
+          defaultSize,
+          // collectionLang,
+        );
       },
     );
   }
@@ -94,7 +79,7 @@ class CardCreator extends StatelessWidget {
     String id,
     String collectionId,
     Word word,
-    CardCreatorSuccess state,
+    CardCreatorState state,
     double defaultSize,
     // String collectionLang,
   ) {
@@ -133,13 +118,10 @@ class CardCreator extends StatelessWidget {
                               height: defaultSize * 4,
                               child: SingleChildScrollView(
                                 child: CustomRadio(
-                                  getPart: (value) => part.partName = value,
-                                  getColor: (color) {
-                                    part.partColor = color;
-                                    context
-                                        .bloc<PartColorCubit>()
-                                        .changeColor(part.partColor);
-                                  },
+                                  getPart: (value) =>
+                                      context.bloc<CardCreatorBloc>().add(
+                                            CardCreatorPartUpdate(part: value),
+                                          ),
                                   defaultSize: defaultSize,
                                 ),
                               ),
@@ -147,7 +129,10 @@ class CardCreator extends StatelessWidget {
                             InnerShadowTextField(
                               title: isEditingMode ? word.targetLang : '',
                               hintText: 'word',
-                              onChanged: (value) => targetLang = value,
+                              onChanged: (value) => context
+                                  .bloc<CardCreatorBloc>()
+                                  .add(CardCreatorTargetLanguageUpdate(
+                                      targetLanguage: value)),
                               fontSizeMultiplyer: 3.2,
                             ),
                             Stack(
@@ -157,7 +142,7 @@ class CardCreator extends StatelessWidget {
                                   height: defaultSize * 23,
                                   decoration: innerShadow,
                                 ),
-                                state.image == null
+                                state.word?.image == null
                                     ? Positioned.fill(
                                         child: Row(
                                           mainAxisAlignment:
@@ -176,15 +161,8 @@ class CardCreator extends StatelessWidget {
                                             ),
                                             IconButton(
                                               onPressed: () async {
-                                                // context
-                                                //     .bloc<CardCreatorBloc>()
-                                                //     .add(
-                                                //       CardCreatorDownloadImagesFromAPI(
-                                                //         name: targetLang,
-                                                //       ),
-                                                //     );
-
-                                                await Navigator.push(
+                                                var image =
+                                                    await Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
@@ -194,15 +172,20 @@ class CardCreator extends StatelessWidget {
                                                           ImageApiBloc(
                                                               ImageRepository(),
                                                               state,
-                                                              targetLang)
+                                                              state.word
+                                                                  ?.targetLang)
                                                             ..add(
                                                                 ImageApiLoaded()),
                                                       child: ImageApi(
-                                                        targetLang: targetLang,
+                                                        targetLang: state
+                                                            .word?.targetLang,
                                                       ),
                                                     ),
                                                   ),
                                                 );
+                                                context.bloc<CardCreatorBloc>().add(
+                                                    CardCreatorUpdateImgFromApi(
+                                                        url: image));
                                               },
                                               icon: Icon(
                                                 Icons.web_asset,
@@ -219,10 +202,10 @@ class CardCreator extends StatelessWidget {
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(14),
-                                          child: state.image.path == ''
+                                          child: state.word.image.path == ''
                                               ? Container()
                                               : Image.file(
-                                                  state.image,
+                                                  state.word.image,
                                                   fit: BoxFit.cover,
                                                 ),
                                         ),
@@ -247,22 +230,29 @@ class CardCreator extends StatelessWidget {
                                               color: Color(0xFFDA627D),
                                             ),
                                             IconButton(
-                                              onPressed: () {
-                                                context
-                                                    .bloc<CardCreatorBloc>()
-                                                    .add(
-                                                      CardCreatorDownloadImagesFromAPI(
-                                                        name: targetLang,
+                                              onPressed: () async {
+                                                var image =
+                                                    await Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BlocProvider<
+                                                            ImageApiBloc>(
+                                                      create: (context) =>
+                                                          ImageApiBloc(
+                                                              ImageRepository(),
+                                                              state,
+                                                              state.word
+                                                                  .targetLang)
+                                                            ..add(
+                                                                ImageApiLoaded()),
+                                                      child: ImageApi(
+                                                        targetLang: state
+                                                            .word.targetLang,
                                                       ),
-                                                    );
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ImageApi(
-                                                                targetLang:
-                                                                    targetLang ??
-                                                                        '')));
+                                                    ),
+                                                  ),
+                                                );
                                               },
                                               icon: Icon(
                                                 Icons.web_asset,
@@ -294,7 +284,9 @@ class CardCreator extends StatelessWidget {
                   title: isEditingMode ? word.example : '',
                   hintText: 'example',
                   fontSizeMultiplyer: 2.4,
-                  onChanged: (value) => example = value,
+                  onChanged: (value) => context
+                      .bloc<CardCreatorBloc>()
+                      .add(CardCreatorExampleUpdate(example: value)),
                 ),
               ],
             ),
@@ -320,19 +312,28 @@ class CardCreator extends StatelessWidget {
                             InnerShadowTextField(
                               title: isEditingMode ? word.ownLang : '',
                               hintText: 'translation',
-                              onChanged: (value) => ownLang = value,
+                              onChanged: (value) => context
+                                  .bloc<CardCreatorBloc>()
+                                  .add(CardCreatorOwnLanguageUpdate(
+                                      ownLanguage: value)),
                               fontSizeMultiplyer: 3.2,
                             ),
                             InnerShadowTextField(
                               title: isEditingMode ? word.secondLang : '',
                               hintText: '2nd language',
-                              onChanged: (value) => secondLang = value,
+                              onChanged: (value) => context
+                                  .bloc<CardCreatorBloc>()
+                                  .add(CardCreatorSecondLanguageUpdate(
+                                      secondLanguage: value)),
                               fontSizeMultiplyer: 3.2,
                             ),
                             InnerShadowTextField(
                               title: isEditingMode ? word.thirdLang : '',
                               hintText: '3rd language',
-                              onChanged: (value) => thirdLang = value,
+                              onChanged: (value) => context
+                                  .bloc<CardCreatorBloc>()
+                                  .add(CardCreatorThirdLanguageUpdate(
+                                      thirdLanguage: value)),
                               fontSizeMultiplyer: 3.2,
                             ),
                           ],
@@ -350,7 +351,8 @@ class CardCreator extends StatelessWidget {
                   maxLines: SizeConfig.blockSizeVertical > 7.5 ? 6 : 5,
                   title: isEditingMode ? word.exampleTranslations : ' ',
                   hintText: 'example',
-                  onChanged: (value) => exampleTranslations = value,
+                  onChanged: (value) => context.bloc<CardCreatorBloc>().add(
+                      CardCreatorOwnExapleUpdate(exampleTranslation: value)),
                   fontSizeMultiplyer: 2.4,
                 ),
               ],
@@ -367,7 +369,7 @@ class CardCreator extends StatelessWidget {
     String id,
     String collectionId,
     Word word,
-    CardCreatorSuccess state,
+    CardCreatorState state,
   ) {
     return BaseAppBar(
       screenDefiner: ScreenDefiner.cardCreator,
@@ -378,27 +380,13 @@ class CardCreator extends StatelessWidget {
           icon: Icons.check,
           fillColor: Theme.of(context).accentColor,
           onPressed: () {
-            var newWord = Word(
-              collectionId: collectionId,
-              // id:id,
-              id: isEditingMode ? id : Uuid().v4(),
-              targetLang: targetLang ?? word.targetLang,
-              ownLang: ownLang ?? word.ownLang,
-              secondLang: secondLang ?? word.secondLang,
-              thirdLang: thirdLang ?? word.thirdLang,
-              image: state.image ?? defaultImage,
-              part: part ?? word.part,
-              example: example ?? word.example,
-              exampleTranslations:
-                  exampleTranslations ?? word.exampleTranslations,
-              isSelected: isSelected,
-            );
-
             isEditingMode
-                ? context.bloc<WordsBloc>().add(WordsUpdatedWord(word: newWord))
-                : context.bloc<WordsBloc>().add(WordsAdded(word: newWord));
+                ? context
+                    .bloc<WordsBloc>()
+                    .add(WordsUpdatedWord(word: state.word))
+                : context.bloc<WordsBloc>().add(WordsAdded(word: state.word));
             context.bloc<WordsBloc>().add(WordsLoaded(id: collectionId));
-
+            context.bloc<CardCreatorBloc>().add(CardCreatorAdded());
             Navigator.pop(context);
           },
         ),

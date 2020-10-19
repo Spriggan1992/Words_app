@@ -56,7 +56,9 @@ class Word extends Equatable with ChangeNotifier {
   String toString() => '''Word{
     collectionId: $collectionId,
     id: $id,
+    part: $part
     targetLang: $targetLang,
+    ownLanguage: $ownLang,
     secondLang: $secondLang,
     thirdLang: $thirdLang,
     image: $image,
