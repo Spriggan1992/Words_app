@@ -246,16 +246,19 @@ class CardCreator extends StatelessWidget {
                                                               ImageRepository(),
                                                               state,
                                                               state.word
-                                                                  .targetLang)
+                                                                  ?.targetLang)
                                                             ..add(
                                                                 ImageApiLoaded()),
                                                       child: ImageApi(
                                                         targetLang: state
-                                                            .word.targetLang,
+                                                            .word?.targetLang,
                                                       ),
                                                     ),
                                                   ),
                                                 );
+                                                context.bloc<CardCreatorBloc>().add(
+                                                    CardCreatorUpdateImgFromApi(
+                                                        url: image));
                                               },
                                               icon: Icon(
                                                 Icons.web_asset,

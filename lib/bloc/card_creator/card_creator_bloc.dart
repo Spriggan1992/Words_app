@@ -51,11 +51,6 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
     } else if (event is CardCreatorAdded) {
       yield* _mapCardCreatorAdedToState();
     }
-    // else if (event is CardCreatorDownloadImagesFromAPI) {
-    //   yield* _mapCardCreatorDownloadImagesFromAPIInitialToState(event);
-    // } else if (event is CardCreatorUpdateImagesFromAPI) {
-    //   yield* _mapCardCreatorUpdatedImageFromApiToState(event);
-    // }
   }
 
   /// Method receives String [collectionLang] and pass it to the CardCreatorSuccess state.
@@ -208,6 +203,12 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
           word: state.word,
           errorMessage:
               'There was an error in  _mapCardCreatorUpdatedImageFromCameraToState');
+      yield state.update(
+        isSubmiting: false,
+        isFailure: false,
+        isSuccess: false,
+        errorMessage: "",
+      );
     }
   }
 
@@ -233,16 +234,23 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
           word: state.word,
           errorMessage:
               'There was an error in  _mapCardCreatorUpdatedImageFromApiToState');
+      yield state.update(
+        isSubmiting: false,
+        isFailure: false,
+        isSuccess: false,
+        errorMessage: "",
+      );
     }
   }
 
   Stream<CardCreatorState> _mapCardCreatorAdedToState() async* {
     if (state.word == null) {
-      final Word word = Word(
-        collectionId: _collectionId,
-        part: Part.empty(),
-      );
-      await _wordsRepository.addNewWord(word: word);
+      // final Word word = Word(
+      //   collectionId: _collectionId,
+      //   part: Part.empty(),
+      // );
+      await _wordsRepository.addNewWord(
+          word: Word(collectionId: state.collectionId));
     } else {
       await _wordsRepository.addNewWord(word: state.word);
     }

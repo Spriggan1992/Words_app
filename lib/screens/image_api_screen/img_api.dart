@@ -36,7 +36,7 @@ class _ImageApiState extends State<ImageApi> {
         body: BlocConsumer<ImageApiBloc, ImageApiState>(
           listener: (context, state) {
             if (state.isSuccess) {
-              Navigator.of(context).pop(state.image);
+              // Navigator.of(context).pop(state.image);
             } else if (state.isFailure) {
               showDialog(
                 context: context,
