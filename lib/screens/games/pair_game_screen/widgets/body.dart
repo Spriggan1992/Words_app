@@ -144,13 +144,17 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => onBackPressed(
-        context,
-        () {
-          Navigator.pushNamedAndRemoveUntil(context, TrainingManager.id,
-              ModalRoute.withName(TrainingManager.id));
-        },
-      ),
+      onWillPop: () async =>
+          false ??
+          showCustomDialog(
+            context: context,
+            title: 'Are you sure?',
+            content: 'Do you want to delete this word?',
+            function: () {
+              Navigator.pushNamedAndRemoveUntil(context, TrainingManager.id,
+                  ModalRoute.withName(TrainingManager.id));
+            },
+          ),
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: widget.defaultSize * 1.6,

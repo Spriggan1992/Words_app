@@ -62,11 +62,16 @@ class WordsAppbar extends StatelessWidget {
                           },
                           icon: Icon(Icons.select_all)),
                       IconButton(
-                          onPressed: () => deleteConfirmation(context, () {
-                                BlocProvider.of<WordsBloc>(context)
-                                    .add(WordsDeletedSelectedAll());
-                                Navigator.pop(context);
-                              }, 'Do you want to delete this word?'),
+                          onPressed: () => showCustomDialog(
+                                context: context,
+                                title: 'Are you sure?',
+                                content: 'Do you want to delete this word?',
+                                function: () {
+                                  BlocProvider.of<WordsBloc>(context)
+                                      .add(WordsDeletedSelectedAll());
+                                  Navigator.pop(context);
+                                },
+                              ),
                           icon: Icon(Icons.delete)),
                       IconButton(
                           onPressed: () {

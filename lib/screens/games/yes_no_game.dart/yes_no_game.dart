@@ -71,13 +71,15 @@ class _YesNoGameState extends State<YesNoGame> with TickerProviderStateMixin {
     SizeConfig().init(context);
     final defaultSize = SizeConfig.defaultSize;
     return WillPopScope(
-        onWillPop: () async => onBackPressed(
-              context,
-              () {
-                setState(() {
-                  Navigator.pushNamedAndRemoveUntil(context, TrainingManager.id,
-                      ModalRoute.withName(TrainingManager.id));
-                });
+        onWillPop: () async =>
+            false ??
+            showCustomDialog(
+              context: context,
+              title: 'Are you sure?',
+              content: 'Do you want to delete this word?',
+              function: () {
+                Navigator.pushNamedAndRemoveUntil(context, TrainingManager.id,
+                    ModalRoute.withName(TrainingManager.id));
               },
             ),
         child: BlocConsumer<YesNoGameBloc, YesNoGameState>(

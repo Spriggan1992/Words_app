@@ -245,9 +245,11 @@ class Bricks with ChangeNotifier {
 
   /// Clear all data when pressing comeback button in appbar
   void backAndClearData(BuildContext context) {
-    onBackPressed(
-      context,
-      () {
+    showCustomDialog(
+      context: context,
+      title: 'Are you sure?',
+      content: 'Do you want to finish your traning?',
+      function: () {
         Navigator.pushNamed(context, TrainingManager.id);
         initialData.clear();
         cleanData();

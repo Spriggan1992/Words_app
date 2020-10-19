@@ -41,11 +41,16 @@ class CollectionCardEditDeleteBtns extends StatelessWidget {
                     icon: Icons.delete,
                     color: Colors.black54,
                     onPress: () {
-                      deleteConfirmation(context, () {
-                        BlocProvider.of<CollectionsBloc>(context)
-                          ..add(CollectionsDeleted(id: id));
-                        Navigator.pop(context);
-                      }, 'Do you want to delete your collection?');
+                      showCustomDialog(
+                        context: context,
+                        title: 'Are you sure?',
+                        content: 'Do you want to delete your collection?',
+                        function: () {
+                          BlocProvider.of<CollectionsBloc>(context)
+                            ..add(CollectionsDeleted(id: id));
+                          Navigator.pop(context);
+                        },
+                      );
                     },
                   ),
                   SizedBox(width: defaultSize * 0.5),

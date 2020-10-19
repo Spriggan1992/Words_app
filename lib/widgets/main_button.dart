@@ -23,7 +23,6 @@ class MainButton extends StatelessWidget {
                 blurRadius: 2,
                 spreadRadius: 0.5,
                 color: Colors.black54,
-                // offset: Offset(1, 1),
               )
             ]),
         child: Icon(

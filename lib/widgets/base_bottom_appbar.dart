@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:words_app/config/screenDefiner.dart';
 
-import 'package:words_app/screens/screens.dart';
 import 'package:words_app/widgets/widgets.dart';
 
 class BaseBottomAppbar extends StatelessWidget {
@@ -34,7 +33,7 @@ class BaseBottomAppbar extends StatelessWidget {
               child: Row(
             children: [
               SizedBox(width: 70),
-              buildHomeBtn(context, screenDefiner),
+              _buildHomeBtn(context, screenDefiner),
             ],
           )),
           Positioned(
@@ -46,7 +45,7 @@ class BaseBottomAppbar extends StatelessWidget {
               child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              buildTrainingBtn(context, goToTrainings, trainingsWordCounter),
+              _buildTrainingBtn(context, goToTrainings, trainingsWordCounter),
               SizedBox(width: 70),
             ],
           )),
@@ -55,7 +54,7 @@ class BaseBottomAppbar extends StatelessWidget {
     );
   }
 
-  Widget buildTrainingBtn(
+  Widget _buildTrainingBtn(
     BuildContext context,
     Function goToTrainings,
     String trainingsWordCounter,
@@ -84,7 +83,7 @@ class BaseBottomAppbar extends StatelessWidget {
       );
   }
 
-  Widget buildHomeBtn(BuildContext context, ScreenDefiner screenDefiner) {
+  Widget _buildHomeBtn(BuildContext context, ScreenDefiner screenDefiner) {
     return ReusableIconBtn(
         color: Theme.of(context).accentColor,
         icon: Icons.home,

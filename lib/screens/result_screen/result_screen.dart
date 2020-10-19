@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:words_app/config/screenDefiner.dart';
-import 'package:words_app/config/constants.dart';
+import 'package:words_app/config/config.dart';
+
 import 'package:words_app/repositories/repositories.dart';
 import 'package:words_app/screens/screens.dart';
-import 'package:words_app/widgets/reusable_main_button.dart';
-import 'package:words_app/config/size_config.dart';
 import 'package:words_app/widgets/widgets.dart';
+
+import 'widgets/text_holder.dart';
 
 class ResultScreen extends StatelessWidget {
   static String id = 'result_screenshot';
@@ -84,37 +84,6 @@ class ResultScreen extends StatelessWidget {
                   ),
                 )),
           )),
-    );
-  }
-}
-
-class TextHolder extends StatelessWidget {
-  const TextHolder({
-    Key key,
-    @required this.titles,
-  }) : super(key: key);
-
-  final List<String> titles;
-
-  @override
-  Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    final defaultSize = SizeConfig.defaultSize;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ...List.generate(
-          2,
-          (index) => Text(
-            titles[index].toString(),
-            style: Theme.of(context).primaryTextTheme.bodyText2.merge(
-                  TextStyle(
-                    fontSize: defaultSize * 3,
-                  ),
-                ),
-          ),
-        )
-      ],
     );
   }
 }

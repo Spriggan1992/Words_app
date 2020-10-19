@@ -76,12 +76,17 @@ class WordsListView extends StatelessWidget {
                   caption: 'Delete',
                   color: Theme.of(context).accentColor,
                   icon: Icons.delete,
-                  onTap: () => deleteConfirmation(context, () {
-                    context
-                        .bloc<WordsBloc>()
-                        .add(WordsDeleted(word: state.words[index]));
-                    Navigator.pop(context);
-                  }, 'Do you want to delete this word?'),
+                  onTap: () => showCustomDialog(
+                    context: context,
+                    title: 'Are you sure?',
+                    content: 'Do you want to delete this word?',
+                    function: () {
+                      context
+                          .bloc<WordsBloc>()
+                          .add(WordsDeleted(word: state.words[index]));
+                      Navigator.pop(context);
+                    },
+                  ),
                 )
               ],
             );

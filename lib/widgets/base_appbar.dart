@@ -34,7 +34,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: screenDefiner == ScreenDefiner.cardCreator
           ? actions
           : [_buildThemeIconButton(context)],
-      leading: buildBackBtn(context, screenDefiner),
+      leading: _buildBackBtn(context, screenDefiner),
     );
   }
 
@@ -52,7 +52,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget buildBackBtn(BuildContext context, ScreenDefiner screenDefiner) {
+  Widget _buildBackBtn(BuildContext context, ScreenDefiner screenDefiner) {
     if (screenDefiner == ScreenDefiner.collections) {
       return Transform.rotate(
         angle: 180 * pi / 180,
@@ -73,10 +73,14 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       return ReusableIconBtn(
         color: Theme.of(context).accentColor,
         icon: Icons.arrow_back_ios,
-        onPress: () => onBackPressed(context, () {
-          Navigator.pushNamedAndRemoveUntil(context, TrainingManager.id,
-              ModalRoute.withName(TrainingManager.id));
-        }),
+        onPress: () => showCustomDialog(
+            context: context,
+            title: 'Are you sure?',
+            content: 'Do you want to finish your traning?',
+            function: () {
+              Navigator.pushNamedAndRemoveUntil(context, TrainingManager.id,
+                  ModalRoute.withName(TrainingManager.id));
+            }),
       );
     } else if (screenDefiner == ScreenDefiner.bricks) {
       return ReusableIconBtn(
