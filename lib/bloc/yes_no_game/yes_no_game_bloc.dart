@@ -34,7 +34,7 @@ class YesNoGameBloc extends Bloc<YesNoGameEvent, YesNoGameState> {
   Stream<YesNoGameState> _mapYesNoGameLoadedToState() async* {
     try {
       final trainigManagerBlocData = trainingManagerBloc.state.filteredWords;
-      print('trainigManagerBlocData: $trainigManagerBlocData');
+
       final List<Word> updatedTargetLang = trainigManagerBlocData;
       final List<Word> updatedOwnLang = trainigManagerBlocData;
       yield YesNoGameSuccess(
@@ -78,7 +78,7 @@ class YesNoGameBloc extends Bloc<YesNoGameEvent, YesNoGameState> {
     try {
       final data = (state as YesNoGameSuccess);
       final List<Word> updatedTargetLang =
-          data.targetLang.where((word) => word.id != event.word.id);
+          data.targetLang.where((word) => word.id != event.word.id).toList();
       final List<Word> updatedOwnLang = [...data.ownLang]..removeLast();
       yield YesNoGameSuccess(
           targetLang: updatedTargetLang,
