@@ -90,15 +90,16 @@ class Word extends Equatable with ChangeNotifier {
     return WordEntity(
       collectionId: collectionId,
       id: id,
-      targetLang: targetLang,
-      ownLang: ownLang,
-      secondLang: secondLang,
-      thirdLang: thirdLang,
-      partName: part.partName,
-      partColor: part.partColor.toString(),
+      targetLang: targetLang ?? ' ',
+      ownLang: ownLang ?? ' ',
+      secondLang: secondLang ?? ' ',
+      thirdLang: thirdLang ?? ' ',
+      partName: part != null ? part.partName : ' ',
+      partColor:
+          part != null ? part.partColor.toString() : Colors.white.toString(),
       image: image?.path ?? '',
-      example: example,
-      exampleTranslations: exampleTranslations,
+      example: example ?? ' ',
+      exampleTranslations: exampleTranslations ?? ' ',
       difficulty: difficulty,
     );
   }

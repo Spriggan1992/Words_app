@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/card_creator/card_creator_bloc.dart';
 import 'package:words_app/bloc/image_api/image_api_bloc.dart';
 import 'package:words_app/bloc/words/words_bloc.dart';
 import 'package:words_app/config/screenDefiner.dart';
+import 'package:words_app/models/models.dart';
 import 'package:words_app/repositories/image_repository.dart';
 import 'package:words_app/widgets/custom_round_btn.dart';
 import 'package:words_app/config/constants.dart';
@@ -380,13 +383,18 @@ class CardCreator extends StatelessWidget {
           icon: Icons.check,
           fillColor: Theme.of(context).accentColor,
           onPressed: () {
-            isEditingMode
-                ? context
-                    .bloc<WordsBloc>()
-                    .add(WordsUpdatedWord(word: state.word))
-                : context.bloc<WordsBloc>().add(WordsAdded(word: state.word));
-            context.bloc<WordsBloc>().add(WordsLoaded(id: collectionId));
             context.bloc<CardCreatorBloc>().add(CardCreatorAdded());
+
+            // isEditingMode
+            //     ? context
+            //         .bloc<WordsBloc>()
+            //         .add(WordsUpdatedWord(word: state.word))
+            //     : context.bloc<WordsBloc>().add(WordsAdded(
+            //         word: state.word ??
+            //             Word(
+            //                 collectionId: state.collectionId,
+            //                 part: Part.empty())));
+            context.bloc<WordsBloc>().add(WordsLoaded(id: state.collectionId));
             Navigator.pop(context);
           },
         ),

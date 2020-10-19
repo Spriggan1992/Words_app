@@ -4,6 +4,7 @@ import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/config.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
 import 'package:words_app/repositories/image_repository.dart';
+import 'package:words_app/repositories/repositories.dart';
 import 'package:words_app/screens/screens.dart';
 import 'package:words_app/widgets/widgets.dart';
 
@@ -36,6 +37,7 @@ class WordsBottomAppbar extends StatelessWidget {
                       create: (context) => CardCreatorBloc(
                         collectionId: collectionId,
                         imageRepository: ImageRepository(),
+                        wordsRepository: WordsRepository(),
                       )..add(CardCreatorLoaded()),
                       child: CardCreator(),
                     ),

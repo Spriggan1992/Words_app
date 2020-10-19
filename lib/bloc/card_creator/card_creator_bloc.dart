@@ -237,6 +237,16 @@ class CardCreatorBloc extends Bloc<CardCreatorEvent, CardCreatorState> {
   }
 
   Stream<CardCreatorState> _mapCardCreatorAdedToState() async* {
+    if (state.word == null) {
+      final Word word = Word(
+        collectionId: _collectionId,
+        part: Part.empty(),
+      );
+      await _wordsRepository.addNewWord(word: word);
+    } else {
+      await _wordsRepository.addNewWord(word: state.word);
+    }
+
     yield state.update(
       isFailure: false,
       isSubmiting: false,
