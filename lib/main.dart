@@ -60,6 +60,12 @@ void main() => runApp(MultiBlocProvider(providers: [
               trainingManagerBloc: context.bloc<TrainingManagerBloc>());
         },
       ),
+      BlocProvider<BricksBloc>(
+        create: (context) {
+          return BricksBloc(
+              trainingManagerBloc: context.bloc<TrainingManagerBloc>());
+        },
+      ),
     ], child: MyApp()));
 
 class MyApp extends StatelessWidget {

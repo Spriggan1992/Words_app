@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/config.dart';
 import 'package:words_app/models/models.dart';
 import 'package:words_app/repositories/repositories.dart';
@@ -22,7 +24,7 @@ class _BricksGameState extends State<BricksGame> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    loadData();
+    // loadData();
 
     errorAnimationController = AnimationController(
       duration: Duration(milliseconds: 500),
@@ -85,53 +87,108 @@ class _BricksGameState extends State<BricksGame> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final providerData = Provider.of<Bricks>(context);
-    return WillPopScope(
-      onWillPop: () async {
-        providerData.correct = 0;
-        providerData.wrong = 0;
-        providerData.backAndClearData(context);
-        return;
+    return WillPopScope(onWillPop: () async {
+      providerData.correct = 0;
+      providerData.wrong = 0;
+      providerData.backAndClearData(context);
+      return;
+    }, child: BlocBuilder<BricksBloc, BricksState>(
+      builder: (context, state) {
+        if (state is BricksLoading) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        return Scaffold(
+            appBar: BaseAppBar(
+              screenDefiner: ScreenDefiner.bricks,
+              appBar: AppBar(),
+              title: Text('Bricks'),
+              back: () => providerData.backAndClearData(context),
+            ),
+            body: BlocBuilder<BricksBloc, BricksState>(
+              builder: (context, state) {
+                if (state is BricksLoading) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (state is BricksSuccess) {
+                  return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            // CardContainer
+                            CardContainer(
+                                state: state,
+                                slideTransitionAnimation:
+                                    slideTransitionAnimation),
+
+                            // // AnswerContainer
+                            // AnswerContainer(
+                            //     successColorAnimation: successColorAnimation,
+                            //     errorColorAnimation: errorColorAnimation),
+
+                            // // TargetWordContainer
+                            // TargetWordContainer(),
+
+                            // // SubmitBtn
+                            // SubmitAndTryAgainBtn(
+                            //     shakeBtnAnimation: shakeBtnAnimation,
+                            //     successAnimationController:
+                            //         successAnimationController,
+                            //     errorAnimationController:
+                            //         errorAnimationController,
+                            //     slideTransitionController:
+                            //         slideTransitionController,
+                            //     shakeController: shakeController),
+
+                            // // Help and Next btns
+                            // NextAndGiveUpBtns(
+                            //     slideTransitionController:
+                            //         slideTransitionController),
+                          ],
+                        ),
+                      ) ??
+                      SizedBox.shrink();
+                } else
+                  return Text('Somthing went wrong...');
+              },
+            ));
       },
-      child: Scaffold(
-        appBar: BaseAppBar(
-          screenDefiner: ScreenDefiner.bricks,
-          appBar: AppBar(),
-          title: Text('Bricks'),
-          back: () => providerData.backAndClearData(context),
-        ),
-        body: providerData.initialData.isNotEmpty
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    // CardContainer
-                    CardContainer(
-                        slideTransitionAnimation: slideTransitionAnimation),
-
-                    // AnswerContainer
-                    AnswerContainer(
-                        successColorAnimation: successColorAnimation,
-                        errorColorAnimation: errorColorAnimation),
-
-                    // TargetWordContainer
-                    TargetWordContainer(),
-
-                    // SubmitBtn
-                    SubmitAndTryAgainBtn(
-                        shakeBtnAnimation: shakeBtnAnimation,
-                        successAnimationController: successAnimationController,
-                        errorAnimationController: errorAnimationController,
-                        slideTransitionController: slideTransitionController,
-                        shakeController: shakeController),
-
-                    // Help and Next btns
-                    NextAndGiveUpBtns(
-                        slideTransitionController: slideTransitionController),
-                  ],
-                ),
-              )
-            : SizedBox.shrink(),
-      ),
-    );
+    ));
   }
 }
+//         body: providerData.initialData.isNotEmpty
+//             ? Center(
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                   children: <Widget>[
+//                     // CardContainer
+//                     CardContainer(
+//                         slideTransitionAnimation: slideTransitionAnimation),
+
+//                     // AnswerContainer
+//                     AnswerContainer(
+//                         successColorAnimation: successColorAnimation,
+//                         errorColorAnimation: errorColorAnimation),
+
+//                     // TargetWordContainer
+//                     TargetWordContainer(),
+
+//                     // SubmitBtn
+//                     SubmitAndTryAgainBtn(
+//                         shakeBtnAnimation: shakeBtnAnimation,
+//                         successAnimationController: successAnimationController,
+//                         errorAnimationController: errorAnimationController,
+//                         slideTransitionController: slideTransitionController,
+//                         shakeController: shakeController),
+
+//                     // Help and Next btns
+//                     NextAndGiveUpBtns(
+//                         slideTransitionController: slideTransitionController),
+//                   ],
+//                 ),
+//               )
+//             : SizedBox.shrink(),
+//       ),
+//     );
+//   }
+// }

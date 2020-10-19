@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/models/collection.dart';
 import 'package:words_app/models/word.dart';
@@ -10,8 +11,10 @@ part 'words_event.dart';
 part 'words_state.dart';
 
 class WordsBloc extends Bloc<WordsEvent, WordsState> {
-  WordsBloc({this.wordsRepository}) : super(WordsLoading());
-  final WordsRepository wordsRepository;
+  WordsBloc({@required WordsRepository wordsRepository})
+      : _wordsRepository = wordsRepository,
+        super(WordsLoading());
+  final WordsRepository _wordsRepository;
 
   Collection collection;
   Stream<WordsState> mapEventToState(
@@ -58,7 +61,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
   /// call populate method
   Stream<WordsState> _mapWordsPopulatedToState(WordsPopulate event) async* {
     try {
-      List<Word> dummyDataList = await wordsRepository.populateList(event.id);
+      List<Word> dummyDataList = await _wordsRepository.populateList(event.id);
 
       // yield WordsSuccess(
       //     words: [...(state as WordsSuccess).words, ...dummyDataList]);
@@ -71,7 +74,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
   Stream<WordsState> _mapWordsLoadedToState(WordsLoaded event) async* {
     try {
       final words =
-          await wordsRepository.fetchAndSetWords(collectionId: event.id);
+          await _wordsRepository.fetchAndSetWords(collectionId: event.id);
 
       yield WordsSuccess(words: words);
     } catch (_) {
@@ -147,7 +150,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     try {
       final List<Word> updateWords =
           List.from((state as WordsSuccess).words.where((word) {
-        if (word.isSelected) wordsRepository.removeWord(word);
+        if (word.isSelected) _wordsRepository.removeWord(word);
         return !word.isSelected;
       }));
       // updateWords.removeWhere((word) {
@@ -168,7 +171,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
           .words
           .where((word) => word.id != event.word.id));
       yield WordsSuccess(words: updateWords);
-      wordsRepository.removeWord(event.word);
+      _wordsRepository.removeWord(event.word);
     } catch (_) {
       yield WordsFailure();
     }
@@ -195,7 +198,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
     try {
       final updatedWord = (state as WordsSuccess).words.map((word) {
         if (word.id == event.word.id) {
-          wordsRepository.updateWord(word: event.word, wordId: event.word.id);
+          _wordsRepository.updateWord(word: event.word, wordId: event.word.id);
         }
 
         return word.id == event.word.id
@@ -261,7 +264,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
 
       yield WordsSuccess(words: updatedWord);
 
-      await wordsRepository.addNewWord(word: event.word);
+      await _wordsRepository.addNewWord(word: event.word);
     }
   }
 }

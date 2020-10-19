@@ -15,7 +15,7 @@ class Bricks with ChangeNotifier {
 
   /// DynamicColor: normal = white color;  success = successColorAnimation; error = errorColorAnimation, wrong = red color;
   DynamicColor dynamicColor = DynamicColor.normal;
-  bool isCheckSlideTransition = true;
+  // bool isCheckSlideTransition = true;
   List<Brick> listBricks = [];
 
 //----------------------- Animations-------------------------------
@@ -62,7 +62,8 @@ class Bricks with ChangeNotifier {
         answer = initialData[i].targetLang.toLowerCase();
       }
       List<String> targetSplitted = answer.toLowerCase().split('');
-      // Check if providerData.listBricks empty or not. If it empty-> add new word, else dont add it.
+
+      // Check if providerData.listBricks empty or not. If it empty-> add new word, else don't add.
       if (listBricks.isEmpty) {
         targetSplitted.forEach((item) {
           addWord(item, true);
@@ -130,7 +131,7 @@ class Bricks with ChangeNotifier {
 
   /// Check Answer
   ///
-  /// If answer match to matchedAnswer = right answer --> run success animation --> load next word
+  /// If answer match to matchedAnswer = correct answer --> run success animation --> load next word
   /// If asnwer don't match to matchedAnswer = wrong answer --> run error animation --> start over
   void checkAnswer(
     AnimationController successAnimationController,

@@ -60,13 +60,14 @@ void checkNavigation(
         MaterialPageRoute(
           builder: (context) => BricksGame(words: state.filteredWords),
         ));
+  context.bloc<BricksBloc>().add(BricksLoaded());
   if (checkState(state, FilterGames.yesNo))
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => YesNoGame(
-          words: state.filteredWords,
-        ),
+            // words: state.filteredWords,
+            ),
       ),
     );
   context.bloc<YesNoGameBloc>().add(YesNoGameLoaded());

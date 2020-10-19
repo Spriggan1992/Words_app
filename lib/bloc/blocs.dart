@@ -5,3 +5,4 @@ export 'words/words_bloc.dart';
 export 'card_creator/card_creator_bloc.dart';
 export 'theme/theme_bloc.dart';
 export 'yes_no_game/yes_no_game_bloc.dart';
+export 'bricks/bricks_bloc.dart';

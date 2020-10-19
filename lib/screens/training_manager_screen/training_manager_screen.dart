@@ -18,7 +18,7 @@ class TrainingManager extends StatefulWidget {
 
 class _TrainingManagerState extends State<TrainingManager> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  // List<int> _selectedDifficulties = [];
+
   List<Difficulty> _difficulty = DifficultyList().difficultyList;
 
   // Data for creating dynamic icons for games buttons

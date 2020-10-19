@@ -4,7 +4,7 @@ import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/config.dart';
 
 import 'package:words_app/helpers/functions.dart';
-import 'package:words_app/models/models.dart';
+// import 'package:words_app/models/models.dart';
 import 'package:words_app/screens/screens.dart';
 import 'package:words_app/widgets/widgets.dart';
 
@@ -12,8 +12,8 @@ import 'widgets/widgets.dart';
 
 class YesNoGame extends StatefulWidget {
   static String id = 'training_screen';
-  YesNoGame({this.words});
-  final List<Word> words;
+  // YesNoGame({this.words});
+  // final List<Word> words;
 
   @override
   _YesNoGameState createState() => _YesNoGameState();

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/config.dart';
 import 'package:words_app/repositories/repositories.dart';
 
 class CardContainer extends StatelessWidget {
+  final BricksSuccess state;
   const CardContainer({
     Key key,
     this.slideTransitionAnimation,
+    this.state,
   }) : super(key: key);
 
   final Animation slideTransitionAnimation;
@@ -44,9 +47,9 @@ class CardContainer extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                   color: Colors.white,
                 ),
-                child: Text(
-                  providerData.initialData.last.ownLang,
-                ),
+                child: Text(state.initialData.last.ownLang
+                    // providerData.initialData.last.ownLang,
+                    ),
               ),
             ),
           ],
