@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/cubit/card_creator/part_color/part_color_cubit.dart';
 import 'package:words_app/helpers/functions.dart';
+import 'package:words_app/repositories/repositories.dart';
 import 'package:words_app/screens/screens.dart';
 
 import 'widgets.dart';
@@ -52,24 +53,21 @@ class WordsListView extends StatelessWidget {
                   color: Colors.black26,
                   icon: Icons.edit,
                   onTap: () {
-                    Navigator.pushNamed(
+                    Navigator.push(
                       context,
-                      CardCreator.id,
-                      arguments: {
-                        'isEditingMode': true,
-                        'word': state.words[index],
-                        'collectionId': collectionId,
-                      },
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider<CardCreatorBloc>(
+                          create: (context) => CardCreatorBloc(
+                            collectionId: collectionId,
+                            imageRepository: ImageRepository(),
+                            wordsRepository: WordsRepository(),
+                          )..add(CardCreatorLoaded(word: state.words[index])),
+                          child: CardCreator(
+                            word: state.words[index],
+                          ),
+                        ),
+                      ),
                     );
-                    context
-                        .bloc<PartColorCubit>()
-                        .changeColor(state.words[index].part.partColor);
-                    context.bloc<CardCreatorBloc>().add(
-                          CardCreatorLoaded(
-                              word: state.words[index],
-                              isEditingMode: true,
-                              collectionLaguage: collectionLang),
-                        );
                   },
                 ),
                 IconSlideAction(

@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/config.dart';
 import 'package:words_app/cubit/words/words_cubit.dart';
-import 'package:words_app/models/models.dart';
+import 'package:words_app/repositories/image_repository.dart';
+import 'package:words_app/repositories/repositories.dart';
 import 'package:words_app/screens/screens.dart';
 import 'package:words_app/widgets/widgets.dart';
 
@@ -29,19 +30,19 @@ class WordsBottomAppbar extends StatelessWidget {
         add: isEditingMode
             ? () {}
             : () {
-                Navigator.pushNamed(
+                Navigator.push(
                   context,
-                  CardCreator.id,
-                  arguments: {
-                    'isEditingMode': false,
-                    'collectionId': collectionId,
-                    'lang': collectionLang,
-                  },
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider<CardCreatorBloc>(
+                      create: (context) => CardCreatorBloc(
+                        collectionId: collectionId,
+                        imageRepository: ImageRepository(),
+                        wordsRepository: WordsRepository(),
+                      )..add(CardCreatorLoaded()),
+                      child: CardCreator(),
+                    ),
+                  ),
                 );
-                context.bloc<CardCreatorBloc>().add(CardCreatorLoaded(
-                    word: Word(),
-                    isEditingMode: false,
-                    collectionLaguage: collectionLang));
               },
         goToCollection: () {
           context.bloc<CollectionsBloc>().add(CollectionsLoaded());

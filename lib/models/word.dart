@@ -56,7 +56,9 @@ class Word extends Equatable with ChangeNotifier {
   String toString() => '''Word{
     collectionId: $collectionId,
     id: $id,
+    part: $part
     targetLang: $targetLang,
+    ownLanguage: $ownLang,
     secondLang: $secondLang,
     thirdLang: $thirdLang,
     image: $image,
@@ -88,15 +90,16 @@ class Word extends Equatable with ChangeNotifier {
     return WordEntity(
       collectionId: collectionId,
       id: id,
-      targetLang: targetLang,
-      ownLang: ownLang,
-      secondLang: secondLang,
-      thirdLang: thirdLang,
-      partName: part.partName,
-      partColor: part.partColor.toString(),
+      targetLang: targetLang ?? ' ',
+      ownLang: ownLang ?? ' ',
+      secondLang: secondLang ?? ' ',
+      thirdLang: thirdLang ?? ' ',
+      partName: part != null ? part.partName : ' ',
+      partColor:
+          part != null ? part.partColor.toString() : Colors.white.toString(),
       image: image?.path ?? '',
-      example: example,
-      exampleTranslations: exampleTranslations,
+      example: example ?? ' ',
+      exampleTranslations: exampleTranslations ?? ' ',
       difficulty: difficulty,
     );
   }
