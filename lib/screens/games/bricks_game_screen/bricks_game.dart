@@ -97,61 +97,54 @@ class _BricksGameState extends State<BricksGame> with TickerProviderStateMixin {
         if (state is BricksLoading) {
           return Center(child: CircularProgressIndicator());
         }
+        if (state is BricksSuccess) {
+          return Scaffold(
+              appBar: BaseAppBar(
+                screenDefiner: ScreenDefiner.bricks,
+                appBar: AppBar(),
+                title: Text('Bricks'),
+                back: () => providerData.backAndClearData(context),
+              ),
+              body: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        CardContainer(
+                            state: state,
+                            slideTransitionAnimation: slideTransitionAnimation),
 
-        return Scaffold(
-            appBar: BaseAppBar(
-              screenDefiner: ScreenDefiner.bricks,
-              appBar: AppBar(),
-              title: Text('Bricks'),
-              back: () => providerData.backAndClearData(context),
-            ),
-            body: BlocBuilder<BricksBloc, BricksState>(
-              builder: (context, state) {
-                if (state is BricksLoading) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                if (state is BricksSuccess) {
-                  return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            // CardContainer
-                            CardContainer(
-                                state: state,
-                                slideTransitionAnimation:
-                                    slideTransitionAnimation),
+                        // // AnswerContainer
+                        // AnswerContainer(
+                        //     successColorAnimation: successColorAnimation,
+                        //     errorColorAnimation: errorColorAnimation),
 
-                            // // AnswerContainer
-                            // AnswerContainer(
-                            //     successColorAnimation: successColorAnimation,
-                            //     errorColorAnimation: errorColorAnimation),
+                        // // TargetWordContainer
+                        TargetWordContainer(),
 
-                            // // TargetWordContainer
-                            // TargetWordContainer(),
+                        // // SubmitBtn
+                        // SubmitAndTryAgainBtn(
+                        //     shakeBtnAnimation: shakeBtnAnimation,
+                        //     successAnimationController:
+                        //         successAnimationController,
+                        //     errorAnimationController:
+                        //         errorAnimationController,
+                        //     slideTransitionController:
+                        //         slideTransitionController,
+                        //     shakeController: shakeController),
 
-                            // // SubmitBtn
-                            // SubmitAndTryAgainBtn(
-                            //     shakeBtnAnimation: shakeBtnAnimation,
-                            //     successAnimationController:
-                            //         successAnimationController,
-                            //     errorAnimationController:
-                            //         errorAnimationController,
-                            //     slideTransitionController:
-                            //         slideTransitionController,
-                            //     shakeController: shakeController),
-
-                            // // Help and Next btns
-                            // NextAndGiveUpBtns(
-                            //     slideTransitionController:
-                            //         slideTransitionController),
-                          ],
-                        ),
-                      ) ??
-                      SizedBox.shrink();
-                } else
-                  return Text('Somthing went wrong...');
-              },
-            ));
+                        // // Help and Next btns
+                        // NextAndGiveUpBtns(
+                        //     slideTransitionController:
+                        //         slideTransitionController),
+                      ],
+                    ),
+                  ) ??
+                  SizedBox.shrink());
+        }
+        if (state is BricksFailure) {
+          return Text('Somthing went wrong...');
+        } else
+          return SizedBox.shrink();
       },
     ));
   }

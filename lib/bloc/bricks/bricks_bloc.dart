@@ -27,10 +27,11 @@ class BricksBloc extends Bloc<BricksEvent, BricksState> {
 
   Stream<BricksState> _mapBricksLoadedToState() async* {
     try {
-      final bricksData = (state as BricksSuccess).listBricks;
       final words = _trainingManagerBloc.state.filteredWords;
       final answer = await getAnswerWord(words);
-      final listBricks = await getListBricks(answer, bricksData);
+      final listBricks = await getListBricks(answer);
+      print('words: $words');
+      print('listBricks: $listBricks');
       yield BricksSuccess(
           answer: answer,
           listBricks: listBricks,
@@ -52,15 +53,14 @@ class BricksBloc extends Bloc<BricksEvent, BricksState> {
 
   Future<List<Brick<String>>> getListBricks(
     String answer,
-    List<Brick> listBricks,
   ) async {
     List<String> targetSplitted = answer.toLowerCase().split('');
-    List<Brick<dynamic>> updatedListBricks = [];
-    if (listBricks.isEmpty) {
-      targetSplitted.forEach((item) {
-        updatedListBricks.add(Brick(targetLangWord: item, isVisible: true));
-      });
-    }
+    List<Brick<String>> updatedListBricks = [];
+
+    targetSplitted.forEach((item) {
+      updatedListBricks.add(Brick(targetLangWord: item, isVisible: true));
+    });
+
     return updatedListBricks..shuffle();
   }
 }
