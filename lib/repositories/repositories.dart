@@ -6,3 +6,5 @@ export 'words/base_words_repository.dart';
 export 'base_repository.dart';
 export 'training_manager/training_manager_repository.dart';
 export 'training_manager/base_training_manager_repository.dart.dart';
+export 'bricks/base_bricks_repository.dart';
+export 'bricks/bricks_repository.dart';

@@ -63,7 +63,8 @@ void main() => runApp(MultiBlocProvider(providers: [
       BlocProvider<BricksBloc>(
         create: (context) {
           return BricksBloc(
-              trainingManagerBloc: context.bloc<TrainingManagerBloc>());
+              trainingManagerBloc: context.bloc<TrainingManagerBloc>(),
+              bricksRepository: BricksRepository());
         },
       ),
     ], child: MyApp()));

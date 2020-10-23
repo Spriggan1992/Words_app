@@ -119,7 +119,7 @@ class _BricksGameState extends State<BricksGame> with TickerProviderStateMixin {
                         //     errorColorAnimation: errorColorAnimation),
 
                         // // TargetWordContainer
-                        TargetWordContainer(),
+                        TargetWordContainer(state: state),
 
                         // // SubmitBtn
                         // SubmitAndTryAgainBtn(

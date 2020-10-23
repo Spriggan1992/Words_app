@@ -6,9 +6,6 @@ import '../repositories.dart';
 
 class TrainingManagerRepository extends BaseTrainingManagerRepository {
   @override
-  void dispose() {}
-
-  @override
   Future<List<Word>> mapWordsList(
       {TrainingManagerState state, WordsRepository wordsRepository}) async {
     List<Word> selectedFilteredList = [];
@@ -67,4 +64,7 @@ class TrainingManagerRepository extends BaseTrainingManagerRepository {
     }
     return error;
   }
+
+  @override
+  void dispose() {}
 }

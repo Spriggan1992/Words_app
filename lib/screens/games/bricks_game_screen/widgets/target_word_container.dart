@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words_app/bloc/blocs.dart';
 import 'package:words_app/config/config.dart';
 import 'package:words_app/repositories/repositories.dart';
 import 'widgets.dart';
 
 class TargetWordContainer extends StatefulWidget {
-  TargetWordContainer({Key key}) : super(key: key);
+  TargetWordContainer({Key key, @required this.state}) : super(key: key);
+
+  final BricksSuccess state;
 
   @override
   TargetWordContainerState createState() => TargetWordContainerState();
@@ -28,12 +31,12 @@ class TargetWordContainerState extends State<TargetWordContainer> {
               runSpacing: 2,
               spacing: 2,
               direction: Axis.horizontal,
-              children: providerData.listBricks.map((item) {
+              children: widget.state.listBricks.map((item) {
                 return Visibility(
                     child: GestureDetector(
                   onTap: () {
-                    providerData.addLetter(item.targetLangWord);
-                    providerData.toggleVisible(item);
+                    // providerData.addLetter(item.targetLangWord);
+                    // providerData.toggleVisible(item);
                   },
                   child: item.isVisible
                       ? BrickContainer(letter: item.targetLangWord)

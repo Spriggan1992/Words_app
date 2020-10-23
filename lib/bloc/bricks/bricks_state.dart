@@ -11,7 +11,7 @@ class BricksLoading extends BricksState {}
 
 class BricksSuccess extends BricksState {
   final List<Word> initialData;
-  final List<String> answerWordArray;
+  final List<String> answersListOfBricks;
   final List<Brick> listBricks;
   final String answer;
   final int correct;
@@ -19,7 +19,7 @@ class BricksSuccess extends BricksState {
 
   BricksSuccess(
       {this.initialData,
-      this.answerWordArray,
+      this.answersListOfBricks,
       this.listBricks,
       this.answer,
       this.correct,
@@ -27,7 +27,7 @@ class BricksSuccess extends BricksState {
 
   @override
   List<Object> get props =>
-      [initialData, answerWordArray, answer, correct, wrong, listBricks];
+      [initialData, answersListOfBricks, answer, correct, wrong, listBricks];
 }
 
 class BricksFailure extends BricksState {}

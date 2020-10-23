@@ -8,3 +8,14 @@ abstract class BricksEvent extends Equatable {
 }
 
 class BricksLoaded extends BricksEvent {}
+
+class BricksAddedLetter extends BricksEvent {
+  final String letter;
+
+  BricksAddedLetter({this.letter});
+
+  @override
+  List<Object> get props => [letter];
+}
+
+class BricksToggledVisibility extends BricksEvent {}
